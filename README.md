@@ -1,2 +1,2 @@
 # alix
-Aladin Miet extension
+Aladin Lite extension
