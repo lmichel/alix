@@ -30,10 +30,6 @@ configureALiX({
 })
 );
 ```
-## Connecting ALiX to your database
 
-```javascript
-x = e+f;
-```
 * Get more in the [wiki](https://github.com/lmichel/alix/wiki)
 * Try our live [demo](http://saada.unistra.fr/alix) 
