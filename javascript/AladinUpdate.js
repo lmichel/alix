@@ -1,0 +1,119 @@
+/**
+ * @preserve LICENSE
+ * 
+ * Copyright (c) 2017 Laurent Michel
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+ * IN THE SOFTWARE. 
+**/
+"use strict"
+cds.Catalog.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
+    if (show) {
+      this.show();
+    }
+    else {
+      this.hide();
+    }
+    var self = this;
+    if (stepNb<totalNbSteps) {
+      setTimeout(function() {self._doMakeFlash(stepNb+1, totalNbSteps, !show, timeDelay);}, timeDelay);
+    }
+};
+
+cds.Catalog.prototype.makeFlash = function() {
+    this._doMakeFlash(1, 2*5, false, 200);
+};
+
+// function called when a source is clicked. Called by the View object
+cds.Source.prototype.actionClicked = function() {
+    if (this.catalog && this.catalog.onClick) {
+        var view = this.catalog.view;
+        if (this.catalog.onClick=='showTable') {
+            view.aladin.measurementTable.showMeasurement(this);
+            this.select();
+        }
+        else if (this.catalog.onClick=='showPopup') {
+            view.popup.setTitle('<br><br>');
+            var m = '<div class="aladin-marker-measurement">';
+            m += '<table>';
+            for (var key in this.data) {
+                m += '<tr><td>' + key + '</td><td>' + this.data[key] + '</td></tr>';
+            }
+            m += '</table>';
+            m += '</div>';
+            view.popup.setText(m);
+            view.popup.setSource(this);
+            view.popup.show();
+        }
+        else if (typeof this.catalog.onClick === 'function') {
+            this.catalog.onClick(this);
+            view.lastClickedObject = this;
+            this.select();
+
+        }
+
+    }
+};
+
+//The sources selected will be unselected when the empty part of aladin clicked.But the sources selected keep selected when we check one of the related sources,
+MeasurementTable.prototype.hide = function() {
+    this.divEl.hide();
+    AladinLiteX_mVc.deleteSourceAuto();
+};
+//To clean the target when we click the empty part of aladin
+cds.Source.prototype.actionOtherObjectClicked = function() {
+    if (this.catalog && this.catalog.onClick) {
+        this.deselect();
+        AladinLiteX_mVc.cleanCatalog("Target");
+	}
+};
+
+
+ProgressiveCat.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
+    if (show) {
+      this.show();
+    }
+    else {
+      this.hide();
+    }
+    var self = this;
+    if (stepNb<totalNbSteps) {
+      setTimeout(function() {self._doMakeFlash(stepNb+1, totalNbSteps, !show, timeDelay);}, timeDelay);
+    }
+};
+
+ProgressiveCat.prototype.makeFlash = function() {
+    this._doMakeFlash(1, 2*5, false, 200);
+};
+/**
+ * Limit he number of sources at 999
+ */
+URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
+    if (target && (typeof target  === "object")) {
+        if ('ra' in target && 'dec' in target) {
+            var coo = new Coo(target.ra, target.dec, 7);
+            target = coo.format('s');
+        }
+    }
+    return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
+};
+
+
+
+	
+

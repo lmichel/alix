@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title>AladinLiteX</title>
+		<meta charset="utf-8" />
+	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
+		<!--<script type="text/javascript" src="http://obs-stage-c11:8080/3xmmdr8/xcatweb/jsimports/jquery.js"></script>-->	
+	<!--	<script type="text/javascript" src="xcatweb/alix/jsimports/jquery-ui-1.12.1/jquery-ui.min.js"></script>-->	
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>  
+		
+		<script>var useDebugResources = true; var productionMode=false;</script>
+		<script type="text/javascript" src="javascript/loader.js"></script>
+		
+        <script src='jsimports/spectrum.js'></script>
+		<script>
+     resourceLoader.setCss([ 
+    	// 'styles/spectrum.css' 
+     ]);
+     resourceLoader.setScripts([ 
+     "demo/js/alixindexReady.js"
+       ]);
+     resourceLoader.loadAll(); 
+      
+     </script>
+	</head>
+	<body style="height: 100%">
+		<!-- include Aladin Lite CSS file in the head section of your page -->
+		
+		<!-- you can skip the following line if your page already integrates the 
+			jQuery library -->
+
+		<!-- insert this snippet where you want Aladin Lite viewer to appear and 
+			after the loading of jQuery -->
+		<div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;"></div>
+
+	</body>
+</html>

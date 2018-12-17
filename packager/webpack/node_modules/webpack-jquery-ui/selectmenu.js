@@ -1,0 +1,12 @@
+require('jquery-ui/ui/widget');
+require('jquery-ui/ui/position');
+require('jquery-ui/ui/form-reset-mixin');
+require('jquery-ui/ui/keycode');
+require('jquery-ui/ui/labels');
+require('jquery-ui/ui/unique-id');
+require('jquery-ui/ui/widgets/menu');
+require('jquery-ui/ui/widgets/selectmenu');
+require('jquery-ui/themes/base/core.css');
+require('jquery-ui/themes/base/menu.css');
+require('jquery-ui/themes/base/selectmenu.css');
+require('jquery-ui/themes/base/button.css');

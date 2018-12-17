@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<title>AladinLiteX</title>
+		<meta charset="utf-8" />
+	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
+		<!--<script type="text/javascript" src="http://obs-stage-c11:8080/3xmmdr8/xcatweb/jsimports/jquery.js"></script>-->	
+	<!--	<script type="text/javascript" src="xcatweb/alix/jsimports/jquery-ui-1.12.1/jquery-ui.min.js"></script>-->	
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>  
+		
+		<script>var useDebugResources = true; var productionMode=false;</script>
+		<script type="text/javascript" src="javascript/loader.js"></script>
+		<script>
+     resourceLoader.setCss([  
+     ]);
+     resourceLoader.setScripts([ 
+     "demo/js/alixapiReady.js"
+       ]);
+     resourceLoader.loadAll(); 
+      
+     </script>
+	</head>
+	<body style="height: 100%">
+	<div id = "demo_banner">ALIX Demos(API)</div>
+	<div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;"></div>
+		<div style="position:relative;margin :15px;" >
+		<i> Position: </i>
+		<input id="input_target" style = "margin-bottom:5px"></input>
+		<button id="addTarget" title="Move the view to the target (coords or object name)">target</button>
+		<br>
+		<button id="getView" title="Get data of this current view">Get Current View</button>
+		<button id="changeRef" title="Take WR101 as reference position">Change Reference</button>
+		<button id="changeRefBlue">Change Reference Blue</button>
+		<button id="center" title="Back to center position : M33">Center</button>
+		</div>
+
+	</body>
+</html>

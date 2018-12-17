@@ -1,0 +1,48 @@
+#demo_banner{
+	font-weight: bold;
+    font-size: xx-large;
+    text-align: center;
+    background-color: #eee8aa82;
+  margin-bottom: 20px;
+}
+#demo_body{
+	    margin-left: 15%;
+    margin-right: 15%;
+}
+.ui-button-icon-only .ui-icon {
+    left: 50%;
+    margin-left: -8px !important;
+    margin-top: -8px !important;
+}
+.demo_codeblock{
+	max-height:300px;
+}
+.demo_context{
+	height:200px;
+	width:100%;
+	display:none;
+	background-color: white;
+	margin-bottom :10px;
+}
+.demo_summary{
+	float: left;
+    margin-bottom: 5px;
+    width: 30%;
+    height: 85%;
+    border: 2px;
+    border-style: ridge;
+}
+.demo_test{
+	    float: left;
+    position: relative;
+    width: auto;
+    height: auto;
+
+}
+.demo_code{
+	float: right;
+    height: auto;
+    width: 69%;
+  /*  border: 2px;
+    border-style: ridge;*/
+}

@@ -1,0 +1,16 @@
+require('jquery-ui/ui/effect');
+require('jquery-ui/ui/effects/effect-blind');
+require('jquery-ui/ui/effects/effect-bounce');
+require('jquery-ui/ui/effects/effect-clip');
+require('jquery-ui/ui/effects/effect-drop');
+require('jquery-ui/ui/effects/effect-explode');
+require('jquery-ui/ui/effects/effect-fade');
+require('jquery-ui/ui/effects/effect-fold');
+require('jquery-ui/ui/effects/effect-highlight');
+require('jquery-ui/ui/effects/effect-puff');
+require('jquery-ui/ui/effects/effect-pulsate');
+require('jquery-ui/ui/effects/effect-scale');
+require('jquery-ui/ui/effects/effect-shake');
+require('jquery-ui/ui/effects/effect-size');
+require('jquery-ui/ui/effects/effect-slide');
+require('jquery-ui/ui/effects/effect-transfer');
