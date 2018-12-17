@@ -4,15 +4,18 @@ ALiX is a flexible catalog portal based on Aladin Lite. It it designed to use an
 
 ## Embedding ALix in your database portal
 * Import js
-- [x] aladin.js
-- [x] aladinliteX.js (js_bundle1)
-- [x] alix_import.js (js_bundle2)
+```html
+<script type="text/javascript" src="aladin.js" charset="utf-8"></script>
+<script type="text/javascript" src="aladinliteX.js" charset="utf-8"></script>
+<script type="text/javascript" src="alix_import.js" charset="utf-8"></script>
+```
 
 * Import css
-- [x] aladin.css
-- [x] aladinliteX.css
-- [x] alix_import.css (style_bundle)
-
+```html
+ <link rel="stylesheet" href="aladin.css" />
+ <link rel="stylesheet" href="aladinliteX.css" />
+ <link rel="stylesheet" href="alix_import.css" />
+```
 
 * Create an HTML div to host Alix
 ```html
@@ -27,7 +30,7 @@ configureALiX({
 })
 );
 ```
-## Connecting ALix to your database
+## Connecting ALiX to your database
 
 ```javascript
 x = e+f;
