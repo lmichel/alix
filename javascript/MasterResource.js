@@ -24,7 +24,7 @@
 //"use strict"
 
 var MasterResource = function(resource){
-
+if(resource){
 	this.actions = resource.actions;
 	this.affichage = resource.affichage;
 	this.parseLocation(resource.affichage);
@@ -33,7 +33,7 @@ var MasterResource = function(resource){
 	// If filtered, the FOV area is not limited
 	this.filtered = (resource.filtered == undefined || resource.filtered != true)? false: true;
 }
-var getParamIn
+}
 
 MasterResource.prototype = {
 		

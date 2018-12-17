@@ -42,7 +42,7 @@ Historique_Mvc.prototype = {
 			//var positionCopyStr = JSON.stringify(positionCopy);
 			var positionCopyClone = deepClone(positionCopy);//transform the function to string by deepClone, without this the functions can't be transported by stringify
 			var positionCopyStr = JSON.stringify(positionCopyClone);
-			var date = new Date();//as the unique key for each bookmark in localstorage
+			var date = 'alix:'+new Date();//as the unique key for each bookmark in localstorage
 			try{
 				//save an bookmark locally
 			localStorage.setItem(date,positionCopyStr);}

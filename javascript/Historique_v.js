@@ -35,6 +35,7 @@ var Historique_mVc = function(model, contextDivId,aladinLite_V){
 Historique_mVc.prototype = {
 		drawContext : function(){
 			var self = this;
+			var vide = true;
 			if( this.contextDiv == null ) {
 				this.contextDiv  = $('#' + this.contextDivId);
 			}
@@ -44,14 +45,11 @@ Historique_mVc.prototype = {
 			for(var key in localStorage){
 				console.log("Localstorage key="+key)	
 			}
-			if(localStorage.length == 0){
-				html += "<p style='color:#1f252b;text-align:center'>No bookmark restored</p>";
-			}
 			deleteAllObjs();
 			for (var k=0 ; k<localStorage.length; k++) {
-				localStorage.removeItem("aladin:hips-list");
 				var key = localStorage.key(k);
 				//the unique key is the time and date when the bookmark is saved
+				if(key.startsWith('alix:')){		
 				var ItemStr = localStorage.getItem(key);
 				var Item = JSON.parse(ItemStr);
 				Item.id = k;
@@ -59,7 +57,7 @@ Historique_mVc.prototype = {
 				var ItemFinal = setAladinLiteView(Item,key);
 				if(ItemFinal.survey!= undefined){
 					//localStorage.setItem(key,Item);
-					console.log("//////////////"+ItemFinal.survey.obs_title);
+					console.log("//"+ItemFinal.survey.obs_title);
 				//var obs_title = Item.survey.obs_title;
 					
 				//version1//html += "<li style='list-style-type: none;padding-top:5px;'>"+Item.getHTMLTitle(k,Item)+ "</li>";
@@ -72,9 +70,13 @@ Historique_mVc.prototype = {
 					  + ItemFinal.survey.obs_title + "</span><p style='font-size:small;line-height: 1em;font-weight:100;color:#000000;'>"
 					  + ItemFinal.survey.obs_description + "</p>"
 					  + this.displayCataDescription(ItemFinal.catalogTab) +"</div>";
-				
+				vide = false;
 			
 			}}
+			}
+			if(vide == true){
+				html += "<p style='color:#1f252b;text-align:center'>No bookmark restored</p>";
+			}
 			html += '</ul>';
 			this.contextDiv.html(html);
 			
@@ -97,11 +99,13 @@ Historique_mVc.prototype = {
 			//Add handlers for each bookmark  
 			for(var k=0 ; k<localStorage.length; k++){
 				var ItemFinal = getAladinLiteView(k);
+				if( ItemFinal){
 				ItemFinal.setHandlers();
 				$("#" + k +"_menu_show_description").click(function(e){
 					$("#description_" + this.id.replace("_menu_show_description","")).slideToggle();
 					e.stopPropagation();
 				});
+				}
 			}
 			
 			
