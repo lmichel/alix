@@ -39,9 +39,8 @@ Historique_Mvc.prototype = {
 			// we create a copy of the position object, as its attributes might be updated
 			var positionCopy = jQuery.extend(true, {}, position);
 			positionCopy.comment = "";
-			//var positionCopyStr = JSON.stringify(positionCopy);
-			var positionCopyClone = deepClone(positionCopy);//transform the function to string by deepClone, without this the functions can't be transported by stringify
-			var positionCopyStr = JSON.stringify(positionCopyClone);
+			//var positionCopyClone = deepClone(positionCopy);//transform the function to string by deepClone, without this the functions can't be transported by stringify
+			var positionCopyStr = JSON.stringify(positionCopy);
 			var date = 'alix:'+new Date();//as the unique key for each bookmark in localstorage
 			try{
 				//save an bookmark locally

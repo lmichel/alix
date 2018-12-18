@@ -39,24 +39,32 @@ function RegionEditor_mVc(aladinLite_V, parentDivId, contextDivId, handler,/* po
 	this.clientHandler = (handler == null) ? function(){alert("No client handler registered");}: handler;
 	this.contextDivId = contextDivId;
 	this.contextDiv  = null;
+	this.sousContextDiv = null;
 	this.parentDiv  = null;
 	this.aladinLite_V = aladinLite_V;
 	//this.defaultRegion = defaultRegion;
 	this.editionFrame = defaultRegion;
 } 
-
+var browseSaved = null;
 RegionEditor_mVc.prototype = {
-		init: function (){			
+		init: function (){	
+			
 			var self = this;
 			if( this.parentDiv == null )
 				this.parentDiv = $('#' + this.parentDivId);
-			if( this.contextDiv == null )
-				this.contextDiv  = $('#' + this.contextDivId);
+		 	if( this.contextDiv == null )
+				this.contextDiv  = $('#' + this.contextDivId);	
+			this.contextDiv.append('<div id= "RE_context" style = "display:inline"></div>');
+			/*if( this.sousContextDiv == null ){
+				this.sousContextDiv  = $('#RE_context');
+			}*/
 			//this.parentDiv.css("position", "relative");
 			// création du canvas pour éditeur régions
 			/*
 			 * Be cautious: the canvas context must be taken before the canvas is appended to the parent div, otherwise the geometry is wrong. 
 			 */
+			var that = this;
+			if(!regionEditorInit){
 			this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
 			this.lineCanvas[0].width = this.parentDiv.width();
 			this.lineCanvas[0].height = this.parentDiv.height();
@@ -84,11 +92,10 @@ RegionEditor_mVc.prototype = {
 			 * The controller function is wrapped in a function in order to make it working in the context of the controller object
 			 * and not of he HTML widget
 			 */
-			var that = this;
 			this.drawCanvas[0].addEventListener('mousedown', function(event) {/*console.log("down");*/ that.controller.mouseDown(event);}, false);
 			this.drawCanvas[0].addEventListener('mousemove',  function(event) {that.controller.mouseMove(event);}, false);
 			this.drawCanvas[0].addEventListener('mouseup', function(event) {/*console.log("up");*/ that.controller.mouseUp(event);}, false);
-
+			}
 			/*----crear botones con jquery----*/
 			/*var divButtons = $("<div id='RegionButtons' style=' width:"+ this.parentDiv.width() +'px' +" ';' '><div/>").appendTo("#" + this.parentDivId + "_button");        
 			divButtons.css('background', 'gray');//'height:' "+ 200 +'px' +"';'
@@ -107,11 +114,12 @@ RegionEditor_mVc.prototype = {
 					that.controller.recuperar();  
 				}
 				that.setBrowseMode();
+				browseSaved = false;
 				event.stopPropagation();
 				that.aladinLite_V.reabledButton();
 
 			});
-
+			
 			this.editBtn = $("<button id='regionEditor_e' class='alix_edt_btn alix_btn'>Edit&nbsp;<i class='glyphicon glyphicon-pencil'></i></button>");
 			this.contextDiv.append(this.editBtn);
 			this.editBtn.css('margin-top','10px');
@@ -126,16 +134,6 @@ RegionEditor_mVc.prototype = {
 				that.aladinLite_V.disabledButton();
 				event.stopPropagation();
 			});
-
-
-			/*this.centerBtn = $("<input type='button' id='edit' value='Center' />");
-			this.contextDiv.append(this.centerBtn);
-			this.centerBtn.css('margin-top','10px');
-			this.centerBtn.css('margin-left','5px');
-			this.centerBtn.click(function(event) {        	 
-				that.controller.PolygonCenter();
-				event.stopPropagation();
-			});*/
 
 			this.effacerBtn = $("<button id='regionEditor_c' class=' alix_clear_btn alix_btn'>Clear&nbsp;<i class='glyphicon glyphicon-trash'></i></button>");
 			this.contextDiv.append(this.effacerBtn);
@@ -162,13 +160,15 @@ RegionEditor_mVc.prototype = {
 //					that.contextDiv.animate({height:'-=200px'},"fast");
 //				}
 				document.getElementById("region").disabled=false;
+				browseSaved = true;
 				event.stopPropagation();
 			});
-			
+			if(!regionEditorInit){
 			this.setInitialValue(self.defaultRegion);
 			if( this.editionFrame ){
 				this.setEditionFrame(this.editionFrame);
 				this.setEditMode();
+			}
 			}
 
 		},

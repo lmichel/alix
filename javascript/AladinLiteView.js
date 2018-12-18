@@ -76,12 +76,12 @@ AladinLiteView.prototype = {
 		 */
 	getHTMLTitle: function() {
 	//	console.log("!!!!!!getHTMLTitle run"+this);
-		return '<div id="' + this.id + '" style="height:auto;"><img id="' + this.id + '_snapShot_img" src="' 
+		return '<div  title="replay the stored view" id="' + this.id + '" style="height:auto;"><img id="' + this.id + '_snapShot_img" src="' 
 			+ this.img
 			//+ '" onclick="AladinLiteX_mVc.restoreViewByIdTest(&quot;' + this.id + '&quot;);" '
 			+ '" onclick="AladinLiteX_mVc.restoreViewById(&quot;' + this.id + '&quot;);" '
 			+ 'style= "height: 18px;width: 18px;">&nbsp;&nbsp;&nbsp;</img>'
-			+'<a href="'+this.img+'" download ="ALIX snapshot ' + this.id + '"><i class="glyphicon glyphicon-download-alt" style="vertical-align: top;color:black" ></i>   </a>'
+			+'<a title="download the snapshot" href="'+this.img+'" download ="ALIX snapshot ' + this.id + '"><i class="glyphicon glyphicon-download-alt" style="vertical-align: top;color:black" ></i>   </a>'
 			+'<i id="' + this.id + '_link"  style="vertical-align: top;font-weight:800;">'  //stoker le id dans la div
 			+ this.name 
 			+ ' | '
@@ -105,7 +105,7 @@ AladinLiteView.prototype = {
 		if( this.region == null){
 			return "";
 		} else {
-			return '<i class="glyphicon glyphicon-registration-mark" style="font-size:18;vertical-align: top;"></i>';
+			return '<i  title="bookmark with region" class="glyphicon glyphicon-registration-mark" style="font-size:18;vertical-align: top;"></i>';
 		}
 	},
 	

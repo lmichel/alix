@@ -202,6 +202,7 @@ var AladinLiteX_mVc = function(){
 		}
 	}
 	var showDetailByID = function(){
+		checkBrowseSaved();
 		var selectHipsDiv_val=selectHipsDiv.val();
 		showDetail(selectHipsDiv_val);
 	}
@@ -247,7 +248,7 @@ var AladinLiteX_mVc = function(){
 				+'<i id="fade" class="alix_menu_item glyphicon glyphicon-lamp"></i>'
 			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  alix_menu_item" title = "Fade in">+</div>'
 				+'</legend>' 
-			    +'<div><p id="XMM" title="Show/hide XMM sources" class="alix_XMM_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</p>'
+			    +'<div><p id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</p>'
 			    + descriptionXMM()
 			    + configurationXMM()
 			    + hideXMMFlash()
@@ -483,6 +484,7 @@ var AladinLiteX_mVc = function(){
 		});
 		
 		$("#credit").click(function(event){
+			checkBrowseSaved();
 			contextDiv.css("max-height", "200px");
 			if( contextDiv.height() < 100 ){
 				contextDiv.animate({height:'200px'},"fast");
@@ -714,12 +716,16 @@ var AladinLiteX_mVc = function(){
 
 	
 	var returnCenter = function(){
+		checkBrowseSaved();
 		gotoObject(defaultPosition);
 		//aladin.gotoPosition(aladinLiteView.ra,aladinLiteView.dec);
 		controller.cleanPolygon();
         //event.stopPropagation();
 	}
+	var historySelected = false;
+	var regionSelected = false;
 	var bookMark = function(){
+		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		//set height_ul to the height of context panel. _shan
 		if( contextDiv.height() < 200 ){
@@ -740,30 +746,38 @@ var AladinLiteX_mVc = function(){
         storeCurrentState();
 		controller.bookMark(aladinLiteView);
 	}
-	
+    var checkBrowseSaved = function(){
+    	if(browseSaved == false){
+			var a = confirm("Do you want to save your polygon?") ;
+			if(a == true){
+				$("#regionEditor_a").trigger("click");
+			}else{
+				browseSaved = null;
+				controller.cleanPolygon();
+			}
+		}
+    }
 	var getHistory = function(){
+		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		controller.getHistory();
 		console.log("hello"+$("#history_ul").height());
 		if(contextDiv.height() < 10 /*&& $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected"*/){
 			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
 			contextDiv.css("border-width", "0.2px");
-			//$(".ui-dialog").animate({height:'200px'},"fast");
-			////$(".ui-dialog").animate({height:'+='+height_ul+''},"fast");
-			$("#history").attr("class","alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_selected");
-			$("#region").attr("class","alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected");
-			
-		}else if(contextDiv.height() > 10 && $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_selected"){
-			contextDiv.animate({height:0},"fast");
-			//contextDiv.css("display","none");
-			contextDiv.css("border-width", "0px");
-			//$(".ui-dialog").css("display","none");
-			//$(".ui-dialog").animate({height:0},"fast");
-			$("#history").attr("class","alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected");
-		}else if(contextDiv.height() > 10 && $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected"){
-			contextDiv.animate({height:0},"fast");
-			$("#history").attr("class","alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_selected");
-			$("#region").attr("class","alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected");
+			 historySelected = true;
+			 regionSelected = false;
+		}else if(contextDiv.height() > 10 ){
+			if(historySelected){
+				contextDiv.animate({height:0},"fast");
+				 historySelected = false;
+				 regionSelected = false;
+		}else {
+			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
+			contextDiv.css("border-width", "0.2px");
+			 historySelected = true;
+			 regionSelected = false;
+		}
 		}
 		//event.stopPropagation();
 	}
@@ -868,42 +882,47 @@ var AladinLiteX_mVc = function(){
 	/**
 	 * click function 'region'
 	 */
+	regionEditorInit = false;//To judge if regioneditor is already initialled
 	var regionEditor = function(){
 		//if(aladinLiteView.region != null){
 			//controller.cleanPolygon();
 		//}
+		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		storeCurrentState();
 		contextDiv.html("");
-		console.log(">>>>>"+contextDiv.height() + " " + ($("#region").attr("class")=="alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected"));
-		if(contextDiv.height() < 100 && $("#region").attr("class")=="alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected"){
+		//console.log(">>>>>"+contextDiv.height() + " " + regionSelected);
+		if(contextDiv.height() < 10){
 			// open the region  editor
+			//if(!regionEditorInit){
 			controller.editRegion();
-			controller.cleanPolygon();
+		
+			//controller.cleanPolygon();
 			contextDiv.animate({height:'101px'},"fast");//change the context height from 200px to 101px. _shan
 			contextDiv.css("border-width", "0.2px");
-			//$(".ui-dialog").animate({height:'200px'},"fast");
-			$("#region").attr("class","alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_selected");
-			$("#history").attr("class","alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected");
-		}else if(contextDiv.height() >= 50 && $("#region").attr("class")=="alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_selected"){
+			historySelected = false;
+			regionSelected = true;
+			regionEditorInit = true;
+		}else if(contextDiv.height() >= 50){
 			// contextDiv.height() >= 50 BECAUSE in the browser firefox, the height has some strange way to calculate , 101px maybe will be calculated as "99"
+			if(regionSelected){
 			// close the region  editor
 			contextDiv.animate({height:'0px'},"fast");
-			//contextDiv.css("display","none");
 			contextDiv.css("border-width", "0px");
-			//$(".ui-dialog").css("display","none");
-			////$(".ui-dialog").animate({height:'0px'},"fast");
-			$("#region").attr("class","alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected");
-			controller.cleanPolygon();
-			controller.closeEditor();
-		}else if(contextDiv.height() >= 100 && $("#region").attr("class")=="alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected"){
+			regionSelected = false;
+			historySelected = false;
+			//controller.cleanPolygon();
+			//controller.closeEditor();
+		}else{
 			//open region editor from while history page is open
-			controller.cleanPolygon();
+			//controller.cleanPolygon();
 			controller.editRegion();
 			contextDiv.animate({height:'101px'},"fast");
-			$("#region").attr("class","alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_selected");
-			$("#history").attr("class","alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected");
+			regionSelected = true;
+			historySelected = false;
+			regionEditorInit = true;
 		}
+	}
 	}
 	
 
@@ -959,6 +978,7 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	var closeContext = function() {
+		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		if(contextDiv.height() > 99 ){
 			contextDiv.animate({height:'0px'},"fast");
@@ -1128,7 +1148,9 @@ var AladinLiteX_mVc = function(){
 		var hips = controller.getSelectedHips(ID);
 		if(hips != undefined){
 			var html = '<p style="color:#4D36DC;margin:10px;" >';
-			html +=  hips.obs_title + " | "+ID+"</p><p style='font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;'>&nbsp;&nbsp;" + hips.obs_description + "<br>";
+			html +=  hips.obs_title +"</p>"
+			+"<span style='font-size:small;color : #727371;margin:10px;'>"+ID +"</span>"
+			+"<p style='font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;'>&nbsp;&nbsp;" + hips.obs_description + "<br>";
 			html += '</p>';
 			if(contextDiv.height() > 100){
 				contextDiv.html(html);
@@ -1146,6 +1168,7 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	var showDetail = function(ID){
+		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		if(contextDiv.height() > 100 ){
 			contextDiv.animate({height:'0px'},"fast");
@@ -1401,6 +1424,7 @@ var AladinLiteX_mVc = function(){
 		
 	var detailCatalogOperator = function(i){
 		//event.stopPropagation();
+		checkBrowseSaved();
 		var p_text=$("#cata_operate_"+ i).text();
 		var p_color= document.getElementById("cata_operate_"+ i).style.color;
 		console.log("gggg"+p_color);
@@ -1410,6 +1434,7 @@ var AladinLiteX_mVc = function(){
 	
 	var displayDataXml = function(){		
 		//event.stopPropagation();
+		checkBrowseSaved();
 		storeCurrentState();
 		contextDiv.html("");
 		closeContext();
@@ -1440,6 +1465,7 @@ var AladinLiteX_mVc = function(){
 	}
 		
 	var openContextPanel = function(html){
+		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		if(contextDiv.height() > 39){
 			contextDiv.css("height", "101px");
