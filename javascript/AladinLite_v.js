@@ -114,6 +114,7 @@ var AladinLiteX_mVc = function(){
 	var vizierDivId = "vizier";
 	var aladinLiteView = new AladinLiteView();
 	var XMMcata = null;
+	var sourceSelected;
 	
 	/**
 	 * var params = {
@@ -201,6 +202,11 @@ var AladinLiteX_mVc = function(){
 			   // $(".CatalogMerged").css("display","none");
 		}
 	}
+	var deselectSource = function(){
+		deleteSourceAuto();//delete related source and fade in 
+    	sourceSelected.deselectAll();//make cds.source deselect the source
+    	$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp_selected");//to make the master resource can be reloaded
+	}
 	var showDetailByID = function(){
 		checkBrowseSaved();
 		var selectHipsDiv_val=selectHipsDiv.val();
@@ -238,14 +244,19 @@ var AladinLiteX_mVc = function(){
 			    +'<button id="history" type="history" title="history" class="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected" onclick="AladinLiteX_mVc.getHistory();"><i class="glyphicon glyphicon-book" style="font-size:15px;"></i></button>'
 			    +'<button id="region"  type="region" title="edit region" class="alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected" onclick="AladinLiteX_mVc.regionEditor();"><i class="glyphicon glyphicon-edit" style="font-size:15px;"></i></button></div>'
 			    +'<form method = "post" onsubmit="return false;"><fieldset class="alix_image_panel alix_menu_item alix_fieldset">'
-			    +'<legend class="alix_titlle_image alix_menu_item">Image</legend>'
+			    +'<legend class="alix_titlle_image alix_menu_item">Image'
+			    +'<i id="color_map" title = "color map" style="cursor: pointer; opacity: .3;font-size: 14px; margin:8px"class="alix_menu_item glyphicon glyphicon-sunglasses" onclick = "AladinLiteX_mVc.showColorMap()"></i>'
+			  //  +'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: 150px; height: 50px; color: black;"><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
+			    //+'<select id="color_map_select" class ="alix_selector_cm alix_menu_item"></select>'
+			    +'</legend>'
+			    //+'<div id = "color_map_box" style = "z-index: 20;position: absolute; width: 150px; height: 50px; color: black;">testetetetet</div>'
 			    +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class="alix_menu_item alix_img_explorer"></input>'
 			    +'<select id="status-select" class ="alix_selector_hips alix_menu_item"></select>'
 			    +'<button id="detail"  type="detail" class="alix_menu_item alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button></fieldset></form>'
 			    +'<form method = "post" onsubmit="return false;"><fieldset class="alix_catalog_panel alix_menu_item alix_fieldset" >'
 			    +'<legend class="alix_titlle_catalog alix_menu_item">Catalogs'
 			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  alix_menu_item" title = "Fade out">-</div>'
-				+'<i id="fade" class="alix_menu_item glyphicon glyphicon-lamp"></i>'
+				+'<i id="fade" title = "fade" class="alix_menu_item glyphicon glyphicon-lamp"></i>'
 			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  alix_menu_item" title = "Fade in">+</div>'
 				+'</legend>' 
 			    +'<div><p id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</p>'
@@ -302,6 +313,8 @@ var AladinLiteX_mVc = function(){
 		
 		setDefaultSurvey();
 
+		
+		
 		aladin.on('positionChanged', function(newPosition){
 			if(newPosition.dragging==false){
 				storeCurrentState();
@@ -354,6 +367,7 @@ var AladinLiteX_mVc = function(){
 					controller.cleanPolygon();
 				}
 		    	aladinLiteView.clean();
+		    	deselectSource();
 				event.preventDefault();
 		        gotoObject(targetDiv.val());
 		    }
@@ -500,7 +514,8 @@ var AladinLiteX_mVc = function(){
 				contextDiv.html("<pre>" + JSON.stringify(jsondata, null, 2) + "</pre>");
 			});
 		});
-		//Filter the sources
+   
+		/////Filter the sources /////////////////////////
 		if(masterResource != undefined&&masterResource.actions.externalProcessing.handlerInitial){
 			console.log("handlerInitial");
 			masterResource.actions.externalProcessing.handlerInitial();
@@ -863,7 +878,7 @@ var AladinLiteX_mVc = function(){
 		aladinLiteView.dec = radec[1];
 		var l = aladin.getFov();
 		aladinLiteView.fov = l[0];
-		aladinLiteView.img = aladin.getViewDataURL({width: 700, height: 700});
+		aladinLiteView.img = aladin.getViewDataURL({width: 400, height: 400});
 		aladinLiteView.catalogTab = controller.currentCatalogTab(aladin.view.catalogs);
 		var strlon = Numbers.toSexagesimal(aladinLiteView.ra/15, 8, false);
 		var strlat = Numbers.toSexagesimal(aladinLiteView.dec, 7, false);
@@ -1230,7 +1245,7 @@ var AladinLiteX_mVc = function(){
 		if(i=="XMM"){
 			console.log("XMMplay");
 			if(LibraryCatalog.getCatalog("Swarm")){
-			cata = LibraryCatalog.getCatalog("Swarm").al_refs;}else{alert("Please choose a catalog")};
+			cata = LibraryCatalog.getCatalog("Swarm").al_refs;}//else{alert("Please choose a catalog")};
 			obs_id_use= i;
 			if(c=="red"){
 				colorRgb="rgb(255,0,0)";
@@ -1241,7 +1256,7 @@ var AladinLiteX_mVc = function(){
 			console.log("SNplay");
 			console.log("NEDcolor"+c);
 			if(LibraryCatalog.getCatalog(i)){
-			cata = LibraryCatalog.getCatalog(i).al_refs;}else{alert("Please choose a catalog")};
+			cata = LibraryCatalog.getCatalog(i).al_refs;}//else{alert("Please choose a catalog")};
 			obs_id_use= i;
 			if(c=="red"){
 				colorRgb="rgb(255,0,0)";
@@ -1483,7 +1498,7 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	
-	var displayCatalogFiltered = function(champ,limit,range){
+	/*var displayCatalogFiltered = function(champ,limit,range){
 		alixCat = LibraryCatalog.getCatalog("Swarm");
 		var sources = alixCat.al_refs.getSources();
 		console.log("testalixcat"+alixCat);
@@ -1519,7 +1534,7 @@ var AladinLiteX_mVc = function(){
 			source.show();
 		}
 		}
-	}
+	}*/
 	
 	var bindToFade = function(){
 		var currentColor=null; //XMM
@@ -1623,10 +1638,12 @@ var AladinLiteX_mVc = function(){
 				/*
 				 * function click for the source in catalog XMM
 				 */
+				sourceSelected = this;//save the reference of selected source as an global var in order toallow us deselect it easilier in the deselectSource();
 				var data = params.data;
 				console.log(params);
-				var showPanel = aladinLiteView.masterResource.actions.showPanel.active
-				if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing)=="function") {
+				var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
+				console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
+				if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 					aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 				}
 				var r1="", r2="";
@@ -1672,7 +1689,7 @@ var AladinLiteX_mVc = function(){
 					//make the associated source shown directly
 					if(aladinLiteView.masterResource.actions.showAssociated.active == true) {
 					
-					$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp");
+					$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
 					$('#'+ idvalue).css("color","#32FFEC");
 					$.getJSON(lien, function(jsondata) {
 						var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:"showTable"});
@@ -2038,6 +2055,36 @@ var AladinLiteX_mVc = function(){
                       (typeof errorCallback === 'function') && errorCallback();
                  });
 	}
+	var showColorMap = function(){
+		if(contextDiv.height() > 100 ){
+			contextDiv.animate({height:'0px'},"fast");
+			contextDiv.css("max-height", "200px");
+			contextDiv.css("border-width", "0px");
+		}else{
+			var html = '<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;"><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
+			contextDiv.animate({height:'101px'},"fast");
+			contextDiv.css("max-height", "200px");
+			contextDiv.css("border-width", "0.2px");
+			contextDiv.html(html);
+		}
+		 //// COLOR MAP management ////////////////////////////////////////////
+		var cmDiv = $('.alix_colorMapBox');
+		var cmSelect = cmDiv.find('.aladin-cmSelection');
+         for (var k=0; k<ColorMap.MAPS_NAMES.length; k++) {
+             cmSelect.append($("<option />").text(ColorMap.MAPS_NAMES[k]));
+         }
+         cmSelect.val(aladin.view.imageSurvey.getColorMap().mapName);
+         // update color map
+         cmDiv.find('.aladin-cmSelection').change(function() {
+             var cmName = $(this).find(':selected').val();
+             aladin.view.imageSurvey.getColorMap().update(cmName);
+         });
+         
+         // reverse color map
+         cmDiv.find('.aladin-reverseCm').click(function() {
+        	 aladin.view.imageSurvey.getColorMap().reverse(); 
+         });
+	}
 	
 	var retour = {
 			popup : popup,
@@ -2047,6 +2094,7 @@ var AladinLiteX_mVc = function(){
 			//draw : draw
 			fadeOutAuto : fadeOutAuto,
 			deleteSourceAuto : deleteSourceAuto,
+			deselectSource : deselectSource,
 			//switchPanel : switchPanel,
 			closeContext : closeContext,
 			returnCenter : returnCenter,
@@ -2102,13 +2150,18 @@ var AladinLiteX_mVc = function(){
 			//hideXMMFlash : hideXMMFlash,
 			getCurrentView: getCurrentView,
 			setReferenceView: setReferenceView,
-			displayCatalogFiltered:  displayCatalogFiltered,
+			//displayCatalogFiltered:  displayCatalogFiltered,
 			updateColorOfCatalog :updateColorOfCatalog,
 			updateShapeOfCatalog :updateShapeOfCatalog,
-			updateSizeOfCatalog :updateSizeOfCatalog
+			updateSizeOfCatalog :updateSizeOfCatalog,
+			showColorMap : showColorMap
 	};
 	return retour
 	
 }();
+
+
+
+//<div><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>
 
 

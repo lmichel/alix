@@ -15,7 +15,7 @@
  legend {
  border-bottom : 0;
  }
- #aladin-lite-div{
+  #aladin-lite-div{
  position:relative;
  }
  #demo_banner{
@@ -30,7 +30,7 @@
     margin: 0 2px;
     border: 1px solid silver;
 }
-  
+    
  .navbar{
    display: none;
  }
@@ -47,7 +47,6 @@
     background-position: center center;
 }
 .alix_menu_panel{
-	z-index : 10;
 	background-color: #f9f9f9;
 	height: 398px;
 	width: 12px;
@@ -59,23 +58,9 @@
     border-style: solid;
     border-width: 0.2px;
     border-color: #858A90;
-    box-shadow: 2px 2px 5px #858A90;
-}
-.alix_colorMapBox{
-	font-weight: 100;
-	font-size: small;
-	padding: 20px;
-    z-index: 20;
-   /* position: absolute;
-    left: 60px;
-    width: 150px;
-    height: 50px;
-    box-shadow: 2px 2px 5px #858A90;
-    background-color: white;*/
 }
 
 .alix_open_all{
-	z-index : 10;
 	position:absolute !important;
 	background-color:#888a85;
 	width:14px;
@@ -475,7 +460,7 @@
 	width:95px;
 	height:25px;
 	padding: 2px;
-    font-size: 14px !important;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1;
     color: #555;
@@ -491,8 +476,8 @@
 	top:100px;
 	left:3px;*/
 	margin-bottom: 0px !important; 
-	width:80px;
-	font-size:18px !important;
+	width:65px;
+	font-size:18;
 	color:#333;
 	font-weight:bold;
 	font-style: inherit;
@@ -508,7 +493,7 @@
 	left:2px;*/
 	margin-bottom: 0px !important; 
 	width:120px;
-	font-size:18px !important;
+	font-size:18;
 	color:#333;
 	font-weight:bold;
 	font-style: inherit;
@@ -564,9 +549,9 @@
 .alix_acds{
 	color:#888a85 ;
 	display: none;
-	font-size:12px !important;
+	font-size:12 !important;
 	font-weight:100 !important;
-	line-height: 1 !important; 
+	line-height: 0em !important; 
 	font-family: Arial,x-locale-body,sans-serif;
 	
 }
@@ -577,7 +562,7 @@
 	left:5px;
 	top: 22px;*/
 	color:#888a85 ;
-	font-size:13px !important;
+	font-size:13 !important;
 	font-weight:600 !important;
 	line-height: 0em !important; 
 	font-family: Arial,x-locale-body,sans-serif;
@@ -588,7 +573,7 @@
 	top:45px;
 	left:5px;*/
 	color:#888a85 ;
-	font-size:13px !important;
+	font-size:13 !important;
 	font-weight:600 !important;
 	line-height: 1.5;
 	font-family: Arial,x-locale-body,sans-serif;
@@ -598,7 +583,7 @@
 	top:45px;
 	left:75px;*/
 	color:#888a85 ;
-	font-size:13px !important;
+	font-size:13 !important;
 	font-weight:600 !important;
 	margin-left: 25px;
 	line-height: 1;
@@ -611,8 +596,8 @@
 	left:4px;*/
 	margin-top: 5px;
 	width:230px;
-	height:85px;
-    white-space: nowrap;
+	height:90px;
+ white-space: nowrap;
 	overflow-y:auto;
 	background-color:#ffffff;
 	border-color: #ccc;
@@ -993,20 +978,26 @@
 }
 
 .alix_target_selecte{
-	position:relative;
+	position:absolute;
+	top:31px;
+	left:120px;
 	color: #888a85;
-    font-size: 13px;
+    font-size: 15;
     line-height: 1;
     cursor: pointer;
 }
 
 .alix_select_flash{
-	position: relative;
+	position: absolute;
+    left: 199px;
+    top: 38px;
     color: rgb(135, 246, 255);
 }
 
 .alix_select_trash{
-	position: relative;
+	position: absolute;
+    left: 216px;
+    top: 38px;
     color: rgb(135, 246, 255);
 }
 

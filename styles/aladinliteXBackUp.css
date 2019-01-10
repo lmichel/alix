@@ -15,22 +15,12 @@
  legend {
  border-bottom : 0;
  }
- #aladin-lite-div{
- position:relative;
- }
- #demo_banner{
-	font-weight: bold;
-    font-size: xx-large;
-    text-align: center;
-    background-color: #eee8aa82;
-  margin-bottom: 20px;
-}
 .alix_fieldset {
     padding: 0.20em 0.35em 0em;
     margin: 0 2px;
     border: 1px solid silver;
 }
-  
+    
  .navbar{
    display: none;
  }
@@ -46,8 +36,7 @@
     background-repeat: no-repeat;
     background-position: center center;
 }
-.alix_menu_panel{
-	z-index : 10;
+.menu_panel{
 	background-color: #f9f9f9;
 	height: 398px;
 	width: 12px;
@@ -59,23 +48,9 @@
     border-style: solid;
     border-width: 0.2px;
     border-color: #858A90;
-    box-shadow: 2px 2px 5px #858A90;
-}
-.alix_colorMapBox{
-	font-weight: 100;
-	font-size: small;
-	padding: 20px;
-    z-index: 20;
-   /* position: absolute;
-    left: 60px;
-    width: 150px;
-    height: 50px;
-    box-shadow: 2px 2px 5px #858A90;
-    background-color: white;*/
 }
 
-.alix_open_all{
-	z-index : 10;
+.open_all{
 	position:absolute !important;
 	background-color:#888a85;
 	width:14px;
@@ -90,25 +65,25 @@
     background: linear-gradient(270deg,#E8E8E8,#898989);
 }
 
-.alix_aladin_div{
+.aladin_div{
 	width: 400px;
 	height: 400px;
 	position : absolute;
 	z-index:0;
 }
-.alix_waiting_interface{
+.waiting_interface{
 	width:1000px;
 	height:1000px;
 	z-index:10000;
 }
 
-.alix_grey_bg{
+.grey_bg{
 	width:665px;
 	height:400px;
 	background-color: #babdb6;
 	opacity:0.5;
 }
-.alix_fetching_data{
+.fetching_data{
 	position:absolute;
 	top:1.2%;
 	left:2.5%;
@@ -118,7 +93,7 @@
 	z-index:10001;
 	border-radius: 4px;
 }
-.alix_fetching_img{
+.fetching_img{
 	width:50px;
 	height:40px;
 	position:relative;
@@ -129,7 +104,7 @@
 	background-repeat: no-repeat;
 	background-size: 50% 50%;
 }
-.alix_fetching_message{
+.fetching_message{
 	position:absolute;
 	top:0px;
 	left:20px;
@@ -141,7 +116,7 @@
 	line-height:40px;
 }
 
-.alix_alert_fov{
+.alert_fov{
 	position:absolute;
 	top:41.6%;
 	left:9%;
@@ -153,7 +128,7 @@
 	opacity:0.7;
 }
 
-.alix_alert_fov_img{
+.alert_fov_img{
 	position:relative;
 	left:2px;
 	width:25px;
@@ -161,7 +136,7 @@
 	color:red;
 }
 
-.alix_alert_fov_msg{
+.alert_fov_msg{
 	position:absolute;
 	top:0px;
 	left:41px;
@@ -170,7 +145,7 @@
 	font-size:15;
 	font-weight:bold;
 }
-.alix_context_panel{
+.context_panel{
 	background-color: #f9f9f9;
 	height: 0px;
     max-height: 200px;
@@ -190,12 +165,12 @@
     box-shadow: 2px 2px 5px #858A90;
 }
 
-.alix_context{
+.context{
 	color: #191970;
 	font-size: 25px;
 }
 
-.alix_target{
+.target{
 	width: 138px;
 	height:25px;
 	padding: 2px;
@@ -238,7 +213,7 @@
     line-height: 20px !important;
 }
 
-.alix_select{
+.select{
 	position : absolute;
 	left : 182px;
 	top : 20px;
@@ -260,35 +235,7 @@
     border-bottom-left-radius: 4px;
 }
 
-.alix_btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-.alix_btn.disabled, .alix_btn[disabled], .alix_fieldset[disabled] .alix_btn {
-    cursor: not-allowed;
-    filter: alpha(opacity=65);
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    opacity: .65;
-}
-.alix_btn_open{
+.btn_open{
 	position : absolute;
     left :15px;
     top : 60px;
@@ -303,7 +250,7 @@
 	background: linear-gradient(270deg,#E8E8E8,#B8B8B8) !important;
 }
 
-.alix_btn_open_2{
+.btn_open_2{
 	position : absolute;
     left :18px;
     top : 63px;
@@ -319,7 +266,7 @@
 	background: linear-gradient(270deg,#E8E8E8,#B8B8B8) !important;
 }
 
-.alix_button_center{
+.button_center{
 	position : absolute;
     left :18px;
     top : 63px;
@@ -327,7 +274,7 @@
     
 }
 
-.alix_button_bookMark{
+.button_bookMark{
 
 	position : absolute;
     left :18px;
@@ -335,7 +282,7 @@
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_button_history{
+.button_history{
 
 	position : absolute;
     left :18px;
@@ -343,7 +290,7 @@
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_button_region{
+.button_region{
 	
 	position : absolute;
     left :18px;
@@ -351,7 +298,7 @@
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_button_detail{
+.button_detail{
 	/*position : absolute;
     left :186px;
     top: 25px;*/
@@ -374,7 +321,7 @@
     line-height:20px;
 }
 
-.alix_image_panel{
+.image_panel{
 	position:absolute;
 	left:3px;
 	top:110px;
@@ -389,7 +336,7 @@
 }
 
 
-.alix_img_explorer{
+.img_explorer{
 	/*position : absolute;
     left :3px;
     top: 25px;*/
@@ -408,7 +355,7 @@
     border: 1px solid #ccc;
 }
 
-.alix_selector_hips{
+.selector_hips{
 /*	position:absolute;
 	top: 25px;
 	left:91px;*/
@@ -426,7 +373,7 @@
     line-height:20px;
 }
 
-.alix_cataloge_explorer{
+.cataloge_explorer{
 	/*position : absolute;
     left :4px;
     top : 78px;*/
@@ -447,7 +394,7 @@
     border: 1px solid #ccc;
 }
 
-.alix_selector_vizier{
+.selector_vizier{
 /*	position : absolute;
 	left :154px;
     top : 78px;*/
@@ -468,14 +415,14 @@
     line-height:20px;
 }
 
-.alix_selector_catalog{
+.selector_catalog{
 /*	position:absolute;
 	top:260px;
 	left:98px;*/
 	width:95px;
 	height:25px;
 	padding: 2px;
-    font-size: 14px !important;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1;
     color: #555;
@@ -486,13 +433,13 @@
     line-height:20px;
 }
 
-.alix_titlle_image{
+.titlle_image{
 	/*position:absolute;
 	top:100px;
 	left:3px;*/
 	margin-bottom: 0px !important; 
-	width:80px;
-	font-size:18px !important;
+	width:65px;
+	font-size:18;
 	color:#333;
 	font-weight:bold;
 	font-style: inherit;
@@ -502,13 +449,13 @@
 	font-family: Arial,x-locale-body,sans-serif;
 	
 }
-.alix_titlle_catalog{
+.titlle_catalog{
 	/*position:absolute;
 	top:175px;
 	left:2px;*/
 	margin-bottom: 0px !important; 
 	width:120px;
-	font-size:18px !important;
+	font-size:18;
 	color:#333;
 	font-weight:bold;
 	font-style: inherit;
@@ -519,7 +466,7 @@
 	
 }
 
-.alix_catalog_panel{
+.catalog_panel{
 	position: absolute;
     left: 3px;
     top: 180px;
@@ -533,24 +480,24 @@
 	box-shadow:5px 5px 5px rgba(0,0,0,.5);*/
 }
 
-.alix_shapeChoice{
+.shapeChoice{
 	 margin-left: 8px;
     margin-right: 15px;
 }
-.alix_configurationShape{
+.configurationShape{
 	 margin: 10px;
 }
-.alix_slider_Shape{
+.slider_Shape{
 	display: initial !important;
     width: 40% !important;
     height: 10px;
     display: initial;
 }
-.alix_min-value{
+.min-value{
     font-size: 16px;
     margin: 5px;	
 }
-.alix_max-value{
+.max-value{
     font-size: 16px;
     margin: 5px;	
 }
@@ -564,55 +511,55 @@
 .alix_acds{
 	color:#888a85 ;
 	display: none;
-	font-size:12px !important;
+	font-size:12 !important;
 	font-weight:100 !important;
-	line-height: 1 !important; 
+	line-height: 0em !important; 
 	font-family: Arial,x-locale-body,sans-serif;
 	
 }
 
-.alix_XMM_in_menu{
+.XMM_in_menu{
 	/*position:absolute;
 	line-height: 1;
 	left:5px;
 	top: 22px;*/
 	color:#888a85 ;
-	font-size:13px !important;
+	font-size:13 !important;
 	font-weight:600 !important;
 	line-height: 0em !important; 
 	font-family: Arial,x-locale-body,sans-serif;
 	
 }
-.alix_simbad_in_menu{
+.simbad_in_menu{
 	/*position:absolute;
 	top:45px;
 	left:5px;*/
 	color:#888a85 ;
-	font-size:13px !important;
+	font-size:13 !important;
 	font-weight:600 !important;
 	line-height: 1.5;
 	font-family: Arial,x-locale-body,sans-serif;
 }
-.alix_ned_in_menu{
+.ned_in_menu{
 	/*position:absolute;
 	top:45px;
 	left:75px;*/
 	color:#888a85 ;
-	font-size:13px !important;
+	font-size:13 !important;
 	font-weight:600 !important;
 	margin-left: 25px;
 	line-height: 1;
 	font-family: Arial,x-locale-body,sans-serif;
 }
-.alix_vizier{
+.vizier{
 	z-index:10;
 /*	position:absolute;
 	top:110px;
 	left:4px;*/
 	margin-top: 5px;
 	width:230px;
-	height:85px;
-    white-space: nowrap;
+	height:90px;
+ white-space: nowrap;
 	overflow-y:auto;
 	background-color:#ffffff;
 	border-color: #ccc;
@@ -622,20 +569,20 @@
 	/*box-shadow: 0 1px 6px 0 grey;*/
 }
 
-.alix_vizier ul{
+.vizier ul{
 	margin:0px;
 	padding:2px;
 }
-.alix_vizier_in_menu{
+.vizier_in_menu{
 
 	color:#888a85;
 	
 }
 
-.alix_vizier_chosen{
+.vizier_chosen{
 	width:100px;
 }
-.alix_menu_item{
+.menu_item{
 	display :none ;
 }
 
@@ -648,7 +595,7 @@
 	z-index:1;
 }
 
-.alix_liste_item{
+.liste_item{
 	background-image: url('./fleche_down.png');
 	background-position : 3% 50%;
 	background-repeat: no-repeat;
@@ -659,14 +606,14 @@
 	background-color : #ddf3ff;
 }
 
-.alix_title_in_liste{
+.title_in_liste{
 	color: #2e3436;
 	padding-left: 35px;
 	line-height: 25px;
 	font-size: small;
 }
 
-.alix_liste_item_close{
+.liste_item_close{
 	background-image: url('./fleche_up.png');
 	background-position : 3% 50%;
 	background-repeat: no-repeat;
@@ -676,7 +623,7 @@
 	background-color : #ddf3ff;
 }
 
-.alix_description_panel{
+.description_panel{
 	background-color:#f1fafa;
 	overflow:hidden;
 	display: none; 
@@ -685,7 +632,7 @@
 	padding: 10px;
 }
 
-.alix_hips_panel{
+.hips_panel{
 	background-color: rgb(242, 242, 242);
 	border-radius: 5px;
 	padding: 5px;
@@ -697,22 +644,8 @@
 	height: 385px;
 	z-index: 10000;
 }
-.alix_btn-primary {
-    color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;
-}
-.alix_btn-danger {
-    color: #fff;
-    background-color: #d9534f;
-    border-color: #d43f3a;
-}
-.alix_btn-warning {
-    color: #fff;
-    background-color: #f0ad4e;
-    border-color: #eea236;
-}
-.alix_btn-circle{
+
+.btn-circle{
 	width: 30px;
 	height: 30px;
 	text-align: center;
@@ -723,13 +656,13 @@
 	z-index:2;
 }
 
-.alix_btn-green{
+.btn-green{
 	color: #fff;
     background-color: #14ad14;
     border-color: #14ad14;
 }
 
-.alix_btn-edit{
+.btn-edit{
 	position:relative;
 	left:10px;
 	width: 25px;
@@ -742,7 +675,7 @@
 	z-index:10000;
 	vertical-align: top !important;
 }
-.alix_btn-in-edit{
+.btn-in-edit{
 	position:relative;
 	left:-13px;
 	width: 22px;
@@ -755,19 +688,19 @@
 	vertical-align: top !important;
 }
 
-.alix_btn-color-menu{
+.btn-color-menu{
 	color: #555753;
     background-color: #d3d7cf;
     border-color: #babdb6 !important;
 }
 
-.alix_btn-color-his{
+.btn-color-his{
 	color: #fff;
 	border: 0px !important;
     border-color: #adadad;
     background: linear-gradient(270deg,#005782,#1AB5FF) !important;;
 }
-.alix_text-commit{
+.text-commit{
 	position:absolute;
 	left:320px;
 	width:110px;
@@ -775,7 +708,7 @@
 	z-index:10000;
 }
 
-.alix_btn-text-ok{
+.bth-text-ok{
 	position:absolute;
 	left:436px;
 	width:20px;
@@ -785,13 +718,13 @@
     padding: 3px 0 !important;
 	z-index:100000;
 }
-.alix_btn-color-ok{
+.btn-color-ok{
 	color: #73d216;
     background-color: #d3d7cf;
     border-color: #babdb6;
     z-index:100000;
 }
-.alix_btn-text-remove{
+.bth-text-remove{
 	position:absolute;
 	left:460px;
 	width:20px;
@@ -802,14 +735,14 @@
 	z-index:100000;
 }
 
-.alix_btn-color-remove{
+.btn-color-remove{
 	color: #ff0000;
     background-color: #d3d7cf;
     border-color: #babdb6;
     z-index:100000;
 }
 
-.alix_btn-operate-catalog{
+.btn-operate-catalog{
 	width:20px;
 	height:20px;
 	/*text-shadow: 0.5px 0.5px 10px #6C6C6C;*/
@@ -817,7 +750,7 @@
 }
 
 
-.alix_btn-XMM-flash{
+.btn-XMM-flash{
 /*	position:absolute;
 	top:29px;
 	left:204px;*/
@@ -828,7 +761,7 @@
 
 }
 
-.alix_btn-XMM-description{
+.btn-XMM-description{
 	/*position:absolute;
 	top:29px;
 	left:180px;*/
@@ -842,7 +775,7 @@
 }
 
 
-.alix_edt_btn{
+.edt_btn{
 	position:absolute;
 	 top: 30px;
 	left:110px;
@@ -856,7 +789,7 @@
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_browse_btn{
+.browse_btn{
 	position:absolute;
 	 top: 30px;
 	left:220px;
@@ -871,7 +804,7 @@
 }
 
 
-.alix_clear_btn{
+.clear_btn{
 	position:absolute;
  top: 30px;
 	left:330px;
@@ -887,7 +820,7 @@
 
 
 
-.alix_accept_btn{
+.accept_btn{
 	position:absolute;
 	 top: 30px;
 	left:440px;
@@ -901,7 +834,7 @@
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_menu_commit_text_display{
+.menu_commit_text_display{
 	word-wrap: break-word;
  /*   position: relative;*/
     top: -25px;
@@ -912,7 +845,7 @@
 }
 
 
-.alix_tester{
+.tester{
 	background-color: #729fcf;
 	position:absolute;
 	left:8px;
@@ -922,11 +855,11 @@
 	display: none;
 }
 
-.alix_popup_XMM{
+.popup_XMM{
 	height:100px;
 }
 
-.alix_resource_around{
+.resource_around{
 	position:absolute;
 	left:10px;
 	top:50px;
@@ -934,7 +867,7 @@
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_label_init_btn{
+.label_init_btn{
 	position:absolute;
 	left:130px;
 	top:50px;
@@ -942,12 +875,12 @@
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_label_init_description{
+.label_init_description{
 	position:absolute;
 	top:125px;
 }
 
-.alix_plus{
+.plus{
 /*	position:absolute;
 	left:110px;
     top: 1px;*/
@@ -963,7 +896,7 @@
 }
 
 
-.alix_minus{
+.minus{
 	/*position:absolute;
 	left:90px;
     top: 0px;*/
@@ -988,25 +921,28 @@
     font-size: 14px;
     /*display:none;*/
 }
-#RegionCanvasTemp {
-     background: rgba(255,255,255,0.6); 
-}
 
-.alix_target_selecte{
-	position:relative;
+.target_selecte{
+	position:absolute;
+	top:31px;
+	left:120px;
 	color: #888a85;
-    font-size: 13px;
+    font-size: 15;
     line-height: 1;
     cursor: pointer;
 }
 
-.alix_select_flash{
-	position: relative;
+.select_flash{
+	position: absolute;
+    left: 199px;
+    top: 38px;
     color: rgb(135, 246, 255);
 }
 
-.alix_select_trash{
-	position: relative;
+.select_trash{
+	position: absolute;
+    left: 216px;
+    top: 38px;
     color: rgb(135, 246, 255);
 }
 

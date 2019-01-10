@@ -69,7 +69,7 @@ var displayCatalogFiltered = function(constraint){
 	//for constraint numeric _xs.
 	if(type=="num"){
 		if(comparator==">"){
-			if(parseFloat(source.data[element])>value){
+			if(parseFloat(source.data[element])>parseFloat(value)){
 				console.log("show");	
 				source.show();	
 				sourcesShown.push(source);
@@ -78,7 +78,7 @@ var displayCatalogFiltered = function(constraint){
 				source.hide();			
 			}
 		}else if(comparator=="="){
-			if(parseFloat(source.data[element])==value){
+			if(parseFloat(source.data[element])>=parseFloat(value)&&parseFloat(source.data[element])<(parseFloat(value)+1)){
 				console.log("show");	
 				source.show();
 				sourcesShown.push(source);
@@ -88,7 +88,7 @@ var displayCatalogFiltered = function(constraint){
 			}
 		
 		}else if(comparator=="<"){
-			if(parseFloat(source.data[element])< value){
+			if(parseFloat(source.data[element])< parseFloat(value)){
 				console.log("show");	
 				source.show();	
 				sourcesShown.push(source);

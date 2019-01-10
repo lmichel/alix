@@ -59,7 +59,7 @@ HipsSelector_mVc.prototype = {
 				itemList.html("<span class=strong style='color:#2e3436;style='font-size: 15px;'>" + jsondata.length + " matching Hips images</span>\n"
 				+ '<a href="#" onclick="$(&quot;#itemList&quot;).css(&quot;display&quot;, &quot;none&quot;);"'
 				+ 'style="top: 18px;float: right;" class="ui-dialog-titlebar-close ui-corner-all" role="button">'
-				+ '<span class="ui-icon ui-icon-closethick">close</span></a><br><br>');
+				+ '<span class="glyphicon glyphicon-remove"></span></a><br><br>');
 				for(var i=0 ; i<jsondata.length ; i++){
 					itemList.append("<div id = 'panel_"
 							+ jsondata[i].ID + "' class='alix_liste_item' ><bn class='alix_title_in_liste'>"
@@ -89,7 +89,7 @@ HipsSelector_mVc.prototype = {
 				itemList.html("<span class=strong style='font-size: 15px;'>" + jsondata.length + " matching Catalogues <b>*catalogue progressive</b></span>\n"
 				+ '<a href="#" onclick="$(&quot;#itemList&quot;).css(&quot;display&quot;, &quot;none&quot;);" '
 				+ 'style="top: 18px;float: right;" class="ui-dialog-titlebar-close ui-corner-all" role="button">'
-				+ '<span class="ui-icon ui-icon-closethick">close</span></a><br><br>');
+				+ '<span class="glyphicon glyphicon-remove"></span></a><br><br>');
 				for(var i=0 ; i<jsondata.length ; i++){
 					if(jsondata[i].hips_service_url == undefined){
 						itemList.append("<div id = 'catalog_"
@@ -253,7 +253,7 @@ HipsSelector_mVc.prototype = {
 				 $("#btn-Simbad-configure").css("color", "#888a85");
 				 $("#btn-Simbad-flash").css("color", "#888a85");
 				self.model.aladinLite_V.cleanCatalog(name);
-			//	if(LibraryCatalog.getCatalog(name))LibraryCatalog.delCatalog(name);
+				if(LibraryCatalog.getCatalog(name))LibraryCatalog.delCatalog(name);
 				AladinLiteX_mVc.closeContext();
 			}
 			//AladinLiteX_mVc.bindToFade();
@@ -285,7 +285,7 @@ HipsSelector_mVc.prototype = {
 				 $("#btn-NED-configure").css("color", "#888a85");
 				 $("#btn-NED-flash").css("color", "#888a85");
 				self.model.aladinLite_V.cleanCatalog(name);
-			//	if(LibraryCatalog.getCatalog(name))LibraryCatalog.delCatalog(name);
+				if(LibraryCatalog.getCatalog(name))LibraryCatalog.delCatalog(name);//delete the Ned in library
 				AladinLiteX_mVc.closeContext();
 			}
 			//AladinLiteX_mVc.bindToFade();
