@@ -77,7 +77,7 @@ var displayCatalogFiltered = function(constraint){
 				console.log("hide");
 				source.hide();			
 			}
-		}else if(comparator=="="){
+		}else if(comparator=="="){// if = 6.2 means 6<= x <7
 			if(parseFloat(source.data[element])>=parseFloat(value)&&parseFloat(source.data[element])<(parseFloat(value)+1)){
 				console.log("show");	
 				source.show();
@@ -152,7 +152,7 @@ var displayCatalogFiltered = function(constraint){
 	}
 	}
 	sources = sourcesShown;//Give the sources selected to the next constraint to select again _xs.
-	}
+  }
 	
    var retour =  {
 		   runConstraint : runConstraint

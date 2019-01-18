@@ -510,7 +510,7 @@ var AladinLiteX_mVc = function(){
 				contextDiv.css("border-width", "0px");
 				////$(".ui-dialog").animate({height:'0px'},"fast");
 			}
-			$.getJSON("licences/credit.json", function(jsondata) {
+			$.getJSON("http://saada.unistra.fr/alix/licences/credit.json", function(jsondata) {
 				contextDiv.html("<pre>" + JSON.stringify(jsondata, null, 2) + "</pre>");
 			});
 		});
@@ -811,6 +811,10 @@ var AladinLiteX_mVc = function(){
         displaySelectedHips(aladinLiteView.survey.ID)
         selectHipsDiv.val(aladinLiteView.survey.ID);
         if(aladinLiteView.region != null){
+        if(!regionEditorInit){
+        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
+        	controller.editRegion();
+    			}
         	var points = {type: null, value: []};
         	points.type = aladinLiteView.region.format;
         	points.value = aladinLiteView.region.points;
@@ -864,7 +868,10 @@ var AladinLiteX_mVc = function(){
 				ct.addSources([A.marker(ra, dec,  {popupTitle:'target'})]);
 			}
         }
-		
+		 aladin.view.imageSurvey.getColorMap().update(aladinLiteView.colorMap);
+		 if(aladinLiteView.reverseColor){
+    	 aladin.view.imageSurvey.getColorMap().reverse(); 
+		 }
     }
 	
 	/**
@@ -880,6 +887,8 @@ var AladinLiteX_mVc = function(){
 		aladinLiteView.fov = l[0];
 		aladinLiteView.img = aladin.getViewDataURL({width: 400, height: 400});
 		aladinLiteView.catalogTab = controller.currentCatalogTab(aladin.view.catalogs);
+		aladinLiteView.colorMap = aladin.view.imageSurvey.getColorMap().mapName;
+		aladinLiteView.reverseColor = aladin.view.imageSurvey.getColorMap().reversed;
 		var strlon = Numbers.toSexagesimal(aladinLiteView.ra/15, 8, false);
 		var strlat = Numbers.toSexagesimal(aladinLiteView.dec, 7, false);
 
@@ -897,7 +906,7 @@ var AladinLiteX_mVc = function(){
 	/**
 	 * click function 'region'
 	 */
-	regionEditorInit = false;//To judge if regioneditor is already initialled
+	var regionEditorInit = false;//To judge if regioneditor is already initialled
 	var regionEditor = function(){
 		//if(aladinLiteView.region != null){
 			//controller.cleanPolygon();
@@ -2061,7 +2070,9 @@ var AladinLiteX_mVc = function(){
 			contextDiv.css("max-height", "200px");
 			contextDiv.css("border-width", "0px");
 		}else{
-			var html = '<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;"><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
+			var html = '<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">'
+				+'<b>Color Map : </b>'
+				+'<select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
 			contextDiv.animate({height:'101px'},"fast");
 			contextDiv.css("max-height", "200px");
 			contextDiv.css("border-width", "0.2px");
@@ -2078,11 +2089,12 @@ var AladinLiteX_mVc = function(){
          cmDiv.find('.aladin-cmSelection').change(function() {
              var cmName = $(this).find(':selected').val();
              aladin.view.imageSurvey.getColorMap().update(cmName);
-         });
-         
+             storeCurrentState();
+         }); 
          // reverse color map
          cmDiv.find('.aladin-reverseCm').click(function() {
         	 aladin.view.imageSurvey.getColorMap().reverse(); 
+        	 storeCurrentState();
          });
 	}
 	

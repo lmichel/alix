@@ -37,6 +37,8 @@ function AladinLiteView  (){
 	this.target = [];
 	this.comment = null;
 	this.key = null;
+	this.colorMap = null;
+	this.reverseColor = null;
 }
 var objs = [];
 //create a aladinliteview for the bookmarks in localstorage
@@ -53,10 +55,14 @@ var setAladinLiteView = function(params,key) {
 		obj.img = params.img;
 		obj.XMM = params.XMM;
 		obj.catalogTab =params.catalogTab;
-		obj.masterResource = new MasterResource(params.masterResource);
+		obj.masterResource = new MasterResource(localConf.masterResource);//to not lose the external functions in the origin configuration
+		//obj.masterResource = new MasterResource(params.masterResource);
+		//obj.masterResource = localConf.masterResource;
 		obj.target = params.target;
 		obj.comment = params.comment;
 		obj.key = key;
+		obj.colorMap = params.colorMap;
+		obj.reverseColor = params.reverseColor;
 		objs[params.id] = obj;
 		
 		return obj;

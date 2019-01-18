@@ -64,7 +64,7 @@ RegionEditor_mVc.prototype = {
 			 * Be cautious: the canvas context must be taken before the canvas is appended to the parent div, otherwise the geometry is wrong. 
 			 */
 			var that = this;
-			if(!regionEditorInit){
+			if(!AladinLiteX_mVc.regionEditorInit){
 			this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
 			this.lineCanvas[0].width = this.parentDiv.width();
 			this.lineCanvas[0].height = this.parentDiv.height();
@@ -163,12 +163,16 @@ RegionEditor_mVc.prototype = {
 				browseSaved = true;
 				event.stopPropagation();
 			});
-			if(!regionEditorInit){
+			if(!AladinLiteX_mVc.regionEditorInit){
 			this.setInitialValue(self.defaultRegion);
 			if( this.editionFrame ){
 				this.setEditionFrame(this.editionFrame);
 				this.setEditMode();
 			}
+			AladinLiteX_mVc.regionEditorInit = true;
+			/**!!! To note the region editor has been initialized. 
+			 * Avoid it being initialized the second time, 
+			 *which make us can't edit the old polygon when we leave the regioneditor for a while .*/
 			}
 
 		},

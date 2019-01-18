@@ -21,7 +21,8 @@ f * @preserve LICENSE
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
  * IN THE SOFTWARE. 
 **/
-var confData = {
+
+var localConf = {
 		parentDivId: "aladin-lite-div",
 		defaultView: {
 			defaultSurvey: "DSS colored",
@@ -37,7 +38,7 @@ var confData = {
 			hipsSelector: { }
 		}
 }
-
+var externalConf;
 var mixConf = function(localData,externalData) {   
 	
 for(var key in externalData){
@@ -49,15 +50,13 @@ for(var key in externalData){
 return Object.assign(localData,externalData)
 }
 
-var configureALIX = function(masTest){
-	if(masTest){
-	confData = mixConf(confData,masTest);
+var configureALIX = function(externalData){
+	if(externalData){
+	externalConf = externalData;
+	localConf = mixConf(localConf,externalData);
 	}
-	AladinLiteX_mVc.init(confData);
-}
-
-
-
+	AladinLiteX_mVc.init(localConf);
+} /////!!!Cant't add () ,cause configureALIX is called later by external project, not by himself
 
 
 
