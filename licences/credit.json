@@ -3,7 +3,7 @@
 "funding": "Survey Science Consortium of the XMM-Newton mission (ESA)",
 "authors": ["Laurent Michel",  "Thomas Boch",  "Jie Wang", "Xinyu Shan"],
 "copyright": "(c) 2018 - CNRS - Université de Strasbourg",
-"github": "httpjjjjjj",
+"github": "https://github.com/lmichel/alix",
 "license": "MIT"
 
 }
