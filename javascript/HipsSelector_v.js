@@ -185,10 +185,10 @@ HipsSelector_mVc.prototype = {
 
 						$("#itemList").css("display", "none");
 						if(catadata.hips_service_url != undefined){
-							//cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, cataColor, 'showTable', catadata.hips_service_url)
+							cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, cataColor, 'showTable', catadata.hips_service_url)
 							//self.model.cata_created[obs_id] = cataInit;
 						}else{
-							//cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, cataColor, 'showTable');
+							cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, cataColor, 'showTable');
 							//self.model.cata_created[obs_id] = cataInit;
 						}
 					}else{

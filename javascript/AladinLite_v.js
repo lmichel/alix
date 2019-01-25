@@ -307,14 +307,11 @@ var AladinLiteX_mVc = function(){
 		vizierDiv = $('#' + vizierDivId);
 		parentDiv = $("#" + aladinDivId);
 
-
+		
 		setReferenceView(defaultView);
 		storeCurrentState();
 		
-		setDefaultSurvey();
 
-		
-		
 		aladin.on('positionChanged', function(newPosition){
 			if(newPosition.dragging==false){
 				storeCurrentState();
@@ -521,12 +518,12 @@ var AladinLiteX_mVc = function(){
 			masterResource.actions.externalProcessing.handlerInitial();
 		}
 	}
-	var setDefaultSurvey = function(){
+	var setDefaultSurvey = function(defaultView){
 		var lieu = aladin.getRaDec();
 		var fil =  aladin.getFov();
 
 		var baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
-			+ lieu[0] + "&DEC=" + lieu[1] 
+			+ '23' + "&DEC=" + '33' 
 		+ "&SR=" + fil[0] 
 		+ "&fmt=json&get=record&casesensitive=false";
 		var productType = "image";
@@ -808,7 +805,7 @@ var AladinLiteX_mVc = function(){
 		targetDiv.val(aladinLiteView.name);
 	    aladin.gotoRaDec(aladinLiteView.ra,aladinLiteView.dec);
         aladin.setFoV(aladinLiteView.fov);
-        displaySelectedHips(aladinLiteView.survey.ID)
+        displaySelectedHips(aladinLiteView.survey.ID);
         selectHipsDiv.val(aladinLiteView.survey.ID);
         if(aladinLiteView.region != null){
         if(!regionEditorInit){
@@ -833,9 +830,10 @@ var AladinLiteX_mVc = function(){
 	var restoreViewById = function(viewId) {
 		cleanCatalog("all");//clean all the catalogs in the aladin.view
 		var storedView = controller.restoreViewById(viewId);
+		//controller.buildHipsTab(storedView);
 		restoreView(storedView);
 		if(storedView.catalogTab != null){
-		   controller.buildCataTab(storedView);
+		   controller.buildCataTab(storedView);//This also includes restoreCatalog(storedView).
 		   //controller.restoreCatalog(storedView);
 			//give the data to cata_dict(catalog dictionary) for the bookmarks saved in localstorage and call the restorecatalog when cata_dict is built.  
 			
@@ -1603,11 +1601,7 @@ var AladinLiteX_mVc = function(){
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
 				catalog = A.catalogHiPS(url, {onClick: clickType,name: name,color: color,sourceSize:sourceSize ,shape: shape}, WaitingPanel.hide(name));
-				if(!LibraryCatalog.getCatalog(name)){
-				 LibraryCatalog.addCatalog({url:url, name: name ,color: color, shape :shape ,fade :"", al_refs: catalog});
-				} else{
-					 LibraryCatalog.updCatalog({url:url, name: name ,color: color, shape :shape ,fade :"", al_refs: catalog});
-			    };
+				
 		}else if(name == 'NED'){
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){
@@ -1626,11 +1620,11 @@ var AladinLiteX_mVc = function(){
 				, {onClick: clickType,name: name,color: color,sourceSize:sourceSize ,shape: shape}
 				, function() {WaitingPanel.hide(name)});
 			}
-			if(!LibraryCatalog.getCatalog(name)){
+		/*	if(!LibraryCatalog.getCatalog(name)){
 			LibraryCatalog.addCatalog({url:url, name: name,color: color, shape :shape ,fade : "", al_refs: catalog});
 			} else{
 			LibraryCatalog.updCatalog({url:url, name: name ,color: color, shape :shape ,fade :"", al_refs: catalog});
-		    };
+		    };*/
 		}else if(name == 'Swarm'){
 			aladinLiteView.masterResource.cleanTab();
 			cleanCatalog("Target");
@@ -1756,18 +1750,23 @@ var AladinLiteX_mVc = function(){
 			SwarmDynamicFilter.runConstraint();
 			//When the XMM sources is updated by changing the position or zoom, recall the filter
 			} /*WaitingPanel.hide()*/);
-			if(!LibraryCatalog.getCatalog(name)){
+			/*if(!LibraryCatalog.getCatalog(name)){
 				console.log("here is"+catalog);
 			LibraryCatalog.addCatalog({url:url, name: "Swarm",color: color, shape :shape,fade : "", al_refs: catalog});
 			
 		} else{
 			LibraryCatalog.updCatalog({url:url, name: "Swarm",color: color, shape :shape,fade : "", al_refs: catalog});
 			
-	    };//if name == SWARM
+	    };*///if name == SWARM
 		bindToFade();
 		}
-		aladin.addCatalog(catalog)
+		aladin.addCatalog(catalog);
 		cleanCatalog("oid");
+		if(!LibraryCatalog.getCatalog(name)){
+			 LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
+			} else{
+				 LibraryCatalog.updCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
+		    };
 	}
 	
 	var displayVizierCatalog = function(obs_id, color, clickType, hips_service_url){
@@ -1857,9 +1856,9 @@ var AladinLiteX_mVc = function(){
 		aladin.addCatalog(catalog);
 		if(!LibraryCatalog.getCatalog('VizieR:'+obs_id)){
 			
-		    LibraryCatalog.addCatalog({url:hips_service_url, name:'VizieR:'+obs_id ,obs_id :obs_id,color: color, shape :shape,fade : "", al_refs: catalog}) 
+		    LibraryCatalog.addCatalog({url:hips_service_url, name:'VizieR:'+obs_id,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id,color: color, shape :shape,fade : "", al_refs: catalog}) 
 		    }else{
-		    	 LibraryCatalog.updCatalog({url:hips_service_url, name:  'VizieR:'+obs_id ,obs_id :obs_id, color: color, shape :shape,fade : "", al_refs: catalog})
+		    	 LibraryCatalog.updCatalog({url:hips_service_url, name:  'VizieR:'+obs_id ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id, color: color, shape :shape,fade : "", al_refs: catalog})
 		    };
 				bindToFade();
 		for(var i=0;i<aladin.view.catalogs.length;i++){
@@ -2054,6 +2053,7 @@ var AladinLiteX_mVc = function(){
   					   var ra = data.Target.Resolver.jradeg;
   					   var dec = data.Target.Resolver.jdedeg;
   					  gotoPosition(ra,dec);
+  					  setDefaultSurvey();//when the defaut ra dec is set, set default survey and build hips tab.
                         // (typeof successCallback === 'function') && successCallback();
                  },
                  function(data) { // errror callback

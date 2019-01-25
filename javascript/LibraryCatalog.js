@@ -31,6 +31,7 @@ class LibraryCatalogItem {
 		    this.id =  params.id;
 			this.url = params.url;
 			this.name = params.name;
+			this.nameTemp = params.nameTemp;
 			this.color = params.color;
 			this.shape = params.shape;
 			this.size = params.size;
@@ -72,7 +73,7 @@ var LibraryCatalog  = function() {
 			catalogs[params.name].id = getUniqueID();
 			console.log("#####id>"+catalogs[params.name].id+"<catalog>"+params.name+"<saved successfully");
 			for(var name in catalogs){
-				console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name);
+				console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name+">>>>name temporary:"+catalogs[name].nameTemp);
 			}
 		};
 		
@@ -99,6 +100,7 @@ var LibraryCatalog  = function() {
 			if(params.fade)catalogs[name].fade=params.fade;
 			if(params.al_refs)catalogs[name].al_refs=params.al_refs;
 			if(params.obs_id)catalogs[name].obs_id=params.obs_id;
+			if(params.nameTemp)catalogs[name].nameTemp=params.nameTemp;
 			console.log("#####"+params.name+" updated successfully");
 			if(params.name == "Swarm"){
 				SwarmDynamicFilter.runConstraint();

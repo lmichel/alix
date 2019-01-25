@@ -355,6 +355,7 @@
 	/*position : absolute;
     left :186px;
     top: 25px;*/
+    float:left;
     padding-left:2px;
     width:45px;
 	height:25px;
@@ -393,6 +394,8 @@
 	/*position : absolute;
     left :3px;
     top: 25px;*/
+    
+    float:left;
     width: 88px;
 	height:25px;
 	padding: 2px;
@@ -412,6 +415,7 @@
 /*	position:absolute;
 	top: 25px;
 	left:91px;*/
+	float:left;
 	width:95px;
 	height:25px;
 	padding: 2px;
@@ -430,6 +434,7 @@
 	/*position : absolute;
     left :4px;
     top : 78px;*/
+
     margin-top: 8px;
     width: 150px;
 	height:25px;
@@ -451,6 +456,7 @@
 /*	position : absolute;
 	left :154px;
     top : 78px;*/
+    
     width: 80px;
 	height:25px;
 	padding: 2px;

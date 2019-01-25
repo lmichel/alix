@@ -105,7 +105,43 @@ HipsSelector_Mvc.prototype = {
 				self.hips_dict[jsondata[i].ID]= jsondata[i];
 			}
 		},
-		
+		buildHipsTab: function(aladinLiteView){
+			var that = this;
+			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
+				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false";
+			that.productType = "image";
+			var url = this.baseUrl;
+			$.getJSON(url, function(jsondata) {
+				if( that.productType != undefined ){
+					for(var i = jsondata.length - 1; i >= 0; i--) {
+						if(jsondata[i].dataproduct_type != that.productType ) {
+							jsondata.splice(i, 1);
+						}
+					}
+					if( that.productType == "image" ){
+						for(var i = jsondata.length - 1; i >= 0; i--) {
+							var keepIt = 0;
+								if(  $.isArray(jsondata[i].hips_tile_format)) {
+									for( var j=0 ; j<jsondata[i].hips_tile_format.length ; j++){
+										if( that.imageTilePattern.test(jsondata[i].hips_tile_format[j]) ){
+											keepIt = 1;
+											break;
+										}
+									}
+								} else if(  that.imageTilePattern.test(jsondata[i].hips_tile_format) ){
+									keepIt = 1;
+								}
+							if( keepIt == 0 ){
+								jsondata.splice(i, 1);
+							}
+						}
+					}
+				}
+				that.storeHips(jsondata);
+		});
+			
+		},
 		getSelectedHips: function(ID){
 			return this.hips_dict[ID];
 		},
@@ -139,7 +175,7 @@ HipsSelector_Mvc.prototype = {
 			});
 		},
 		//create the data_dict for the catalogs in the bookmarks and restore the catalogs in vizier_list
-		getDataFromUrl : function(aladinLiteView){
+		buildCataTab : function(aladinLiteView){
 			var that = this;
 
 			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
@@ -255,10 +291,16 @@ WHERE      tap_schema.columns.table_name = 'II/306/sdss8'
 
 			var self = this;
 			var tab = [];
+			//var hasNumber = /\d/;
 			//create list(tab) of catalog displayed in the current view
 			for(var i=0;i<catalogsDisplayed.length;i++){
 				var element = {catalog:null, color: null,obs_id: null};
-				element.catalog = catalogsDisplayed[i].name.split("_")[0];//for example,change the "Swarm_8" to "Swarm"
+				var nameTemp = catalogsDisplayed[i].name;
+				for(var name in LibraryCatalog.catalogs){
+					if(LibraryCatalog.catalogs[name].nameTemp == nameTemp){
+						element.catalog = LibraryCatalog.catalogs[name].name
+					}
+				}
 				element.color = catalogsDisplayed[i].color;
 				if(element.catalog.startsWith('VizieR') ){
 					//Seperate the obs_id from vizier name
@@ -279,7 +321,6 @@ WHERE      tap_schema.columns.table_name = 'II/306/sdss8'
 				element.color = self.view.libraryMap.getColorByCatalog(self.cata_tab[i]).color;
 				tab.push(element);
 			}*/
-
 			return tab;			
 		},
 		//For bookmark :  display the catalogs in current view and  display the names in vizier_list

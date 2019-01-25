@@ -110,6 +110,12 @@ AladinLite_mvC.prototype = {
 			else
 				return null;			
 		},
+		buildHipsTab: function(aladinLiteView){
+			if(this.modules.hipsSelectorModel != undefined)
+				return this.modules.hipsSelectorModel.buildHipsTab(aladinLiteView);
+			else
+				return null;
+		},
 		
 		getSelectedHips: function(ID){
 			if(this.modules.hipsSelectorModel != undefined)
@@ -127,7 +133,7 @@ AladinLite_mvC.prototype = {
 		
 		buildCataTab: function(aladinLiteView){
 			if(this.modules.hipsSelectorModel != undefined)
-				return this.modules.hipsSelectorModel.getDataFromUrl(aladinLiteView);
+				return this.modules.hipsSelectorModel.buildCataTab(aladinLiteView);
 			else
 				return null;
 		},
