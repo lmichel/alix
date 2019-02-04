@@ -25,6 +25,7 @@ var SwarmDynamicFilter = function(){
 	var ConstraintList = [];
 	var alixCat;
 	var sources;
+	var aladinLiteView;
 // add constraint in the list and apply the constraint list _xs.
 var addConstraint  = function(constraint){	
 	if(!ConstraintList[constraint.element]){
@@ -41,7 +42,8 @@ var delConstraint  = function(element){
 	}
 	runConstraint();
 }
-var runConstraint = function(){
+var runConstraint = function(ALV){
+	aladinLiteView = ALV;
 	alixCat = LibraryCatalog.getCatalog("Swarm");
 	sources = alixCat.al_refs.getSources();
 	if (ConstraintList.length == 0 ){

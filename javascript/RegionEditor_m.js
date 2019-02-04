@@ -27,7 +27,7 @@
  * 
  * Author Gerardo Irvin Campos yah
  */
-"use strict"
+
 function RegionEditor_Mvc(points, handler, canvas, canvaso, aladinView){
 
 	this.node = [];	
@@ -381,7 +381,7 @@ RegionEditor_Mvc.prototype = {
 								{
 									cx: x,
 									cy: y,
-									r: 5,	                            
+									r: 5	                            
 								}
 						);
 					}

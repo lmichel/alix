@@ -22,7 +22,6 @@
  * IN THE SOFTWARE. 
 **/
 
-"use strict"
 
 var Historique_mVc = function(model, contextDivId,aladinLite_V){
 	this.that = this;

@@ -21,7 +21,7 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
  * IN THE SOFTWARE. 
 **/
-"use strict"
+
 function AladinLite_mvC(aladinView, controllers){
 	this.modules = {};
 	this.aladinView = aladinView;

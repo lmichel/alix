@@ -296,31 +296,20 @@ WHERE      tap_schema.columns.table_name = 'II/306/sdss8'
 			for(var i=0;i<catalogsDisplayed.length;i++){
 				var element = {catalog:null, color: null,obs_id: null};
 				var nameTemp = catalogsDisplayed[i].name;
+				element.catalog = nameTemp;
+				element.color = catalogsDisplayed[i].color;
 				for(var name in LibraryCatalog.catalogs){
 					if(LibraryCatalog.catalogs[name].nameTemp == nameTemp){
-						element.catalog = LibraryCatalog.catalogs[name].name
+						element.catalog = LibraryCatalog.catalogs[name].name;
+						element.color = LibraryCatalog.catalogs[name].color;
 					}
 				}
-				element.color = catalogsDisplayed[i].color;
 				if(element.catalog.startsWith('VizieR') ){
 					//Seperate the obs_id from vizier name
 					element.obs_id = element.catalog.split(":")[1];
 				}
 				tab.push(element);
 			}
-			/*for(var name in LibraryCatalog.catalogs){
-			var element = {catalog:null, color: null};
-			element.catalog = LibraryCatalog.catalogs[name].name;
-			element.color = LibraryCatalog.catalogs[name].color;
-			element.obs_id = LibraryCatalog.catalogs[name].obs_id;
-			tab.push(element);
-		}*/
-		/*	for(var i=0;i<self.cata_tab.length;i++){
-				var element = {catalog:null, color: null};
-				element.catalog = self.cata_tab[i];
-				element.color = self.view.libraryMap.getColorByCatalog(self.cata_tab[i]).color;
-				tab.push(element);
-			}*/
 			return tab;			
 		},
 		//For bookmark :  display the catalogs in current view and  display the names in vizier_list

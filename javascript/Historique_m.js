@@ -21,7 +21,6 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
  * IN THE SOFTWARE. 
 **/
-"use strict"
 function Historique_Mvc(contextDivId, aladinLite_V){
 	this.that = this;
 	this.aladinLite_V = aladinLite_V;
@@ -39,7 +38,12 @@ Historique_Mvc.prototype = {
 			// we create a copy of the position object, as its attributes might be updated
 			var positionCopy = jQuery.extend(true, {}, position);
 			positionCopy.comment = "";
-			//var positionCopyClone = deepClone(positionCopy);//transform the function to string by deepClone, without this the functions can't be transported by stringify
+			if(positionCopy.target.length > 0){
+				for(var i = 0;i<positionCopy.target.length;i++){
+					positionCopy.target[i].ct = null//To save locally, we need to take off the ct reference because it's a circular structure
+				}
+			}
+		//	var positionCopyClone = deepClone(positionCopy);//transform the function to string by deepClone, without this the functions can't be transported by stringify
 			var positionCopyStr = JSON.stringify(positionCopy);
 			var date = 'alix:'+new Date();//as the unique key for each bookmark in localstorage
 			try{
@@ -121,7 +125,7 @@ Historique_Mvc.prototype = {
 				}
 			}
 			return i;
-		},
+		}
 		/*getKeyById : function(id){
 			var key = localStorage.key(id);
 			return key;
@@ -130,18 +134,18 @@ Historique_Mvc.prototype = {
 		
 }
 //deep clone an object who contains the object and transform the functions into string
-function  deepClone(data) {      
-	const type = judgeType(data);      
-	let obj;      
+var deepClone = function(data) { //avoid error : "Historique_m.js:42 Uncaught TypeError: Converting circular structure to JSON"
+	var type = judgeType(data);      
+	var obj;      
 	if (type === 'array') {
     obj = [];
   } else if (type === 'object') {
     obj = {};
   } else {    // No deeper clone
     return data;
-  }  
+  }  ;
  if (type === 'array') {        // eslint-disable-next-line
-    for (let i = 0, len = data.length; i < len; i++) {
+    for (var i = 0, len = data.length; i < len; i++) {
       obj.push(deepClone(data[i]));
     }
   } else if (type === 'object') {        // Copy the functions of prototype
@@ -153,15 +157,14 @@ function  deepClone(data) {
     		  obj[key] = deepClone(data[key]);
     	  }
     }
-  }      return obj;
-}
-function  judgeType(obj) {  
-  const toString = Object.prototype.toString;      const map = {        '[object Boolean]': 'boolean',        '[object Number]': 'number',        '[object String]': 'string',        '[object Function]': 'function',        '[object Array]': 'array',        '[object Date]': 'date',        '[object RegExp]': 'regExp',        '[object Undefined]': 'undefined',        '[object Null]': 'null',        '[object Object]': 'object',
+  } ;     return obj;
+};
+var judgeType = function(obj) {  
+  var toString = Object.prototype.toString;  
+  var map = {        '[object Boolean]': 'boolean',        '[object Number]': 'number',        '[object String]': 'string',        '[object Function]': 'function',        '[object Array]': 'array',        '[object Date]': 'date',        '[object RegExp]': 'regExp',        '[object Undefined]': 'undefined',        '[object Null]': 'null',        '[object Object]': 'object'
   };      if (obj instanceof Element) {        return 'element';
   }      return map[toString.call(obj)];
 }
-
-
 
 
 

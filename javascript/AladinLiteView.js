@@ -21,7 +21,7 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
  * IN THE SOFTWARE. 
 **/
-"use strict"
+
 function AladinLiteView  (){
 	this.name = null;
 	this.ra = null;
@@ -39,6 +39,10 @@ function AladinLiteView  (){
 	this.key = null;
 	this.colorMap = null;
 	this.reverseColor = null;
+	this.sourceSelected = {
+			x: null,
+			y: null
+	}
 }
 var objs = [];
 //create a aladinliteview for the bookmarks in localstorage
@@ -63,6 +67,7 @@ var setAladinLiteView = function(params,key) {
 		obj.key = key;
 		obj.colorMap = params.colorMap;
 		obj.reverseColor = params.reverseColor;
+		obj.sourceSelected = params.sourceSelected;
 		objs[params.id] = obj;
 		
 		return obj;

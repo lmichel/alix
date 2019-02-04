@@ -28,7 +28,7 @@ var localConf = {
 			defaultSurvey: "DSS colored",
 			field: {
 				position: "M33",
-				defaultFov: "0.5",
+				defaultFov: "0.5"
 			},
 			panelState: true
 		},

@@ -21,14 +21,13 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
  * IN THE SOFTWARE. 
 **/
-"use strict"
 
-class LibraryCatalogItem {
+
+var LibraryCatalogItem = function(params){
 	  /**
 	   * params JSON like {url, name,color, shape,fade; al_ref}
 	   */
-	  constructor(params) {
-		    this.id =  params.id;
+		    this.id = params.id;
 			this.url = params.url;
 			this.name = params.name;
 			this.nameTemp = params.nameTemp;
@@ -44,8 +43,7 @@ class LibraryCatalogItem {
 			 * reference to the AL object
 			 */
 			this.al_refs =  params.al_refs;
-	  }
-	}
+	};
 
 var LibraryCatalog  = function() {
 	    /**

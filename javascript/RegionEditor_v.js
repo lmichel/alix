@@ -27,7 +27,7 @@
  * 
  * Author Gerardo Irvin Campos yah
  */ 
-"use strict"
+
 function RegionEditor_mVc(aladinLite_V, parentDivId, contextDivId, handler,/* points,*/ defaultRegion){
 	this.parentDivId = parentDivId;
 	this.drawCanvas = null; // canvas where the polygon is drawn

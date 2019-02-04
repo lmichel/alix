@@ -201,11 +201,16 @@ var AladinLiteX_mVc = function(){
 			aladinLiteView.masterResource.actions.externalProcessing.handlerDeselect();
 			   // $(".CatalogMerged").css("display","none");
 		}
+		aladinLiteView.sourceSelected.x = null;
+		aladinLiteView.sourceSelected.y = null;
+    	$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp_selected");//to make the master resource can be reloaded
+
 	}
 	var deselectSource = function(){
 		deleteSourceAuto();//delete related source and fade in 
-    	sourceSelected.deselectAll();//make cds.source deselect the source
-    	$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp_selected");//to make the master resource can be reloaded
+		if(sourceSelected){
+			sourceSelected.deselectAll();//make cds.source deselect the source
+		}
 	}
 	var showDetailByID = function(){
 		checkBrowseSaved();
@@ -265,16 +270,16 @@ var AladinLiteX_mVc = function(){
 			    + hideXMMFlash()
 			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
 			    +'</div>'
+			    +'<div><p id="ACDS" class = "alix_acds" >'+ACDS+'  </p>'
 			    +'<div style = ""><p id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</p>'
 			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
 			    +'<i id="btn-Simbad-flash" title = "flash" class=" alix_menu_item glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
 			    +'<p id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</p>'
 			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
 			    +'<i id="btn-NED-flash" title = "flash" class=" alix_menu_item glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
-			    +'<div><p id="ACDS" class = "alix_acds" >'+ACDS+'  </p>'
-			    +'<p class="alix_target_selecte alix_unselected" style="display:none;">S&eacute;lections</p>'
-			    +'<i id="fal" title="flash" class="glyphicon glyphicon-flash alix_select_flash" style="cursor: pointer;display:none;"></i>'
-			    +'<i id="del" title="delete" class="glyphicon glyphicon-trash alix_select_trash" style="cursor: pointer;display:none;"></i><br></div<'
+			    //+'<p class="alix_target_selecte alix_unselected" style="display:none;">S&eacute;lections</p>'
+			    //+'<i id="fal" title="flash" class="glyphicon glyphicon-flash alix_select_flash" style="cursor: pointer;display:none;"></i>'
+			    //+'<i id="del" title="delete" class="glyphicon glyphicon-trash alix_select_trash" style="cursor: pointer;display:none;"></i><br></div<'
 			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class="alix_menu_item alix_cataloge_explorer "></input>'
 			    +'<select id="select_vizier" class="alix_selector_vizier alix_menu_item"></select>'
 			    +'<div id="vizier" class="alix_vizier">'
@@ -821,12 +826,6 @@ var AladinLiteX_mVc = function(){
         //event.stopPropagation();
     }	
 	
-	var restoreViewByIdTest = function(viewId){
-		for(var i=0;i<4;i++){
-			AladinLiteX_mVc.restoreViewById(viewId);
-		}
-	}
-	
 	var restoreViewById = function(viewId) {
 		cleanCatalog("all");//clean all the catalogs in the aladin.view
 		var storedView = controller.restoreViewById(viewId);
@@ -870,7 +869,61 @@ var AladinLiteX_mVc = function(){
 		 if(aladinLiteView.reverseColor){
     	 aladin.view.imageSurvey.getColorMap().reverse(); 
 		 }
+		 if(aladinLiteView.sourceSelected.x && aladinLiteView.sourceSelected.y){
+			 WaitingPanel.show("the selected source");
+	    	 var x = aladinLiteView.sourceSelected.x;
+	    	 var y = aladinLiteView.sourceSelected.y;
+	    	 setTimeout(function(){reselectSource(x,y); WaitingPanel.hide("the selected source")}, 2500);
+	    	 //Not well done. Wait 3 seconds for all sources displaying in the view and then reselect
+		}
     }
+	var reselectSource = function(x,y){
+		  var objs = aladin.view.closestObjects(x, y, 5);
+          if (objs) {
+              var o = objs[0];
+
+              // footprint selection code adapted from Fabrizzio Giordano dev. from Serco for ESA/ESDC
+              if (o instanceof Footprint || o instanceof Circle) {
+                  o.dispatchClickEvent();
+              }
+
+              // display marker
+              else if (o.marker) {
+                  // could be factorized in Source.actionClicked
+                  aladin.view.popup.setTitle(o.popupTitle);
+                  aladin.view.popup.setText(o.popupDesc);
+                  aladin.view.popup.setSource(o);
+                  aladin.view.popup.show();
+              }
+              // show measurements
+              else {
+                  if (aladin.view.lastClickedObject) {
+                      aladin.view.lastClickedObject.actionOtherObjectClicked && aladin.view.lastClickedObject.actionOtherObjectClicked();
+                  }
+                  o.actionClicked();
+              }
+              aladin.view.lastClickedObject = o;
+              var objClickedFunction = aladin.view.aladin.callbacksByEventName['objectClicked'];
+              (typeof objClickedFunction === 'function') && objClickedFunction(o);
+          }
+          else {
+              if (aladin.view.lastClickedObject) {
+                  aladin.view.aladin.measurementTable.hide();
+                  aladin.view.popup.hide();
+
+                  if (aladin.view.lastClickedObject instanceof Footprint) {
+                      //aladin.view.lastClickedObject.deselect();
+                  }
+                  else {
+                      aladin.view.lastClickedObject.actionOtherObjectClicked();
+                  }
+
+                  aladin.view.lastClickedObject = null;
+                  var objClickedFunction = aladin.view.aladin.callbacksByEventName['objectClicked'];
+                  (typeof objClickedFunction === 'function') && objClickedFunction(null);
+              }
+          }
+	}
 	
 	/**
 	 * stoker le 'aladinLiteView' courant
@@ -1641,7 +1694,9 @@ var AladinLiteX_mVc = function(){
 				/*
 				 * function click for the source in catalog XMM
 				 */
-				sourceSelected = this;//save the reference of selected source as an global var in order toallow us deselect it easilier in the deselectSource();
+				sourceSelected = this;//save the reference of selected source as an global var in order to allow us deselect it easilier in the deselectSource();
+				aladinLiteView.sourceSelected.x = params.x;
+				aladinLiteView.sourceSelected.y = params.y;
 				var data = params.data;
 				console.log(params);
 				var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
@@ -1678,7 +1733,7 @@ var AladinLiteX_mVc = function(){
 					aladin.addCatalog(ct);
 					//Take off the circle on the catalog alix_selected
 					//ct.addSources([A.marker(data.pos_ra_csa, data.pos_dec_csa,  {popupTitle:'oid: '+data.oidsaada})]);
-
+					//aladinLiteView.target.push({ra:data.pos_ra_csa, dec:data.pos_dec_csa, ct:ct});
 					/*
 					 * draw oid and url corresponded in context panel
 					 */
@@ -1746,8 +1801,9 @@ var AladinLiteX_mVc = function(){
 			return true;
 			}
 			}
-			, function() {WaitingPanel.hide("Swarm");
-			SwarmDynamicFilter.runConstraint();
+			, function() {
+			SwarmDynamicFilter.runConstraint(aladinLiteView);
+			WaitingPanel.hide("Swarm");
 			//When the XMM sources is updated by changing the position or zoom, recall the filter
 			} /*WaitingPanel.hide()*/);
 			/*if(!LibraryCatalog.getCatalog(name)){
@@ -2126,7 +2182,6 @@ var AladinLiteX_mVc = function(){
 			storePolygon : storePolygon,
 			deleteHistory : deleteHistory,
 			restoreViewById :restoreViewById,
-			restoreViewByIdTest : restoreViewByIdTest,
 			//searchHips :searchHips,
 			//displaySelectedHips : displaySelectedHips,
 			//createImageSurvey : createImageSurvey,
@@ -2166,7 +2221,8 @@ var AladinLiteX_mVc = function(){
 			updateColorOfCatalog :updateColorOfCatalog,
 			updateShapeOfCatalog :updateShapeOfCatalog,
 			updateSizeOfCatalog :updateSizeOfCatalog,
-			showColorMap : showColorMap
+			showColorMap : showColorMap,
+			reselectSource : reselectSource
 	};
 	return retour
 	

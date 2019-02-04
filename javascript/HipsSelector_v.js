@@ -269,7 +269,7 @@ HipsSelector_mVc.prototype = {
 			}
 			var clickType = 'showTable';
 			if(cmdNode.attr("class") == "alix_ned_in_menu alix_menu_item alix_datahelp" ){
-				if(aladinLiteView.fov>=1){
+				if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.affichage.progressiveMode == false){
 					WaitingPanel.warnFov();
 				}else{
 					WaitingPanel.show(name);
@@ -444,7 +444,7 @@ HipsSelector_mVc.prototype = {
 			if($(document.getElementById("XMM")).attr("class") == "alix_XMM_in_menu alix_menu_item alix_datahelp_selected"){
 				self.model.aladinLite_V.storeCurrentState();
 				if(state == 'zoom'){
-					if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false ){
+					if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false && aladinLiteView.masterResource.affichage.progressiveMode == false){
 						WaitingPanel.warnFov();
 					}else{
 						self.model.aladinLite_V.cleanCatalog('Swarm');
@@ -452,7 +452,7 @@ HipsSelector_mVc.prototype = {
 						self.model.aladinLite_V.displayCatalog('Swarm', 'red', 'handler', url);
 					}
 				}else if(state == 'position'){
-					if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false ){
+					if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false && aladinLiteView.masterResource.affichage.progressiveMode == false){
 						WaitingPanel.warnFov();
 					}
 					self.model.aladinLite_V.cleanCatalog('Swarm');
@@ -466,7 +466,7 @@ HipsSelector_mVc.prototype = {
 				var color= this.libraryMap.colorMap[name].color;
 				var clickType = 'showTable';
 				self.model.aladinLite_V.cleanCatalog(name);
-					if(aladinLiteView.fov>=1){
+					if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.affichage.progressiveMode == false){
 						WaitingPanel.warnFov();
 					}else{
 						WaitingPanel.show(name);

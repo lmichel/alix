@@ -29,7 +29,7 @@
  * 
  * Author:  laurent.michel@astro.unistra.fr
  */
-"use strict"
+
 var BasicGeometry = function () {
     /**
      * Nodes are 2 arrays with 2 elements

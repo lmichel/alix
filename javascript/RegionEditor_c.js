@@ -33,7 +33,7 @@
  * @author michel
  *
  */
-"use strict"
+
 function  RegionEditor_mvC(params){
 
 	this.polygonModel =  new RegionEditor_Mvc(params.points, params.handler, params.canvas, params.canvaso, params.aladinView);

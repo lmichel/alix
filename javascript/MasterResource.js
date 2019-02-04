@@ -71,18 +71,22 @@ MasterResource.prototype = {
 			}else{
 				times = 1;
 			}
-			if(!this.filtered && aladinLiteView.fov>1){
-				fov = 1;
-				WaitingPanel.warnFov();
-			}else{
-				fov = aladinLiteView.fov
-			}
 			var size = parseInt(1000*fov*times)/1000 + 1
 			var hloan = aladinLiteView.ra/15.0;
 			var strlon = Numbers.toSexagesimal(hloan, 8, false);
 			var strlat = Numbers.toSexagesimal(aladinLiteView.dec, 7, false);
 			var affichage = aladinLiteView.masterResource.affichage;
 			var location = affichage.location;
+			if(!this.filtered && aladinLiteView.fov>1){
+				if(affichage.progressiveMode == true){
+					fov = aladinLiteView.fov
+				}else{
+					fov = 1;
+					WaitingPanel.warnFov();	
+				}
+			}else{
+				fov = aladinLiteView.fov
+			}
 			console.log(aladinLiteView.fov + " size = "  + size + " " + strlon + " " + strlat);
 			//size = 1;
 			size = fov*times;
@@ -91,7 +95,7 @@ MasterResource.prototype = {
 			if(base.includes('{$query}')){
 				var query = location.url_query;
 				var progressiveLimit = "";
-				if(affichage.progressiveMode == true &&  affichage.progressiveLimit != undefined){
+				if(affichage.progressiveMode == true &&  affichage.location.url_limit != undefined){
 					progressiveLimit = affichage.location.url_limit;
 				}
 				query = query.replace(/\{\$limitQuery\}/g,progressiveLimit);

@@ -29,7 +29,7 @@
  * 
  * This class is a JS singleton.
  */
-"use strict"
+
 var resourceLoader = function() {
 	if( productionMode ) return;
 	/*
