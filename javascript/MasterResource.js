@@ -108,8 +108,6 @@ MasterResource.prototype = {
 				url = url.replace(/\(\$ra\)/g,'%22'+aladinLiteView.ra);
 				url = url.replace(/\(\$dec\)/g,aladinLiteView.dec+'%22');
 				url = url.replace(/\(\$fov\)/g,size);
-				console.log("######queryMode for XMM sources");
-				console.log("######queryEncoded>"+queryEncoded);
 			}else{
 				url = this.url.replace(/\{\$ra\}/g,aladinLiteView.ra);
 				url = url.replace(/\{\$dec\}/g,aladinLiteView.dec);

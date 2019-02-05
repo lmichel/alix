@@ -56,7 +56,6 @@ Historique_mVc.prototype = {
 				var ItemFinal = setAladinLiteView(Item,key);
 				if(ItemFinal.survey!= undefined){
 					//localStorage.setItem(key,Item);
-					console.log("//"+ItemFinal.survey.obs_title);
 				//var obs_title = Item.survey.obs_title;
 					
 				//version1//html += "<li style='list-style-type: none;padding-top:5px;'>"+Item.getHTMLTitle(k,Item)+ "</li>";

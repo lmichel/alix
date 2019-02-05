@@ -161,7 +161,6 @@ HipsSelector_mVc.prototype = {
 			 * draw the list of cata in panel 
 			 */
 			var id = LibraryCatalog.getCatalog(cata_name).id;
-			console.log(">>>>>>>>>id:"+id);
 			$("#vizier_list").append('<li id="cata_list_'+ id +'" class = "'+obs_id+'"style="list-style-type: none;height:auto;">'
 						+'<div id="cata_operate_'+ id +'" title="Show/hide Vizier sources" class="alix_vizier_chosen alix_menu_item" style="display:inline; cursor: pointer;color:'+color+';" >' + cata_dict[obs_id].obs_id + '</div>&nbsp;'
 						+'<i id="btn_detail_catalog_'+ id +'" title="detail" class="glyphicon glyphicon-info-sign alix_btn-operate-catalog" style="color:'+color+';cursor: pointer;" onclick="AladinLiteX_mVc.detailCatalogOperator('+ id +')"></i>&nbsp;'
@@ -200,14 +199,12 @@ HipsSelector_mVc.prototype = {
 			// delete the catalog in the current view and library catalog and free the color in library map
 			$('#vizier').on('click','#btn_delete_catalog_'+id,function(event){
 				event.stopPropagation();
-				console.log("!!!!!!!!!!deleteonetime"+this.parentNode.className);
 				
 				//var obs_id =$("#cata_operate_"+ x).text();
 				var obs_id = this.parentNode.className;
 				var cata_name = 'VizieR:'+obs_id;
 				//var cataColor = LibraryCatalog.getCatalog(cata_name).color;
 				//var catadata = cata_dict[obs_id];
-				console.log("delete"+obs_id);
 			    self.model.aladinLite_V.cleanCatalog(cata_name);
 			    self.libraryMap.freeColor(obs_id);
 				LibraryCatalog.delCatalog(cata_name);
@@ -236,7 +233,6 @@ HipsSelector_mVc.prototype = {
 			var color= this.libraryMap.colorMap[name].color;
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
-				console.log("Simbadshowcolor"+color);
 			}
 			var url = 'http://axel.u-strasbg.fr/HiPSCatService/Simbad';
 			var clickType = 'showTable';
@@ -307,8 +303,6 @@ HipsSelector_mVc.prototype = {
 		 */
 		//redraw vizier list when a bookmark in the history is selected and replayed
 		redrawCatalogSelector: function(aladinLiteView,cata_dict){
-			//console.log(aladinLiteView.catalogTab)
-			console.log("redrawCatalogSelector!!!!!!!!!")
 			var self = this;
 			var html='';
 			//if(map.length != 0){	
@@ -362,14 +356,12 @@ HipsSelector_mVc.prototype = {
 						//add handlers for each catalog in the vizier list
 					$('#vizier').on('click','#btn_delete_catalog_'+id,function(event){
 						event.stopPropagation();
-						console.log("!!!!!!!!!!deleteonetime"+this.parentNode.className);
 						
 						//var obs_id =$("#cata_operate_"+ x).text();
 						var obs_id = this.parentNode.className;
 						var cata_name = 'VizieR:'+obs_id;
 						//var cataColor = LibraryCatalog.getCatalog(cata_name).color;
 						//var catadata = cata_dict[obs_id];
-						console.log("delete"+obs_id);
 					    self.model.aladinLite_V.cleanCatalog(cata_name);
 					    self.libraryMap.freeColor(obs_id);
 						LibraryCatalog.delCatalog(cata_name);
@@ -411,7 +403,6 @@ HipsSelector_mVc.prototype = {
 //				}else{
 					WaitingPanel.show(name);
 					cmdNode.attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp_selected");
-					console.log("displaydataxml");
 					cmdNode.css("color", color);
 					$("#btn-XMM-description").css("color" , color);
 					$("#btn-XMM-flash").css("color" ,color);

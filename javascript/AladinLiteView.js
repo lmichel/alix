@@ -86,7 +86,6 @@ AladinLiteView.prototype = {
 		 * création de la vue de liste, si region existe, la liste affiche le logo R
 		 */
 	getHTMLTitle: function() {
-	//	console.log("!!!!!!getHTMLTitle run"+this);
 		return '<div  title="replay the stored view" id="' + this.id + '" style="height:auto;"><img id="' + this.id + '_snapShot_img" src="' 
 			+ this.img
 			//+ '" onclick="AladinLiteX_mVc.restoreViewByIdTest(&quot;' + this.id + '&quot;);" '
@@ -144,7 +143,6 @@ AladinLiteView.prototype = {
 		/*
 		 * operation on button edit and his son buttons
 		 */
-		console.log("setHandlers run");
 		var self = this;
 		var statue = false;
 		/*
@@ -208,7 +206,6 @@ AladinLiteView.prototype = {
 		/*var hide = this.id;
 		
 		$("body").click(function(event){
-			console.log("test");
 			$("#"+hide+"_menu_commit_text").css("display", "none");
 			$("#"+hide+"_commit_confirm").css("display", "none");
 			$("#"+hide+"_commit_delete").css("display", "none");
@@ -220,7 +217,6 @@ AladinLiteView.prototype = {
 			$("#"+this.id+"_text_confirm").css("display", "inline");
 			
 			$("#"+this.id+"_text_delete").css("display", "inline");
-			console.log(self.comment);
 			//$("#"+this.id+"_text").html(self.comment);
 		});
 		

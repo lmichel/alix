@@ -206,7 +206,6 @@ HipsSelector_Mvc.prototype = {
 			for(var i=0 ; i<jsondata.length ; i++){
 				self.cata_dict[jsondata[i].obs_id]= jsondata[i];
 			}
-			console.log(">>>>>>>>>>>>>>>>>getDataFromUrl"+self.cata_dict);
 		},
 		
 		builTapQuery : function(obs_id){
@@ -216,7 +215,6 @@ FROM tap_schema.columns
 JOIN tap_schema.tables ON tap_schema.columns.table_name = tap_schema.tables.table_name
 WHERE      tap_schema.columns.table_name = 'II/306/sdss8' 
 			 */
-			console.log(obs_id)
 			var query = this.tapSchemaQuery.replace('{$CATID}', obs_id);
 			console.log(query);
 		    $.ajax({

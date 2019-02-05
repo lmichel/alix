@@ -383,7 +383,6 @@ var AladinLiteX_mVc = function(){
 			event.stopPropagation();
 		});
 		selectDiv.change(function(){
-			console.log("selectdiv&&&&&&&");
 			searchPosition($(this).val());
 		});
 		maskDiv.click(function(event){
@@ -402,7 +401,6 @@ var AladinLiteX_mVc = function(){
 		});
 		
 		$("#select_vizier").change(function(){
-			console.log($(this).val()+"<<<<<add again");
 			var oid = $(this).val();
 			catalogFunction(oid);
 		});
@@ -519,7 +517,6 @@ var AladinLiteX_mVc = function(){
    
 		/////Filter the sources /////////////////////////
 		if(masterResource != undefined&&masterResource.actions.externalProcessing.handlerInitial){
-			console.log("handlerInitial");
 			masterResource.actions.externalProcessing.handlerInitial();
 		}
 	}
@@ -752,7 +749,6 @@ var AladinLiteX_mVc = function(){
 			height_ul = $("#history_ul").height() + 80;
 			
 		}
-		console.log(height_ul);
 		aladinLiteView.XMM = false;
 		for( var c=0 ; c<aladin.view.catalogs.length ; c++) {
 			if( aladin.view.catalogs[c].name.startsWith("Swarm")) {
@@ -778,7 +774,6 @@ var AladinLiteX_mVc = function(){
 		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		controller.getHistory();
-		console.log("hello"+$("#history_ul").height());
 		if(contextDiv.height() < 10 /*&& $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected"*/){
 			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
 			contextDiv.css("border-width", "0.2px");
@@ -966,7 +961,6 @@ var AladinLiteX_mVc = function(){
 		contextDiv.css("max-height", "200px");
 		storeCurrentState();
 		contextDiv.html("");
-		//console.log(">>>>>"+contextDiv.height() + " " + regionSelected);
 		if(contextDiv.height() < 10){
 			// open the region  editor
 			//if(!regionEditorInit){
@@ -1104,7 +1098,6 @@ var AladinLiteX_mVc = function(){
 	var catalogFunction = function(obs_id){
 	//	if(controller.modules.hipsSelectorModel.cata_tab.indexOf(obs_id)<0){
 		if(!LibraryCatalog.getCatalog("VizieR:"+obs_id)){
-			console.log("catalogfunction"+obs_id);
 		//	controller.storeCurrentCatalog(obs_id);
 			controller.createCatalogSelect(obs_id);
 			addCatalogInSelector(obs_id);
@@ -1256,7 +1249,6 @@ var AladinLiteX_mVc = function(){
 	}
 	// display the  especial detail site for each catalog . buttuon 'i' .
 	var displayCatalogDetailInContext = function(obs_id,color){
-		console.log("displayCatalogDetailInContext");
 		if(contextDiv.height() > 100 ){
 			contextDiv.animate({height:'0px'},"fast");
 			contextDiv.css("max-height", "200px");
@@ -1267,8 +1259,6 @@ var AladinLiteX_mVc = function(){
 			var index = obs_id.split("/");
 			index.pop();
 			index=index.join("/");
-			console.log("obs_id="+obs_id);
-			console.log("index="+index);
 			var length=index.length-1;
 			if(cata != undefined){
 			var html ='<iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=400 src="http://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+index+'/?format=html&tex=true" frameborder="0"'
@@ -1295,7 +1285,6 @@ var AladinLiteX_mVc = function(){
 	
 	//catalog = A.catalogHiPS(url, {onClick: clickType,name: name,color: color}, WaitingPanel.hide(name))
 	var configureCatalog = function(i,c){
-		console.log("obs_id="+i);
 		var i = i;
 		var obs_id;
 		var obs_id_use;
@@ -1303,7 +1292,6 @@ var AladinLiteX_mVc = function(){
 		var cata;
 		var colorRgb;
 		if(i=="XMM"){
-			console.log("XMMplay");
 			if(LibraryCatalog.getCatalog("Swarm")){
 			cata = LibraryCatalog.getCatalog("Swarm").al_refs;}//else{alert("Please choose a catalog")};
 			obs_id_use= i;
@@ -1313,8 +1301,6 @@ var AladinLiteX_mVc = function(){
 				colorRgb=c;
 			};
 		}else if(i=="Simbad"||i=="NED"){
-			console.log("SNplay");
-			console.log("NEDcolor"+c);
 			if(LibraryCatalog.getCatalog(i)){
 			cata = LibraryCatalog.getCatalog(i).al_refs;}//else{alert("Please choose a catalog")};
 			obs_id_use= i;
@@ -1326,7 +1312,6 @@ var AladinLiteX_mVc = function(){
 				colorRgb=c;
 			};
 		}else{
-			console.log("Vizierplay");
 			 obs_id_use=$("#cata_operate_"+ i).text();
 			 obs_id=$("#cata_operate_"+ i).text();
 			 cata= LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs;
@@ -1502,7 +1487,6 @@ var AladinLiteX_mVc = function(){
 		checkBrowseSaved();
 		var p_text=$("#cata_operate_"+ i).text();
 		var p_color= document.getElementById("cata_operate_"+ i).style.color;
-		console.log("gggg"+p_color);
 		displayCatalogDetailInContext(p_text,p_color);
 	}
 	
@@ -1558,43 +1542,6 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	
-	/*var displayCatalogFiltered = function(champ,limit,range){
-		alixCat = LibraryCatalog.getCatalog("Swarm");
-		var sources = alixCat.al_refs.getSources();
-		console.log("testalixcat"+alixCat);
-		for(var i=0;i<sources.length;i++){
-			source =sources[i];
-			console.log(source.data[champ]);
-		if(range==">"){
-			if(parseFloat(source.data[champ])>limit){
-				console.log("show");	
-				source.show();		
-			}else{
-				console.log("hide");
-				source.hide();			
-			}
-		}else if(range=="="){
-			if(parseFloat(source.data[champ])==limit){
-				console.log("show");	
-				source.show();		
-			}else{
-				console.log("hide");
-				source.hide();			
-			}
-		
-		}else if(range=="<"){
-			if(parseFloat(source.data[champ])< limit){
-				console.log("show");	
-				source.show();		
-			}else{
-				console.log("hide");
-				source.hide();			
-			}
-		}else if(range== null){
-			source.show();
-		}
-		}
-	}*/
 	
 	var bindToFade = function(){
 		var currentColor=null; //XMM
@@ -1603,7 +1550,6 @@ var AladinLiteX_mVc = function(){
 		var color;
 
 		$("#minus").unbind("click").click(function(e){
-			    console.log("minus");
 			    for(var name in LibraryCatalog.catalogs){
 					if(name.startsWith('Swarm'))name = 'Swarm';
 					if(name.startsWith('Simbad'))name = 'Simbad';
@@ -1621,7 +1567,6 @@ var AladinLiteX_mVc = function(){
 					}
 			});
 		$("#plus").unbind("click").click(function(e){
-			    console.log("plus");
 			    for(var name in LibraryCatalog.catalogs){
 			    	var catalog = LibraryCatalog.catalogs[name];
 					if(name.startsWith('Swarm'))name = 'Swarm';
@@ -1698,7 +1643,6 @@ var AladinLiteX_mVc = function(){
 				aladinLiteView.sourceSelected.x = params.x;
 				aladinLiteView.sourceSelected.y = params.y;
 				var data = params.data;
-				console.log(params);
 				var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
 				console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
 				if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
@@ -1716,7 +1660,6 @@ var AladinLiteX_mVc = function(){
 					openContextPanel(html);
 					$(".dataTable").css("display","table");
 				}else{
-					console.log("none");
 					$(".dataTable").css("display","none");
 				};
 				
@@ -1807,7 +1750,6 @@ var AladinLiteX_mVc = function(){
 			//When the XMM sources is updated by changing the position or zoom, recall the filter
 			} /*WaitingPanel.hide()*/);
 			/*if(!LibraryCatalog.getCatalog(name)){
-				console.log("here is"+catalog);
 			LibraryCatalog.addCatalog({url:url, name: "Swarm",color: color, shape :shape,fade : "", al_refs: catalog});
 			
 		} else{
@@ -1973,7 +1915,6 @@ var AladinLiteX_mVc = function(){
 	}
 
 	var colorFadeOut = function(str_color){
-		console.log("fadeout"+str_color);
 		var str_nb = str_color.replace(/\#/g,"");
 		var tab_rgb_str = str_nb.match(/.{2}/g);
 		
@@ -2000,7 +1941,6 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	var colorFadeIn = function(str_color, org_color){
-		console.log("fadein"+str_color);
 		var str_nb = str_color.replace(/\#/g,"");
 		var tab_rgb_str = str_nb.match(/.{2}/g);
 		

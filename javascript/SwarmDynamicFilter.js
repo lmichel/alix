@@ -67,35 +67,28 @@ var displayCatalogFiltered = function(constraint){
 	
 	for(var i=0;i<sources.length;i++){
 		source =sources[i];
-		console.log(source.data[element]);
 	//for constraint numeric _xs.
 	if(type=="num"){
 		if(comparator==">"){
 			if(parseFloat(source.data[element])>parseFloat(value)){
-				console.log("show");	
 				source.show();	
 				sourcesShown.push(source);
 			}else{
-				console.log("hide");
 				source.hide();			
 			}
 		}else if(comparator=="="){// if = 6.2 means 6<= x <7
 			if(parseFloat(source.data[element])>=parseFloat(value)&&parseFloat(source.data[element])<(parseFloat(value)+1)){
-				console.log("show");	
 				source.show();
 				sourcesShown.push(source);
 			}else{
-				console.log("hide");
 				source.hide();			
 			}
 		
 		}else if(comparator=="<"){
 			if(parseFloat(source.data[element])< parseFloat(value)){
-				console.log("show");	
 				source.show();	
 				sourcesShown.push(source);
 			}else{
-				console.log("hide");
 				source.hide();			
 			}
 		}
@@ -103,48 +96,48 @@ var displayCatalogFiltered = function(constraint){
 	}else if(type=="boolean"){
 	//for constraint boolean _xs.
 			if(source.data[element]==value){
-				console.log("show");	
+	
 				source.show();	
 				sourcesShown.push(source);
 				}else{
-					console.log("hide");
+	
 					source.hide();			
 				}
 	}else if(type=="String"){
 		//for constraint String _xs.	
 		if(comparator=="LIKE"){
 			if(source.data[element].startsWith(value)){
-				console.log("show");	
+	
 				source.show();	
 				sourcesShown.push(source);
 				}else{
-					console.log("hide");
+	
 					source.hide();			
 				}
 		}else if(comparator=="NOT LIKE"){
 			if(source.data[element].startsWith(value)){
-					console.log("hide");
+	
 					source.hide();	
 				}else{
-					console.log("show");	
+		
 					source.show();	
 					sourcesShown.push(source);		
 				}
 		}else if(comparator=="IS NULL"){
 			if(source.data[element]==null){
-				console.log("show");	
+	
 				source.show();	
 				sourcesShown.push(source);
 				}else{
-					console.log("hide");
+	
 					source.hide();			
 				}
 		}else if(comparator=="IS NOT NULL"){
 			if(source.data[element]==null){
-				console.log("hide");
+
 				source.hide();	
 			}else{
-				console.log("show");	
+	
 				source.show();	
 				sourcesShown.push(source);		
 			}

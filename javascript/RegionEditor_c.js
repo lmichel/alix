@@ -88,8 +88,6 @@ RegionEditor_mvC.prototype = {
 			//comenzar el this.drag del nodo		
 			else if(this.closed == true && (clickedNode = this.polygonModel.getNode(x,y)) != -1)
 			{
-				//console.log('start this.drag');
-				//console.log('clickedNode: ' + clickedNode);
 				this.result = this.polygonModel.getSegment(clickedNode);
 				this.stokeNode = this.polygonModel.stokeNode(clickedNode);
 				this.startdrag = true;		
@@ -158,7 +156,6 @@ RegionEditor_mvC.prototype = {
 			//pregunta si el nodo fue presionado y si es un nodo
 			if(this.buttondown == true  && this.startingNode != -1 )
 			{
-				//console.log ('this.drag');
 				//console.log ('this.startingNode' + this.startingNode);
 				this.movestart = true;
 				this.polygonModel.drawHashline(this.startingNode,x,y,this.result);		
