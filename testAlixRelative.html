@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>AladinLiteX</title>
+		<meta charset="utf-8" />
+	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
+		<script>var useDebugResources = true; var productionMode=false;</script>
+		<script type="text/javascript" src="javascript/loader.js"></script>	
+		<script type="text/javascript" src="javascript/packedLoader.js"></script>	
+		<script>
+		
+		  if( productionMode ) {
+		    	useDebugResources = false;
+		        packedResourceLoader.setCss([         
+		        	"styles/packedCSS/style_bundle.css"
+		        	,"aladinLite/aladin.css"
+		   		 ,"styles/aladinliteX2.css" 
+		        ]);
+		        packedResourceLoader.setScripts([  
+		        	"aladinLite/aladin.js"
+		        	,"packager/lmpack/alix_packed/packedJSlocal.js"
+		        	,"packager/lmpack/alix_packed/packedJSimport.js"
+		        	,"demo/js/alixindexReady.js"
+		          ]);
+		        packedResourceLoader.loadAll();
+		    } else {
+
+		     var useDebugResources = true;
+		     resourceLoader.setCss([  
+		   		 "styles/aladinliteX2.css" 
+		     ]);
+		     resourceLoader.setScripts([  
+		    	 "demo/js/alixindexReady.js"
+		       ]);
+		     resourceLoader.loadAll();
+		     }
+		
+		
+	/*	
+     resourceLoader.setCss([ 
+    	// 'styles/spectrum.css' 
+     ]);
+     resourceLoader.setScripts([ 
+     "demo/js/alixindexReady.js"
+       ]);
+     resourceLoader.loadAll(); 
+      */
+     </script>
+	</head>
+	<body style="height: 100%">
+		<!-- include Aladin Lite CSS file in the head section of your page -->
+		
+		<!-- you can skip the following line if your page already integrates the 
+			jQuery library -->
+
+		<!-- insert this snippet where you want Aladin Lite viewer to appear and 
+			after the loading of jQuery -->
+		<div id="aladin-lite-div" style="width:80%;height:70%;padding:5px;"></div>
+
+	</body>
+</html>

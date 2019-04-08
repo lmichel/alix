@@ -1031,18 +1031,18 @@ var AladinLiteX_mVc = function(){
 	 */
 	var switchPanel = function() {
 		if( menuDiv.width() < 100 ){
-			menuDiv.animate({width:'+=240px'},"fast");
+			menuDiv.animate({width:'+=250px'},"fast");
 			$(".alix_menu_item").css("display", "inline");
-			$("#open_all").animate({left:'+=240px'},"fast");
+			$("#open_all").animate({left:'+=250px'},"fast");
 			$("#open_all").attr("class","alix_open_all glyphicon glyphicon-chevron-left");
-			//$(".ui-dialog").animate({width:'+=240px'},"fast");
+			//$(".ui-dialog").animate({width:'+=250px'},"fast");
 		} else {
-			menuDiv.animate({width:'-=240px'},"fast");
+			menuDiv.animate({width:'-=250px'},"fast");
 			$(".alix_menu_item").css("display", "none");
 			//$("#vizier").css("display","none");
-			$("#open_all").animate({left:'-=240px'},"fast");
+			$("#open_all").animate({left:'-=250px'},"fast");
 			$("#open_all").attr("class","alix_open_all glyphicon glyphicon-chevron-right");
-			//$(".ui-dialog").animate({width:'-=240px'},"fast");
+			//$(".ui-dialog").animate({width:'-=250px'},"fast");
 		}
 	}
 	
