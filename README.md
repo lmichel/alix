@@ -20,8 +20,12 @@ ALiX is a flexible catalog portal based on Aladin Lite. It it designed to use an
 * Create an HTML div to host Alix
 ```html
 // define the size of ALiX in style
+// example of fixed size
 <div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;"></div>
+// example of relative size
+<div id="aladin-lite-div" style="width:80%;height:70%;padding:5px;"></div>
 ```
+
 * Insert ALiX with default config
 ```javascript
 $.ready(
