@@ -167,12 +167,12 @@ var AladinLiteX_mVc = function(){
 		 */
 		
 		if(params.controllers.historic != undefined){
-			params.controllers.historic.model = new Historique_Mvc('panel_history', this);
+			params.controllers.historic.model = new Historique_Mvc(contextDivId, this);
 		}
 		if(params.controllers.regionEditor != undefined || (params.defaultView != undefined && params.defaultView.region != undefined)){
 			params.controllers.regionEditor.view = new RegionEditor_mVc(this
 					, parentDivId
-					,'panel_region'//, contextDivId
+					, contextDivId
 					, function(data){ if( data.userAction ){ AladinLiteX_mVc.storePolygon(data.region) ;alert(JSON.stringify(data));}}
 					//, aladinLiteView.points
 					, params.defaultView.defaultRegion); 
@@ -207,7 +207,7 @@ var AladinLiteX_mVc = function(){
 		}
 		aladinLiteView.sourceSelected.x = null;
 		aladinLiteView.sourceSelected.y = null;
-    	$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp_selected");//to make the master resource can be reloaded
+    	$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp_selected");//to make the master resource can be reloaded
 
 	}
 	var deselectSource = function(){
@@ -239,33 +239,35 @@ var AladinLiteX_mVc = function(){
 		}
 		parentDiv = $('#' + parentDivId);
 		parentDiv.html('<div id="' + aladinDivId + '" class="alix_aladin_div"></div>');
-		//parentDiv.append('<div id="' + menuDivId + '" class="alix_menu_panel">'
-				//+'<input id="' + targetDivId + '" placeholder="target" class="alix_target  " ><span id="search" title="search" class="alix_search  glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>'
-				//+'<select  id ="' + selectDivId + '" class=" alix_select">'
-				//+'<option value="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
-				//+'</select>'
-				//+'<div id="menuDiv"><button id="menu" type="menu" title="open menu" class=" alix_btn_open alix_btn alix_btn-grey alix_menu_item " ><i id="icon_open" class="glyphicon glyphicon-list" style="font-size:18px;"></i></button>'
-				//+'<i id="credit" title="copyright-mark" class="alix_credit alix_menu_item glyphicon glyphicon-copyright-mark"></i>'
-				//+'<button id="center" type="center" title="center" class="alix_btn alix_btn-circle alix_btn-blue alix_menu_item alix_button_center" onclick="AladinLiteX_mVc.returnCenter();"><i class="glyphicon glyphicon-screenshot" style="font-size:15px;"></i></button>'
-			    //+'<button id="bookMark" type="bookMark" title="bookMark" class="alix_btn alix_btn-circle alix_btn-red alix_menu_item alix_button_bookMark" onclick="AladinLiteX_mVc.bookMark();"><i class="glyphicon glyphicon-heart" style="font-size:15px;"></i></button>'
-			    //+'<button id="history" type="history" title="history" class="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected" onclick="AladinLiteX_mVc.getHistory();"><i class="glyphicon glyphicon-book" style="font-size:15px;"></i></button>'
-			    //+'<button id="region"  type="region" title="edit region" class="alix_btn alix_btn-circle alix_btn-yellow alix_menu_item alix_button_region alix_unselected" onclick="AladinLiteX_mVc.regionEditor();"><i class="glyphicon glyphicon-edit" style="font-size:15px;"></i></button></div>'
-			   // +'<form method = "post" onsubmit="return false;"><fieldset class="alix_image_panel alix_menu_item alix_fieldset">'
-			   // +'<legend class="alix_titlle_image alix_menu_item">Image'
-			   // +'<i id="color_map" title = "color map" style="cursor: pointer; opacity: .3;font-size: 14px; margin:8px"class="alix_menu_item glyphicon glyphicon-sunglasses" onclick = "AladinLiteX_mVc.showColorMap()"></i>'
+		parentDiv.append('<div id="' + menuDivId + '" class="alix_menu_panel">'
+				+'<input id="' + targetDivId + '" placeholder="target" class="alix_target  alix_menu_item" ><span id="search" title="search" class="alix_search alix_menu_item glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>'
+				+'<select  id ="' + selectDivId + '" class="alix_menu_item alix_select">'
+				+'<option value="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
+			//	+'<option value="ICRS">ICRS</option>'
+			//	+'<option value="Galactic">Galactic</option>
+				+'</select>'
+				+'<div id="menuDiv"><button id="menu" type="menu" title="open menu" class=" alix_btn_open alix_btn alix_btn-color-menu alix_menu_item " ><i id="icon_open" class="glyphicon glyphicon-list" style="font-size:18px;"></i></button>'
+				+'<i id="credit" title="copyright-mark" class="alix_credit alix_menu_item glyphicon glyphicon-copyright-mark"></i>'
+				+'<button id="center" type="center" title="center" class="alix_btn alix_btn-circle alix_btn-primary alix_menu_item alix_button_center" onclick="AladinLiteX_mVc.returnCenter();"><i class="glyphicon glyphicon-screenshot" style="font-size:15px;"></i></button>'
+			    +'<button id="bookMark" type="bookMark" title="bookMark" class="alix_btn alix_btn-circle alix_btn-danger alix_menu_item alix_button_bookMark" onclick="AladinLiteX_mVc.bookMark();"><i class="glyphicon glyphicon-heart" style="font-size:15px;"></i></button>'
+			    +'<button id="history" type="history" title="history" class="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected" onclick="AladinLiteX_mVc.getHistory();"><i class="glyphicon glyphicon-book" style="font-size:15px;"></i></button>'
+			    +'<button id="region"  type="region" title="edit region" class="alix_btn alix_btn-circle alix_btn-warning alix_menu_item alix_button_region alix_unselected" onclick="AladinLiteX_mVc.regionEditor();"><i class="glyphicon glyphicon-edit" style="font-size:15px;"></i></button></div>'
+			    +'<form method = "post" onsubmit="return false;"><fieldset class="alix_image_panel alix_menu_item alix_fieldset">'
+			    +'<legend class="alix_titlle_image alix_menu_item">Image'
+			    +'<i id="color_map" title = "color map" style="cursor: pointer; opacity: .3;font-size: 14px; margin:8px"class="alix_menu_item glyphicon glyphicon-sunglasses" onclick = "AladinLiteX_mVc.showColorMap()"></i>'
 			  //  +'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: 150px; height: 50px; color: black;"><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
 			    //+'<select id="color_map_select" class ="alix_selector_cm alix_menu_item"></select>'
-			    //+'</legend>'
+			    +'</legend>'
 			    //+'<div id = "color_map_box" style = "z-index: 20;position: absolute; width: 150px; height: 50px; color: black;">testetetetet</div>'
-			   // +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class="alix_menu_item alix_img_explorer"></input>'
-			    //+'<select id="status-select" class ="alix_selector_hips alix_menu_item"></select>'
-			    //+'<button id="detail"  type="detail" class="alix_menu_item alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button></fieldset></form>'
-			    /*+'<form method = "post" onsubmit="return false;"><fieldset class="alix_catalog_panel alix_menu_item alix_fieldset" >'
+			    +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class="alix_menu_item alix_img_explorer"></input>'
+			    +'<select id="status-select" class ="alix_selector_hips alix_menu_item"></select>'
+			    +'<button id="detail"  type="detail" class="alix_menu_item alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button></fieldset></form>'
+			    +'<form method = "post" onsubmit="return false;"><fieldset class="alix_catalog_panel alix_menu_item alix_fieldset" >'
 			    +'<legend class="alix_titlle_catalog alix_menu_item">Catalogs'
 			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  alix_menu_item" title = "Fade out">-</div>'
-			    +'<i id="fade" title = "fade" class="alix_menu_item glyphicon glyphicon-lamp"></i>'
+				+'<i id="fade" title = "fade" class="alix_menu_item glyphicon glyphicon-lamp"></i>'
 			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  alix_menu_item" title = "Fade in">+</div>'
-			    +'</legend>' 
+				+'</legend>' 
 			    +'<div><p id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</p>'
 			    + descriptionXMM()
 			    + configurationXMM()
@@ -273,128 +275,21 @@ var AladinLiteX_mVc = function(){
 			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
 			    +'</div>'
 			    +'<div><p id="ACDS" class = "alix_acds" >'+ACDS+'  </p>'
-			    +'<div style = ""><p id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</p>'
+			    +'<div style = ""><p id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</p>'
 			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
-			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<p id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</p>'
+			    +'<i id="btn-Simbad-flash" title = "flash" class=" alix_menu_item glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
+			    +'<p id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</p>'
 			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
-			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
-			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
-			    +'<select id="select_vizier" class="alix_selector_vizier "></select>'
+			    +'<i id="btn-NED-flash" title = "flash" class=" alix_menu_item glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
+			    //+'<p class="alix_target_selecte alix_unselected" style="display:none;">S&eacute;lections</p>'
+			    //+'<i id="fal" title="flash" class="glyphicon glyphicon-flash alix_select_flash" style="cursor: pointer;display:none;"></i>'
+			    //+'<i id="del" title="delete" class="glyphicon glyphicon-trash alix_select_trash" style="cursor: pointer;display:none;"></i><br></div<'
+			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class="alix_menu_item alix_cataloge_explorer "></input>'
+			    +'<select id="select_vizier" class="alix_selector_vizier alix_menu_item"></select>'
 			    +'<div id="vizier" class="alix_vizier">'
-			    +'<ul id="vizier_list"></ul></div></fieldset></form></div>'*/
-			   // +'</div>')
-		//parentDiv.append('<div id="open_all" class="alix_open_all glyphicon glyphicon-chevron-right"></div>');	 
-		parentDiv.append('<div id="newMenu" class="alix_menu_panel">')
-		
-		var newMenu = $('#newMenu')	;
-		var button_locate = '<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>'
-		var button_center = '<button id="button_center" class="alix_btn alix_btn-circle alix_btn-red" title ="back to center" onclick="AladinLiteX_mVc.returnCenter();"><i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i></button>'
-		var button_bookmark = '<button id="button_bookmark" class="alix_btn alix_btn-circle alix_btn-orange" title ="save a bookmark" onclick="AladinLiteX_mVc.bookMark();"><i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i></button>'
-		var button_history  = '<button id="button_history" class="alix_btn alix_btn-circle alix_btn-yellow" title ="history of bookmark" ><i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i></button>'
-		var button_region = '<button id="button_region" class="alix_btn alix_btn-circle alix_btn-green" title ="region editor" onclick="AladinLiteX_mVc.regionEditor();" ><i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i></button>'
-		var button_image = '<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>'
-		var button_catalog = '<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search an catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>'
-		
-		var panel_locate = '<div id="panel_locate" class="alix_right_panels">'
-			+'<input id="' + targetDivId + '" placeholder="target" class="alix_target" ><span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>'
-			+'<select  id ="' + selectDivId + '" class="alix_select">'
-			+'<option value="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
-			+'</select>'
-			+'</div>'
-		var panel_history = '<div id="panel_history" class="alix_right_panels">'
-			+'</div>'
-		var panel_region = '<div id="panel_region" class="alix_right_panels">'
-			+'</div>'
-		var panel_image = '<div id="panel_image" class="alix_right_panels">'
-		    +'<p class="alix_titlle_image ">Image'
-		    +'</p>'
-		    +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class=" alix_img_explorer"></input>'
-		    +'<select id="status-select" class ="alix_selector_hips "></select>'
-		    +'<button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button>'
-			+'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">'
-			+'<b>Color Map : </b>'
-			+'<select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
-			+'</div>'
-		var panel_catalog = '<div id="panel_catalog" class="alix_right_panels">'
-			    +'<div class="alix_catalog_panel" >'
-			    +'<b class="alix_titlle_catalog ">Catalogs</b>' 
-			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div>'
-			    +'<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>'
-			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div>'
-			    +'<div><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
-			    + descriptionXMM()
-			    + configurationXMM()
-			    + hideXMMFlash()
-			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
-			    +'</div>'
-			    +'<div><b id="ACDS" class = "alix_acds" >'+ACDS+'  </b>'
-			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
-			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
-			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
-			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
-			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
-			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
-			    +'<select id="select_vizier" class="alix_selector_vizier "></select>'
-			    +'<div id="vizier" class="alix_vizier">'
-			    +'<ul id="vizier_list"></ul></div></div>'
-			+'</div>'
-			
-			
-			
-		newMenu.append('<div id="alix_left_menu"><ul style="list-style-type:none">'
-				+'<li >'+button_locate+'</li>'
-				+'<li>'+button_center+'</li>'
-				+'<li>'+button_bookmark+'</li>'
-				+'<li>'+button_history+'</li>'
-				+'<li>'+button_region+'</li>'
-				+'<li>'+button_image+'</li>'
-				+'<li>'+button_catalog+'</li>'
-				+'</ul></div>'
-				+'<div id="alix_right_menu">'
-				+panel_locate
-				+panel_history
-				+panel_region
-				+panel_image
-				+panel_catalog
-				+'<div>')
-		var panel_last = null;
-		$('#button_locate').click(function(event){
-			var id = '#panel_locate';
-			panel_check(id);
-		});	
-		$('#button_bookmark').click(function(event){
-			var id ='#panel_history';
-			$(id).css("display","block");
-			if(panel_last!=id){
-			$(panel_last).css("display","none");}
-			panel_last =id;
-			});	
-		$('#button_history').click(function(event){
-			var id ='#panel_history'
-			panel_check(id);
-			});	
-		$('#button_region').click(function(event){
-			var id = '#panel_region';
-				panel_check(id);
-			});	
-		$('#button_image').click(function(event){
-			var id ='#panel_image';
-			panel_check(id);
-			});	
-		$('#button_catalog').click(function(event){
-			var id ='#panel_catalog';
-			panel_check(id);
-			});	
-		var panel_check = function(id){
-			$(id).toggle();
-			if(panel_last!=id){
-			$(panel_last).css("display","none");}
-			panel_last =id;
-		}		
-				
-				
+			    +'<ul id="vizier_list"></ul></div></fieldset></form></div>'
+			    +'</div>')
+		parentDiv.append('<div id="open_all" class="alix_open_all glyphicon glyphicon-chevron-right"></div>');	 
 		
 		menuDiv   = $('#' + menuDivId);
 		parentDiv.append('<div id="' + contextDivId + '" class="alix_context_panel" >'
@@ -883,7 +778,7 @@ var AladinLiteX_mVc = function(){
 		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		controller.getHistory();
-		if(contextDiv.height() < 10 /*&& $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green  alix_button_history alix_unselected"*/){
+		if(contextDiv.height() < 10 /*&& $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected"*/){
 			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
 			contextDiv.css("border-width", "0.2px");
 			 historySelected = true;
@@ -947,7 +842,7 @@ var AladinLiteX_mVc = function(){
 				controller.displayDataXml(aladinLiteView);
 		}
 		
-		var html_option = '<select id="status" class ="alix_selector_hips ">'
+		var html_option = '<select id="status" class ="alix_selector_hips alix_menu_item">'
 		html_option += "<option value='"+ aladinLiteView.survey.ID +"'>"+ aladinLiteView.survey.ID +"</option>";
 			for(var s=0 ; s<controller.modules.historicModel.hips_tab.length; s++){
 				if(controller.modules.historicModel.hips_tab[s]!=aladinLiteView.survey.ID){
@@ -1256,7 +1151,7 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		controller.modules.historicModel.hips_tab.push(ID);
-		var html_option = '<select id="status" class ="alix_selector_hips ">'
+		var html_option = '<select id="status" class ="alix_selector_hips alix_menu_item">'
 			html_option += "<option value='"+ ID +"'>"+ ID +"</option>";
 				for(var s=0 ; s<controller.modules.historicModel.hips_tab.length; s++){
 					if(controller.modules.historicModel.hips_tab[s]!=ID){
@@ -1799,7 +1694,7 @@ var AladinLiteX_mVc = function(){
 					//make the associated source shown directly
 					if(aladinLiteView.masterResource.actions.showAssociated.active == true) {
 					
-					$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
+					$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
 					$('#'+ idvalue).css("color","#32FFEC");
 					$.getJSON(lien, function(jsondata) {
 						var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:"showTable"});
@@ -1986,17 +1881,17 @@ var AladinLiteX_mVc = function(){
 			}
 			aladin.view.requestRedraw(); 
 			//!Important: when we clean the catalog XMM,NED,Simbad , change the class of the name in the panel too for the right judge in displaydataXml.
- 			$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp");
+ 			$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp");
 			$("#XMM").css("color", "#888a85");
 			$("#btn-XMM-flash").css("color" , "#888a85");
 			$("#btn-XMM-description").css("color" , "#888a85");
 			$("#btn-XMM-configure").css("color" , "#888a85");
 			$("#ACDS").css("display" , "none");
-			$("#Simbad").attr("class", "alix_simbad_in_menu  alix_datahelp");
+			$("#Simbad").attr("class", "alix_simbad_in_menu alix_menu_item alix_datahelp");
 			$("#Simbad").css("color" , "#888a85");
 			$("#btn-Simbad-flash").css("color" , "#888a85");
 			$("#btn-Simbad-configure").css("color" , "#888a85");
-			$("#NED").attr("class", "alix_ned_in_menu  alix_datahelp");
+			$("#NED").attr("class", "alix_ned_in_menu alix_menu_item alix_datahelp");
 			$("#NED").css("color" , "#888a85");
 			$("#btn-NED-flash").css("color" , "#888a85");
 			$("#btn-NED-configure").css("color" , "#888a85");
@@ -2105,14 +2000,14 @@ var AladinLiteX_mVc = function(){
 
 	var hideXMMFlash = function(){
 		if(aladinLiteView.masterResource != undefined){
-			return '<i id="btn-XMM-flash" title = "flash" class="alix_btn-XMM-flash  glyphicon glyphicon-flash" onclick="AladinLiteX_mVc.XMMFlash(); "></i>'
+			return '<i id="btn-XMM-flash" title = "flash" class="alix_btn-XMM-flash alix_menu_item glyphicon glyphicon-flash" onclick="AladinLiteX_mVc.XMMFlash(); "></i>'
 		}else{
 			return '';
 		}
 	}
 	var descriptionXMM = function(){
 		if(aladinLiteView.masterResource != undefined){
-			return '<i id="btn-XMM-description" title="detail" class="alix_btn-XMM-description  glyphicon glyphicon-info-sign alix_btn-operate-catalog" style = "color: #888a85;" onclick="AladinLiteX_mVc.showXMMDesciption();"></i>'
+			return '<i id="btn-XMM-description" title="detail" class="alix_btn-XMM-description alix_menu_item glyphicon glyphicon-info-sign alix_btn-operate-catalog" style = "color: #888a85;" onclick="AladinLiteX_mVc.showXMMDesciption();"></i>'
 		}else{
 			return '';
 		}

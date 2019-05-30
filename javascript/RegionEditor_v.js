@@ -54,7 +54,7 @@ RegionEditor_mVc.prototype = {
 				this.parentDiv = $('#' + this.parentDivId);
 		 	if( this.contextDiv == null )
 				this.contextDiv  = $('#' + this.contextDivId);	
-			this.contextDiv.append('<div id= "RE_context" style = "display:inline"></div>');
+			//this.contextDiv.append('<div id= "RE_context" style = "display:inline"></div>');
 			/*if( this.sousContextDiv == null ){
 				this.sousContextDiv  = $('#RE_context');
 			}*/
@@ -95,7 +95,7 @@ RegionEditor_mVc.prototype = {
 			this.drawCanvas[0].addEventListener('mousedown', function(event) {/*console.log("down");*/ that.controller.mouseDown(event);}, false);
 			this.drawCanvas[0].addEventListener('mousemove',  function(event) {that.controller.mouseMove(event);}, false);
 			this.drawCanvas[0].addEventListener('mouseup', function(event) {/*console.log("up");*/ that.controller.mouseUp(event);}, false);
-			}
+			
 			/*----crear botones con jquery----*/
 			/*var divButtons = $("<div id='RegionButtons' style=' width:"+ this.parentDiv.width() +'px' +" ';' '><div/>").appendTo("#" + this.parentDivId + "_button");        
 			divButtons.css('background', 'gray');//'height:' "+ 200 +'px' +"';'
@@ -163,7 +163,7 @@ RegionEditor_mVc.prototype = {
 				browseSaved = true;
 				event.stopPropagation();
 			});
-			if(!AladinLiteX_mVc.regionEditorInit){
+			//if(!AladinLiteX_mVc.regionEditorInit){
 			this.setInitialValue(self.defaultRegion);
 			if( this.editionFrame ){
 				this.setEditionFrame(this.editionFrame);

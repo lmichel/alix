@@ -39,7 +39,7 @@ Historique_mVc.prototype = {
 				this.contextDiv  = $('#' + this.contextDivId);
 			}
 			//take the data in localstorage and show the list of marked history  
-			var html = '<ul id = "history_ul" style="padding-left:18px;">';
+			var html = '<b class="alix_titlle_image ">Bookmarks:</b><ul id = "history_ul" style="padding-left:18px;">';
 			console.log("@@@@@@@@localStorage.length="+localStorage.length);
 			for(var key in localStorage){
 				console.log("Localstorage key="+key)	

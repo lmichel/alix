@@ -86,7 +86,7 @@ AladinLiteView.prototype = {
 		 * création de la vue de liste, si region existe, la liste affiche le logo R
 		 */
 	getHTMLTitle: function() {
-		return '<div  title="replay the stored view" id="' + this.id + '" style="height:auto;"><img id="' + this.id + '_snapShot_img" src="' 
+		return '<div  title="replay the stored view" id="' + this.id + '" style="height:auto; overflow: auto; width: 450px; height: 55px;"><img id="' + this.id + '_snapShot_img" src="' 
 			+ this.img
 			//+ '" onclick="AladinLiteX_mVc.restoreViewByIdTest(&quot;' + this.id + '&quot;);" '
 			+ '" onclick="AladinLiteX_mVc.restoreViewById(&quot;' + this.id + '&quot;);" '

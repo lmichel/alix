@@ -162,7 +162,7 @@ HipsSelector_mVc.prototype = {
 			 */
 			var id = LibraryCatalog.getCatalog(cata_name).id;
 			$("#vizier_list").append('<li id="cata_list_'+ id +'" class = "'+obs_id+'"style="list-style-type: none;height:auto;">'
-						+'<div id="cata_operate_'+ id +'" title="Show/hide Vizier sources" class="alix_vizier_chosen alix_menu_item" style="display:inline; cursor: pointer;color:'+color+';" >' + cata_dict[obs_id].obs_id + '</div>&nbsp;'
+						+'<div id="cata_operate_'+ id +'" title="Show/hide Vizier sources" class="alix_vizier_chosen " style="display:inline; cursor: pointer;color:'+color+';" >' + cata_dict[obs_id].obs_id + '</div>&nbsp;'
 						+'<i id="btn_detail_catalog_'+ id +'" title="detail" class="glyphicon glyphicon-info-sign alix_btn-operate-catalog" style="color:'+color+';cursor: pointer;" onclick="AladinLiteX_mVc.detailCatalogOperator('+ id +')"></i>&nbsp;'
 						+'<i id="btn_flash_catalog_'+id +'" title="flash" class="glyphicon glyphicon-flash alix_btn-operate-catalog" style="color:'+color+';cursor: pointer;"></i>&nbsp;'
 						+'<i id="btn_configure_catalog_'+id +'" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:'+color+';cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog('+ id +')"></i>'
@@ -176,8 +176,8 @@ HipsSelector_mVc.prototype = {
 					var cataColor = LibraryCatalog.getCatalog(cata_name).color;
 					var catadata = cata_dict[obs_id];
 					
-					if($(this).attr("class") != "alix_vizier_chosen alix_menu_item"){					
-						$(this).attr("class", "alix_vizier_chosen alix_menu_item");
+					if($(this).attr("class") != "alix_vizier_chosen "){					
+						$(this).attr("class", "alix_vizier_chosen ");
 						$(this).css("color", cataColor);
 						
 						WaitingPanel.show(obs_id);
@@ -191,7 +191,7 @@ HipsSelector_mVc.prototype = {
 							//self.model.cata_created[obs_id] = cataInit;
 						}
 					}else{
-						$(this).attr("class", "alix_vizier_in_menu alix_menu_item");
+						$(this).attr("class", "alix_vizier_in_menu ");
 						$(this).css("color", "#888a85");
 						self.model.aladinLite_V.cleanCatalog(cata_name);
 					}				
@@ -236,15 +236,15 @@ HipsSelector_mVc.prototype = {
 			}
 			var url = 'http://axel.u-strasbg.fr/HiPSCatService/Simbad';
 			var clickType = 'showTable';
-			if(cmdNode.attr("class") == "alix_simbad_in_menu alix_menu_item alix_datahelp" ){
+			if(cmdNode.attr("class") == "alix_simbad_in_menu  alix_datahelp" ){
 				WaitingPanel.show(name);
-				cmdNode.attr("class", "alix_simbad_in_menu alix_menu_item alix_datahelp_selected");
+				cmdNode.attr("class", "alix_simbad_in_menu  alix_datahelp_selected");
 				cmdNode.css("color", color);
 				 $("#btn-Simbad-configure").css("color", color);
 				 $("#btn-Simbad-flash").css("color", color);
 				self.model.aladinLite_V.displayCatalog(name, color, clickType, url);
 			}else{
-				cmdNode.attr("class", "alix_simbad_in_menu alix_menu_item alix_datahelp");
+				cmdNode.attr("class", "alix_simbad_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
 				 $("#btn-Simbad-configure").css("color", "#888a85");
 				 $("#btn-Simbad-flash").css("color", "#888a85");
@@ -264,19 +264,19 @@ HipsSelector_mVc.prototype = {
 				color = LibraryCatalog.getCatalog(name).color;
 			}
 			var clickType = 'showTable';
-			if(cmdNode.attr("class") == "alix_ned_in_menu alix_menu_item alix_datahelp" ){
+			if(cmdNode.attr("class") == "alix_ned_in_menu  alix_datahelp" ){
 				if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.affichage.progressiveMode == false){
 					WaitingPanel.warnFov();
 				}else{
 					WaitingPanel.show(name);
-					cmdNode.attr("class", "alix_ned_in_menu alix_menu_item alix_datahelp_selected");
+					cmdNode.attr("class", "alix_ned_in_menu  alix_datahelp_selected");
 					cmdNode.css("color", color);
 					$("#btn-NED-configure").css("color", color);
 					$("#btn-NED-flash").css("color", color);
 					self.model.aladinLite_V.displayCatalog(name, color, clickType);
 				}
 			}else{
-				cmdNode.attr("class", "alix_ned_in_menu alix_menu_item alix_datahelp");
+				cmdNode.attr("class", "alix_ned_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
 				 $("#btn-NED-configure").css("color", "#888a85");
 				 $("#btn-NED-flash").css("color", "#888a85");
@@ -319,7 +319,7 @@ HipsSelector_mVc.prototype = {
 							
 						}
 						$("#vizier_list").append( '<li style="list-style-type: none;height:24px;" class="'+ obs_id + '">'
-						+'<div id="cata_operate_'+ id +'" title="Show/hide Vizier sources" class="alix_vizier_chosen alix_menu_item" style="display:inline; cursor: pointer;color:'+color+';" >' + obs_id + '</div>&nbsp;'
+						+'<div id="cata_operate_'+ id +'" title="Show/hide Vizier sources" class="alix_vizier_chosen " style="display:inline; cursor: pointer;color:'+color+';" >' + obs_id + '</div>&nbsp;'
 						+'<i id="btn_detail_catalog_'+ id +'" title="detail" class="glyphicon glyphicon-info-sign alix_btn-operate-catalog" style="color:'+color+';cursor: pointer;" onclick="AladinLiteX_mVc.detailCatalogOperator('+ id +')"></i>&nbsp;'
 						+'<i id="btn_configure_catalog_'+ id +'" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:'+color+';cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog('+ id +')"></i>'
 						+'<i id="btn_flash_catalog_'+ id +'" title="flash" class="glyphicon glyphicon-flash alix_btn-operate-catalog" style="color:'+color+';cursor: pointer;"></i>&nbsp;'
@@ -333,8 +333,8 @@ HipsSelector_mVc.prototype = {
 							var cataColor = LibraryCatalog.getCatalog(cata_name).color;
 							var catadata = cata_dict[obs_id];
 							
-							if($(this).attr("class") != "alix_vizier_chosen alix_menu_item"){					
-								$(this).attr("class", "alix_vizier_chosen alix_menu_item");
+							if($(this).attr("class") != "alix_vizier_chosen "){					
+								$(this).attr("class", "alix_vizier_chosen ");
 								$(this).css("color", cataColor);
 								
 								WaitingPanel.show(obs_id);
@@ -348,7 +348,7 @@ HipsSelector_mVc.prototype = {
 									//self.model.cata_created[obs_id] = cataInit;
 								}
 							}else{
-								$(this).attr("class", "alix_vizier_in_menu alix_menu_item");
+								$(this).attr("class", "alix_vizier_in_menu ");
 								$(this).css("color", "#888a85");
 								self.model.aladinLite_V.cleanCatalog(cata_name);
 							}				
@@ -397,12 +397,12 @@ HipsSelector_mVc.prototype = {
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
 			}
-				if(cmdNode.attr("class") == "alix_XMM_in_menu alix_menu_item alix_datahelp"){
+				if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp"){
 //				if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false){
 //					WaitingPanel.warnFov();
 //				}else{
 					WaitingPanel.show(name);
-					cmdNode.attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp_selected");
+					cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
 					cmdNode.css("color", color);
 					$("#btn-XMM-description").css("color" , color);
 					$("#btn-XMM-flash").css("color" ,color);
@@ -410,11 +410,11 @@ HipsSelector_mVc.prototype = {
 					$("#ACDS").css("display" , "inline");
 					self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 //				}
-				/*}else if(cmdNode.attr("class") == "alix_XMM_in_menu alix_menu_item alix_datahelp_nochange"){
-				cmdNode.attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp_selected");*/
+				/*}else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp_nochange"){
+				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");*/
 				//to avoid" when we display a view in the bookmark who contains XMM, it will recall displaydataxml(), and if xmm has been already showed ,function displaydataxml will lead to delete the XMM."	
 			}else{
-				cmdNode.attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp");
+				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
 				$("#btn-XMM-flash").css("color" , "#888a85");
 				$("#btn-XMM-description").css("color" , "#888a85");
@@ -432,7 +432,7 @@ HipsSelector_mVc.prototype = {
 		updateCatalogs: function(aladinLiteView,url,state){
 			var self = this;
 			//Check if the catalog is displayed
-			if($(document.getElementById("XMM")).attr("class") == "alix_XMM_in_menu alix_menu_item alix_datahelp_selected"){
+			if($(document.getElementById("XMM")).attr("class") == "alix_XMM_in_menu  alix_datahelp_selected"){
 				self.model.aladinLite_V.storeCurrentState();
 				if(state == 'zoom'){
 					if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false && aladinLiteView.masterResource.affichage.progressiveMode == false){
@@ -451,7 +451,7 @@ HipsSelector_mVc.prototype = {
 					self.model.aladinLite_V.displayCatalog('Swarm', 'red', 'handler', url);
 				}
 			}
-			if($(document.getElementById("NED")).attr("class") == "alix_ned_in_menu alix_menu_item alix_datahelp_selected"){
+			if($(document.getElementById("NED")).attr("class") == "alix_ned_in_menu  alix_datahelp_selected"){
 				self.model.aladinLite_V.storeCurrentState();
 				var name ='NED'
 				var color= this.libraryMap.colorMap[name].color;
@@ -464,7 +464,7 @@ HipsSelector_mVc.prototype = {
 						self.model.aladinLite_V.displayCatalog(name, color, clickType);
 					}
 			}
-			if($(document.getElementById("Simbad")).attr("class") == "alix_simbad_in_menu alix_menu_item alix_datahelp_selected"){
+			if($(document.getElementById("Simbad")).attr("class") == "alix_simbad_in_menu  alix_datahelp_selected"){
 				self.model.aladinLite_V.storeCurrentState();
 				var url = 'http://axel.u-strasbg.fr/HiPSCatService/Simbad';
 				var name ='Simbad';
@@ -488,7 +488,7 @@ HipsSelector_mVc.prototype = {
 						var catalogRef = LibraryCatalog.catalogs[name].al_refs;
 						var id = catalog.id;
 						var obs_id =catalog.obs_id;
-						if($(document.getElementById("cata_operate_"+id)).attr("class") == "alix_vizier_chosen alix_menu_item"){
+						if($(document.getElementById("cata_operate_"+id)).attr("class") == "alix_vizier_chosen "){
 						if(catalog.url!=undefined){
 							console.log("Progressive Vizier:"+name+"<<<url>>>"+catalog.url)
 							self.model.aladinLite_V.cleanCatalog(name);
@@ -503,7 +503,7 @@ HipsSelector_mVc.prototype = {
 //							if(aladinLiteView.fov>=1){
 //								WaitingPanel.warnFov();
 //							}else{
-//								if($(document.getElementById("cata_operate_"+i)).attr("class") == "alix_vizier_chosen alix_menu_item"){
+//								if($(document.getElementById("cata_operate_"+i)).attr("class") == "alix_vizier_chosen "){
 //									self.model.aladinLite_V.cleanCatalog("VizieR:"+self.model.cata_tab[i]);
 //									cataInit = self.model.aladinLite_V.displayVizierCatalog(self.model.cata_tab[i] , self.libraryMap.getColorByCatalog(self.model.cata_tab[i]).color, 'showTable');
 //									self.model.cata_created[self.model.cata_tab[i]] = cataInit;
@@ -522,7 +522,7 @@ HipsSelector_mVc.prototype = {
 						var id = catalog.id;
 						var obs_id =catalog.obs_id;
 						var cataInit = null;
-						if($(document.getElementById("cata_operate_"+id)).attr("class") == "alix_vizier_chosen alix_menu_item"){
+						if($(document.getElementById("cata_operate_"+id)).attr("class") == "alix_vizier_chosen "){
 							if(catalog.url==undefined){
 								self.model.aladinLite_V.cleanCatalog(name);
 								cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id , catalog.color, 'showTable');
