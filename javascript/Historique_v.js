@@ -39,7 +39,7 @@ Historique_mVc.prototype = {
 				this.contextDiv  = $('#' + this.contextDivId);
 			}
 			//take the data in localstorage and show the list of marked history  
-			var html = '<b class="alix_titlle_image ">Bookmarks:</b><ul id = "history_ul" style="padding-left:18px;">';
+			var html = '<b class="alix_titlle_image" style=" margin-left: 15px;">Bookmarks:</b><div style="height:230px;overflow:auto;"><ul id = "history_ul" style="padding-left:18px;">';
 			console.log("@@@@@@@@localStorage.length="+localStorage.length);
 			for(var key in localStorage){
 				console.log("Localstorage key="+key)	
@@ -75,7 +75,7 @@ Historique_mVc.prototype = {
 			if(vide == true){
 				html += "<p style='color:#1f252b;text-align:center'>No bookmark restored</p>";
 			}
-			html += '</ul>';
+			html += '</ul></div>';
 			this.contextDiv.html(html);
 			
 //			this.contextDiv.find('ul').on('click', 'li', function(e) {

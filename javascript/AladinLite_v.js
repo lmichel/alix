@@ -315,6 +315,7 @@ var AladinLiteX_mVc = function(){
 			+'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">'
 			+'<b>Color Map : </b>'
 			+'<select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
+			+'<div id="panel_image_detail"></div>'
 			+'</div>'
 		var panel_catalog = '<div id="panel_catalog" class="alix_right_panels">'
 			    +'<div class="alix_catalog_panel" >'
@@ -339,6 +340,7 @@ var AladinLiteX_mVc = function(){
 			    +'<select id="select_vizier" class="alix_selector_vizier "></select>'
 			    +'<div id="vizier" class="alix_vizier">'
 			    +'<ul id="vizier_list"></ul></div></div>'
+				+'<div id="panel_catalog_detail"></div>'
 			+'</div>'
 			
 			
@@ -1321,7 +1323,7 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	var displayDetailInContext = function(ID){
-		contextDiv.css("max-height", "200px");
+		//contextDiv.css("max-height", "200px");
 		var hips = controller.getSelectedHips(ID);
 		if(hips != undefined){
 			var html = '<p style="color:#4D36DC;margin:10px;" >';
@@ -1329,7 +1331,10 @@ var AladinLiteX_mVc = function(){
 			+"<span style='font-size:small;color : #727371;margin:10px;'>"+ID +"</span>"
 			+"<p style='font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;'>&nbsp;&nbsp;" + hips.obs_description + "<br>";
 			html += '</p>';
-			if(contextDiv.height() > 100){
+			$("#panel_image_detail").html(html);
+			$("#panel_image_detail").toggle();
+		}
+		/*	if(contextDiv.height() > 100){
 				contextDiv.html(html);
 			}else{
 				contextDiv.animate({height:'200px'},"fast");
@@ -1339,7 +1344,7 @@ var AladinLiteX_mVc = function(){
 			}
 		}else{
 			alert("Please enter a survey ID");
-		}
+		}*/
 		//event.stopPropagation();
 		
 	}
@@ -2131,13 +2136,15 @@ var AladinLiteX_mVc = function(){
 			}
 			html = '<p style="color:#4D36DC;margin:10px;">XMM-Newton Catalog</p>'
 				+'<p style="font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;">'+des+'</p>';
-			if(contextDiv.height() > 100 ){
+			 $('#panel_catalog_detail').html(html);
+			 $('#panel_catalog_detail').toggle();
+			/*if(contextDiv.height() > 100 ){
 				contextDiv.animate({height:'0px'},"fast");
 				contextDiv.css("border-width", "0px");
 				////$(".ui-dialog").animate({height:'0px'},"fast");
 			}else{
 				openContextPanel(html);
-			}	
+			}	*/
 	}
 	
 	var getCurrentView = function() {
