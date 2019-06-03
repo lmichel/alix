@@ -89,7 +89,7 @@ background-color: #f3ebddc2;
 #panel_catalog_detail{
     display: none;
     position: absolute;
-    top: 260px;
+    top: 240px;
     width: 250px;
     left: 0px;
     border-radius: 20px;
@@ -632,8 +632,8 @@ background-color: #f3ebddc2;
 }
 
 .alix_shapeChoice{
-	 margin-left: 8px;
-    margin-right: 15px;
+	    margin-left: 4px;
+    margin-right: 8px;
 }
 .alix_configurationShape{
 	 margin: 10px;
@@ -706,7 +706,7 @@ background-color: #f3ebddc2;
 z-index: 10;
     margin-top: 5px;
     width: 250px;
-    height: 150px;
+    height: 120px;
     white-space: nowrap;
     overflow-y: auto;
     background-color: #84785f29;
@@ -747,7 +747,7 @@ z-index: 10;
 	background-image: url('./fleche_down.png');
 	background-position : 3% 50%;
 	background-repeat: no-repeat;
-	background-size: 4% 90%;
+	background-size: 2% 90%;
 	height : 25px;
 	overflow: hidden;
 	border-radius : 4px;
@@ -765,7 +765,7 @@ z-index: 10;
 	background-image: url('./fleche_up.png');
 	background-position : 3% 50%;
 	background-repeat: no-repeat;
-	background-size: 4% 90%;
+	background-size: 2% 90%;
 	height : 25px;
 	overflow: hidden;
 	background-color : #ddf3ff;
@@ -788,10 +788,10 @@ z-index: 10;
 	display: none;
 	overflow: auto;
 	position: absolute;
-	left:265px;
-	top:0px; 
-	width: 385px; 
-	height: 385px;
+    top: 0px;
+    left: 50%;
+    width: 50%;
+    height: 100%;
 	z-index: 10000;
 }
 .alix_btn-blue {

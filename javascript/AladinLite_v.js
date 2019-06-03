@@ -1448,12 +1448,12 @@ var AladinLiteX_mVc = function(){
 		var r = color[0];var g = color[1];var b = color[2];
 		colorHex = rgbToHex(r, g, b);
 		
-		if(contextDiv.height() > 100 ){
+		/*if(contextDiv.height() > 100 ){
 			contextDiv.animate({height:'0px'},"fast");
 			contextDiv.css("max-height", "200px");
 			contextDiv.css("border-width", "0px");
 			////$(".ui-dialog").animate({height:'0px'},"fast");
-		}else{
+		}else{*/
 			if(cata != undefined){
 			var html ='<div id="'+obs_id_use+'"class="'+i+'" style = "box-shadow: 0 0 20px 2px '+colorHex+' ;height=140px; margin-left: 5px; height: 140px;">'
 				+'<div class="alix_configurationShape" ><b>Shape:</b>'
@@ -1471,7 +1471,7 @@ var AladinLiteX_mVc = function(){
 				+'<div class="alix_configurationShape"><b>Color:  </b><input id="colorSelect" type = "text" style = "margin-left: 15px;"></input></div>'
 				//+'<div class="alix_configurationShape"><b>Color:</b><input id="colorSelect" type="color" style = "margin-left: 15px;" value="'+colorHex+'" oninput="AladinLiteX_mVc.updateColorOfCatalog(colorSelect.value,this.id)"></input></div>'
 				+'</div>' 
-				if(contextDiv.height() > 100){
+				/*if(contextDiv.height() > 100){
 					/*contextDiv.html(html);
 					$("#colorSelect").spectrum({
 					    color: colorHex,
@@ -1479,14 +1479,16 @@ var AladinLiteX_mVc = function(){
 					    	AladinLiteX_mVc.updateColorOfCatalog(color,'colorSelect')
 					        }
 					    });*/
-				}else{
+				/*}else{
 					contextDiv.animate({height:'150px'},"fast");
 					contextDiv.css("max-height", "200px");
 					contextDiv.css("border-width", "0.2px");
 					//contextDiv.html(html);
 					//$(".ui-dialog").animate({height:'150px'},"fast");
-				}
-			contextDiv.html(html);
+				}*/
+				$('#panel_catalog_detail').html(html);
+			$('#panel_catalog_detail').toggle();
+		//	contextDiv.html(html);
 			//Define the color select
 			$("#colorSelect").spectrum({
 			    color: colorHex,
@@ -1502,7 +1504,7 @@ var AladinLiteX_mVc = function(){
 			}else{
 				alert("Please choose a catalog");
 			}
-		}
+		//}
 	}
 	
 	var updateColorOfCatalog =function(hex,id){

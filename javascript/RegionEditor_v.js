@@ -116,7 +116,7 @@ RegionEditor_mVc.prototype = {
 				that.setBrowseMode();
 				browseSaved = false;
 				event.stopPropagation();
-				that.aladinLite_V.reabledButton();
+				//that.aladinLite_V.reabledButton();
 
 			});
 			
@@ -127,11 +127,12 @@ RegionEditor_mVc.prototype = {
 			this.editBtn.css('font-weight',' bold');
 			this.editBtn.click(function(event) { 
 				that.setEditMode();
-				that.controller.DeleteOverlay()
+				that.controller.DeleteOverlay();
+				console.log("test region editor");
 				that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);            
 				that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
 				that.controller.almacenar();
-				that.aladinLite_V.disabledButton();
+				//that.aladinLite_V.disabledButton();
 				event.stopPropagation();
 			});
 
