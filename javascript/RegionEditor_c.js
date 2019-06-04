@@ -73,6 +73,7 @@ RegionEditor_mvC.prototype = {
 		 * 
 		 */
 		mouseDown : function(event) {
+			
 			var clickedNode = -1;
 			var clickedSegment = -1;
 			var x = parseInt(event.pageX) - parseInt( this.canvas.offset().left).toFixed(1);

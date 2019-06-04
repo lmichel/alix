@@ -8,6 +8,10 @@
 	color:#555753;
 }
  */
+ html,body {
+    height: 100%;
+    width:100%;
+ }
  #newMenu>#alix_left_menu>ul>li>button:hover{
  width:50px !important;
     /* box-shadow: 1px 1px 16px 7px #6868a5;*/
@@ -53,6 +57,7 @@
     top: 170px;
     left: 60px;
     border-radius: 20px;
+        z-index: 1000;
 }
 #panel_image{
 background-color: #f3ebddc2;
@@ -139,7 +144,7 @@ background-color: #f3ebddc2;
     background-position: center center;
 }
 .alix_menu_panel{
-	z-index : 10;
+	z-index : 1000;
 	background-color: #f9f9f9;
 	height: 400px;
 	width: 1px;
@@ -1099,8 +1104,16 @@ position:absolute;
     /* display: none; */
     left: 100px;
 }
-#RegionCanvasTemp {
+#RegionCanvasTemp{
      background: rgba(255,255,255,0.6); 
+     top:0px;
+    /* height:100%;
+     width:100%;*/
+}
+#RegionCanvas{
+	/**top:0px;
+     height:100%;
+     width:100%;*/
 }
 
 .alix_target_selecte{

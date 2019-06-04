@@ -1071,19 +1071,19 @@ var AladinLiteX_mVc = function(){
 		checkBrowseSaved();
 		contextDiv.css("max-height", "200px");
 		storeCurrentState();
-		contextDiv.html("");
-		if(contextDiv.height() < 10){
+		//contextDiv.html("");
+		//if(contextDiv.height() < 10){
 			// open the region  editor
-			//if(!regionEditorInit){
+			if(!regionEditorInit){
 			controller.editRegion();
-		
+			}
 			//controller.cleanPolygon();
-			contextDiv.animate({height:'101px'},"fast");//change the context height from 200px to 101px. _shan
-			contextDiv.css("border-width", "0.2px");
+			//contextDiv.animate({height:'101px'},"fast");//change the context height from 200px to 101px. _shan
+			//contextDiv.css("border-width", "0.2px");
 			historySelected = false;
 			regionSelected = true;
-			regionEditorInit = true;
-		}else if(contextDiv.height() >= 50){
+			//regionEditorInit = true;
+	/*	}else if(contextDiv.height() >= 50){
 			// contextDiv.height() >= 50 BECAUSE in the browser firefox, the height has some strange way to calculate , 101px maybe will be calculated as "99"
 			if(regionSelected){
 			// close the region  editor
@@ -1101,8 +1101,8 @@ var AladinLiteX_mVc = function(){
 			regionSelected = true;
 			historySelected = false;
 			regionEditorInit = true;
-		}
-	}
+		}*/
+	//}
 	}
 	
 

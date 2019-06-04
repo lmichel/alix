@@ -48,7 +48,7 @@ function RegionEditor_mVc(aladinLite_V, parentDivId, contextDivId, handler,/* po
 var browseSaved = null;
 RegionEditor_mVc.prototype = {
 		init: function (){	
-			
+			console.log("RERERE");
 			var self = this;
 			if( this.parentDiv == null )
 				this.parentDiv = $('#' + this.parentDivId);
@@ -65,8 +65,9 @@ RegionEditor_mVc.prototype = {
 			 */
 			var that = this;
 			if(!AladinLiteX_mVc.regionEditorInit){
+			console.log("RERE"+this.parentDiv.id);
 			this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
-			this.lineCanvas[0].width = this.parentDiv.width();
+			this.lineCanvas[0].width =this.parentDiv.width() ;
 			this.lineCanvas[0].height = this.parentDiv.height();
 			this.lineContext = this.lineCanvas[0].getContext('2d');	        
 			this.parentDiv.append(this.lineCanvas);
@@ -84,6 +85,7 @@ RegionEditor_mVc.prototype = {
 			this.parentDiv.append(this.drawCanvas);
 			this.drawCanvas.css('z-index', '101');
 			this.drawCanvas.css('position', 'absolute');
+			this.drawCanvas.css('top', '0px');
 			this.drawCanvas.hide(); 
 
 
@@ -92,7 +94,7 @@ RegionEditor_mVc.prototype = {
 			 * The controller function is wrapped in a function in order to make it working in the context of the controller object
 			 * and not of he HTML widget
 			 */
-			this.drawCanvas[0].addEventListener('mousedown', function(event) {/*console.log("down");*/ that.controller.mouseDown(event);}, false);
+			this.drawCanvas[0].addEventListener('mousedown', function(event) {console.log("down"); that.controller.mouseDown(event);}, false);
 			this.drawCanvas[0].addEventListener('mousemove',  function(event) {that.controller.mouseMove(event);}, false);
 			this.drawCanvas[0].addEventListener('mouseup', function(event) {/*console.log("up");*/ that.controller.mouseUp(event);}, false);
 			
@@ -157,14 +159,12 @@ RegionEditor_mVc.prototype = {
 				that.setBrowseMode();
 				that.controller.invokeHandler(true);
 				that.aladinLite_V.reabledButton();
-//				if(that.contextDiv.height() > 100 ){
-//					that.contextDiv.animate({height:'-=200px'},"fast");
-//				}
 				document.getElementById("region").disabled=false;
 				browseSaved = true;
 				event.stopPropagation();
 			});
-			//if(!AladinLiteX_mVc.regionEditorInit){
+			}
+			if(!AladinLiteX_mVc.regionEditorInit){
 			this.setInitialValue(self.defaultRegion);
 			if( this.editionFrame ){
 				this.setEditionFrame(this.editionFrame);
