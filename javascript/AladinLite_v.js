@@ -293,7 +293,7 @@ var AladinLiteX_mVc = function(){
 		var button_bookmark = '<button id="button_bookmark" class="alix_btn alix_btn-circle alix_btn-orange" title ="save a bookmark" onclick="AladinLiteX_mVc.bookMark();"><i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i></button>'
 		var button_history  = '<button id="button_history" class="alix_btn alix_btn-circle alix_btn-yellow" title ="history of bookmark" ><i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i></button>'
 		var button_region = '<button id="button_region" class="alix_btn alix_btn-circle alix_btn-green" title ="region editor" onclick="AladinLiteX_mVc.regionEditor();" ><i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i></button>'
-		var button_image = '<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>'
+		var button_image = '<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" onclick="AladinLiteX_mVc.showColorMap();" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>'
 		var button_catalog = '<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search an catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>'
 		
 		var panel_locate = '<div id="panel_locate" class="alix_right_panels">'
@@ -2179,7 +2179,7 @@ var AladinLiteX_mVc = function(){
                  });
 	}
 	var showColorMap = function(){
-		if(contextDiv.height() > 100 ){
+		/*if(contextDiv.height() > 100 ){
 			contextDiv.animate({height:'0px'},"fast");
 			contextDiv.css("max-height", "200px");
 			contextDiv.css("border-width", "0px");
@@ -2191,7 +2191,7 @@ var AladinLiteX_mVc = function(){
 			contextDiv.css("max-height", "200px");
 			contextDiv.css("border-width", "0.2px");
 			contextDiv.html(html);
-		}
+		}*/
 		 //// COLOR MAP management ////////////////////////////////////////////
 		var cmDiv = $('.alix_colorMapBox');
 		var cmSelect = cmDiv.find('.aladin-cmSelection');
