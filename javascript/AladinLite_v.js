@@ -41,8 +41,8 @@ var WaitingPanel = function(){
 	var show = function(label){
 		console.log("SHOW " + label);
 		$("#fetchingMessage").html("Fetching data from " + label);
-		$("#waiting_interface").css("height",alix_height);
-		$("#waiting_interface").css("width",alix_width);
+		$("#waiting_interface").css("height","100%");
+		$("#waiting_interface").css("width","100%");
 		$("#waiting_interface").css("display","inline");
 		callers[label] = true;
 	}
