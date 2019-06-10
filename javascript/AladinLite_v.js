@@ -119,6 +119,7 @@ var AladinLiteX_mVc = function(){
 	var aladinLiteView = new AladinLiteView();
 	var XMMcata = null;
 	var sourceSelected;
+	var panel_last = null;
 	
 	/**
 	 * var params = {
@@ -183,6 +184,10 @@ var AladinLiteX_mVc = function(){
 		controllers = params.controllers;
 		controller = new AladinLite_mvC(that, params.controllers);		
 		draw(params.defaultView,params.controllers,params.masterResource);
+		$(".aladin-reticleCanvas").click(function(){
+			$(panel_last).css("display","none");
+			$("#itemList").css("display","none");
+		})//click fond then close all the panels
 		
 	}
 
@@ -285,7 +290,7 @@ var AladinLiteX_mVc = function(){
 			    +'<ul id="vizier_list"></ul></div></fieldset></form></div>'*/
 			   // +'</div>')
 		//parentDiv.append('<div id="open_all" class="alix_open_all glyphicon glyphicon-chevron-right"></div>');	 
-		parentDiv.append('<div id="newMenu" class="alix_menu_panel">')
+		parentDiv.append('<div id="newMenu" class="alix_menu_panel"></div><div id="itemList" class="alix_hips_panel"></div>')
 		
 		var newMenu = $('#newMenu')	;
 		var button_locate = '<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>'
@@ -345,6 +350,7 @@ var AladinLiteX_mVc = function(){
 			
 			
 			
+			
 		newMenu.append('<div id="alix_left_menu"><ul style="list-style-type:none">'
 				+'<li >'+button_locate+'</li>'
 				+'<li>'+button_center+'</li>'
@@ -361,17 +367,13 @@ var AladinLiteX_mVc = function(){
 				+panel_image
 				+panel_catalog
 				+'<div>')
-		var panel_last = null;
+		
 		$('#button_locate').click(function(event){
 			var id = '#panel_locate';
 			panel_check(id);
 		});	
 		$('#button_bookmark').click(function(event){
-			var id ='#panel_history';
-			$(id).css("display","block");
-			if(panel_last!=id){
-			$(panel_last).css("display","none");}
-			panel_last =id;
+			alert("Saved successfully! You can click the history(yellow) button to check your bookmarks.");
 			});	
 		$('#button_history').click(function(event){
 			var id ='#panel_history'
@@ -394,11 +396,9 @@ var AladinLiteX_mVc = function(){
 			if(panel_last!=id){
 			$(panel_last).css("display","none");}
 			panel_last =id;
-		}		
-				
-				
+		}			
 		
-		menuDiv   = $('#' + menuDivId);
+		menuDiv  = $('#' + menuDivId);
 		parentDiv.append('<div id="' + contextDivId + '" class="alix_context_panel" >'
 				+'<b class="alix_context" style="display: none;"> context </b></div>');
 		parentDiv.append('<div id="waiting_interface" class="alix_waiting_interface" style="display:none;">'
@@ -778,12 +778,12 @@ var AladinLiteX_mVc = function(){
 			ifpopup = false;
 		}else{
 		if(menuDiv.width()<100){
-			$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:440});
+			$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900});
 		}else{
 			if(contextDiv.height()<100){
-				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:680});
+				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900});
 			}else{
-				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:650,width:680});
+				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:650,width:900});
 			}
 		}
 		ifpopup = true;
@@ -1363,37 +1363,36 @@ var AladinLiteX_mVc = function(){
 	}
 	// display the  especial detail site for each catalog . buttuon 'i' .
 	var displayCatalogDetailInContext = function(obs_id,color){
-		if(contextDiv.height() > 100 ){
+		/*if(contextDiv.height() > 100 ){
 			contextDiv.animate({height:'0px'},"fast");
 			contextDiv.css("max-height", "200px");
 			contextDiv.css("border-width", "0px");
 			////$(".ui-dialog").animate({height:'0px'},"fast");
-		}else{
+		}else{*/
 			var cata = controller.getSelectedCatalog(obs_id);
 			var index = obs_id.split("/");
 			index.pop();
 			index=index.join("/");
 			var length=index.length-1;
 			if(cata != undefined){
-			var html ='<iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=400 src="http://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+index+'/?format=html&tex=true" frameborder="0"'
-				+'style = "box-shadow: 0 0 20px 2px '+color+'; margin-left: 5px;" ></iframe>'
+			var html ='<div style="background-color:'+color+';border-radius: 5px;box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);"><a href="#" onclick="$(&quot;#itemList&quot;).css(&quot;display&quot;, &quot;none&quot;);" '
+			+ 'style="top: 18px;float: right; margin-right: 8px; margin-top: 2px;" class="ui-dialog-titlebar-close ui-corner-all" role="button">'
+			+ '<span class="glyphicon glyphicon-remove" style="color: white;"></span></a><br></div>'
+				+'<iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=100% src="http://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+index+'/?format=html&tex=true" frameborder="0"'
+				+'style = "" ></iframe>'
 			/*	var html = '<p style="color:#4D36DC;margin:10px;" >';
 				html +=  cata.obs_title + "</p><p style='font-size:small;margin:10px;'>" + cata.obs_description + "<br>";
 				html += '</p>';*/  
-				if(contextDiv.height() > 100){
-					contextDiv.html(html);
-				}else{
-					contextDiv.animate({height:'400px'},"fast");
-					contextDiv.css("max-height", "400px");
-					contextDiv.css("border-width", "0.2px");
-					contextDiv.html(html);
-					//$(".ui-dialog").animate({height:'400px'},"fast");
-				}
+				$("#itemList").html(html);
+				$("#itemList").css("display","block");
+				contextDiv.html(html);
+				//$(".ui-dialog").animate({height:'400px'},"fast");
+				
 			}else{
 				alert("Please choose a catalog");
 			}
 			
-		}
+		//}
 		//event.stopPropagation();		
 	}
 	
@@ -1740,7 +1739,9 @@ var AladinLiteX_mVc = function(){
 			LibraryCatalog.updCatalog({url:url, name: name ,color: color, shape :shape ,fade :"", al_refs: catalog});
 		    };*/
 		}else if(name == 'Swarm'){
-			aladinLiteView.masterResource.cleanTab();
+			if(aladinLiteView.masterResource){
+				aladinLiteView.masterResource.cleanTab();	
+			}
 			cleanCatalog("Target");
 			cleanCatalog("Swarm");
 			console.log("@@@@@@@@@ " + url);
@@ -2179,19 +2180,6 @@ var AladinLiteX_mVc = function(){
                  });
 	}
 	var showColorMap = function(){
-		/*if(contextDiv.height() > 100 ){
-			contextDiv.animate({height:'0px'},"fast");
-			contextDiv.css("max-height", "200px");
-			contextDiv.css("border-width", "0px");
-		}else{
-			var html = '<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">'
-				+'<b>Color Map : </b>'
-				+'<select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
-			contextDiv.animate({height:'101px'},"fast");
-			contextDiv.css("max-height", "200px");
-			contextDiv.css("border-width", "0.2px");
-			contextDiv.html(html);
-		}*/
 		 //// COLOR MAP management ////////////////////////////////////////////
 		var cmDiv = $('.alix_colorMapBox');
 		var cmSelect = cmDiv.find('.aladin-cmSelection');
@@ -2208,7 +2196,7 @@ var AladinLiteX_mVc = function(){
          // reverse color map
          cmDiv.find('.aladin-reverseCm').click(function() {
         	 aladin.view.imageSurvey.getColorMap().reverse(); 
-        	 storeCurrentState();
+        	 storeCurrentState();        	 
          });
 	}
 	

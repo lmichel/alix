@@ -42,9 +42,10 @@ HipsSelector_mVc.prototype = {
 		 * afficher le panneau de la liste sur aladin
 		 */
 		displaylistepanel : function(){
-			if( this.parentDiv == null )
+			/*if( this.parentDiv == null )
 				this.parentDiv = $('#' + this.parentDivId);
-			this.parentDiv.append('<div id="itemList" class="alix_hips_panel"></div>');
+			this.parentDiv.append('<div id="itemList" class="alix_hips_panel"></div>');*/
+			//to avoid the repetition of the creation of itemlist div 
 		},
 		
 		/**

@@ -8,101 +8,6 @@
 	color:#555753;
 }
  */
- html,body {
-    height: 100%;
-    width:100%;
- }
- #newMenu>#alix_left_menu>ul>li>button:hover{
- width:50px !important;
-    /* box-shadow: 1px 1px 16px 7px #6868a5;*/
- }
- #alix_left_menu{
- position: absolute;
-    z-index: 100;
- }
-  #alix_right_menu{
- position: absolute;
-    z-index: 10;
-    top:0px;
- }
- #panel_locate{
- /*box-shadow: 6px 3px 10px #888a85;*/
- background-color: #f3ebddc2;
-    width: 300px;
-    height: 70px;
-    border: azure;
-    position: absolute;
-    top: 5px;
-    left: 60px;
-    border-radius: 20px;
- }
- #panel_history {
-    padding: 15px;
-    background-color: #f3ebddc2;
-    width: 450px;
-    height: 285;
-    border: azure;
-    position: absolute;
-    top: 5;
-    left: 60px;
-    border-radius: 20px;
-    overflow:auto;
- }
-#panel_region{
-    background-color: #f3ebddc2;
-    width: 300px;
-    height: 125px;
-    border: azure;
-    position: absolute;
-    top: 170px;
-    left: 60px;
-    border-radius: 20px;
-        z-index: 1000;
-}
-#panel_image{
-background-color: #f3ebddc2;
-    width: 300px;
-    height: 300px;
-    border: azure;
-    position: absolute;
-    top: 5px;
-    left: 60px;
-    border-radius: 20px;
-    padding-left: 35px;
-    overflow: auto;
-}
- #panel_catalog{
-    background-color: #f3ebddc2;
-    width: 300px;
-    height: 300px;
-    border: azure;
-    position: absolute;
-    top: 5;
-    left: 60px;
-    border-radius: 20px;
-    overflow:auto;
-}
-#panel_image_detail{
-	display:none;
-    position: absolute;
-    top: 115px;
-    width: 260px;
-    left: 25px;
-    border-radius: 20px;
-    background-color: #e0d2ec61;
-}
-#panel_catalog_detail{
-    display: none;
-    position: absolute;
-    top: 240px;
-    width: 250px;
-    left: 0px;
-    border-radius: 20px;
-    background-color: #e0d2ec61;
-}
-.alix_right_panels{
-	display:none;
-}
  body{
  font-family: Arial, x-locale-body, sans-serif;
  -webkit-box-sizing: none;
@@ -144,13 +49,13 @@ background-color: #f3ebddc2;
     background-position: center center;
 }
 .alix_menu_panel{
-	z-index : 1000;
+	z-index : 10;
 	background-color: #f9f9f9;
 	height: 400px;
 	width: 1px;
 	position : absolute;
-	left: 6px  ;
-	top : 20%;
+	left : 404px;
+	top : 7px;
 	border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     border-style: solid;
@@ -163,10 +68,12 @@ background-color: #f3ebddc2;
 	font-size: small;
 	padding: 20px;
     z-index: 20;
-    position: absolute;
-    left: 16px;
-    top:60px;
-    width: auto;
+   /* position: absolute;
+    left: 60px;
+    width: 150px;
+    height: 50px;
+    box-shadow: 2px 2px 5px #858A90;
+    background-color: white;*/
 }
 
 .alix_open_all{
@@ -175,7 +82,7 @@ background-color: #f3ebddc2;
 	background-color:#888a85;
 	width:14px;
 	height:70px;
-	left: 0px  ;
+	left: 415px ;
 	top:170px !important;
 	text-align: left;
 	line-height: 4.7 !important;
@@ -192,8 +99,8 @@ background-color: #f3ebddc2;
 	z-index:0;
 }
 .alix_waiting_interface{
-/*	width:1000px;
-	height:1000px;*/
+	width:1000px;
+	height:1000px;
 	z-index:10000;
 	position:fixed;
 	left:0px;
@@ -201,15 +108,15 @@ background-color: #f3ebddc2;
 }
 
 .alix_grey_bg{
-	width:100%;
-	height:100%;
+	width:665px;
+	height:400px;
 	background-color: #babdb6;
 	opacity:0.5;
 }
 .alix_fetching_data{
 	position:absolute;
 	top:1.2%;
-	left:35%;
+	left:2.5%;
 	width: 350px;
 	height:40px;
 	background-color: #eeeeec;
@@ -299,7 +206,7 @@ background-color: #f3ebddc2;
 	padding: 2px;
 	padding-left:8px;
 	position : absolute;
-	left: 35px;      /*position of text*/ 
+	left: 10px;      /*position of text*/ 
 	top: 20px;
 	/*position of 'target'*/
 	border-top-left-radius: 4px;
@@ -308,7 +215,7 @@ background-color: #f3ebddc2;
     border-bottom-left-radius: 4px;
    line-height: 1.42857143;
     color: #555;
-    background-color: #ffffff78;
+    background-color: #fff;
     background-image: none;
     border: 1px solid #ccc;
 
@@ -475,8 +382,8 @@ background-color: #f3ebddc2;
 
 .alix_image_panel{
 	position:absolute;
-	left:20px;
-	top:5px;
+	left:3px;
+	top:110px;
 	width:242px;
 	height:60px;
 	 border-radius: 5px;
@@ -504,7 +411,7 @@ background-color: #f3ebddc2;
     border-bottom-left-radius: 4px;
     line-height: 1.42857143;
     color: #555;
-    background-color: #ffffff78;
+    background-color: #fff;
     background-image: none;
     border: 1px solid #ccc;
 }
@@ -534,7 +441,7 @@ background-color: #f3ebddc2;
     top : 78px;*/
 
     margin-top: 8px;
-    width: 160px;
+    width: 150px;
 	height:25px;
 	padding: 2px;
 	padding-left:8px;
@@ -545,7 +452,7 @@ background-color: #f3ebddc2;
     border-bottom-left-radius: 4px;
     line-height: 1.42857143;
     color: #555;
-    background-color: #ffffff78;
+    background-color: #fff;
     background-image: none;
     border: 1px solid #ccc;
 }
@@ -594,6 +501,7 @@ background-color: #f3ebddc2;
 	/*position:absolute;
 	top:100px;
 	left:3px;*/
+	margin-bottom: 0px !important; 
 	width:80px;
 	font-size:18px !important;
 	color:#333;
@@ -624,8 +532,8 @@ background-color: #f3ebddc2;
 
 .alix_catalog_panel{
 	position: absolute;
-    left: 28px;
-    top: 20px;
+    left: 3px;
+    top: 180px;
     width: 242px;
     height: 215px;
     border-radius: 5px;
@@ -637,8 +545,8 @@ background-color: #f3ebddc2;
 }
 
 .alix_shapeChoice{
-	    margin-left: 4px;
-    margin-right: 8px;
+	 margin-left: 8px;
+    margin-right: 15px;
 }
 .alix_configurationShape{
 	 margin: 10px;
@@ -708,17 +616,20 @@ background-color: #f3ebddc2;
 	font-family: Arial,x-locale-body,sans-serif;
 }
 .alix_vizier{
-z-index: 10;
-    margin-top: 5px;
-    width: 250px;
-    height: 120px;
+	z-index:10;
+/*	position:absolute;
+	top:110px;
+	left:4px;*/
+	margin-top: 5px;
+	width:230px;
+	height:85px;
     white-space: nowrap;
-    overflow-y: auto;
-    background-color: #84785f29;
-    border-color: #ccc;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 2px;
+	overflow-y:auto;
+	background-color:#ffffff;
+	border-color: #ccc;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 2px;
 	/*box-shadow: 0 1px 6px 0 grey;*/
 }
 
@@ -736,7 +647,7 @@ z-index: 10;
 	width:100px;
 }
 .alix_menu_item{
-	
+	display :none ;
 }
 
 .alix_credit{
@@ -752,7 +663,7 @@ z-index: 10;
 	background-image: url('./fleche_down.png');
 	background-position : 3% 50%;
 	background-repeat: no-repeat;
-	background-size: 2% 90%;
+	background-size: 4% 90%;
 	height : 25px;
 	overflow: hidden;
 	border-radius : 4px;
@@ -770,7 +681,7 @@ z-index: 10;
 	background-image: url('./fleche_up.png');
 	background-position : 3% 50%;
 	background-repeat: no-repeat;
-	background-size: 2% 90%;
+	background-size: 4% 90%;
 	height : 25px;
 	overflow: hidden;
 	background-color : #ddf3ff;
@@ -793,37 +704,35 @@ z-index: 10;
 	display: none;
 	overflow: auto;
 	position: absolute;
-    top: 0px;
-    left: 50%;
-    width: 50%;
-    height: 100%;
+	left:0px;
+	top:0px; 
+	width: 385px; 
+	height: 385px;
 	z-index: 10000;
 }
-.alix_btn-blue {
+.alix_btn-primary {
     color: #fff;
     background-color: #337ab7;
     border-color: #2e6da4;
 }
-.alix_btn-red {
+.alix_btn-danger {
     color: #fff;
     background-color: #d9534f;
     border-color: #d43f3a;
 }
-.alix_btn-orange {
+.alix_btn-warning {
     color: #fff;
     background-color: #f0ad4e;
     border-color: #eea236;
 }
 .alix_btn-circle{
-	margin: 5px;
-	width: 32px;
-	height: 32px;
+	width: 30px;
+	height: 30px;
 	text-align: center;
 	padding: 6px 0 !important;
 	font-size: 12px;
 	line-height: 1.428571429 !important;
-	border-radius: 20px !important;
-	box-shadow: 0.5px 0.5px 10px #888a85;
+	border-radius: 15px !important;
 	z-index:2;
 }
 
@@ -831,18 +740,6 @@ z-index: 10;
 	color: #fff;
     background-color: #14ad14;
     border-color: #14ad14;
-}
-
-.alix_btn-yellow{
-	color: #fff;
-    background-color: #eae739;
-    border-color: #eae739;
-}
-
-.alix_btn-purple{
-	color: #fff;
-    background-color: #c49bc5;
-    border-color: #c49bc5;
 }
 
 .alix_btn-edit{
@@ -871,7 +768,7 @@ z-index: 10;
 	vertical-align: top !important;
 }
 
-.alix_btn-grey{
+.alix_btn-color-menu{
 	color: #555753;
     background-color: #d3d7cf;
     border-color: #babdb6 !important;
@@ -961,7 +858,7 @@ z-index: 10;
 .alix_edt_btn{
 	position:absolute;
 	 top: 30px;
-	left:40px;
+	left:110px;
 	width:75px;
 	height:25px;
 	display:inline;
@@ -975,7 +872,7 @@ z-index: 10;
 .alix_browse_btn{
 	position:absolute;
 	 top: 30px;
-	left:170px;
+	left:220px;
 	width:75px;
 	height:25px;
 	display:inline;
@@ -989,8 +886,8 @@ z-index: 10;
 
 .alix_clear_btn{
 	position:absolute;
- top: 70px;
-	left:40px;
+ top: 30px;
+	left:330px;
 	width:75px;
 	height:25px;
 	display:inline;
@@ -1005,8 +902,8 @@ z-index: 10;
 
 .alix_accept_btn{
 	position:absolute;
-	 top: 70px;
-	left:170px;
+	 top: 30px;
+	left:440px;
 	width:75px;
 	height:25px;
 	display:inline;
@@ -1064,9 +961,9 @@ z-index: 10;
 }
 
 .alix_plus{
-position:absolute;
-	    top: 3px;
-    left: 118px;
+/*	position:absolute;
+	left:110px;
+    top: 1px;*/
    width: 25px;
     height: 25px;
         padding: 0 0;
@@ -1080,13 +977,13 @@ position:absolute;
 
 
 .alix_minus{
-	    left: 85px;
-    top: 2px;
-    position: absolute;
-    width: 15px;
+	/*position:absolute;
+	left:90px;
+    top: 0px;*/
+        width: 15px;
     height: 15px;
-    padding: 0 0;
-    font-size: 15;
+        padding: 0 0;
+        font-size: 15;
     font-weight: bold;
     margin-left: 5px;
      /*    background: linear-gradient(270deg,#E8E8E8,#b8b8b83b)
@@ -1097,23 +994,15 @@ position:absolute;
 }
 
 #fade{
-	    top: 5px;
-    position: absolute;
+	/*position:absolute;
+	left: 95px;
+    top: 5px;*/
     opacity: .3;
     font-size: 14px;
-    /* display: none; */
-    left: 100px;
+    /*display:none;*/
 }
-#RegionCanvasTemp{
+#RegionCanvasTemp {
      background: rgba(255,255,255,0.6); 
-     top:0px;
-    /* height:100%;
-     width:100%;*/
-}
-#RegionCanvas{
-	/**top:0px;
-     height:100%;
-     width:100%;*/
 }
 
 .alix_target_selecte{
