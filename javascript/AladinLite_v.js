@@ -189,6 +189,7 @@ var AladinLiteX_mVc = function(){
 			$("#itemList").css("display","none");
 		})//click fond then close all the panels
 		
+		
 	}
 
 	var fadeOutAuto = function(){
@@ -301,12 +302,14 @@ var AladinLiteX_mVc = function(){
 		var button_image = '<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" onclick="AladinLiteX_mVc.showColorMap();" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>'
 		var button_catalog = '<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search an catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>'
 		
-		var panel_locate = '<div id="panel_locate" class="alix_right_panels">'
-			+'<input id="' + targetDivId + '" placeholder="target" class="alix_target" ><span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>'
+			
+			
+		var panel_locate = 
+			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target" ><span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>'
 			+'<select  id ="' + selectDivId + '" class="alix_select">'
 			+'<option value="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
-			+'</select>'
-			+'</div>'
+			+'</select></div>'
+			//+'</div>'
 		var panel_history = '<div id="panel_history" class="alix_right_panels">'
 			+'</div>'
 		var panel_region = '<div id="panel_region" class="alix_right_panels">'
@@ -349,10 +352,10 @@ var AladinLiteX_mVc = function(){
 			+'</div>'
 			
 			
+		aladinDivId.append(panel_locate); // replace the orignial position block by the updated one
 			
-			
-		newMenu.append('<div id="alix_left_menu"><ul style="list-style-type:none">'
-				+'<li >'+button_locate+'</li>'
+		newMenu.append('<div id="alix_left_menu"><ul style="list-style-type:none; padding: 5px;">'
+				//+'<li >'+button_locate+'</li>'
 				+'<li>'+button_center+'</li>'
 				+'<li>'+button_bookmark+'</li>'
 				+'<li>'+button_history+'</li>'
@@ -361,7 +364,7 @@ var AladinLiteX_mVc = function(){
 				+'<li>'+button_catalog+'</li>'
 				+'</ul></div>'
 				+'<div id="alix_right_menu">'
-				+panel_locate
+				//+panel_locate
 				+panel_history
 				+panel_region
 				+panel_image

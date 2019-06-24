@@ -114,6 +114,34 @@ URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
 };
 
 
-
+var Location = (function() {
+    // constructor
+    Location = function(locationDiv) {
+    		this.$div = $(locationDiv);
+    	};
+	
+	Location.prototype.update = function(lon, lat, cooFrame, isViewCenterPosition) {
+        isViewCenterPosition = (isViewCenterPosition && isViewCenterPosition===true) || false;
+		var coo = new Coo(lon, lat, 7);
+		var updateDiv = $("#aladin-lite-div-target")
+		if (cooFrame==CooFrameEnum.J2000) {
+            this.$div.html(coo.format('s/'));
+            updateDiv.val(coo.format('s/'));
+        }
+		else if (cooFrame==CooFrameEnum.J2000d) {
+            this.$div.html(coo.format('d/'));
+            updateDiv.val(coo.format('d/'));
+        }
+        else {
+            this.$div.html(coo.format('d/'));
+            updateDiv.val(coo.format('d/'));
+        }
+		//console.log("update locate box");
+        this.$div.toggleClass('aladin-reticleColor', isViewCenterPosition);
+        updateDiv.toggleClass('aladin-reticleColor', isViewCenterPosition);
+	};
+	
+	return Location;
+})();
 	
 

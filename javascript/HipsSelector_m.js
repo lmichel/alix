@@ -61,7 +61,7 @@ HipsSelector_Mvc.prototype = {
 			/**
 			 * afficher le panel de la liste
 			 */
-			that.view.displaylistepanel();
+			//that.view.displaylistepanel();
 			that.productType = "image";
 			var url = this.baseUrl;
 			if( mask != "" ){
@@ -156,7 +156,7 @@ HipsSelector_Mvc.prototype = {
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false&MAXREC=100";
 
-			that.view.displaylistepanel();
+			//that.view.displaylistepanel();
 			that.productType = "catalog";
 			var url = this.baseUrl;
 			if( mask != undefined &&mask != "" ){

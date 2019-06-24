@@ -33,7 +33,7 @@
     border: azure;
     position: absolute;
     top: 5px;
-    left: 60px;
+    left: 25px;
     border-radius: 20px;
  }
  #panel_history {
@@ -44,7 +44,7 @@
     border: azure;
     position: absolute;
     top: 5;
-    left: 60px;
+    left: 25px;
     border-radius: 20px;
     overflow:auto;
  }
@@ -55,7 +55,7 @@
     border: azure;
     position: absolute;
     top: 170px;
-    left: 60px;
+    left: 25px;
     border-radius: 20px;
         z-index: 1000;
 }
@@ -66,7 +66,7 @@ background-color: #f3ebddc2;
     border: azure;
     position: absolute;
     top: 5px;
-    left: 60px;
+    left: 25px;
     border-radius: 20px;
     padding-left: 35px;
     overflow: auto;
@@ -78,7 +78,7 @@ background-color: #f3ebddc2;
     border: azure;
     position: absolute;
     top: 5;
-    left: 60px;
+    left: 25px;
     border-radius: 20px;
     overflow:auto;
 }
@@ -293,32 +293,32 @@ background-color: #f3ebddc2;
 }
 
 .alix_target{
-	width: 138px;
-	height:25px;
-	padding: 2px;
-	padding-left:8px;
-	position : absolute;
-	left: 35px;      /*position of text*/ 
-	top: 20px;
-	/*position of 'target'*/
-	border-top-left-radius: 4px;
+	z-index: 100;
+    width: 180px;
+    /* height: 25px; */
+    /* padding: 2px; */
+    padding-left: 5px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-top-left-radius: 4px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 4px;
-   line-height: 1.42857143;
-    color: #555;
+    line-height: 1.42857143;
+    color: #333;
     background-color: #ffffff78;
     background-image: none;
     border: 1px solid #ccc;
-
 }
 
 .alix_search{
+	z-index: 100;
 	width:30px;
 	height:25px;
 	position : absolute !important;
-	left:148px !important;
-	top: 20px !important;
+	left:180px !important;
+	top: 0px !important;
 	padding: 2px;
     font-size: 14px;
     font-weight: 400;
@@ -334,11 +334,14 @@ background-color: #f3ebddc2;
     white-space: nowrap;
     line-height: 20px !important;
 }
-
+.aladin-location{
+	display:none;
+}
 .alix_select{
+	z-index: 100;
 	position : absolute;
-	left : 182px;
-	top : 20px;
+	left : 210px;
+	top : 0px;
 	width:60px;
 	height:25px;
 	padding: 2px;
@@ -834,8 +837,8 @@ z-index: 10;
 
 .alix_btn-yellow{
 	color: #fff;
-    background-color: #eae739;
-    border-color: #eae739;
+    background-color: #c2c514;
+    border-color: #c2c514;
 }
 
 .alix_btn-purple{
