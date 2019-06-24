@@ -352,7 +352,7 @@ var AladinLiteX_mVc = function(){
 			+'</div>'
 			
 			
-		aladinDivId.append(panel_locate); // replace the orignial position block by the updated one
+			parentDiv.append(panel_locate); // replace the orignial position block by the updated one
 			
 		newMenu.append('<div id="alix_left_menu"><ul style="list-style-type:none; padding: 5px;">'
 				//+'<li >'+button_locate+'</li>'
