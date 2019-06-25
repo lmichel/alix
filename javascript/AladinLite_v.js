@@ -302,10 +302,10 @@ var AladinLiteX_mVc = function(){
 		var button_image = '<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" onclick="AladinLiteX_mVc.showColorMap();" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>'
 		var button_catalog = '<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search an catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>'
 		
-			
+			//<span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>
 			
 		var panel_locate = 
-			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target" ><span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>'
+			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target" >'
 			+'<select  id ="' + selectDivId + '" class="alix_select">'
 			+'<option value="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
 			+'</select></div>'
