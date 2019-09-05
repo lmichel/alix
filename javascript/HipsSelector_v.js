@@ -98,7 +98,7 @@ HipsSelector_mVc.prototype = {
 								+ jsondata[i].obs_title +"</span></div><div id='cata_" 
 								+ jsondata[i].ID 
 								+ "' class='alix_description_panel'><span class=alix_datahelp style='cursor: pointer;color:#4D36DC;font-size: medium;' "
-								+ "onclick='AladinLiteX_mVc.catalogFunction(&quot;" + jsondata[i].obs_id + "&quot);'>"  
+								+ "onclick='AladinLiteX_mVc.catalogFunction(&quot;" + jsondata[i].obs_id + "&quot,  &quot;" + jsondata[i].obs_title.replace(/["']/, ' ') + "&quot);'>"    
 								+ jsondata[i].obs_title
 								+ "</span>"
 								+"<i id='btn_detail_catalog_"+ jsondata[i].obs_id +"' title='detail' class='glyphicon glyphicon-info-sign alix_btn-operate-catalog' style='cursor: pointer;' onclick='AladinLiteX_mVc.displayCatalogDetailInContext(&quot;"+ jsondata[i].obs_id +"&quot;)'></i>&nbsp;<br>"
@@ -111,7 +111,7 @@ HipsSelector_mVc.prototype = {
 								+ jsondata[i].obs_title+"</span><i class='glyphicon glyphicon-asterisk' style='font-size:8px;'></i></div><div id='cata_" 
 								+ jsondata[i].ID 
 								+ "' class='alix_description_panel'><span class=alix_datahelp style='cursor: pointer;color:#4D36DC;font-size: medium;' "
-								+ "onclick='AladinLiteX_mVc.catalogFunction(&quot;" + jsondata[i].obs_id + "&quot);'>"  
+								+ "onclick='AladinLiteX_mVc.catalogFunction(&quot;" + jsondata[i].obs_id + "&quot,  &quot;" + jsondata[i].obs_title.replace(/["']/, ' ') + "&quot);'>"  
 								+ jsondata[i].obs_title 
 								+ "</span>"
 								+"<i id='btn_detail_catalog_"+ jsondata[i].obs_id +"' title='detail' class='glyphicon glyphicon-info-sign alix_btn-operate-catalog' style='cursor: pointer;' onclick='AladinLiteX_mVc.displayCatalogDetailInContext(&quot;"+ jsondata[i].obs_id +"&quot;)'></i>&nbsp;<br>"
