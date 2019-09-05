@@ -345,7 +345,7 @@ var AladinLiteX_mVc = function(){
 			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
 			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
 			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
-			    +'<select id="select_vizier" class="alix_selector_vizier "></select>'
+			    +'<select id="select_vizier" class="alix_selector_vizier "><option selected="selected">--select--</option></select>'
 			    +'<div id="vizier" class="alix_vizier">'
 			    +'<ul id="vizier_list"></ul></div></div>'
 				+'<div id="panel_catalog_detail"></div>'
@@ -516,6 +516,8 @@ var AladinLiteX_mVc = function(){
 		
 		$("#select_vizier").change(function(){
 			var oid = $(this).val();
+			if(oid=="--select--")
+				return;
 			var strs=oid.match(/^([^\s]*)\s\[(.*)\]$/);
 			//console.log(strs[]);
 			catalogFunction(strs[1],strs[2]);
