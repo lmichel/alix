@@ -557,7 +557,7 @@ background-color: #f3ebddc2;
 	left :154px;
     top : 78px;*/
     
-    width: 80px;
+    width: 90px;
 	height:25px;
 	padding: 2px;
     font-size: 14px;
@@ -628,7 +628,7 @@ background-color: #f3ebddc2;
 	position: absolute;
     left: 28px;
     top: 20px;
-    width: 242px;
+    width: 250px;
     height: 215px;
     border-radius: 5px;
 	/*border-style:solid;
@@ -763,7 +763,7 @@ z-index: 10;
 
 .alix_title_in_liste{
 	color: #2e3436;
-	padding-left: 35px;
+	padding-left: 50px;
 	line-height: 25px;
 	font-size: small;
 }
