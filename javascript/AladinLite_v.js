@@ -516,7 +516,9 @@ var AladinLiteX_mVc = function(){
 		
 		$("#select_vizier").change(function(){
 			var oid = $(this).val();
-			catalogFunction(oid);
+			var strs=oid.match(/^([^\s]*)\s\[(.*)\]$/);
+			//console.log(strs[]);
+			catalogFunction(strs[1],strs[2]);
 		});
 		
 		catalogeDiv.keyup(function(e) {
@@ -1209,12 +1211,29 @@ var AladinLiteX_mVc = function(){
 		displayDetailInContext(ID);
 	}
 	
-	var catalogFunction = function(obs_id){
+	/**
+	 * obs_id: catalogue identifier
+	 * title: catalogue full name, just for user information
+	 */
+	var catalogFunction = function(obs_id, title){
 	//	if(controller.modules.hipsSelectorModel.cata_tab.indexOf(obs_id)<0){
+		/*console.log(title);
+		var strs = new Array();
+		strs=title.split("(");
+		var stitle = (strs[0])? " [" + strs[0] + "]": " [No Title]";*/
+		
+		/*var stitle;
+		if(title.search("\\[")!=-1)
+			stitle=" ["+title+"] ";
+		else
+			stitle=title;*/
+		
+		var stitle = (title)? " [" + title + "]": " [No title]"
+		//var stitle = (title)?title: " [No title]"
 		if(!LibraryCatalog.getCatalog("VizieR:"+obs_id)){
 		//	controller.storeCurrentCatalog(obs_id);
 			controller.createCatalogSelect(obs_id);
-			addCatalogInSelector(obs_id);
+			addCatalogInSelector(obs_id, stitle);
 		}
 		else{
 			var shown = false;
@@ -1310,17 +1329,21 @@ var AladinLiteX_mVc = function(){
 		selectDiv.val(pos)}
 	}
 	
-	var addCatalogInSelector = function(obs_id){
+	/**
+	 * obs-id: catalogue identifier
+	 * stitle: catalogue full name, just for user information
+	 */
+	var addCatalogInSelector = function(obs_id, stitle){//add the catalog to the selector
 		//To avoid adding the same catalog obs_id again
 		var select_vizier = document.getElementById("select_vizier")
 		var lengthOption = select_vizier.options.length;
 		$("#select_vizier").val(obs_id);
 		for(var i=0;i<lengthOption;i++){
-			if(select_vizier.options[i].text == obs_id)
+			if(select_vizier.options[i].text.startsWith(obs_id + " "))
 				return false;
 		}
 		var cata_select = '<option>'
-			+obs_id
+			+obs_id + stitle
 			+'</option>';
 		$("#select_vizier").append(cata_select);
 	}
