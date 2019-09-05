@@ -22,6 +22,9 @@
  * IN THE SOFTWARE. 
 **/
 
+/**
+ * This is the function used to search an catalog
+ */
 
 var LibraryCatalogItem = function(params){
 	  /**
