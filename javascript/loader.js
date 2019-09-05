@@ -196,7 +196,7 @@ var resourceLoader = function() {
 			dataType: 'text',
 			success: function(){        
 				$('<link rel="stylesheet" type="text/css" href="'+href+'" />').appendTo("head");
-				console.log(href + " CSS loaded " + CssOver);
+				console.log(href + " CSS loaded " + !CssOver);
 				css.shift();
 				if( css.length > 0 ) loadNextCss();
 				else {
