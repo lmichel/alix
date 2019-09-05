@@ -358,7 +358,6 @@ HipsSelector_mVc.prototype = {
 					$('#vizier').on('click','#btn_delete_catalog_'+id,function(event){
 						event.stopPropagation();
 						
-						//var obs_id =$("#cata_operate_"+ x).text();
 						var obs_id = this.parentNode.className;
 						var cata_name = 'VizieR:'+obs_id;
 						//var cataColor = LibraryCatalog.getCatalog(cata_name).color;
