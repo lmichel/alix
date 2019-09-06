@@ -318,7 +318,7 @@ var AladinLiteX_mVc = function(){
 		    +'<p class="alix_titlle_image ">Image'
 		    +'</p>'
 		    +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class=" alix_img_explorer"></input>'
-		    +'<select id="status-select" class ="alix_selector_hips "></select>'
+		    +'<select id="status-select" class ="alix_selector_hips "><option selected="selected">--select--</option></select>'
 		    +'<button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button>'
 			+'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">'
 			+'<b>Color Map : </b>'
@@ -508,6 +508,8 @@ var AladinLiteX_mVc = function(){
 			}
 		});
 		selectHipsDiv.change(function(){
+			if($(this).val()=="--select--")
+				return;
 			displaySelectedHips($(this).val());
 		});
 		selectHipsDiv.click(function(event){
@@ -682,16 +684,17 @@ var AladinLiteX_mVc = function(){
 				var found = false;
 				for( var i=0 ; i<jsondata.length ; i++){
 					var id = jsondata[i].ID ;
+					console.log("@@@@ " + id + " >" + defaultSurvey);
 					if( id == defaultSurvey){
 						displaySelectedHips(id);
 						createHipsSelect(id);
 						found = true;
 					}
 				}
-				if( !found ){
+				/*if( !found ){
 					displaySelectedHips("CDS/P/DSS2/color");
-					createHipsSelect("CDS/P/DSS2/color");
-				}
+					createHipsSelect("CDS/P/DSS2/color", "DSS colored");
+				}*/
 			}
 		});
 	}
@@ -1207,9 +1210,9 @@ var AladinLiteX_mVc = function(){
 		controller.searchHips(hips_mask,aladinLiteView);
 	}
 	
-	var hipsFunction = function(ID){
+	var hipsFunction = function(ID,title){
 		displaySelectedHips(ID);
-		createHipsSelect(ID);
+		createHipsSelect(ID,title);
 		displayDetailInContext(ID);
 	}
 	
@@ -1274,7 +1277,7 @@ var AladinLiteX_mVc = function(){
 		}
 	}
 	
-	var createHipsSelect = function(ID){
+	var createHipsSelect = function(ID,title){
 		var select_hips = document.getElementById(selectHipsDivId);
 		var lengthOption = select_hips.options.length;
 		for(var i=0;i<lengthOption;i++){
@@ -1282,19 +1285,37 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		controller.modules.historicModel.hips_tab.push(ID);
+		var stitle = (title)? " ["+title+"]":" [no title]";
 		var html_option = '<select id="status" class ="alix_selector_hips ">'
-			html_option += "<option value='"+ ID +"'>"+ ID +"</option>";
+			html_option += "<option value='"+ ID +"'>"+ ID +stitle+"</option>";
 				for(var s=0 ; s<controller.modules.historicModel.hips_tab.length; s++){
 					if(controller.modules.historicModel.hips_tab[s]!=ID){
+						var hips = controller.getSelectedHips(controller.modules.historicModel.hips_tab[s]);
+						var subtitle = (hips.obs_title)? " ["+hips.obs_title+"]":" [no title]";
 						html_option += "<option value='" 
 						+ controller.modules.historicModel.hips_tab[s] 
 						+ "'>"
-						+ controller.modules.historicModel.hips_tab[s] +"</option>"
+						+ controller.modules.historicModel.hips_tab[s] +subtitle+"</option>"
 					}
 				}
 		html_option += '</select>';
 		selectHipsDiv.html(html_option);
 	}
+	/*var addHipsSelect = function(ID)
+	var addCatalogInSelector = function(obs_id, stitle){//add the catalog to the selector
+		//To avoid adding the same catalog obs_id again
+		var select_vizier = document.getElementById("select_vizier")
+		var lengthOption = select_vizier.options.length;
+		$("#select_vizier").val(obs_id);
+		for(var i=0;i<lengthOption;i++){
+			if(select_vizier.options[i].text.startsWith(obs_id + " "))
+				return false;
+		}
+		var cata_select = '<option>'
+			+obs_id + stitle
+			+'</option>';
+		$("#select_vizier").append(cata_select);
+	}*/
 	
 
 /*	var createPositionSelect = function(ID){
