@@ -407,6 +407,7 @@ var AladinLiteX_mVc = function(){
 		parentDiv.append('<div id="waiting_interface" class="alix_waiting_interface" style="display:none;">'
 				+'<div class="alix_grey_bg"></div>'
 				+'<div class="alix_fetching_data">'
+				+'<input type="button" id="closeWaitingPanel" value="x">'
 				+'<div class="alix_fetching_img"></div>'
 				+'<div id="fetchingMessage" class="alix_fetching_message">fetching data...</div></div></div>');
 		parentDiv.append('<div id="alert" class="alix_alert_fov" style="display:none;">'
@@ -415,7 +416,6 @@ var AladinLiteX_mVc = function(){
 				+'</div>');
 		parentDiv.append('<div class="alix_tester" id="tester"><ul></ul></div>');
 		
-	
 		contextDiv  = $('#' + contextDivId);
 		targetDiv   = $('#' + targetDivId);
 		selectDiv   = $('#' + selectDivId);
@@ -430,6 +430,7 @@ var AladinLiteX_mVc = function(){
 		setReferenceView(defaultView);
 		storeCurrentState();
 		
+		console.log(aladin);
 
 		aladin.on('positionChanged', function(newPosition){
 			if(newPosition.dragging==false){
@@ -455,6 +456,14 @@ var AladinLiteX_mVc = function(){
 			AladinLiteX_mVc.displayDataXml();
 		}
 		*/
+		/*function closeWaitingInterface(){
+			document.getElementById("waiting_interface").style.display;
+		}*/
+		
+		//add a button for closing the waiting panel
+		$("#closeWaitingPanel").click(function(event){
+			document.getElementById("waiting_interface").style.display="none";
+		})
 		$("#open_all").click(function(event){
 			event.stopPropagation();
 			switchPanel();
@@ -1345,11 +1354,10 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		if(pos != ""){
-		var pos_select = '<option>'
-			+pos
-			+'</option>';
-		selectDiv.append(pos_select);
-		selectDiv.val(pos)}
+			var pos_select = '<option>'+pos+'</option>';
+			selectDiv.append(pos_select);
+			selectDiv.val(pos);
+		}
 	}
 	
 	/**
@@ -1800,121 +1808,127 @@ var AladinLiteX_mVc = function(){
 				sourceSize = LibraryCatalog.getCatalog(name).al_refs.sourceSize;
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			}
-			
-			catalog = XMMcata = A.catalogFromURL(url, {name: name, sourceSize:sourceSize, shape: shape , color: color, onClick:function(params) {
-				/*
-				 * function click for the source in catalog XMM
-				 */
-				sourceSelected = this;//save the reference of selected source as an global var in order to allow us deselect it easilier in the deselectSource();
-				aladinLiteView.sourceSelected.x = params.x;
-				aladinLiteView.sourceSelected.y = params.y;
-				var data = params.data;
-				var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
-				console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
-				if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
-					aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
-				}
-				var r1="", r2="";
-				for( var k  in data){
-					r1 += "<td >" + k + "</td>";
-					r2 += "<td >" + data[k] + "</td>";
-				}
-				var html = "<table class='dataTable' border=1 style='font-size: small;display:none;'><tr style='font-weight: bold;'>" + r1 + "</tr><tr align=center>" + r2 + "</tr></table>"					
+			if(url!=undefined){
+			  catalog = XMMcata = A.catalogFromURL(url
+				,{     name: name, sourceSize:sourceSize
+				    , shape: shape 
+				    , color: color
+				    , onClick:function(params) {
+						/*
+						 * function click for the source in catalog XMM
+						 */
+						sourceSelected = this;//save the reference of selected source as an global var in order to allow us deselect it easilier in the deselectSource();
+						aladinLiteView.sourceSelected.x = params.x;
+						aladinLiteView.sourceSelected.y = params.y;
+						var data = params.data;
+						var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
+						console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
+						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
+							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
+						}
+						var r1="", r2="";
+						for( var k  in data){
+							r1 += "<td >" + k + "</td>";
+							r2 += "<td >" + data[k] + "</td>";
+						}
+						var html = "<table class='dataTable' border=1 style='font-size: small;display:none;'><tr style='font-weight: bold;'>" + r1 + "</tr><tr align=center>" + r2 + "</tr></table>"					
+						
 				
-		
-				if(aladinLiteView.masterResource != undefined&&aladinLiteView.masterResource.actions.showPanel.active == true ) {
-					openContextPanel(html);
-					$(".dataTable").css("display","table");
-				}else{
-					$(".dataTable").css("display","none");
-				};
-				
-				
-				if( masterResource != undefined&&!aladinLiteView.masterResource.actions.showAssociated) {
-					openContextPanel(html);
-				} else {
-					/*
-					 * draw the point target of the cata XMM chosen to large circle
-					 */
-					cleanCatalog("Target");
-					cleanCatalog("oid");
-					var ct = A.catalog({name: "Target"});
-					aladin.addCatalog(ct);
-					//Take off the circle on the catalog alix_selected
-					//ct.addSources([A.marker(data.pos_ra_csa, data.pos_dec_csa,  {popupTitle:'oid: '+data.oidsaada})]);
-					//aladinLiteView.target.push({ra:data.pos_ra_csa, dec:data.pos_dec_csa, ct:ct});
-					/*
-					 * draw oid and url corresponded in context panel
-					 */
-					var myRegexp = /\{\$(.*)\}/g;
-					var match = myRegexp.exec(aladinLiteView.masterResource.actions.showAssociated.url);
-					var idField = match[1];
-					var idvalue = data[idField];
-					var re =  new RegExp("\\{\\$" + idField + "\\}", 'g');
-					var lien = aladinLiteView.masterResource.actions.showAssociated.url.replace(re ,idvalue);
-					console.log(re + " " + idField + " " + idvalue  + " " + lien);
-					//make the associated source shown directly
-					if(aladinLiteView.masterResource.actions.showAssociated.active == true) {
-					
-					$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
-					$('#'+ idvalue).css("color","#32FFEC");
-					$.getJSON(lien, function(jsondata) {
-						var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:"showTable"});
-						aladin.addCatalog(cat);
-						for( var i=0 ; i<jsondata.CounterParts.length ; i++ ){
-							var point=jsondata.CounterParts[i].source;
-							cat.addSources([A.source(point.position.ra, point.position.dec, {ra: Numbers.toSexagesimal(point.position.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.position.dec, 7, true), Name: point.name, Description: point.description})]);
-							//cat.addSources([A.source(point.ra, point.dec, {ra: Numbers.toSexagesimal(point.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.dec, 7, true), Name: point.name, Description: point.description})]);
+						if(aladinLiteView.masterResource != undefined&&aladinLiteView.masterResource.actions.showPanel.active == true ) {
+							openContextPanel(html);
+							$(".dataTable").css("display","table");
+						}else{
+							$(".dataTable").css("display","none");
 						};
-						if(aladinLiteView.masterResource.actions.showAssociated.handlerFadeOut == true){
-							AladinLiteX_mVc.fadeOutAuto()
-						};
-					});
-					}
-					/*
-					 * if its the first time of choosing a cata XMM...
-					 */
-				/*	if(aladinLiteView.masterResource.tab.indexOf(idvalue)<0){		
-						aladinLiteView.masterResource.tab.push(idvalue);
-						contextDiv.on('click','#'+ idvalue, function(){
-							if($(this).attr("class")=="alix_resource_around alix_dataunselected"){
-								$("#plus").css("display","inline");
-								$("#minus").css("display","inline");
-								$("#fade").css("display","inline");
-
-							$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp");
-								//$("#XMM").css("color", "#888a85");
-								//$("#btn-XMM-flash").css("color" , "#888a85");
-
-								//$(this).attr("class","alix_resource_around dataselected");
-								$(this).css("color","#32FFEC");
-								$.getJSON(lien, function(jsondata) {
-									var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:"showTable"});
-									aladin.addCatalog(cat);
-									for( var i=0 ; i<jsondata.length ; i++ ){
-										var point =  jsondata[i];
-										cat.addSources([A.source(point.ra, point.dec, {ra: Numbers.toSexagesimal(point.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.dec, 7, true), Name: point.name, Description: point.description})]);
-									}
-
-								});
+						
+						
+						if( masterResource != undefined&&!aladinLiteView.masterResource.actions.showAssociated) {
+							openContextPanel(html);
+						} else {
+							/*
+							 * draw the point target of the cata XMM chosen to large circle
+							 */
+							cleanCatalog("Target");
+							cleanCatalog("oid");
+							var ct = A.catalog({name: "Target"});
+							aladin.addCatalog(ct);
+							//Take off the circle on the catalog alix_selected
+							//ct.addSources([A.marker(data.pos_ra_csa, data.pos_dec_csa,  {popupTitle:'oid: '+data.oidsaada})]);
+							//aladinLiteView.target.push({ra:data.pos_ra_csa, dec:data.pos_dec_csa, ct:ct});
+							/*
+							 * draw oid and url corresponded in context panel
+							 */
+							var myRegexp = /\{\$(.*)\}/g;
+							var match = myRegexp.exec(aladinLiteView.masterResource.actions.showAssociated.url);
+							var idField = match[1];
+							var idvalue = data[idField];
+							var re =  new RegExp("\\{\\$" + idField + "\\}", 'g');
+							var lien = aladinLiteView.masterResource.actions.showAssociated.url.replace(re ,idvalue);
+							console.log(re + " " + idField + " " + idvalue  + " " + lien);
+							//make the associated source shown directly
+							if(aladinLiteView.masterResource.actions.showAssociated.active == true) {
+							
+							$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
+							$('#'+ idvalue).css("color","#32FFEC");
+							$.getJSON(lien, function(jsondata) {
+								var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:"showTable"});
+								aladin.addCatalog(cat);
+								for( var i=0 ; i<jsondata.CounterParts.length ; i++ ){
+									var point=jsondata.CounterParts[i].source;
+									cat.addSources([A.source(point.position.ra, point.position.dec, {ra: Numbers.toSexagesimal(point.position.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.position.dec, 7, true), Name: point.name, Description: point.description})]);
+									//cat.addSources([A.source(point.ra, point.dec, {ra: Numbers.toSexagesimal(point.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.dec, 7, true), Name: point.name, Description: point.description})]);
+								};
+								if(aladinLiteView.masterResource.actions.showAssociated.handlerFadeOut == true){
+									AladinLiteX_mVc.fadeOutAuto()
+								};
+							});
 							}
-						});
-
-						contextDiv.on('click','#label_init_btn', function(){
-							if($('#label_init_description').css("display")=="none"){
-							$('#label_init_description').css("display","inline");}
-							else{$('#label_init_description').css("display","none");}
-						});
-					}*/
-				}
-			return true;
-			}
-			}
+							/*
+							 * if its the first time of choosing a cata XMM...
+							 */
+						/*	if(aladinLiteView.masterResource.tab.indexOf(idvalue)<0){		
+								aladinLiteView.masterResource.tab.push(idvalue);
+								contextDiv.on('click','#'+ idvalue, function(){
+									if($(this).attr("class")=="alix_resource_around alix_dataunselected"){
+										$("#plus").css("display","inline");
+										$("#minus").css("display","inline");
+										$("#fade").css("display","inline");
+		
+									$("#XMM").attr("class", "alix_XMM_in_menu alix_menu_item alix_datahelp");
+										//$("#XMM").css("color", "#888a85");
+										//$("#btn-XMM-flash").css("color" , "#888a85");
+		
+										//$(this).attr("class","alix_resource_around dataselected");
+										$(this).css("color","#32FFEC");
+										$.getJSON(lien, function(jsondata) {
+											var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:"showTable"});
+											aladin.addCatalog(cat);
+											for( var i=0 ; i<jsondata.length ; i++ ){
+												var point =  jsondata[i];
+												cat.addSources([A.source(point.ra, point.dec, {ra: Numbers.toSexagesimal(point.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.dec, 7, true), Name: point.name, Description: point.description})]);
+											}
+		
+										});
+									}
+								});
+		
+								contextDiv.on('click','#label_init_btn', function(){
+									if($('#label_init_description').css("display")=="none"){
+									$('#label_init_description').css("display","inline");}
+									else{$('#label_init_description').css("display","none");}
+								});
+							}*/
+						}
+					return true;
+					}
+			
+			  }
 			, function() {
-			SwarmDynamicFilter.runConstraint(aladinLiteView);
-			WaitingPanel.hide("Swarm");
+				SwarmDynamicFilter.runConstraint(aladinLiteView);
+				WaitingPanel.hide("Swarm");
 			//When the XMM sources is updated by changing the position or zoom, recall the filter
-			} /*WaitingPanel.hide()*/);
+				} /*WaitingPanel.hide()*/
+			);
 			/*if(!LibraryCatalog.getCatalog(name)){
 			LibraryCatalog.addCatalog({url:url, name: "Swarm",color: color, shape :shape,fade : "", al_refs: catalog});
 			
@@ -1922,15 +1936,22 @@ var AladinLiteX_mVc = function(){
 			LibraryCatalog.updCatalog({url:url, name: "Swarm",color: color, shape :shape,fade : "", al_refs: catalog});
 			
 	    };*///if name == SWARM
-		bindToFade();
-		}
-		aladin.addCatalog(catalog);
-		cleanCatalog("oid");
-		if(!LibraryCatalog.getCatalog(name)){
-			 LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
-			} else{
-				 LibraryCatalog.updCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
-		    };
+			bindToFade();
+			
+			aladin.addCatalog(catalog);
+			cleanCatalog("oid");
+			if(!LibraryCatalog.getCatalog(name)){
+				 LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
+				} else{
+					 LibraryCatalog.updCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
+			    };
+			}// if url defined 
+			else {
+				WaitingPanel.hide("Swarm");
+			}
+		} 
+		
+
 	}
 	
 	var displayVizierCatalog = function(obs_id, color, clickType, hips_service_url){
