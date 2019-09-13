@@ -166,7 +166,6 @@ var AladinLiteX_mVc = function(){
 		 * Test if historic model is required, if yes make an instance and give it to the controller
 		 * draw the tool
 		 */
-		
 		if(params.controllers.historic != undefined){
 			params.controllers.historic.model = new Historique_Mvc('panel_history', this);
 		}
@@ -182,7 +181,7 @@ var AladinLiteX_mVc = function(){
 			params.controllers.hipsSelector.model = new HipsSelector_Mvc(parentDivId, this);
 		}
 		controllers = params.controllers;
-		controller = new AladinLite_mvC(that, params.controllers);		
+		controller = new AladinLite_mvC(that, params.controllers);	//that=this	
 		draw(params.defaultView,params.controllers,params.masterResource);
 		$(".aladin-reticleCanvas").click(function(){
 			$(panel_last).css("display","none");
@@ -305,10 +304,13 @@ var AladinLiteX_mVc = function(){
 			//<span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>
 			
 		var panel_locate = 
-			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target" >'
+			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target">'
 			+'<select  id ="' + selectDivId + '" class="alix_select">'
-			+'<option value="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
-			+'</select></div>'
+			//+'<option id="select">--select--</option>'
+			+'<option id="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
+			+'</select>'
+			//+'<input id="MyButton" style="margin-left:500px;margin-top:500px" type=button color="red" z-index=2000 display=true>'
+			+'<button id="targetNote" title="Note" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:absolute;left:392px;top:8px;" ><i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i></button></div>'
 			//+'</div>'
 		var panel_history = '<div id="panel_history" class="alix_right_panels">'
 			+'</div>'
@@ -370,7 +372,6 @@ var AladinLiteX_mVc = function(){
 				+panel_image
 				+panel_catalog
 				+'<div>')
-		
 		$('#button_locate').click(function(event){
 			var id = '#panel_locate';
 			panel_check(id);
@@ -505,8 +506,19 @@ var AladinLiteX_mVc = function(){
 		selectDiv.click(function(event){
 			event.stopPropagation();
 		});
+		//add the note to the target
+		$("#targetNote").click(function(event){
+			var targetName=selectDiv.children('option:selected').attr('id');
+			var note=prompt("Write your note on this target","");
+			selectDiv.children('option:selected').html(targetName+" ["+note+"] ");
+			console.log(targetName);
+		})
 		selectDiv.change(function(){
-			searchPosition($(this).val());
+			if($(this).val()=="--select--")
+				return;
+			//console.log($(this).val());
+			searchPosition($(this).children('option:selected').attr('id'));
+			event.stopPropagation();
 		});
 		maskDiv.click(function(event){
 			event.stopPropagation();
@@ -520,6 +532,7 @@ var AladinLiteX_mVc = function(){
 			if($(this).val()=="--select--")
 				return;
 			displaySelectedHips($(this).val());
+			showDetailByID($(this).val());
 		});
 		selectHipsDiv.click(function(event){
 			event.stopPropagation();
@@ -888,6 +901,7 @@ var AladinLiteX_mVc = function(){
 		
         storeCurrentState();
 		controller.bookMark(aladinLiteView);
+		
 	}
     var checkBrowseSaved = function(){
     	if(browseSaved == false){
@@ -1129,10 +1143,22 @@ var AladinLiteX_mVc = function(){
 	 * go to the object by enter its name 
 	 */
 	var gotoObject = function(posName, posthandler){
-		selectDiv.val(posName);
+		//var hasNote=false;
+		selectDiv.val($('#'+posName).val());
 		targetDiv.val(posName);
+		//var strs=posName.match(/^([^\s]*)\s\[(.*)\]$/);
+		//var strs=posName.match(/^(.*)\s(\[.*])$/);
+		/*if(strs){
+			posName=strs[1];
+			hasNote=true;
+		}*/
         aladin.gotoObject(posName,{
         	success: function(pos){
+        		/*console.log(posName);
+        		if(hasNote==false&&(posName!="M33"&&posName!="m33")){
+        			var posNote = prompt("You can give this position a note","");
+        			addPositionInSelector(posName,posNote);
+        		}*/
         		aladinLiteView.name = targetDiv.val();
         		aladinLiteView.ra = pos[0];
         		aladinLiteView.dec = pos[1];
@@ -1146,13 +1172,12 @@ var AladinLiteX_mVc = function(){
         		aladinLiteView.fov = l[0];
     			controller.updateCatalogs(aladinLiteView,'position');
     			addPositionInSelector(posName);
-
         		if(posthandler){
         			posthandler();
         		}
         		//console.log(targetDiv.val() +"  "+ 'position' +" : "+ pos[0] + " " + pos[1]);
         	}
-        	,error: function(){alert('pas connu');}
+        	,error: function(){alert('It\'s not a correct position');}
         	});		        		
 	}
 	
@@ -1350,11 +1375,12 @@ var AladinLiteX_mVc = function(){
 		var select_position = document.getElementById("aladin-lite-div-select")
 		var lengthOption = select_position.options.length;
 		for(var i=0;i<lengthOption;i++){
-			if(select_position.options[i].text == pos)
+			if(select_position.options[i].id == pos)
 				return false;
 		}
+		//var snote=(note)?" ["+note+"] ":" [no note] ";
 		if(pos != ""){
-			var pos_select = '<option>'+pos+'</option>';
+			var pos_select = '<option id="'+pos+'">'+pos+'</option>';
 			selectDiv.append(pos_select);
 			selectDiv.val(pos);
 		}

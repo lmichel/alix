@@ -41,13 +41,13 @@ var localConf = {
 var externalConf;
 var mixConf = function(localData,externalData) {   
 	
-for(var key in externalData){
-	if(typeof(externalData[key])== "object" && localData[key])
-		{
-		externalData[key] = mixConf(localData[key],externalData[key])
-		}
-}
-return Object.assign(localData,externalData)
+	for(var key in externalData){
+		if(typeof(externalData[key])== "object" && localData[key])
+			{
+			externalData[key] = mixConf(localData[key],externalData[key])
+			}
+	}
+	return Object.assign(localData,externalData)
 }
 
 var configureALIX = function(externalData){
@@ -55,6 +55,7 @@ var configureALIX = function(externalData){
 	externalConf = externalData;
 	localConf = mixConf(localConf,externalData);
 	}
+	console.log(localConf);
 	AladinLiteX_mVc.init(localConf);
 } /////!!!Cant't add () ,cause configureALIX is called later by external project, not by himself
 

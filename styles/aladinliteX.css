@@ -39,7 +39,7 @@
  #panel_history {
     padding: 15px;
     background-color: #f3ebddc2;
-    width: 450px;
+    width: 600px;
     height: 285;
     border: azure;
     position: absolute;
@@ -342,7 +342,7 @@ background-color: #f3ebddc2;
 	position : absolute;
 	left : 180px;
 	top : 5px;
-	width:60px;
+	width:200px;
 	height:25px;
 	padding: 2px;
     font-size: 14px;
@@ -435,7 +435,7 @@ background-color: #f3ebddc2;
 	box-shadow:0.5px 0.5px 10px #888a85;
 }
 
-.alix_button_history{
+.alix_button_history{160px
 
 	position : absolute;
     left :18px;
@@ -574,7 +574,7 @@ background-color: #f3ebddc2;
     line-height:20px;
 }
 
-.alix_selector_catalog{
+.alix_selector_catalog{160px
 /*	position:absolute;
 	top:260px;
 	left:98px;*/
@@ -668,7 +668,7 @@ background-color: #f3ebddc2;
 }
 .alix_acds{
 	color:#888a85 ;
-	display: none;
+	display: none;160px
 	font-size:12px !important;
 	font-weight:100 !important;
 	line-height: 1 !important; 
@@ -887,14 +887,16 @@ z-index: 10;
 }
 .alix_text-commit{
 	position:absolute;
+	top:60px;
 	left:320px;
 	width:110px;
 	height:35px;
-	z-index:10000;
+	z-index:10001;
 }
 
 .alix_btn-text-ok{
 	position:absolute;
+	top:60px;
 	left:436px;
 	width:20px;
 	height:20px;
@@ -911,6 +913,7 @@ z-index: 10;
 }
 .alix_btn-text-remove{
 	position:absolute;
+	top:60px;
 	left:460px;
 	width:20px;
 	height:20px;

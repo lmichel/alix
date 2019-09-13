@@ -60,7 +60,7 @@ Historique_mVc.prototype = {
 					
 				//version1//html += "<li style='list-style-type: none;padding-top:5px;'>"+Item.getHTMLTitle(k,Item)+ "</li>";
 				//version2//html += "<li style='list-style-type: none;padding-top:5px;'>"+eval('('+Item.getHTMLTitle+')').call(Item)+ "</li>";
-				html += "<li style='list-style-type: none;padding-top:5px;'>"+ItemFinal.getHTMLTitle()+ "</li>";
+				html += "<li style='position:relative;list-style-type: none;padding-top:5px;'>"+ItemFinal.getHTMLTitle()+ "</li>";
 				html += "<div id='description_"+ k + "' style='display: none;'><span>Position: "
 					  + ItemFinal.ra + ", " 
 					  + ItemFinal.dec + "</span><br><span>Fov: " 
