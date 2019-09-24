@@ -1854,6 +1854,7 @@ var AladinLiteX_mVc = function(){
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
 				catalog = A.catalogHiPS(url, {onClick: clickType,name: name,color: color,sourceSize:sourceSize ,shape: shape}, WaitingPanel.hide(name));
+				aladin.addCatalog(catalog);
 				
 		}else if(name == 'NED'){
 			var shape="square";
@@ -1867,11 +1868,13 @@ var AladinLiteX_mVc = function(){
 				, 0.02
 				, {onClick: clickType,name: name,color: color,sourceSize:sourceSize ,shape: shape}
 				, function() {WaitingPanel.hide(name)});
+				aladin.addCatalog(catalog);
 			}else{
 				catalog = A.catalogFromNED(aladin.getRaDec()[0] + " " + aladin.getRaDec()[1]
 				, aladin.getFov()[0]
 				, {onClick: clickType,name: name,color: color,sourceSize:sourceSize ,shape: shape}
 				, function() {WaitingPanel.hide(name)});
+				aladin.addCatalog(catalog);
 			}
 		/*	if(!LibraryCatalog.getCatalog(name)){
 			LibraryCatalog.addCatalog({url:url, name: name,color: color, shape :shape ,fade : "", al_refs: catalog});
