@@ -200,10 +200,10 @@ HipsSelector_mVc.prototype = {
 			// delete the catalog in the current view and library catalog and free the color in library map
 			$('#vizier').on('click','#btn_delete_catalog_'+id,function(event){
 				event.stopPropagation();
-				
 				//var obs_id =$("#cata_operate_"+ x).text();
 				var obs_id = this.parentNode.className;
 				var cata_name = 'VizieR:'+obs_id;
+				AladinLiteX_mVc.deleteLastSelectedPositionByCatalog(obs_id);
 				//var cataColor = LibraryCatalog.getCatalog(cata_name).color;
 				//var catadata = cata_dict[obs_id];
 			    self.model.aladinLite_V.cleanCatalog(cata_name);

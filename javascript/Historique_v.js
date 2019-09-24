@@ -49,28 +49,28 @@ Historique_mVc.prototype = {
 				var key = localStorage.key(k);
 				//the unique key is the time and date when the bookmark is saved
 				if(key.startsWith('alix:')){		
-				var ItemStr = localStorage.getItem(key);
-				var Item = JSON.parse(ItemStr);
-				Item.id = k;
-				//Create the new aladinliteview according to the bookmark to have the functions in the prototype 
-				var ItemFinal = setAladinLiteView(Item,key);
-				if(ItemFinal.survey!= undefined){
-					//localStorage.setItem(key,Item);
-				//var obs_title = Item.survey.obs_title;
-					
-				//version1//html += "<li style='list-style-type: none;padding-top:5px;'>"+Item.getHTMLTitle(k,Item)+ "</li>";
-				//version2//html += "<li style='list-style-type: none;padding-top:5px;'>"+eval('('+Item.getHTMLTitle+')').call(Item)+ "</li>";
-				html += "<li style='position:relative;list-style-type: none;padding-top:5px;'>"+ItemFinal.getHTMLTitle()+ "</li>";
-				html += "<div id='description_"+ k + "' style='display: none;'><span>Position: "
-					  + ItemFinal.ra + ", " 
-					  + ItemFinal.dec + "</span><br><span>Fov: " 
-					  + ItemFinal.fov + "</span><br><span>Survey: "
-					  + ItemFinal.survey.obs_title + "</span><p style='font-size:small;line-height: 1em;font-weight:100;color:#000000;'>"
-					  + ItemFinal.survey.obs_description + "</p>"
-					  + this.displayCataDescription(ItemFinal.catalogTab) +"</div>";
-				vide = false;
-			
-			}}
+					var ItemStr = localStorage.getItem(key);
+					var Item = JSON.parse(ItemStr);
+					Item.id = k;
+					//Create the new aladinliteview according to the bookmark to have the functions in the prototype 
+					var ItemFinal = setAladinLiteView(Item,key);
+					if(ItemFinal.survey!= undefined){
+						//localStorage.setItem(key,Item);
+						//var obs_title = Item.survey.obs_title;
+
+						//version1//html += "<li style='list-style-type: none;padding-top:5px;'>"+Item.getHTMLTitle(k,Item)+ "</li>";
+						//version2//html += "<li style='list-style-type: none;padding-top:5px;'>"+eval('('+Item.getHTMLTitle+')').call(Item)+ "</li>";
+						html += "<li style='position:relative;list-style-type: none;padding-top:5px;'>"+ItemFinal.getHTMLTitle()+ "</li>";
+						html += "<div id='description_"+ k + "' style='display: none;'><span>Position: "
+						+ ItemFinal.ra + ", " 
+						+ ItemFinal.dec + "</span><br><span>Fov: " 
+						+ ItemFinal.fov + "</span><br><span>Survey: "
+						+ ItemFinal.survey.obs_title + "</span><p style='font-size:small;line-height: 1em;font-weight:100;color:#000000;'>"
+						+ ItemFinal.survey.obs_description + "</p>"
+						+ this.displayCataDescription(ItemFinal.catalogTab) +"</div>";
+						vide = false;
+					}
+				}
 			}
 			if(vide == true){
 				html += "<p style='color:#1f252b;text-align:center'>No bookmark restored</p>";
