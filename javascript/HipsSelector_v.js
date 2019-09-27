@@ -243,7 +243,7 @@ HipsSelector_mVc.prototype = {
 				cmdNode.css("color", color);
 				 $("#btn-Simbad-configure").css("color", color);
 				 $("#btn-Simbad-flash").css("color", color);
-				self.model.aladinLite_V.displayCatalog(name, color, clickType, url);
+				self.model.aladinLite_V.displayCatalog(name, color, VizierCatalogue.showSourceData, url);
 			}else{
 				cmdNode.attr("class", "alix_simbad_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
@@ -274,7 +274,7 @@ HipsSelector_mVc.prototype = {
 					cmdNode.css("color", color);
 					$("#btn-NED-configure").css("color", color);
 					$("#btn-NED-flash").css("color", color);
-					self.model.aladinLite_V.displayCatalog(name, color, clickType);
+					self.model.aladinLite_V.displayCatalog(name, color, VizierCatalogue.showSourceData);
 				}
 			}else{
 				cmdNode.attr("class", "alix_ned_in_menu  alix_datahelp");

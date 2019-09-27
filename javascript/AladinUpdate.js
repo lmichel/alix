@@ -74,6 +74,7 @@ cds.Source.prototype.actionClicked = function() {
 //The sources selected will be unselected when the empty part of aladin clicked.But the sources selected keep selected when we check one of the related sources,
 MeasurementTable.prototype.hide = function() {
     this.divEl.hide();
+    $("#SourceDiv").css("display","none");
     AladinLiteX_mVc.deleteSourceAuto();
     AladinLiteX_mVc.deleteLastSelectedPosition();
     console.log("hide deslect")
@@ -82,6 +83,7 @@ MeasurementTable.prototype.hide = function() {
 cds.Source.prototype.actionOtherObjectClicked = function() {
     if (this.catalog && this.catalog.onClick) {
         this.deselect();
+        $("#SourceDiv").css("display","none");
         AladinLiteX_mVc.cleanCatalog("Target");
         AladinLiteX_mVc.deleteLastSelectedPosition();
         console.log("actionOtherObjectClicked deslect")

@@ -57,7 +57,8 @@ var resourceLoader = function() {
 	   	 ,"HipsSelector_v.js" 
 	   	 ,"SwarmDynamicFilter.js"
 	   	 ,"ConfigureALiX.js"
-	   	 
+	   	 ,"ConfigureALiX.js"
+	   	 ,"VizierCatalog.js"
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 

@@ -1138,4 +1138,45 @@ position:absolute;
 	position: relative;
     color: rgb(135, 246, 255);
 }
-
+#SourceDiv{
+    background-color: #f3ebddc2;
+    width: 300px;
+    height: 300px;
+    border: azure;
+    position: absolute;
+    border-radius: 20px;
+    //overflow:auto;
+    z-index: 10000;
+}
+#SourceDiv_Child{
+	background-color: transparent;
+	font-size : 10px;
+    width: 300px;
+    height: 210px;
+    border: azure;
+    position: absolute;
+    //border-radius: 20px;
+    padding:15px;
+    overflow:auto;
+    z-index: 10000;
+}
+#SourceDiv_table{
+	border-collapse: collapse;
+    font-size: 15px;
+    text-align:center;
+}
+.alix_source_panels{
+	display:none;
+}
+.glyphicon_SourceClose{
+    position: relative;
+    top: -15px;
+    right: 10px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

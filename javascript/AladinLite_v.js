@@ -122,6 +122,7 @@ var AladinLiteX_mVc = function(){
 	var panel_last = null;
 	var lastSelectedSourcePosition={name:null,ra:null,dec:null};//save the coordonnes of the last selected source
 	var isSourceSelected=false;//Juge whether there is a source being selected
+	var isMove=false;
 	/**
 	 * var params = {
 	    parentDivId: "aladin-lite-div",
@@ -292,7 +293,8 @@ var AladinLiteX_mVc = function(){
 			   // +'</div>')
 		//parentDiv.append('<div id="open_all" class="alix_open_all glyphicon glyphicon-chevron-right"></div>');	 
 		parentDiv.append('<div id="newMenu" class="alix_menu_panel"></div><div id="itemList" class="alix_hips_panel"></div>')
-		
+		parentDiv.append('<div id="SourceDiv" class="alix_source_panels"></div>')
+		VizierCatalogue.SourceDataMove();
 		var newMenu = $('#newMenu')	;
 		var button_locate = '<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>'
 		var button_center = '<button id="button_center" class="alix_btn alix_btn-circle alix_btn-red" title ="back to center" onclick="AladinLiteX_mVc.returnCenter();"><i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i></button>'
@@ -393,6 +395,7 @@ var AladinLiteX_mVc = function(){
 			panel_check(id);
 			});	
 		$('#button_catalog').click(function(event){
+			$("#SourceDiv").css("display","none");
 			var id ='#panel_catalog';
 			panel_check(id);
 			});	
@@ -453,7 +456,55 @@ var AladinLiteX_mVc = function(){
 		    	}
 		    }	    
 		});
-
+		
+		//Control the SourceData window move
+		
+		/*$("#SourceDiv").ready(function(){
+			var move=false;
+			var _x,_y;
+			$("#SourceDiv").mousedown(function(event){
+				if(event.ctrlKey){
+					move=true;
+					_x=event.clientX-$("#SourceDiv").offset().left;
+					_y=event.clientY-$("#SourceDiv").offset().top;
+				}
+			});
+			$("#SourceDiv").mousemove(function(event){
+				if(move&&event.ctrlKey){
+					var x=event.clientX-_x;
+					var y=event.clientY-_y;
+					$("#SourceDiv").css("left",x);
+					$("#SourceDiv").css("top",y);
+				}
+			}).mouseup(function(){
+				move = false;
+			})
+		});*/
+		/*$(document).ready(function(){
+			var isMove=false;
+			var abs_x,abs_y;
+			$("#SourceDiv").mousedown(function(event){
+				if(isSourceSelected){
+					if(event.button == 0){
+						if(event.ctrlKey){
+							var isMove = true;
+							console.log(isMove);
+							var abs_x = event.pageX-$("#SourceDiv").offset().left;
+							var abs_y = event.pageY-$("#SourceDiv").offset().top;
+						}
+					}
+				}
+			});
+			$("#SourceDiv").mousemove(function(event){
+				if(isMove&&isSourceSelected){
+					SourceDiv.css("left",event.pageX-abs_x);
+					SourceDiv.css("top",event.pageY-abs_y);
+				}
+			}).mouseup(function(){
+					isMove=false;
+			});
+		});*/
+		
 		/*if(aladinLiteView.masterResource.affichage.display == true){
 			AladinLiteX_mVc.displayDataXml();
 		}
@@ -885,7 +936,7 @@ var AladinLiteX_mVc = function(){
 		lastSelectedSourcePosition.dec=null;
 	}
 	var deleteLastSelectedPositionByCatalog=function(name){
-		if(name!=undefined){
+		if(name!=undefined&&isSourceSelected){
 			var length=name.length;
 			if(lastSelectedSourcePosition.name.slice(0,length)==name)
 				isSourceSelected=false;
@@ -911,6 +962,7 @@ var AladinLiteX_mVc = function(){
      */
 	var returnCenter = function(){
 		checkBrowseSaved();
+		$("#SourceDiv").css("display","none");
 		if(isSourceSelected){
 	    	aladinLiteView.clean();
 	    	deselectSource();
@@ -932,6 +984,7 @@ var AladinLiteX_mVc = function(){
 	var regionSelected = false;
 	var bookMark = function(){
 		checkBrowseSaved();
+		$("#SourceDiv").css("display","none");
 		contextDiv.css("max-height", "200px");
 		//set height_ul to the height of context panel. _shan
 		if( contextDiv.height() < 200 ){
@@ -965,6 +1018,7 @@ var AladinLiteX_mVc = function(){
     }
 	var getHistory = function(){
 		checkBrowseSaved();
+		$("#SourceDiv").css("display","none");
 		contextDiv.css("max-height", "200px");
 		controller.getHistory();
 		if(contextDiv.height() < 10 /*&& $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green  alix_button_history alix_unselected"*/){
@@ -1152,6 +1206,7 @@ var AladinLiteX_mVc = function(){
 			//controller.cleanPolygon();
 		//}
 		checkBrowseSaved();
+		$("#SourceDiv").css("display","none");
 		contextDiv.css("max-height", "200px");
 		storeCurrentState();
 		//contextDiv.html("");
@@ -2053,9 +2108,9 @@ var AladinLiteX_mVc = function(){
 			shape = LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs.shape;
 		 }
 		if(hips_service_url != undefined){
-			catalog = A.catalogHiPS(hips_service_url, {onClick: clickType,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
-			//catalog = A.catalogHiPS(hips_service_url, {onClick: "function",name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
-			
+			//catalog = A.catalogHiPS(hips_service_url, {onClick: clickType,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
+			//catalog = A.catalogHiPS(hips_service_url, {onClick: function(data){alert(data.catalog.name);},name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
+			catalog = A.catalogHiPS(hips_service_url, {onClick: VizierCatalogue.showSourceData,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
 		}else{
 				var catalog = null;
 				
@@ -2096,7 +2151,7 @@ var AladinLiteX_mVc = function(){
 								, aladin.getRaDec()[0] + " " + aladin.getRaDec()[1]
 								, radius
 								//, {onClick: function(x){alert(JSON.stringify(x.data));}, color:color,sourceSize: sourceSize,shape: shape }
-						        , {onClick: 'showTable', color:color,sourceSize: sourceSize,shape: shape }
+						        , {onClick: VizierCatalogue.showSourceData, color:color,sourceSize: sourceSize,shape: shape }
 								, function(sources) {
 									console.log(" En direct depuis AL: " + sources.length + " sources affichees")
 									WaitingPanel.hide(obs_id);
@@ -2340,6 +2395,7 @@ var AladinLiteX_mVc = function(){
 	}
 	var showColorMap = function(){
 		 //// COLOR MAP management ////////////////////////////////////////////
+		$("#SourceDiv").css("display","none");
 		var cmDiv = $('.alix_colorMapBox');
 		var cmSelect = cmDiv.find('.aladin-cmSelection');
          for (var k=0; k<ColorMap.MAPS_NAMES.length; k++) {
