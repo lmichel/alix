@@ -581,7 +581,7 @@ var AladinLiteX_mVc = function(){
 			event.stopPropagation();
 		});
 		maskDiv.keyup(function(e) {
-			if( $(this).val().length >= 2 || e.which == 13) {
+			if( $(this).val().length >= 3 || e.which == 13) {
 				searchHips($(this).val());
 			}
 		});
@@ -1901,6 +1901,7 @@ var AladinLiteX_mVc = function(){
 		var catalog;
 		var self = this;
 		var sourceSize=8;
+		clickType=VizierCatalogue.showSourceData;
 		if(name == 'Simbad'){
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){

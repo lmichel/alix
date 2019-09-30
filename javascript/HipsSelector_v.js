@@ -65,7 +65,7 @@ HipsSelector_mVc.prototype = {
 					itemList.append("<div id = 'panel_"
 							+ jsondata[i].ID + "' class='alix_liste_item' ><bn class='alix_title_in_liste'>"
 							+ jsondata[i].obs_title +" | "+jsondata[i].ID+"</bn></div><div id='" 
-							+ jsondata[i].ID 
+							+ jsondata[i].ID.replace(/\./g,'') 
 							+ "' class='alix_description_panel'><span class=alix_datahelp style='cursor: pointer;color:#4D36DC;font-size: medium;' onclick='AladinLiteX_mVc.hipsFunction(&quot;" + jsondata[i].ID
 							+ "&quot,  &quot;"+ jsondata[i].obs_title.replace(/["']/, ' ') + "&quot)'>"  + jsondata[i].obs_title +"</span><br><br>"                                                                       
 							+"<span style='font-size:small;color : #727371'>"+jsondata[i].ID +"</span><br>"
@@ -74,7 +74,8 @@ HipsSelector_mVc.prototype = {
 							+ "<span class=blackhelp style='font-size:small;'>"
 							+ jsondata[i].obs_description + "</span></div>");
 					$(document.getElementById("panel_"+jsondata[i].ID)).click(function(){
-						var id = $(this).attr('id')	.replace('panel_','').replace(/\//g, "\\/");
+						var id = $(this).attr('id')	.replace('panel_','').replace(/\//g, "\\/").replace(/\./g,'');//solve the problem that CXC can't show up
+						console.log($(this).attr('id'));
 						$("#" + id).slideToggle();	
 						$(this).toggleClass("alix_liste_item_close");
 					});
