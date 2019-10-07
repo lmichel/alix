@@ -62,8 +62,11 @@ cds.Source.prototype.actionClicked = function() {
             view.popup.setSource(this);
             view.popup.show();
         }
-        else if (typeof this.catalog.onClick === 'function') {
+        else if (typeof this.catalog.onClick === 'function' ) {
             this.catalog.onClick(this);
+            var pos = "";
+            pos += this.ra + ' ' + this.dec;
+            Modalinfo.simbad(pos);
             view.lastClickedObject = this;
             this.select();
 

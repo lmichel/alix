@@ -192,7 +192,6 @@ var AladinLiteX_mVc = function(){
 		
 		
 	}
-
 	var fadeOutAuto = function(){
 		$("#minus").trigger("click");
 		//Once a source is selected, all other sources fade out automatically. 
@@ -307,7 +306,7 @@ var AladinLiteX_mVc = function(){
 			//<span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>
 			
 		var panel_locate = 
-			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target">'
+			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target" onfocus="this.select()">'
 			+'<select  id ="' + selectDivId + '" class="alix_select">'
 			//+'<option id="select">--select--</option>'
 			+'<option id="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
@@ -436,8 +435,11 @@ var AladinLiteX_mVc = function(){
 		storeCurrentState();
 		
 		console.log(aladin);
-
+		aladin.on('click',function(){
+			targetDiv.blur();
+		});
 		aladin.on('positionChanged', function(newPosition){
+			//targetDiv.blur();
 			if(newPosition.dragging==false){
 				storeCurrentState();
 				targetDiv.val(newPosition.ra.toFixed(4) + "," + newPosition.dec.toFixed(4));
@@ -972,7 +974,8 @@ var AladinLiteX_mVc = function(){
 			//aladin.gotoRaDec(lastSelectedSourcePosition.ra,lastSelectedSourcePosition.dec)
 		}
 		else{
-			alert("You haven't chose a source!")
+			//alert("You haven't chose a source!");
+			MessageBox.alertBox("You haven't chose a source!");
 			
 		}
 		//gotoObject(defaultPosition);

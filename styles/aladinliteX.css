@@ -299,7 +299,7 @@ background-color: #f3ebddc2;
     /* padding: 2px; */
     padding-left: 5px;
     position: absolute;
-    left: 0;
+    left: 5px;
     top: 5;
     border-top-left-radius: 4px;
     border-top-right-radius: 0px;
@@ -340,7 +340,7 @@ background-color: #f3ebddc2;
 .alix_select{
 	z-index: 100;
 	position : absolute;
-	left : 180px;
+	left : 185px;
 	top : 5px;
 	width:200px;
 	height:25px;
@@ -1179,4 +1179,17 @@ position:absolute;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+#alert_box{
+    background-color: #f3ebddc2;
+    width: 300px;
+    height: 100px;
+    border: azure;
+    position: absolute;
+    top: 10%;
+    left: 42%;
+    border-radius: 20px;
+    overflow:auto;
+    z-index: 10000;
 }

@@ -39,8 +39,15 @@ var resourceLoader = function() {
 	var jsimportsDir  = baseScriptDir + "";
 	var javascriptDir = baseScriptDir + "javascript/";
 	//var importsJstuffDir = "http://obs-stage-c11:8080/jsresources/saadajsbasics/javascript/";
-	var local_js = [ 
-		 "Segment.js"
+	var local_js = [
+		  "Modalinfo.js"
+		 ,"Out.js"
+		 ,"packedLoader.js"
+		 ,"PageLocation.js"
+		 ,"Printer.js"
+		 ,"Processing.js"
+		 ,"SkyGeometry.js"
+		 ,"Segment.js"
 	   	 ,"AstroCoo.js"
 	   	 ,"LibraryMap.js"
 	   	 ,"LibraryCatalog.js"
@@ -59,6 +66,7 @@ var resourceLoader = function() {
 	   	 ,"ConfigureALiX.js"
 	   	 ,"ConfigureALiX.js"
 	   	 ,"VizierCatalog.js"
+	   	 ,"MessageBox.js"
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 
