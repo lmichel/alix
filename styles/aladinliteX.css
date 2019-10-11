@@ -1193,3 +1193,16 @@ position:absolute;
     overflow:auto;
     z-index: 10000;
 }
+#input_box{
+    background-color: #f3ebddc2;
+    width: 350px;
+    height: 150px;
+    border: azure;
+    position: absolute;
+    top: 10%;
+    left: 42%;
+    border-radius: 20px;
+    overflow:auto;
+    z-index: 10000;
+}
+

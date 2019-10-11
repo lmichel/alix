@@ -63,7 +63,6 @@ var VizierCatalogue = function(){
 			}).mouseup(function(){
 				move = false;
 			}).mouseleave(function(){
-				console.log("niubi a ");
 				move = false;
 			});
 		

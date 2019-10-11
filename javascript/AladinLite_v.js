@@ -566,11 +566,19 @@ var AladinLiteX_mVc = function(){
 			var regex=/\[(.+?)\]/g;
 			var strs=selectDiv.children('option:selected').val();
 			var defaultNote=strs.match(regex);
-			if(defaultNote)
-				var note=prompt("Write your note on this target",defaultNote[0].replace(/\[|]/g,''));
-			else
-				var note=prompt("Write your note on this target","");
-			selectDiv.children('option:selected').html(targetName+" ["+note+"] ");
+			if(defaultNote){
+				MessageBox.inputBox("Write your note on this target",defaultNote[0].replace(/\[|]/g,''));
+				$("#target_note").val(defaultNote[0].replace(/\[|]/g,''));
+				//var note=prompt("Write your note on this target",defaultNote[0].replace(/\[|]/g,''));
+				//var note = MessageBox.returnInputMessage();
+			}
+			else{
+				MessageBox.inputBox("Write your note on this target","");
+				$("#target_note").val("");
+				//var note = MessageBox.returnInputMessage();
+				//var note=prompt("Write your note on this target","");
+			}
+			//selectDiv.children('option:selected').html(targetName+" ["+note+"] ");
 		})
 		selectDiv.change(function(){
 			if($(this).val()=="--select--")

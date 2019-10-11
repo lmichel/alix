@@ -64,9 +64,9 @@ cds.Source.prototype.actionClicked = function() {
         }
         else if (typeof this.catalog.onClick === 'function' ) {
             this.catalog.onClick(this);
-            var pos = "";
+            /*var pos = "";
             pos += this.ra + ' ' + this.dec;
-            Modalinfo.simbad(pos);
+            Modalinfo.simbad(pos);*/
             view.lastClickedObject = this;
             this.select();
 
