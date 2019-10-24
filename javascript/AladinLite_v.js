@@ -2024,7 +2024,6 @@ var AladinLiteX_mVc = function(){
 							$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
 							$('#'+ idvalue).css("color","#32FFEC");
 							$.getJSON(lien, function(jsondata) {
-								//catalog = A.catalogHiPS(hips_service_url, {onClick: VizierCatalogue.showSourceData,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
 								var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:VizierCatalogue.showSourceData});
 								aladin.addCatalog(cat);
 								for( var i=0 ; i<jsondata.CounterParts.length ; i++ ){
