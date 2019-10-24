@@ -358,7 +358,7 @@ var AladinLiteX_mVc = function(){
 			
 			parentDiv.append(panel_locate); // replace the orignial position block by the updated one
 			
-		newMenu.append('<div id="alix_left_menu"><ul style="list-style-type:none; padding: 5px;">'
+		newMenu.append('<div id="alix_left_menu"><ul id="alix_left_menu_ul" style="list-style-type:none; padding: 5px;">'
 				//+'<li >'+button_locate+'</li>'
 				+'<li>'+button_center+'</li>'
 				+'<li>'+button_bookmark+'</li>'
@@ -397,7 +397,7 @@ var AladinLiteX_mVc = function(){
 			$("#SourceDiv").css("display","none");
 			var id ='#panel_catalog';
 			panel_check(id);
-			});	
+			});
 		var panel_check = function(id){
 			$(id).toggle();
 			if(panel_last!=id){
@@ -2024,7 +2024,8 @@ var AladinLiteX_mVc = function(){
 							$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
 							$('#'+ idvalue).css("color","#32FFEC");
 							$.getJSON(lien, function(jsondata) {
-								var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:"showTable"});
+								//catalog = A.catalogHiPS(hips_service_url, {onClick: VizierCatalogue.showSourceData,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
+								var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:VizierCatalogue.showSourceData});
 								aladin.addCatalog(cat);
 								for( var i=0 ; i<jsondata.CounterParts.length ; i++ ){
 									var point=jsondata.CounterParts[i].source;
