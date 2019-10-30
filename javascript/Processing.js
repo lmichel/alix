@@ -1,5 +1,5 @@
 //take out from jsStuff
-
+var zIndexProcessing = 4000;
 Processing  = function() {
 	/*
 	 * public functions

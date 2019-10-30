@@ -294,6 +294,7 @@ var AladinLiteX_mVc = function(){
 		parentDiv.append('<div id="newMenu" class="alix_menu_panel"></div><div id="itemList" class="alix_hips_panel"></div>')
 		parentDiv.append('<div id="SourceDiv" class="alix_source_panels"></div>')
 		VizierCatalogue.SourceDataMove();
+		
 		var newMenu = $('#newMenu')	;
 		var button_locate = '<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>'
 		var button_center = '<button id="button_center" class="alix_btn alix_btn-circle alix_btn-red" title ="back to center" onclick="AladinLiteX_mVc.returnCenter();"><i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i></button>'
@@ -1920,7 +1921,7 @@ var AladinLiteX_mVc = function(){
 				sourceSize = LibraryCatalog.getCatalog(name).al_refs.sourceSize;
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
-				catalog = A.catalogHiPS(url, {onClick: clickType,name: name,color: color,sourceSize:sourceSize ,shape: shape}, WaitingPanel.hide(name));
+				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize ,shape: shape}, WaitingPanel.hide(name));
 				aladin.addCatalog(catalog);
 				
 		}else if(name == 'NED'){

@@ -67,6 +67,9 @@ var resourceLoader = function() {
 	   	 ,"ConfigureALiX.js"
 	   	 ,"VizierCatalog.js"
 	   	 ,"MessageBox.js"
+	   	 ,"SimbadCatalog.js"
+	   	 ,"CustomDataTable.js"
+	   	 ,"ModalResult.js"
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 

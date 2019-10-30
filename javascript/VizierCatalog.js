@@ -38,10 +38,10 @@ var VizierCatalogue = function(){
 	     //content += '</tr>';
 	     //SourceDiv.append('<table>' + header + content + '</table>');
 		 //$("#aladin-lite-div").append(SourceDiv);
-	     if( data.data != undefined ){
+	     if( data.data != undefined){
 	    	 for (key in data.data){
 		    	 if(data.data[key])
-		    		 content+='<tr><th style="text-align:left">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
+		    		 content+='<tr><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
 		     }
 	     }
 	     else{
@@ -52,6 +52,10 @@ var VizierCatalogue = function(){
 	     }
 	     content+='<thead>'
 	     SourceDiv.append('<div id="SourceDiv_Child"><table id="SourceDiv_table">' + content + '</table></div>');
+	     if(data.ra && name == "Simbad" ){
+	    	 var pos=strlon+" " +strlat;
+	    	 SimbadCatalog.simbad(pos,data);
+	     }
 	}
 	
 	var showXMMSourceData = function(data){
