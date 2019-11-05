@@ -3,22 +3,24 @@
 		<title>AladinLiteX</title>
 		<meta charset="utf-8" />
 	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
-		<script>var useDebugResources = true; var productionMode=false;</script>
+		<script>var useDebugResources = false; var productionMode=true;</script>
 		<script type="text/javascript" src="javascript/loader.js"></script>	
 		<script type="text/javascript" src="javascript/packedLoader.js"></script>	
 		<script>
+		  $.browser={ msie: ( navigator.appName == 'Microsoft Internet Explorer') ? true : false } 
 		
 		  if( productionMode ) {
 		    	useDebugResources = false;
 		        packedResourceLoader.setCss([         
-		        	"styles/packedCSS/style_bundle.css"
-		        	,"aladinLite/aladin.css"
-		   		 ,"styles/aladinliteX.css" 
+		          "styles/packedCSS/style_bundle.css"
+		         ,"aladinLite/aladin.css"
+		   		 ,"styles/aladinliteX.css"
+		   		 ,"styleimport/basics.css"
+		 		 ,"styleimport/domain.css"
 		        ]);
-		        packedResourceLoader.setScripts([  
-		        	"aladinLite/aladin.js"
-		        	,"packager/lmpack/alix_packed/packedJSlocal.js"
-		        	,"packager/lmpack/alix_packed/packedJSimport.js"
+		        packedResourceLoader.setScripts([
+		        	"packager/lmpack/alix_packed/packedJSimport_alix.js"
+		        	,"packager/lmpack/alix_packed/packedJS_alix.js"
 		        	,"demo/js/alixindexReady.js"
 		          ]);
 		        packedResourceLoader.loadAll();

@@ -190,6 +190,8 @@ var AladinLiteX_mVc = function(){
 			$("#itemList").css("display","none");
 		})//click fond then close all the panels
 		
+		if(params.masterResource!=undefined)
+			XMMorALIX=true;
 		
 	}
 	var fadeOutAuto = function(){
@@ -1922,8 +1924,7 @@ var AladinLiteX_mVc = function(){
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
 				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize ,shape: shape}, WaitingPanel.hide(name));
-				aladin.addCatalog(catalog);
-				
+				aladin.addCatalog(catalog);			
 		}else if(name == 'NED'){
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){

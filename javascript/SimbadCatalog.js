@@ -10,7 +10,7 @@ var SimbadCatalog = function(){
 		if( data.data != undefined){
 	    	for (key in data.data){
 		    	if(data.data[key])
-		    		content+='<tr style="background-color:#ffeded;"><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
+		    		content+='<tr style="background-color:#f2f2f2;"><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
 		    }
 	    }
 	    else{
@@ -102,7 +102,7 @@ var SimbadCatalog = function(){
 							+ pos 
 							+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 							+ encodeURIComponent(pos) + "\"></a>"
-							, table, 1000);
+							, table);
 					Modalinfo.setShadow(id_modal);
 					Modalinfo.whenClosed(id_modal);
 
@@ -150,8 +150,6 @@ var SimbadCatalog = function(){
 					                ];
 
 					CustomDataTable.create("simbadtable", options, position);
-					$("#simbadtable_next").html("&nbsp;&nbsp;&nbsp;");
-					$("#simbadtable_previous").html("&nbsp;&nbsp;&nbsp;");
 					$("#simbadtable_paginate").css("left","250px");
 					$(".txt-left").remove();	
 					// Put the filter just above the table
@@ -161,24 +159,28 @@ var SimbadCatalog = function(){
 					$("#"+id_modal).find(".dataTables_filter").css("top","-394px");
 					$("#"+id_modal).find(".dataTables_filter").css("z-index","1");
 					var dataFilter = $("#"+id_modal).find(".dataTables_filter");
-					var search = '<div id="simbadtable_search" style="font-size:15px;font-family:sans-serif;position:relative;right:180px;bottom:22px">search: </div>';
-					$("#simbadtable_filter").append(search);
+					dataFilter.css("top","-275px");
+					dataFilter.css("left","767px");
 					$("#"+id_modal).dialog( "option", "position", { my: "center", at: "center", of: window } );
 					//add the SourceDiv to SimbadCatalog and adjust the css
 					var parent = $("#"+id_modal).parent("div");
 					parent.append(content);
 					parent.append(dataFilter);
-					parent.css("width","1300px");
-					parent.css("height","450px");
-					$("#"+id_modal).css("width","1000px");
+					parent.css("width","950px");
+					parent.css("height","400px");
+					$("#"+id_modal).css("width","650px");
 					$("#"+id_modal).css("left","298px");
-					$("#"+id_modal).css("top","30px");
+					$("#"+id_modal).css("height","auto");
+					$("#"+id_modal).css("top","15px");
+					$("#"+id_modal).css("min-height","93.16px");
 					var SourceDiv = $("#SimbadSourceDiv");
 				    SourceDiv.css("display","block");
 				    SourceDiv.css("position","absolute");
 				    SourceDiv.css("top","70px");
 				    SourceDiv.css("left","0px");
 				    SourceDiv.css("background-color","#ffeded");
+					$("#simbadtable_next").html("&nbsp;&nbsp;&nbsp;");
+					$("#simbadtable_previous").html("&nbsp;&nbsp;&nbsp;");
 				}
 	        }
 		});
