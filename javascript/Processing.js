@@ -1,33 +1,33 @@
 //take out from jsStuff
 var zIndexProcessing = 4000;
-Processing  = function() {
+Alix_Processing  = function() {
 	/*
 	 * public functions
 	 */
 	var openTime = -1;	
 	var jsonError = function (jsondata, msg, custom_msg) {
 		if( jsondata == undefined || jsondata == null ) {
-			Modalinfo.error("JSON ERROR: " + msg + ": no data returned" );
+			Alix_Modalinfo.error("JSON ERROR: " + msg + ": no data returned" );
 			return true;
 		}
 		else if( jsondata.errormsg != null) {
 			if (custom_msg == undefined) {
-				Modalinfo.error(jsondata.errormsg, msg );
+				Alix_Modalinfo.error(jsondata.errormsg, msg );
 			}
 			else {
-				Modalinfo.error(custom_msg);
+				Alix_Modalinfo.error(custom_msg);
 			}
 			return true;
 		}	
 		return false;
 	};
 	var showAndHide = function(message){
-		Out.debug("PROCESSSING (show and hide) " + message);
+		Alix_Out.debug("PROCESSSING (show and hide) " + message);
 		show(message);
 		setTimeout('$("#saadaworking").css("display", "none");$("#saadaworkingContent").css("display", "none");', 500);		
 	};
 	var showWithTO = function(message, timeout){
-		Out.debug("PROCESSSING (show and hide) " + message);
+		Alix_Out.debug("PROCESSSING (show and hide) " + message);
 		show(message +" (automatically closed after " + (timeout/1000.) + "s)");
 		setTimeout('$("#saadaworking").css("display", "none");$("#saadaworkingContent").css("display", "none");', timeout);		
 	};
@@ -38,7 +38,7 @@ Processing  = function() {
 		 */
 		var m = message;
 		m = m.replace(/"/g, '');
-		Out.info("PROCESSSING " + m);
+		Alix_Out.info("PROCESSSING " + m);
 		stillToBeOpen = true;
 		if( $('#saadaworking').length == 0){	
 			$(document.body).append(
@@ -57,14 +57,14 @@ Processing  = function() {
 		openTime = new Date().getTime() ;
 	};
 	var hide = function () {
-		Out.debug("close processing");
+		Alix_Out.debug("close processing");
 		var msg = $("#saadaworkingContentText").text();
 		var seconds = new Date().getTime() ;
 		/*
 		 * Make sure the progress windows remains open at least 700ms: avoids blinking
 		 */
 		if( (seconds - openTime) < 700 ) {
-			setTimeout('Processing.closeIfNoChange("' + msg + '" )', 700);
+			setTimeout('Alix_Processing.closeIfNoChange("' + msg + '" )', 700);
 		} else    {
 			$("#saadaworking").css("display", "none");$("#saadaworkingContent").css("display", "none");
 		}
@@ -75,7 +75,7 @@ Processing  = function() {
 			$('#saadaworking').css("display", "none");
 			$('#saadaworkingContent').css("display", "none");	
 		} else {
-			Out.debug("The content of the progress dialog has changed: not closing it");
+			Alix_Out.debug("The content of the progress dialog has changed: not closing it");
 		}
 	};
 	/*

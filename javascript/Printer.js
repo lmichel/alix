@@ -1,15 +1,15 @@
 //take out from jsStuff
 
-Printer = function() {
+Alix_Printer = function() {
 	/*
 	 * Public functions
 	 */
 	var getPrintButton = function(divToPrint) {
-		var retour =  "<a href='#' onclick='Printer.printDiv(\"" + divToPrint + "\");' class='printer'></a>";
+		var retour =  "<a href='#' onclick='Alix_Printer.printDiv(\"" + divToPrint + "\");' class='printer'></a>";
 		return retour;
 	};
 	var getSmallPrintButton = function(divToPrint) {
-		var retour =  "<a href='#' onclick='Printer.printDiv(\"" + divToPrint + "\");' class='dlprinter'></a>";
+		var retour =  "<a href='#' onclick='Alix_Printer.printDiv(\"" + divToPrint + "\");' class='dlprinter'></a>";
 		return retour;
 	};
 	var insertPrintButton = function(divToPrint, divHost) {
@@ -18,9 +18,9 @@ Printer = function() {
 	var printDiv = function(divSelect) {
 		var ele = $('#' + divSelect);
 		if( !ele ) {
-			Modalinfo.error("PRINT: the element " + divSelect +" doesn't exist");
+			Alix_Modalinfo.error("PRINT: the element " + divSelect +" doesn't exist");
 		} else {
-			Out.infoMsg(ele);
+			Alix_Out.infoMsg(ele);
 			ele.print();
 		}		
 	};

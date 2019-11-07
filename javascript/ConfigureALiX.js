@@ -55,7 +55,6 @@ var configureALIX = function(externalData){
 	externalConf = externalData;
 	localConf = mixConf(localConf,externalData);
 	}
-	console.log(localConf);
 	AladinLiteX_mVc.init(localConf);
 } /////!!!Cant't add () ,cause configureALIX is called later by external project, not by himself
 

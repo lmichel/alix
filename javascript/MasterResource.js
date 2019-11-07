@@ -87,7 +87,6 @@ MasterResource.prototype = {
 			}else{
 				fov = aladinLiteView.fov
 			}
-			console.log(aladinLiteView.fov + " size = "  + size + " " + strlon + " " + strlat);
 			//size = 1;
 			size = fov*times;
 			//if {$query} exists in the base url, replace it with the url_query, if not, replace only fov ra dec format. 

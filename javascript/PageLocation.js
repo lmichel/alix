@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-PageLocation = function () {
+Alix_PageLocation = function () {
 	var that = this;
 	var downloadIframe = null;
 	/*
@@ -8,7 +8,7 @@ PageLocation = function () {
 	 * Public functions
 	 */
 	var changeLocation = function (url, title){
-		Out.info("changeLocation to " + url);
+		Alix_Out.info("changeLocation to " + url);
 		authOK = true;
 		var t = ( title )? title: '_blank';
 		window.open (url, t);
@@ -18,7 +18,7 @@ PageLocation = function () {
 		if( !url.startsWith("http")) {
 			url = window.location.protocol + "//" + window.location.hostname +  (location.port?":"+location.port:"") + window.location.pathname + "/" + url; 
 		}
-		Out.info("Download " + url);
+		Alix_Out.info("Download " + url);
 		if( downloadIframe == null ) {
 			$(document.body).append('<iframe id="downloadIframe" src="' + url + '" style="display: hiddden;">Waitng for server response...</iframe>');
 			this.downloadIframe =  $("#downloadIframe");
@@ -27,7 +27,7 @@ PageLocation = function () {
 		}
 	};
 	var confirmBeforeUnlaod = function() {
-		Out.info("Prompt user before to leave");
+		Alix_Out.info("Prompt user before to leave");
 		window.onbeforeunload = function() {
 			if( !that.authOK) {
 				if( WebSamp_mVc.fireIsConnected() ) {

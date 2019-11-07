@@ -48,7 +48,7 @@ var masTest = {
 					id : '',
 					format : {},
 					label:"ACDS Sources",
-					url : 'http://saada.unistra.fr/3xmmdr8/getalixassocie/acdslinks?oid={$oidsaada}&mode=aladinlite',
+					url : 'http://saada.unistra.fr/3xmmdr8xinyu/getalixassocie/acdslinks?oid={$oidsaada}&mode=aladinlite',
 					description: "Show original data panel",
 					handlerFadeOut: true,
 					handlerDeleteSource: true

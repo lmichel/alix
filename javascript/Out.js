@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-Out = function() {
+Alix_Out = function() {
 	var debugMode = false;
 	var trace = false;
 	var packedMode = false;
@@ -80,19 +80,19 @@ Out = function() {
 
 		if( debug != null ) {
 			if( debug == "on" ) {
-				Out.info("Set debug on and trace off");
-				Out.debugModeOn();
-				Out.traceOff();
+				Alix_Out.info("Set debug on and trace off");
+				Alix_Out.debugModeOn();
+				Alix_Out.traceOff();
 			} else if( debug == "withtrace" ) {
-				Out.info("Set debug on and trace on");
-				Out.debugModeOn();
-				Out.traceOn();
+				Alix_Out.info("Set debug on and trace on");
+				Alix_Out.debugModeOn();
+				Alix_Out.traceOn();
 			} else if( debug == "traceonly" ) {
-				Out.info("Set debug off and trace on");
-				Out.debugModeOff();
-				Out.traceOn();
+				Alix_Out.info("Set debug off and trace on");
+				Alix_Out.debugModeOff();
+				Alix_Out.traceOn();
 			} else {
-				Modalinfo.info("debug parameter must be either on, withtrace or traceonly. It is ignored for this session.");
+				Alix_Modalinfo.info("debug parameter must be either on, withtrace or traceonly. It is ignored for this session.");
 			}
 		}
 	};

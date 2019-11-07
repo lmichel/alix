@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-Modalinfo = function(){
+Alix_Modalinfo = function(){
 	var divId = "modaldiv";
 	var divSelect = '#' + divId;
 	/**
@@ -421,7 +421,7 @@ Modalinfo = function(){
 	 */
 	var error = function(content, title) {
 		var id_modal = nextId();
-		Out.infoTrace(content);
+		Alix_Out.infoTrace(content);
 		if( jQuery.isPlainObject({}) ) {
 			setModal(id_modal, false, getTitle("Error", title), dump(content, '&nbsp;&nbsp;').replace(/\n[\n\s]*/g, "<br />"));//.replace(/</g, "&lt;").replace(/>/g, "&gt;"));
 		} else {
@@ -526,7 +526,7 @@ Modalinfo = function(){
 				}
 			},
 			success: function(e) {
-				if( Processing.jsonError(e, "Upload Position List Failure") ) {
+				if( Alix_Processing.jsonError(e, "Upload Position List Failure") ) {
 					close(id_modal);
 					return;
 				} else {
@@ -558,7 +558,7 @@ Modalinfo = function(){
 						display_retour = display_retour.replace(/^<br\s*\/?>|<br\s*\/?>$/g,'');
 						$("#infos").html(display_retour);	
 					}
-					Modalinfo.close(id_modal);
+					Alix_Modalinfo.close(id_modal);
 				}
 			}
 		});
@@ -691,7 +691,7 @@ Modalinfo = function(){
 		}
 		addImgLinkTitle(id_modal, 'floppy', url);
 		$("#"+id_modal).prev("div").find("span").find(".img-title").click(function() {
-			PageLocation.changeLocation(url);
+			Alix_PageLocation.changeLocation(url);
 		});
 
 		setShadow(id_modal);
@@ -728,22 +728,22 @@ Modalinfo = function(){
 			}
 			addImgLinkTitle(id_modal, 'floppy', url);
 			$("#"+id_modal).prev("div").find("span").find(".img-title").click(function() {
-				PageLocation.changeLocation(url);
+				Alix_PageLocation.changeLocation(url);
 			});
 			setShadow(id_modal);
 			whenClosed(id_modal);	
 		} else {
-			PageLocation.changeLocation(url);
+			Alix_PageLocation.changeLocation(url);
 		}
 	};
 
 
 	// Create a simbad dialog
 	var simbad = function (pos) {
-		Processing.show("Waiting on Simbad Response");
+		Alix_Processing.show("Waiting on Simbad Response");
 		$.getJSON("simbadtooltip", {pos: pos}, function(jsdata) {
-			Processing.hide();
-			if( Processing.jsonError(jsdata, "Simbad Tooltip Failure") ) {
+			Alix_Processing.hide();
+			if( Alix_Processing.jsonError(jsdata, "Simbad Tooltip Failure") ) {
 				return;
 			} else {
 				var table = "";
@@ -801,7 +801,7 @@ Modalinfo = function(){
 				                }
 				                ];
 
-				CustomDataTable.create("simbadtable", options, position);
+				Alix_CustomDataTable.create("simbadtable", options, position);
 
 				// Put the filter just above the table
 				$("#"+id_modal).find(".dataTables_filter").css("margin-top","34%");
@@ -847,7 +847,7 @@ Modalinfo = function(){
 		 */
 		var url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
 		url += encodeURIComponent("format object \"%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)\"\n" + pos + " radius=1m", "ISO-8859-1");
-		//Processing.show("Waiting on Simbad Response");
+		//Alix_Processing.show("Waiting on Simbad Response");
 		/*$.ajax()...*/
 		$.ajax({
 			//url:'http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+%22%25IDLIST%5B%25-30*%5D%7C-%25COO%28A%29%7C%25COO%28D%29%7C%25OTYPELIST%28S%29%22%0A01+33+50.904+%2B30+39+35.79+radius%3D1m',
@@ -856,7 +856,7 @@ Modalinfo = function(){
 	        async: true,
 	        dataType: 'text',
 	        success: function(jsdata){
-				//Processing.hide();
+				//Alix_Processing.hide();
 				
 				var boeuf;
 				var data_found = false;
@@ -913,7 +913,7 @@ Modalinfo = function(){
 				json["iTotalRecords"]= datasize;
 				json["iTotalDisplayRecords"] = datasize;
 				
-				if( Processing.jsonError(json, "Simbad Tooltip Failure") ) {
+				if( Alix_Processing.jsonError(json, "Simbad Tooltip Failure") ) {
 					return;
 				} else {
 					var table = "";
@@ -971,7 +971,7 @@ Modalinfo = function(){
 					                }
 					                ];
 
-					CustomDataTable.create("simbadtable", options, position);
+					Alix_CustomDataTable.create("simbadtable", options, position);
 					$("#simbadtable_next").text("&nbsp;&nbsp;&nbsp;");
 					$("#simbadtable_previous").text("&nbsp;&nbsp;&nbsp;");
 					$("#simbadtable_paginate").css("left","250px");
@@ -1218,8 +1218,6 @@ Modalinfo = function(){
 		// each open dialog
 		$visible.each(function () {
 			var $this = $(this);
-			console.log($this.find(".ui-dialog-content"))
-			console.log($this.find(".ui-dialog-content").data("dialog"))
 			var dialog = $this.find(".ui-dialog-content").data("dialog");
 			// if fluid option == true
 			if (dialog && dialog.options.maxWidth && dialog.options.width) {

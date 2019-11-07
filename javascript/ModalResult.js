@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-ModalResult = function() {
+Alix_ModalResult = function() {
 	/**
 	 * These next functions are used to build a result panel
 	 * The main @param "content" of these function is an object with this structure:
@@ -79,9 +79,9 @@ ModalResult = function() {
 	 * @id: if of the panel 
 	 **/
 	var addHistoTitle = function(id) {
-		$("#"+id).prev("div").find("span.ui-dialog-title").prepend('<a id="qhistoleft" href="javascript:void(0);" onclick="ModalResult.prevHisto()" class=greyhistoleft></a>'
+		$("#"+id).prev("div").find("span.ui-dialog-title").prepend('<a id="qhistoleft" href="javascript:void(0);" onclick="Alix_ModalResult.prevHisto()" class=greyhistoleft></a>'
 				+ '<span class="nbpages"></span>'
-				+ '<a id="qhistoright" href="javascript:void(0);" onclick="ModalResult.nextHisto()" class=greyhistoright></a>');
+				+ '<a id="qhistoright" href="javascript:void(0);" onclick="Alix_ModalResult.nextHisto()" class=greyhistoright></a>');
 	};
 
 	/**
@@ -127,28 +127,28 @@ ModalResult = function() {
 	var openChapterPanel = function(chapter) {
 		var div = $('#' + chapter.id).next('.detaildata');
 		if( div.length == 0 ){
-			Out.info("Can't open chapter " + chapter);
+			Alix_Out.info("Can't open chapter " + chapter);
 			return;
 		}
 		if (div.html().length > 0) {
 			div.slideToggle(500);
 			switchArrow(chapter.id);
 		} else if(chapter.url != null ){
-			Processing.show("Fetching data");
+			Alix_Processing.show("Fetching data");
 			$.getJSON(chapter.url, chapter.params , function(data) {
-				Processing.hide();
-				if( Processing.jsonError(data, chapter.url) ) {
+				Alix_Processing.hide();
+				if( Alix_Processing.jsonError(data, chapter.url) ) {
 					return;
 				} else {
 					showDataArray(chapter.id, data, chapter.searchable);
 					switchArrow(chapter.id);
-					Modalinfo.center();
+					Alix_Modalinfo.center();
 				}
 			});
 		} else if (chapter.data != undefined && chapter.data != null) {
 			showDataArray(chapter.id, chapter.data, chapter.searchable);	
 			switchArrow(chapter.id);
-			ModalResult.center();
+			Alix_ModalResult.center();
 		}
 	};
 
@@ -183,7 +183,7 @@ ModalResult = function() {
 				                	 "pos": "top-left"
 				                 }];
 
-				CustomDataTable.create(id, options, positions);
+				Alix_CustomDataTable.create(id, options, positions);
 				if( jsdata[i].label != undefined ){
 					($('#' + divid).next('.detaildata')).append(jsdata[i].label);
 				}
@@ -216,7 +216,7 @@ ModalResult = function() {
 			                	 "pos": "top-left"
 			                 }];
 
-			CustomDataTable.create(id, options, positions);
+			Alix_CustomDataTable.create(id, options, positions);
 			if( jsdata.label != undefined ){
 				($('#' + divid).next('.detaildata')).append(jsdata.label);
 			}
@@ -352,7 +352,7 @@ ModalResult = function() {
 		}
 		// If it doesn't exist, building of a new result panel
 		else {
-			var id_modal = Modalinfo.nextId();
+			var id_modal = Alix_Modalinfo.nextId();
 			$(document.documentElement).append('<div id="'+id_modal+'" class="'+resultClass+'" style="display: none; width: auto; hight: auto;"></div>');
 
 			var chdl = ( closeHandler == null )? function(ev, ui)  {$("#"+id_modal).html("");}: closeHandler;
@@ -370,7 +370,7 @@ ModalResult = function() {
 					, close: function (event, ui) {            
 						if (event.originalEvent) {
 							chdl();
-							Modalinfo.close(Modalinfo.findLastModal());
+							Alix_Modalinfo.close(Alix_Modalinfo.findLastModal());
 						}
 					}
 			, width: 'auto' // overcomes width:'auto' and maxWidth bug
@@ -379,7 +379,7 @@ ModalResult = function() {
 				, open: function(event, ui){
 					// Put the content in the history
 					addToHisto(content, content.chapters[0].params.oid);
-					Modalinfo.fluidDialog();
+					Alix_Modalinfo.fluidDialog();
 				}});
 
 			jQuery(".detaildata").each(function(i) {$(this).hide();});
@@ -400,15 +400,15 @@ ModalResult = function() {
 					center();
 				}
 				else {
-					Modalinfo.fluidDialog();
+					Alix_Modalinfo.fluidDialog();
 				}
 			}
 
 			// Set the handler wanted to be executed when the panel is closed
 			$('div[pos="'+$(resultSelect).attr("id")+'"]').on("click", chdl);
 
-			Modalinfo.setShadow(id_modal);
-			Modalinfo.whenClosed(id_modal);
+			Alix_Modalinfo.setShadow(id_modal);
+			Alix_Modalinfo.whenClosed(id_modal);
 		}
 	};
 

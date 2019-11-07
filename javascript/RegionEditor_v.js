@@ -262,7 +262,7 @@ RegionEditor_mVc.prototype = {
 				if( this.points.type == "saadaql") {
 					var s = /"(.*)"/.exec(this.points.value);
 					if( s.length != 2 ) {
-						Modalinfo.error(this.points.value + " does not look like a SaadaQL statment");
+						Alix_Modalinfo.error(this.points.value + " does not look like a SaadaQL statment");
 						return;
 					} else {
 						if( this.points.value.startsWith("isInRegion")) {

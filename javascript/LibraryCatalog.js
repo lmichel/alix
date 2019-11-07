@@ -72,7 +72,6 @@ var LibraryCatalog  = function() {
 		function addCatalog(params){
 			catalogs[params.name] = new LibraryCatalogItem(params);
 			catalogs[params.name].id = getUniqueID();
-			console.log("#####id>"+catalogs[params.name].id+"<catalog>"+params.name+"<saved successfully");
 			for(var name in catalogs){
 				console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name+">>>>name temporary:"+catalogs[name].nameTemp);
 			}
@@ -102,7 +101,6 @@ var LibraryCatalog  = function() {
 			if(params.al_refs)catalogs[name].al_refs=params.al_refs;
 			if(params.obs_id)catalogs[name].obs_id=params.obs_id;
 			if(params.nameTemp)catalogs[name].nameTemp=params.nameTemp;
-			console.log("#####"+params.name+" updated successfully");
 			if(params.name == "Swarm"){
 				SwarmDynamicFilter.runConstraint();
 			}

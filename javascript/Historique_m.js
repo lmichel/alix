@@ -66,7 +66,6 @@ Historique_Mvc.prototype = {
 					}
 				}
 		  
-			console.log("@@@@@@@@@Item storaged locally");
 			this.mark_tab.unshift(positionCopy);    //add the element at top of the list
 			if( this.contextDiv == null ) {
 				this.contextDiv  = $('#' + this.contextDivId);

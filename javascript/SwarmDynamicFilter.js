@@ -48,7 +48,6 @@ var runConstraint = function(ALV){
 	sources = alixCat.al_refs.getSources();
 	if (ConstraintList.length == 0 ){
 		displayCatalogFiltered();
-		console.log("@@@@@@@@No constraint for 3XMM Sources")//When there's no constraint _xs.
 	}else{
 	for(var element in ConstraintList){
 		displayCatalogFiltered(ConstraintList[element]);//apply every constraint in the list _xs.

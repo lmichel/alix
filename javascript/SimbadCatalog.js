@@ -25,7 +25,7 @@ var SimbadCatalog = function(){
 		 */
 		var url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
 		url += encodeURIComponent("format object \"%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)\"\n" + pos + " radius=1m", "ISO-8859-1");
-		//Processing.show("Waiting on Simbad Response");
+		//Alix_Processing.show("Waiting on Simbad Response");
 		/*$.ajax()...*/
 		$.ajax({
 			//url:'http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+%22%25IDLIST%5B%25-30*%5D%7C-%25COO%28A%29%7C%25COO%28D%29%7C%25OTYPELIST%28S%29%22%0A01+33+50.904+%2B30+39+35.79+radius%3D1m',
@@ -34,7 +34,7 @@ var SimbadCatalog = function(){
 	        async: true,
 	        dataType: 'text',
 	        success: function(jsdata){
-				Processing.hide();
+	        	Alix_Processing.hide();
 				
 				var boeuf;
 				var data_found = false;
@@ -91,20 +91,20 @@ var SimbadCatalog = function(){
 				json["iTotalRecords"]= datasize;
 				json["iTotalDisplayRecords"] = datasize;
 				
-				if( Processing.jsonError(json, "Simbad Tooltip Failure") ) {
+				if( Alix_Processing.jsonError(json, "Simbad Tooltip Failure") ) {
 					return;
 				} else {
 					var table = "";
 					table += '<table cellpadding="0" cellspacing="0" border="0"  id="simbadtable" class="display table"></table>';
-					var id_modal = Modalinfo.nextId();
+					var id_modal = Alix_Modalinfo.nextId();
 					//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
-					Modalinfo.setModal(id_modal, false, "Simbad Summary for Position " 
+					Alix_Modalinfo.setModal(id_modal, false, "Simbad Summary for Position " 
 							+ pos 
 							+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 							+ encodeURIComponent(pos) + "\"></a>"
 							, table);
-					Modalinfo.setShadow(id_modal);
-					Modalinfo.whenClosed(id_modal);
+					Alix_Modalinfo.setShadow(id_modal);
+					Alix_Modalinfo.whenClosed(id_modal);
 
 					$("#"+id_modal).css("overflow","hidden");
 
@@ -149,7 +149,7 @@ var SimbadCatalog = function(){
 					                }
 					                ];
 
-					CustomDataTable.create("simbadtable", options, position);
+					Alix_CustomDataTable.create("simbadtable", options, position);
 					$("#simbadtable_paginate").css("left","250px");
 					$(".txt-left").remove();	
 					// Put the filter just above the table

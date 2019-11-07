@@ -75,7 +75,6 @@ HipsSelector_mVc.prototype = {
 							+ jsondata[i].obs_description + "</span></div>");
 					$(document.getElementById("panel_"+jsondata[i].ID)).click(function(){
 						var id = $(this).attr('id')	.replace('panel_','').replace(/\//g, "\\/").replace(/\./g,'');//solve the problem that CXC can't show up
-						console.log($(this).attr('id'));
 						$("#" + id).slideToggle();	
 						$(this).toggleClass("alix_liste_item_close");
 					});

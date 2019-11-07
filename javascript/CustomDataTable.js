@@ -1,5 +1,5 @@
 //take out from jsStuff
-CustomDataTable = function () {
+Alix_CustomDataTable = function () {
 	// Used to add custom content
 	var custom = 0;
 	var custom_array = [];
@@ -57,7 +57,7 @@ CustomDataTable = function () {
 			custom_array.forEach(function(element) {
 				$("div.custom"+element.pos).html(element.content);
 			});
-			ModalResult.changeFilter(id);
+			Alix_ModalResult.changeFilter(id);
 		}		
 		$('#' + id + "_wrapper").css("overflow","inherit");
 		return table;

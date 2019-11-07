@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-SkyGeometry = function() {
+Alix_SkyGeometry = function() {
 	/**
 	 * 
 	 */
