@@ -14208,7 +14208,7 @@ console.log('=============== >  AladinUpdate.js ');
 
 //take out from jsStuff
 
-Alix_Modalinfo = function(){
+let Alix_Modalinfo = function(){
 	var divId = "modaldiv";
 	var divSelect = '#' + divId;
 	/**
@@ -15412,7 +15412,7 @@ Alix_Modalinfo = function(){
 
 	// Run function on all dialog opens
 	$(document).on("dialogopen", ".ui-dialog", function (event, ui) {
-		fluidDialog();
+		// TODO Alix_Modalinfo.fluidDialog();
 	});
 
 	// Remove window resize namespace
@@ -15465,7 +15465,6 @@ Alix_Modalinfo = function(){
 		parent.css("left", Math.max(0, (($(window).width() - parent.outerWidth()) / 2) + 
 				$(window).scrollLeft()) + "px");
 	};
-
 	var pblc = {};
 	pblc.dump = dump;
 	pblc.dumpAscii = dumpAscii;
@@ -15492,15 +15491,15 @@ Alix_Modalinfo = function(){
 	pblc.getHtml = getHtml;
 	pblc.center = center;
 	pblc.addIconTitle=addIconTitle;
-	pblc.SimbadCatalog=SimbadCatalog
+	pblc.SimbadCatalog=SimbadCatalog;
 	return pblc;
 
 }();
-console.log('=============== >  Modalinfo.js ');
+console.log('=============== >  Alix_Modalinfo.js ');
 
 //take out from jsStuff
 
-Alix_Out = function() {
+let Alix_Out = function() {
 	var debugMode = false;
 	var trace = false;
 	var packedMode = false;
@@ -15615,7 +15614,7 @@ Alix_Out = function() {
 	pblc.setdebugModeFromUrl = setdebugModeFromUrl;
 	return pblc;
 }();
-console.log('=============== >  Out.js ');
+console.log('=============== >  Alix_Out.js ');
 
 /**
  * Loads automatically all css scripts used by saadahsbasics
@@ -15723,7 +15722,7 @@ console.log('=============== >  packedLoader.js ');
 
 //take out from jsStuff
 
-Alix_PageLocation = function () {
+let Alix_PageLocation = function () {
 	var that = this;
 	var downloadIframe = null;
 	/*
@@ -15772,11 +15771,11 @@ Alix_PageLocation = function () {
 	pblc.confirmBeforeUnload   = confirmBeforeUnlaod;
 	return pblc;
 }();
-console.log('=============== >  PageLocation.js ');
+console.log('=============== >  Alix_PageLocation.js ');
 
 //take out from jsStuff
 
-Alix_Printer = function() {
+let Alix_Printer = function() {
 	/*
 	 * Public functions
 	 */
@@ -15810,11 +15809,11 @@ Alix_Printer = function() {
 	pblc.printDiv = printDiv;
 	return pblc;
 }();
-console.log('=============== >  Printer.js ');
+console.log('=============== >  Alix_Printer.js ');
 
 //take out from jsStuff
 var zIndexProcessing = 4000;
-Alix_Processing  = function() {
+let Alix_Processing  = function() {
 	/*
 	 * public functions
 	 */
@@ -15904,11 +15903,11 @@ Alix_Processing  = function() {
 	pblc.showAndHide = showAndHide;
 	return pblc;
 }();
-console.log('=============== >  Processing.js ');
+console.log('=============== >  Alix_Processing.js ');
 
 //take out from jsStuff
 
-Alix_SkyGeometry = function() {
+let Alix_SkyGeometry = function() {
 	/**
 	 * 
 	 */
@@ -15942,7 +15941,7 @@ Alix_SkyGeometry = function() {
 	return pblc;
 
 }();
-console.log('=============== >  SkyGeometry.js ');
+console.log('=============== >  Alix_SkyGeometry.js ');
 
 /**
  * @preserve LICENSE
@@ -22809,6 +22808,14 @@ var displayCatalogFiltered = function(constraint){
 				sourcesShown.push(source);		
 			}
 		}
+		else if(comparator=="CONTAINS"){
+			if(source.data[element].indexOf(value)!=-1){
+				source.show();	
+				sourcesShown.push(source);
+			}
+			else
+				source.hide();
+		}
 	}else if(constraint == undefined){
 		source.show();//show all the sources _xs.
 	}
@@ -23291,7 +23298,7 @@ var SimbadCatalog = function(){
 console.log('=============== >  SimbadCatalog.js ');
 
 //take out from jsStuff
-Alix_CustomDataTable = function () {
+let Alix_CustomDataTable = function () {
 	// Used to add custom content
 	var custom = 0;
 	var custom_array = [];
@@ -23532,11 +23539,11 @@ Alix_CustomDataTable = function () {
 
 	return pblc;
 }();
-console.log('=============== >  CustomDataTable.js ');
+console.log('=============== >  Alix_CustomDataTable.js ');
 
 //take out from jsStuff
 
-Alix_ModalResult = function() {
+let Alix_ModalResult = function() {
 	/**
 	 * These next functions are used to build a result panel
 	 * The main @param "content" of these function is an object with this structure:
@@ -23975,5 +23982,5 @@ Alix_ModalResult = function() {
 
 	return pblc;
 }();
-console.log('=============== >  ModalResult.js ');
+console.log('=============== >  Alix_ModalResult.js ');
 

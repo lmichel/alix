@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-Alix_PageLocation = function () {
+let Alix_PageLocation = function () {
 	var that = this;
 	var downloadIframe = null;
 	/*

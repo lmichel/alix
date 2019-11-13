@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-Alix_ModalResult = function() {
+let Alix_ModalResult = function() {
 	/**
 	 * These next functions are used to build a result panel
 	 * The main @param "content" of these function is an object with this structure:

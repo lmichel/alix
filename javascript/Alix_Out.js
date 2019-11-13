@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-Alix_Out = function() {
+let Alix_Out = function() {
 	var debugMode = false;
 	var trace = false;
 	var packedMode = false;

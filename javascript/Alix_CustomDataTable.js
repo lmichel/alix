@@ -1,5 +1,5 @@
 //take out from jsStuff
-Alix_CustomDataTable = function () {
+let Alix_CustomDataTable = function () {
 	// Used to add custom content
 	var custom = 0;
 	var custom_array = [];

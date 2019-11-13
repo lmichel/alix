@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-Alix_Printer = function() {
+let Alix_Printer = function() {
 	/*
 	 * Public functions
 	 */

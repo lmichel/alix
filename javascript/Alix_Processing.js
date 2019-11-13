@@ -1,6 +1,6 @@
 //take out from jsStuff
 var zIndexProcessing = 4000;
-Alix_Processing  = function() {
+let Alix_Processing  = function() {
 	/*
 	 * public functions
 	 */

@@ -141,6 +141,14 @@ var displayCatalogFiltered = function(constraint){
 				sourcesShown.push(source);		
 			}
 		}
+		else if(comparator=="CONTAINS"){
+			if(source.data[element].indexOf(value)!=-1){
+				source.show();	
+				sourcesShown.push(source);
+			}
+			else
+				source.hide();
+		}
 	}else if(constraint == undefined){
 		source.show();//show all the sources _xs.
 	}

@@ -40,13 +40,13 @@ var resourceLoader = function() {
 	var javascriptDir = baseScriptDir + "javascript/";
 	//var importsJstuffDir = "http://obs-stage-c11:8080/jsresources/saadajsbasics/javascript/";
 	var local_js = [
-		  "Modalinfo.js"
-		 ,"Out.js"
+		  "Alix_Modalinfo.js"
+		 ,"Alix_Out.js"
 		 ,"packedLoader.js"
-		 ,"PageLocation.js"
-		 ,"Printer.js"
-		 ,"Processing.js"
-		 ,"SkyGeometry.js"
+		 ,"Alix_PageLocation.js"
+		 ,"Alix_Printer.js"
+		 ,"Alix_Processing.js"
+		 ,"Alix_SkyGeometry.js"
 		 ,"Segment.js"
 	   	 ,"AstroCoo.js"
 	   	 ,"LibraryMap.js"
@@ -64,12 +64,11 @@ var resourceLoader = function() {
 	   	 ,"HipsSelector_v.js" 
 	   	 ,"SwarmDynamicFilter.js"
 	   	 ,"ConfigureALiX.js"
-	   	 ,"ConfigureALiX.js"
 	   	 ,"VizierCatalog.js"
 	   	 ,"MessageBox.js"
 	   	 ,"SimbadCatalog.js"
-	   	 ,"CustomDataTable.js"
-	   	 ,"ModalResult.js"
+	   	 ,"Alix_CustomDataTable.js"
+	   	 ,"Alix_ModalResult.js"
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 

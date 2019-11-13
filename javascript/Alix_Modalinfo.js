@@ -1,6 +1,6 @@
 //take out from jsStuff
 
-Alix_Modalinfo = function(){
+let Alix_Modalinfo = function(){
 	var divId = "modaldiv";
 	var divSelect = '#' + divId;
 	/**
@@ -1204,7 +1204,7 @@ Alix_Modalinfo = function(){
 
 	// Run function on all dialog opens
 	$(document).on("dialogopen", ".ui-dialog", function (event, ui) {
-		fluidDialog();
+		// TODO Alix_Modalinfo.fluidDialog();
 	});
 
 	// Remove window resize namespace
@@ -1257,7 +1257,6 @@ Alix_Modalinfo = function(){
 		parent.css("left", Math.max(0, (($(window).width() - parent.outerWidth()) / 2) + 
 				$(window).scrollLeft()) + "px");
 	};
-
 	var pblc = {};
 	pblc.dump = dump;
 	pblc.dumpAscii = dumpAscii;
@@ -1284,7 +1283,7 @@ Alix_Modalinfo = function(){
 	pblc.getHtml = getHtml;
 	pblc.center = center;
 	pblc.addIconTitle=addIconTitle;
-	pblc.SimbadCatalog=SimbadCatalog
+	pblc.SimbadCatalog=SimbadCatalog;
 	return pblc;
 
 }();
