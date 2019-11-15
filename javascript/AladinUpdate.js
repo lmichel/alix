@@ -76,6 +76,7 @@ MeasurementTable.prototype.hide = function() {
     $("#SourceDiv").css("display","none");
     AladinLiteX_mVc.deleteSourceAuto();
     AladinLiteX_mVc.deleteLastSelectedPosition();
+    $("#ACDS").css("color","#888a85");
 };
 //To clean the target when we click the empty part of aladin
 cds.Source.prototype.actionOtherObjectClicked = function() {
@@ -84,6 +85,7 @@ cds.Source.prototype.actionOtherObjectClicked = function() {
         $("#SourceDiv").css("display","none");
         AladinLiteX_mVc.cleanCatalog("Target");
         AladinLiteX_mVc.deleteLastSelectedPosition();
+        $("#ACDS").css("color","#888a85");
 	}
 };
 

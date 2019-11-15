@@ -2038,7 +2038,7 @@ SimbadPointer = (function() {
     
     SimbadPointer = {};
 
-    SimbadPointer.MIRRORS = ['//alasky.u-strasbg.fr/cgi/simbad-flat/simbad-quick.py', '//alaskybis.u-strasbg.fr/cgi/simbad-flat/simbad-quick.py']; // list of base URL for Simbad pointer service
+    SimbadPointer.MIRRORS = ['https://alasky.u-strasbg.fr/cgi/simbad-flat/simbad-quick.py', 'https://alaskybis.u-strasbg.fr/cgi/simbad-flat/simbad-quick.py']; // list of base URL for Simbad pointer service
 
     
     SimbadPointer.query = function(ra, dec, radiusDegrees, aladinInstance) {
@@ -2870,6 +2870,7 @@ Utils.uuidv4 = function() {
         return v.toString(16);
     });
 }
+
 
 // Copyright 2013 - UDS/CNRS
 // The Aladin Lite program is distributed under the terms
@@ -3744,10 +3745,10 @@ HiPSDefinition = (function() {
     "hips_order": "7",
     "hips_frame": "equatorial",
     "hips_tile_format": "png jpeg",
-    "hips_service_url": "http://saada.unistra.fr/xmmpnsky",
-    "hips_service_url_1": "http://alasky.unistra.fr/SSC/xmmpnsky",
-    "hips_service_url_2": "http://alaskybis.unistra.fr/SSC/xmmpnsky",
-    "hips_service_url_3": "https://alaskybis.unistra.fr/SSC/xmmpnsky"
+    "hips_service_url": "http://saada.unistra.fr/PNColor",
+    "hips_service_url_1": "http://alasky.u-strasbg.fr/SSC/xcatdb_P_XMM_PN_color",
+    "hips_service_url_2": "http://alaskybis.u-strasbg.fr/SSC/xcatdb_P_XMM_PN_color",
+    "hips_service_url_3": "https://alaskybis.u-strasbg.fr/SSC/xcatdb_P_XMM_PN_color"
 }];
 
     var listHipsProperties = []; // this variable stores our current knowledge
@@ -4090,6 +4091,11 @@ Downloader = (function() {
 		this.dlQueue = []; // queue of items being downloaded
         this.urlsInQueue = {};
 	};
+
+	Downloader.prototype.emptyQueue = function() {
+		this.dlQueue = [];
+        this.urlsInQueue = {};
+    };
 	
 	Downloader.prototype.requestDownload = function(img, url, cors) {
         // first check if url already in queue
@@ -6002,7 +6008,7 @@ MOC = (function() {
             // high res cells
             degradedOrder = MOC.HIGHRES_MAXORDER; 
             degradedIpix  = Math.floor(ipix / Math.pow(4, (order - degradedOrder)));
-            var degradedIpixOrder3 = Math.floor(degradedIpix * Math.pow(4, (3 - degradedIpix)) );
+            var degradedIpixOrder3 = Math.floor(degradedIpix * Math.pow(4, (3 - degradedOrder)) );
             if (! (degradedOrder in this._highResIndexOrder3[degradedIpixOrder3])) {
                 this._highResIndexOrder3[degradedIpixOrder3][degradedOrder]= [];
             }
@@ -6177,7 +6183,7 @@ MOC = (function() {
 
         var counter = 0;
         var mocCells;
-        for (var norder=1; norder<=norderMax; norder++) {
+        for (var norder=0; norder<=norderMax; norder++) {
             nside = 1 << norder;
 
             for (var i=0; i<visibleHpxCellsOrder3.length; i++) {
@@ -6605,7 +6611,7 @@ Footprint = (function() {
 
     Footprint.prototype.dispatchClickEvent = function() {
         if (this.overlay) {
-            // footprint selection code adapted from Fabrizzio Giordano dev. from Serco for ESA/ESDC
+            // footprint selection code adapted from Fabrizio Giordano dev. from Serco for ESA/ESDC
             //window.dispatchEvent(new CustomEvent("footprintClicked", {
             this.overlay.view.aladinDiv.dispatchEvent(new CustomEvent("footprintClicked", {
                 detail: {
@@ -6623,7 +6629,7 @@ Footprint = (function() {
         this.isSelected = true;
         if (this.overlay) {
 /*
-            // footprint selection code adapted from Fabrizzio Giordano dev. from Serco for ESA/ESDC
+            // footprint selection code adapted from Fabrizio Giordano dev. from Serco for ESA/ESDC
             //window.dispatchEvent(new CustomEvent("footprintClicked", {
             this.overlay.view.aladinDiv.dispatchEvent(new CustomEvent("footprintClicked", {
                 detail: {
@@ -6816,7 +6822,7 @@ Circle = (function() {
     
     Circle.prototype.dispatchClickEvent = function() {
         if (this.overlay) {
-            // footprint selection code adapted from Fabrizzio Giordano dev. from Serco for ESA/ESDC
+            // footprint selection code adapted from Fabrizio Giordano dev. from Serco for ESA/ESDC
             //window.dispatchEvent(new CustomEvent("footprintClicked", {
             this.overlay.view.aladinDiv.dispatchEvent(new CustomEvent("footprintClicked", {
                 detail: {
@@ -7845,7 +7851,7 @@ cds.Catalog = (function() {
     	this.sourceSize = options.sourceSize || this.sourceSize || 6;
     	this.shape = options.shape || this.shape || "square";
 
-        this.selectSize = this.sourceSize +2;
+        this.selectSize = this.sourceSize + 2;
 
         this.cacheCanvas = cds.Catalog.createShape(this.shape, this.color, this.sourceSize); 
         this.cacheSelectCanvas = cds.Catalog.createShape('square', this.selectionColor, this.selectSize);
@@ -8778,7 +8784,7 @@ TileBuffer = (function() {
 	TileBuffer.prototype.getTile = function(url) {
         return this.tilesMap[url];
 	};
-	
+
 	return TileBuffer;
 })();
 // Copyright 2013 - UDS/CNRS
@@ -9381,6 +9387,8 @@ HpxImageSurvey = (function() {
     	    else {
     	        this.rootUrl = rootUrl;
     	    }
+            this.additionalParams = (options && options.additionalParams) || null; // parameters for cut, stretch, etc
+
             // make URL absolute
             this.rootUrl = Utils.getAbsoluteURL(this.rootUrl);
 
@@ -9388,6 +9396,9 @@ HpxImageSurvey = (function() {
             if (Utils.isHttpsContext() && ( /u-strasbg.fr/i.test(this.rootUrl) || /unistra.fr/i.test(this.rootUrl)  ) ) {
                 this.rootUrl = this.rootUrl.replace('http://', 'https://');
             }
+
+            // temporary fix when alasky is under maintenance
+            //this.rootUrl = this.rootUrl.replace('alasky.', 'alaskybis.');
     	
     	    options = options || {};
     	    // TODO : support PNG
@@ -9459,7 +9470,7 @@ HpxImageSurvey = (function() {
             // testing if server supports CORS ( http://www.html5rocks.com/en/tutorials/cors/ )
             $.ajax({
                 type: 'GET',
-                url: this.rootUrl + '/properties',
+                url: this.rootUrl + '/properties'  + (this.additionalParams ? ('?' + this.additionalParams) : ''),
                 dataType: 'text',
                 xhrFields: {
                 },
@@ -9560,7 +9571,7 @@ HpxImageSurvey = (function() {
      },
      {
         "id": "P/GALEXGR6/AIS/color",
-        "url": "http://alasky.u-strasbg.fr/GALEX/GR6-02-Color",
+        "url": "http://alasky.unistra.fr/GALEX/GR6-03-2014/AIS-Color",
         "name": "GALEX Allsky Imaging Survey colored",
         "maxOrder": 8,
         "frame": "equatorial",
@@ -9616,7 +9627,7 @@ HpxImageSurvey = (function() {
      },
      {
          "id": "P/XMM/PN/color",
-          "url": "http://saada.unistra.fr/xmmpnsky",
+          "url": "http://saada.unistra.fr/PNColor",
           "name": "XMM PN colored",
           "maxOrder": 7,
           "frame": "equatorial",
@@ -9675,7 +9686,7 @@ HpxImageSurvey = (function() {
     
     HpxImageSurvey.prototype.getTileURL = function(norder, npix) {
     	var dirIdx = Math.floor(npix/10000)*10000;
-    	return this.rootUrl + "/" + "Norder" + norder + "/Dir" + dirIdx + "/Npix" + npix + "." + this.imgFormat;
+    	return this.rootUrl + "/" + "Norder" + norder + "/Dir" + dirIdx + "/Npix" + npix + "." + this.imgFormat  + (this.additionalParams ? ('?' + this.additionalParams) : '');;
     };
     
     HpxImageSurvey.prototype.retrieveAllskyTextures = function() {
@@ -9705,7 +9716,7 @@ HpxImageSurvey = (function() {
             */
     		self.view.requestRedraw();
     	};
-    	img.src = this.rootUrl + '/Norder3/Allsky.' + this.imgFormat;
+    	img.src = this.rootUrl + '/Norder3/Allsky.' + this.imgFormat + (this.additionalParams ? ('?' + this.additionalParams) : '');
     
     };
 
@@ -10612,7 +10623,7 @@ View = (function() {
     View.DRAW_MOCS_WHILE_DRAGGING = true;
 
     View.CALLBACKS_THROTTLE_TIME_MS = 100; // minimum time between two consecutive callback calls
-    
+
     
     // (re)create needed canvases
     View.prototype.createCanvases = function() {
@@ -10665,7 +10676,7 @@ View = (function() {
         this.catalogCtx.canvas.height = this.height;
         this.reticleCtx.canvas.height = this.height;
 
-        pixelateCanvasContext(this.imageCtx);
+        pixelateCanvasContext(this.imageCtx, this.aladin.options.pixelateCanvas);
 
         // change logo
         if (!this.logoDiv) {
@@ -10687,12 +10698,13 @@ View = (function() {
         this.requestRedraw();
     };
 
-    var pixelateCanvasContext = function(ctx) {
-        ctx.imageSmoothingEnabled = false;
-        ctx.webkitImageSmoothingEnabled = false;
-        ctx.mozImageSmoothingEnabled = false;
-        ctx.msImageSmoothingEnabled = false;
-        ctx.oImageSmoothingEnabled = false;
+    var pixelateCanvasContext = function(ctx, pixelateFlag) {
+        var enableSmoothing = ! pixelateFlag;
+        ctx.imageSmoothingEnabled = enableSmoothing;
+        ctx.webkitImageSmoothingEnabled = enableSmoothing;
+        ctx.mozImageSmoothingEnabled = enableSmoothing;
+        ctx.msImageSmoothingEnabled = enableSmoothing;
+        ctx.oImageSmoothingEnabled = enableSmoothing;
     }
     
 
@@ -10952,7 +10964,7 @@ View = (function() {
             if (! wasDragging && objs) {
                 var o = objs[0];
 
-                // footprint selection code adapted from Fabrizzio Giordano dev. from Serco for ESA/ESDC
+                // footprint selection code adapted from Fabrizio Giordano dev. from Serco for ESA/ESDC
                 if (o instanceof Footprint || o instanceof Circle) {
                     o.dispatchClickEvent();
                 }
@@ -11011,6 +11023,7 @@ View = (function() {
             view.requestRedraw(true);
         });
         var lastHoveredObject; // save last object hovered by mouse
+        var lastMouseMovePos = null;
         $(view.reticleCanvas).bind("mousemove touchmove", function(e) {
             e.preventDefault();
 
@@ -11032,6 +11045,11 @@ View = (function() {
                     if (pos !== undefined) {
                         onMouseMoveFunction({ra: pos[0], dec: pos[1], x: xymouse.x, y: xymouse.y});
                     }
+                    // send null ra and dec when we go out of the "sky"
+                    else if (lastMouseMovePos != null) {
+                        onMouseMoveFunction({ra: null, dec: null, x: xymouse.x, y: xymouse.y});
+                    }
+                    lastMouseMovePos = pos;
                 }
 
 
@@ -11935,7 +11953,11 @@ View = (function() {
         
         this.zoomFactor = this.computeZoomFactor(this.zoomLevel);
         
+        var oldFov = this.fov;
         this.fov = computeFov(this);
+
+
+        // TODO: event/listener should be better
         updateFovDiv(this);
         
         this.computeNorder();
@@ -12071,15 +12093,9 @@ View = (function() {
         else {
             newImageSurvey = imageSurvey;
         }
-    
-        // do not touch the tileBuffer if we load the exact same HiPS (in that case, should we stop here??)    
-        if (newImageSurvey && this.imageSurvey && newImageSurvey.hasOwnProperty('id') && this.imageSurvey.hasOwnProperty('id') && newImageSurvey.id==this.imageSurvey.id) {
-            // do nothing
-        }
-        else {
-            // buffer reset
-            this.tileBuffer = new TileBuffer();
-        }
+   
+        this.tileBuffer = new TileBuffer();
+        this.downloader.emptyQueue();
         
         newImageSurvey.isReady = false;
         this.imageSurvey = newImageSurvey;
@@ -12303,7 +12319,7 @@ View = (function() {
     // return closest object within a radius of maxRadius pixels. maxRadius is an integer
     View.prototype.closestObjects = function(x, y, maxRadius) {
 
-        // footprint selection code adapted from Fabrizzio Giordano dev. from Serco for ESA/ESDC
+        // footprint selection code adapted from Fabrizio Giordano dev. from Serco for ESA/ESDC
         var overlay;
         var canvas=this.catalogCanvas;
         var ctx = canvas.getContext("2d");
@@ -12324,6 +12340,9 @@ View = (function() {
                                 this.width, this.height,
                                 this.largestDim,
                                 this.zoomFactor);
+                        if (! xy) {
+                            continue;
+                        }
                         pointXY.push({
                             x: xy.vx,
                             y: xy.vy
@@ -12722,9 +12741,10 @@ Aladin = (function() {
 	};
 	
     /**** CONSTANTS ****/
-    Aladin.VERSION = "2018-09-24"; // will be filled by the build.sh script
+    Aladin.VERSION = "2019-11-14"; // will be filled by the build.sh script
     
     Aladin.JSONP_PROXY = "https://alasky.unistra.fr/cgi/JSONProxy";
+    //Aladin.JSONP_PROXY = "https://alaskybis.unistra.fr/cgi/JSONProxy";
 
 
     
@@ -12751,7 +12771,8 @@ Aladin = (function() {
         realFullscreen:           false,
         showAllskyRing:           false,
         allskyRingColor:          '#c8c8ff',
-        allskyRingWidth:          8
+        allskyRingWidth:          8,
+        pixelateCanvas:           true
     };
 
    
@@ -13347,6 +13368,7 @@ Aladin = (function() {
     // API
     A.catalogFromURL = function(url, options, successCallback, useProxy) {
         var catalog = A.catalog(options);
+        // TODO: should be self-contained in Catalog class
         cds.Catalog.parseVOTable(url, function(sources) {
                 catalog.addSources(sources);
                 if (successCallback) {
@@ -13668,6 +13690,34 @@ Aladin = (function() {
         }
 
         return this.view.getCanvasDataURL(options.format, options.width, options.height);
+    }
+
+    /**
+     * Return the current view WCS as a key-value dictionary
+     * Can be useful in coordination with getViewDataURL
+     *
+     * @API
+    */
+    Aladin.prototype.getViewWCS = function(options) {
+        var raDec = this.getRaDec();
+        var fov   = this.getFov();
+        // TODO: support for other projection methods than SIN
+        return {
+            NAXIS:     2,
+            NAXIS1:    this.view.width,
+            NAXIS2:    this.view.height,
+            RADECSYS: 'ICRS',
+            CRPIX1:    this.view.width  / 2,
+            CRPIX2:    this.view.height / 2,
+            CRVAL1:    raDec[0],
+            CRVAL2:    raDec[1],
+            CTYPE1:    'RA---SIN',
+            CTYPE2:    'DEC--SIN',
+            CD1_1:     fov[0] / this.view.width,
+            CD1_2:     0.0,
+            CD2_1:     0.0,
+            CD2_2:     fov[1] / this.view.height
+        }
     }
      
      /** restrict FOV range
