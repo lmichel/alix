@@ -14224,6 +14224,21 @@ URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
     return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
 };
 
+/*Aladin.prototype.increaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel+step);
+	
+};
+
+Aladin.prototype.decreaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel-step);
+	SimbadCatalog.displayCatalogFiltered();
+};*/
 
 var Location = (function() {
     // constructor
@@ -15562,7 +15577,7 @@ let Alix_Out = function() {
 		if( !packedMode ){
 			var e = new Error('dummy');	
 			var stk;
-			console.log(level + ": " + msg);
+			//console.log(level + ": " + msg);
 			/*
 			 * IE ignore the stack property of the object Error
 			 */
@@ -15575,7 +15590,7 @@ let Alix_Out = function() {
 				 */
 				for( var i=3 ; i<ls.length ; i++ ) {
 					//if( i == 3) continue;
-					console.log(ls[i]);
+					//console.log(ls[i]);
 					if( i > 3 && ! withTrace) break;
 				}
 			}
@@ -16880,20 +16895,22 @@ var LibraryCatalog  = function() {
 			catalogs[params.name] = new LibraryCatalogItem(params);
 			catalogs[params.name].id = getUniqueID();
 			for(var name in catalogs){
-				console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name+">>>>name temporary:"+catalogs[name].nameTemp);
+				//console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name+">>>>name temporary:"+catalogs[name].nameTemp);
 			}
 		};
 		
 		function getCatalog(name){
 			if ( catalogs[name] == undefined )
-				console.log("catalogue >"+ name + "< not found");
+				//console.log("catalogue >"+ name + "< not found");
+			//console.log(catalogs)
+				;
 			return catalogs[name];
 		};
 		function delCatalog(name){
 			delete catalogs[name];
-			console.log("catalog>"+name+"<deleted successfully")
+			//console.log("catalog>"+name+"<deleted successfully")
 			for(var name in catalogs){
-				console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name);
+				//console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name);
 			}
 			
 		};
@@ -16911,7 +16928,6 @@ var LibraryCatalog  = function() {
 			if(params.name == "Swarm"){
 				SwarmDynamicFilter.runConstraint();
 			}
-			//cata.
 		};
 	/*	function updCatalog(params){
 			var name = params.name;
@@ -17112,7 +17128,7 @@ MasterResource.prototype = {
 				url = url.replace(/\{\$fov\}/g,size);
 				url = url.replace(/\{\$format\}/g,affichage.format);
 			}
-			console.log(url);
+			//console.log(url);
 			return url;
 		},
 		
@@ -17469,7 +17485,6 @@ var WaitingPanel = function(){
 		WaitingPanel.warn("Number of displayed sources limited to 999");
 	}
 	var warn = function(message) {
-		console.log("warn " + message)
 		var alert = $("#alert");
 		alert.html('<div class="alix_alert_fov_msg">' + message + '</div>');
 		$("#alert").fadeIn(100);
@@ -17748,9 +17763,10 @@ var AladinLiteX_mVc = function(){
 			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
 			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
 			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
+			    +'<b><input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none;"></b></div>'
+			    +'<div style = ""><b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
 			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
-			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
+			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div><br>'
 			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
 			    +'<select id="select_vizier" class="alix_selector_vizier "><option selected="select">--select--</option></select>'
 			    +'<div id="vizier" class="alix_vizier">'
@@ -17839,6 +17855,7 @@ var AladinLiteX_mVc = function(){
 		
 		aladin.on('click',function(){
 			targetDiv.blur();
+			//SimbadCatalog.resetFilter();
 		});
 		aladin.on('positionChanged', function(newPosition){
 			//targetDiv.blur();
@@ -17849,6 +17866,7 @@ var AladinLiteX_mVc = function(){
 					controller.updateCatalogs(aladinLiteView,'position');
 				}
 			}
+			SimbadCatalog.resetFilter();
 		});
 
 		aladin.on('zoomChanged', function(newFoV) {
@@ -17858,7 +17876,10 @@ var AladinLiteX_mVc = function(){
 		    	if(aladinLiteView.masterResource != undefined){
 		    		controller.updateCatalogs(aladinLiteView,'zoom');
 		    	}
-		    }	    
+		    }
+		    /*if(SimbadCatalog.getType()!=undefined)
+		    	SimbadCatalog.displayCatalogFiltered();*/
+		    SimbadCatalog.resetFilter();
 		});	
 		
 		/*if(aladinLiteView.masterResource.affichage.display == true){
@@ -17966,7 +17987,6 @@ var AladinLiteX_mVc = function(){
 				searchCataloge($(this).val());
 			}
 		});
-		
 		$("#menuDiv").on("click",".alix_btn_open", function(event){
 			event.stopPropagation();
 			$("#center").css("transition-timing-function","cubic-bezier(0.8,0.84,0.44,1.3)");
@@ -18708,13 +18728,13 @@ var AladinLiteX_mVc = function(){
 			var shown = false;
 			$("#vizier_list").find("li").each(function() {
 				   if ($(this).hasClass(obs_id)) {
-					   console.log("VizieR:"+obs_id+"exists already in library Catalog and is shown");
+					   //console.log("VizieR:"+obs_id+"exists already in library Catalog and is shown");
 					   shown = true;
 				   }
 			})
 			if(shown == false){
 				controller.createCatalogSelect(obs_id);
-				console.log("VizieR:"+obs_id+"exists already in library Catalog but not shown");
+				//console.log("VizieR:"+obs_id+"exists already in library Catalog but not shown");
 			}
 		}
 		$("#itemList").css("display", "none");
@@ -19188,7 +19208,7 @@ var AladinLiteX_mVc = function(){
 					var originColor = catalog.color;
 					var catalogRef = catalog.al_refs;
 					var currentColor = catalogRef.color;
-					console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
+					//console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
 					if(currentColor=="orange")currentColor="#ffa500";
 					if(currentColor=="red")currentColor = "#ff0000";//To avoid the color take the value"red" sometimes.
 					var hex = colorFadeOut(currentColor);
@@ -19205,7 +19225,7 @@ var AladinLiteX_mVc = function(){
 					var originColor = catalog.color;
 					var catalogRef = catalog.al_refs;
 					var currentColor = catalogRef.color;
-					console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
+					//console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
 					if(currentColor=="orange")currentColor="#ffa500";
 					if(currentColor=="red")currentColor = "#ff0000";
 					if(originColor=="orange")originColor="#ffa500";
@@ -19228,8 +19248,17 @@ var AladinLiteX_mVc = function(){
 				sourceSize = LibraryCatalog.getCatalog(name).al_refs.sourceSize;
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
-				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize ,shape: shape}, WaitingPanel.hide(name));
-				aladin.addCatalog(catalog);			
+				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize 
+					,shape: shape}
+				    , WaitingPanel.hide(name)
+				    );
+				aladin.addCatalog(catalog);	
+				SimbadCatalog.setCatalog(catalog);
+				/*if(SimbadCatalog.getisFiltered())
+					SimbadCatalog.runConstraint();
+				SimbadCatalog.runConstraint()
+				if(SimbadCatalog.getType()!=undefined)
+					SimbadCatalog.displayCatalogFiltered();*/
 		}else if(name == 'NED'){
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){
@@ -19281,7 +19310,7 @@ var AladinLiteX_mVc = function(){
 						aladinLiteView.sourceSelected.y = params.y;
 						var data = params.data;
 						var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
-						console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
+						//console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
 						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 						}
@@ -19335,11 +19364,11 @@ var AladinLiteX_mVc = function(){
 								var idField = match[1];
 								var idvalue = data[idField];
 								var re =  new RegExp("\\{\\$" + idField + "\\}", 'g');
-								console.log(re)
+								//console.log(re)
 								var lien = aladinLiteView.masterResource.actions.showAssociated.url.replace(re ,idvalue);
-								console.log(re + " " + idField + " " + idvalue  + " " + lien);
+								//console.log(re + " " + idField + " " + idvalue  + " " + lien);
 
-								console.log($("#ACDS").css("color"));
+								//console.log($("#ACDS").css("color"));
 								var actualColor = $("#ACDS").css("color");
 								if(actualColor == "rgb(50, 255, 236)" ||actualColor == "#32FFEC"){
 									$("#ACDS").css("color","#888a85")
@@ -19686,8 +19715,8 @@ var AladinLiteX_mVc = function(){
                  },
                  function(data) { // errror callback
                       if (console) {
-                          console.log("Could not resolve object name " + targetName);
-                          console.log(data);
+                          //console.log("Could not resolve object name " + targetName);
+                          //console.log(data);
                       }
                       (typeof errorCallback === 'function') && errorCallback();
                  });
@@ -22408,6 +22437,9 @@ HipsSelector_mVc.prototype = {
 				 $("#btn-Simbad-configure").css("color", color);
 				 $("#btn-Simbad-flash").css("color", color);
 				self.model.aladinLite_V.displayCatalog(name, color, VizierCatalogue.showSourceData, url);
+				$("#SearchType").css("display","inline");
+				SimbadCatalog.SearchType();
+				SimbadCatalog.resetFilter();
 			}else{
 				cmdNode.attr("class", "alix_simbad_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
@@ -22416,6 +22448,7 @@ HipsSelector_mVc.prototype = {
 				self.model.aladinLite_V.cleanCatalog(name);
 				if(LibraryCatalog.getCatalog(name))LibraryCatalog.delCatalog(name);
 				AladinLiteX_mVc.closeContext();
+				$("#SearchType").css("display","none");
 			}
 			//AladinLiteX_mVc.bindToFade();
 		},
@@ -22635,8 +22668,8 @@ HipsSelector_mVc.prototype = {
 				var color= this.libraryMap.colorMap[name].color;
 				var clickType = 'showTable';
 				self.model.aladinLite_V.cleanCatalog(name);
-					WaitingPanel.show(name);
-					self.model.aladinLite_V.displayCatalog(name, color, clickType, url);
+				WaitingPanel.show(name);
+				self.model.aladinLite_V.displayCatalog(name, color, clickType, url);
 			}
 			//Update the vizier catalogs
 			if(LibraryCatalog.catalogs != null){
@@ -22654,12 +22687,12 @@ HipsSelector_mVc.prototype = {
 						var obs_id =catalog.obs_id;
 						if($(document.getElementById("cata_operate_"+id)).attr("class") == "alix_vizier_chosen "){
 						if(catalog.url!=undefined){
-							console.log("Progressive Vizier:"+name+"<<<url>>>"+catalog.url)
+							//console.log("Progressive Vizier:"+name+"<<<url>>>"+catalog.url)
 							self.model.aladinLite_V.cleanCatalog(name);
 							cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, catalog.color, 'showTable', catalog.url);
 							//self.model.cata_created[obs_id] = cataInit;
 						}else{
-							console.log("Unprogressive Vizier:"+name+"<<<no url>>>")
+							//console.log("Unprogressive Vizier:"+name+"<<<no url>>>")
 							self.model.aladinLite_V.cleanCatalog(name);
 							cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, catalog.color, 'showTable');
 							//self.model.cata_created[obs_id] = cataInit;
@@ -23144,7 +23177,15 @@ var MessageBox = function(){
 console.log('=============== >  MessageBox.js ');
 
 var SimbadCatalog = function(){
+	var alixCat;
+	var sources;
+	var aladinLiteView;
+	var sourcetype;
+	var aladinCatalog = null;
+	var isFiltered= false;
+	var longname;
 	var simbad = function (data) {
+		Alix_Processing.show("Waiting on Simbad Response");
 		/**
 		 ** part of VizierCatalog
 		 */
@@ -23154,7 +23195,13 @@ var SimbadCatalog = function(){
 		var content = '<div id="SimbadSourceDiv" class="alix_source_panels"><div id="SourceDiv_Child" style="height:300px"><table id="SourceDiv_table"><thead>';
 		if( data.data != undefined){
 	    	for (key in data.data){
-		    	if(data.data[key])
+	    		if(key=="main_type"){
+	    			if(longname!=undefined&&longname!=""&&longname.indexOf("[")!=-1)
+	    				content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+'  '+longname+'</td></tr>';
+	    			else
+	    				content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+data.data[key]+'</td></tr>';
+	    		}
+	    		else if(data.data[key])
 		    		content+='<tr style="background-color:#f2f2f2;"><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
 		    }
 	    }
@@ -23173,7 +23220,6 @@ var SimbadCatalog = function(){
 		//Alix_Processing.show("Waiting on Simbad Response");
 		/*$.ajax()...*/
 		$.ajax({
-			//url:'http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+%22%25IDLIST%5B%25-30*%5D%7C-%25COO%28A%29%7C%25COO%28D%29%7C%25OTYPELIST%28S%29%22%0A01+33+50.904+%2B30+39+35.79+radius%3D1m',
 			url: url,
 			method: 'GET',
 	        async: true,
@@ -23329,12 +23375,372 @@ var SimbadCatalog = function(){
 				}
 	        }
 		});
+		Alix_Processing.hide();
 	}
 	
-	var retour = {
-		simbad : simbad
+	var SearchType = function(){
+		var type=["LM?", "LXB", "BNe","HII", "PN", "Pec?", "ev", "GiG", "bub", "BD*", 
+			      "CV*", "BY*", "WD?", "?", "Al*", "vid", "Ae?", "ULX", "El*", "LyA", "reg", "TT*", "err", "Bz?",
+				  "mm", "a2*", "Em*", "WR*", "LM*", "AB*", "XB?", "RC?", "RV*", "HX?", "sg?", "HH", "**?","Le?", 
+				  "DN*", "Ce*", "AM*", "LX?", "WD*", "Cl*", "*", "N*", "gLe", "GlC", "FIR", "LP*", "BiC", "WU*",
+				  "AB?", "cC*", "BS?", "Ir*", "cor", "dS*", "ALS", "bL*", "C?G", "s?y", "BH?", "blu", "GrG", "Y*O",
+                  "Lev", "gam", "Be*", "ERO", "Ce?", "OH*", "grv", "BS*", "Pe*", "XB*", "s?r", "Ae*", "Pl", "sg*", 
+                  "N*?", "CGb", "pr?", "Pu*", "St*", "Sy?", "V*", "X", "RR?", "C*?", "SNR", "ClG", "BL?", "LeI", 
+                  "GWE", "Fl*", "PoC", "GiP", "SX*","C?*","bC*","GNe","RC*","DLA","SCG","HV*","Gr?","s*y","sh","HXB",
+                  "s*b", "gB", "pr*","PaG","Or*","Be?","As*","glb","SyG","RS*","NL*","pA?","Gl?","LS?", "EmG","G?","HS?",
+                  "BAL", "pA*","Er*","mul","IR","DNe","CGG","HI","CV?","EB*","C*","ISM","H2G","No*","Sy1","LeG","LI?","LSB",
+                  "UV", "RR*","AGN","PM*","*i*","HB*", "MoC","No?","OpC","UX?","Cld","SBG","TT?","LeQ","S*","HzG","Psr","SB*",
+                  "HS*", "red","PN?","FU*","Mi?","SN?","**","BLL","s?b","WV*","of?","RB?","SN*","LP?","DQ*","LLS","EB?",
+                  "GiC", "smm","LIN","cm","Sy2","S*?","Bla","IG","HB?","Ro*","V*?","Y*?","QSO","Q?","HVC","SFR","bCG","EmO",
+				  "Pl?", "MGr","s*r","sv?","EP*","AG?","Mas","Mi*","PoG","gLS","SR?","Sy*","WR?","RNe","G","NIR","*iN","rG","rB",
+				  "BD?", "gD*","*iC","out","Rad", "RG*"];
+		var table=["(Micro)Lensing Event [Lev]",
+			"Absorption Line system [ALS]",
+			"Active Galaxy Nucleus [AGN]",
+			"Association of Stars [As*]",
+			"Asymptotic Giant Branch Star (He-burning) [AB*]",
+			"Asymptotic Giant Branch Star candidate [AB?]",
+			"BL Lac - type object [BLL]",
+			"Be Star [Be*]",
+			"Black Hole Candidate [BH?]",
+			"Blazar [Bla]",
+			"Blue Straggler Star [BS*]",
+			"Blue compact Galaxy [bCG]",
+			"Blue object [blu]",
+			"Blue supergiant star [s*b]",
+			"Bright Nebula [BNe]",
+			"Brightest galaxy in a Cluster (BCG) [BiC]",
+			"Broad Absorption Line system [BAL]",
+			"Brown Dwarf (M<0.08solMass) [BD*]",
+			"Brown Dwarf Candidate [BD?]",
+			"Bubble [bub]",
+			"CV DQ Her type (intermediate polar) [DQ*]",
+			"CV of AM Her type (polar) [AM*]",
+			"Candidate blue Straggler Star [BS?]",
+			"Candidate objects [..?]",
+			"Carbon Star [C*]",
+			"Cataclysmic Binary Candidate [CV?]",
+			"Cataclysmic Variable Star [CV*]",
+			"Cepheid variable Star [Ce*]",
+			"Classical Cepheid (delta Cep type) [cC*]",
+			"Cloud [Cld]",
+			"Cluster of Galaxies [ClG]",
+			"Cluster of Stars [Cl*]",
+			"Cometary Globule [CGb]",
+			"Compact Group of Galaxies [CGG]",
+			"Composite object [mul]",
+			"Confirmed Neutron Star [N*]",
+			"Damped Ly-alpha Absorption Line system [DLA]",
+			"Dark Cloud (nebula) [DNe]",
+			"Dense core [cor]",
+			"Double or multiple star [**]",
+			"Dwarf Nova [DN*]",
+			"Eclipsing Binary Candidate [EB?]",
+			"Eclipsing binary of Algol type (detached) [Al*]",
+			"Eclipsing binary of W UMa type (contact binary) [WU*]",
+			"Eclipsing binary of beta Lyr type (semi-detached)[bL*]",
+			"Eclipsing binary [EB*]",
+			"Ellipsoidal variable Star [El*]",
+			"Emission Object [EmO]",
+			"Emission-line Star [Em*]",
+			"Emission-line galaxy [EmG]",
+			"Eruptive variable Star [Er*]",
+			"Evolved supergiant star [sg*]",
+			"Extra-solar Confirmed Planet [Pl]",
+			"Extra-solar Planet Candidate [Pl?]",
+			"Extremely Red Object [ERO]",
+			"Far-IR source (\lambda >= 30 {\mu}m) [FIR]",
+			"Flare Star [Fl*]",
+			"Galactic Nebula [GNe]",
+			"Galaxy in Cluster of Galaxies [GiC]",
+			"Galaxy in Group of Galaxies [GiG]",
+			"Galaxy in Pair of Galaxies [GiP]",
+			"Galaxy with high redshift [HzG]",
+			"Galaxy [G]",
+			"Globular Cluster [GlC]",
+			"Globule (low-mass dark cloud) [glb]",
+			"Gravitational Lens System (lens+images) [gLS]",
+			"Gravitational Lens [gLe]",
+			"Gravitational Source [grv]",
+			"Gravitational Wave Event [GWE]",
+			"Gravitationally Lensed Image of a Galaxy [LeG]",
+			"Gravitationally Lensed Image of a Quasar [LeQ]",
+			"Gravitationally Lensed Image [LeI]",
+			"Group of Galaxies [GrG]",
+			"HI (21cm) source [HI]",
+			"HI shell [sh]",
+			"HII (ionized) region [HII]",
+			"HII Galaxy [H2G]",
+			"Herbig Ae/Be star [Ae*]",
+			"Herbig-Haro Object [HH]",
+			"High Mass X-ray Binary [HXB]",
+			"High proper-motion Star [PM*]",
+			"High-Mass X-ray binary Candidate [HX?]",
+			"High-velocity Cloud [HVC]",
+			"High-velocity Star [HV*]",
+			"Horizontal Branch Star [HB*]",
+			"Hot subdwarf candidate [HS?]",
+			"Hot subdwarf [HS*]",
+			"Infra-Red source [IR]",
+			"Interacting Galaxies [IG]",
+			"Interstellar matter [ISM]",
+			"LINER-type Active Galaxy Nucleus [LIN]",
+			"Long Period Variable candidate [LP?]",
+			"Long-period variable star [LP*]",
+			"Low Mass X-ray Binary [LXB]",
+			"Low Surface Brightness Galaxy [LSB]",
+			"Low-Mass X-ray binary Candidate [LX?]",
+			"Low-mass star (M<1solMass) [LM*]",
+			"Low-mass star candidate [LM?]",
+			"Ly alpha Absorption Line system [LyA]",
+			"Lyman limit system [LLS]",
+			"Maser [Mas]",
+			"Mira candidate [Mi?]",
+			"Molecular Cloud [MoC]",
+			"Moving Group [MGr]",
+			"Near-IR source (\lambda < 10 {\mu}m) [NIR]",
+			"Neutron Star Candidate [N*?]",
+			"Not an object (error, artefact, ...) [err]",
+			"Nova Candidate [No?]",
+			"Nova [No*]",
+			"Nova-like Star [NL*]",
+			"OH/IR star [OH*]",
+			"Object of unknown nature [?]",
+			"Open (galactic) Cluster [OpC]",
+			"Optically Violently Variable object [OVV]",
+			"Outflow candidate [of?]",
+			"Outflow [out]",
+			"Pair of Galaxies [PaG]",
+			"Part of Cloud [PoC]",
+			"Part of a Galaxy [PoG]",
+			"Peculiar Star [Pe*]",
+			"Physical Binary Candidate [**?]",
+			"Planetary Nebula [PN]",
+			"Possible (open) star cluster [C?*]",
+			"Possible Active Galaxy Nucleus [AG?]",
+			"Possible BL Lac [BL?]",
+			"Possible Be Star [Be?]",
+			"Possible Blazar [Bz?]",
+			"Possible Blue supergiant star [s?b]",
+			"Possible Carbon Star [C*?]",
+			"Possible Cepheid [Ce?]",
+			"Possible Cluster of Galaxies [C?G]",
+			"Possible Galaxy [G?]",
+			"Possible Globular Cluster [Gl?]",
+			"Possible Group of Galaxies [Gr?]",
+			"Possible Herbig Ae/Be Star [Ae?]",
+			"Possible Horizontal Branch Star [HB?]",
+			"Possible Peculiar Star [Pec?]",
+			"Possible Planetary Nebula [PN?]",
+			"Possible Quasar [Q?]",
+			"Possible Red Giant Branch star [RB?]",
+			"Possible Red supergiant star [s?r]",
+			"Possible S Star [S*?]",
+			"Possible Star of RR Lyr type [RR?]",
+			"Possible Star with envelope of CH type [CH?]",
+			"Possible Star with envelope of OH/IR type [OH?]",
+			"Possible Supercluster of Galaxies [SC?]",
+			"Possible Supergiant star [sg?]",
+			"Possible Wolf-Rayet Star [WR?]",
+			"Possible Yellow supergiant star [s?y]",
+			"Possible gravitational lens System [LS?]",
+			"Possible gravitational lens [Le?]",
+			"Possible gravitationally lensed image [LI?]",
+			"Post-AGB Star (proto-PN) [pA*]",
+			"Post-AGB Star Candidate [pA?]",
+			"Pre-main sequence Star Candidate [pr?]",
+			"Pre-main sequence Star [pr*]",
+			"Pulsar [Psr]",
+			"Pulsating White Dwarf [ZZ*]",
+			"Pulsating variable Star [Pu*]",
+			"Quasar [QSO]",
+			"Radio Galaxy [rG]",
+			"Radio-source [Rad]",
+			"Red Giant Branch star [RG*]",
+			"Red supergiant star [s*r]",
+			"Reflection Nebula [RNe]",
+			"Region defined in the sky [reg]",
+			"Rotationally variable Star [Ro*]",
+			"S Star [S*]",
+			"Semi-regular pulsating Star [sr*]",
+			"Semi-regular variable candidate [sv?]",
+			"Seyfert 1 Galaxy [Sy1]",
+			"Seyfert 2 Galaxy [Sy2]",
+			"Seyfert Galaxy [SyG]",
+			"Spectroscopic binary [SB*]",
+			"Star forming region [SFR]",
+			"Star in Association [*iA]",
+			"Star in Cluster [*iC]",
+			"Star in Nebula [*iN]",
+			"Star in double system [*i*]",
+			"Star showing eclipses by its planet [EP*]",
+			"Star suspected of Variability [V*?]",
+			"Star with envelope of CH type [CH*]",
+			"Star [*]",
+			"Starburst Galaxy [SBG]",
+			"Stellar Stream [St*]",
+			"Sub-stellar object [su*]",
+			"SuperNova Candidate [SN?]",
+			"SuperNova Remnant Candidate [SR?]",
+			"SuperNova Remnant [SNR]",
+			"SuperNova [SN*]",
+			"Supercluster of Galaxies [SCG]",
+			"Symbiotic Star Candidate [Sy?]",
+			"Symbiotic Star [Sy*]",
+			"T Tau star Candidate [TT?]",
+			"T Tau-type Star [TT*]",
+			"UV-emission source [UV]",
+			"Ultra-luminous X-ray candidate [UX?]",
+			"Ultra-luminous X-ray source [ULX]",
+			"Underdense region of the Universe [vid]",
+			"Variable Star of FU Ori type [FU*]",
+			"Variable Star of Mira Cet type [Mi*]",
+			"Variable Star of Orion Type [Or*]",
+			"Variable Star of R CrB type candiate [RC?]",
+			"Variable Star of R CrB type [RC*]",
+			"Variable Star of RR Lyr type [RR*]",
+			"Variable Star of RV Tau type [RV*]",
+			"Variable Star of SX Phe type (subdwarf) [SX*]",
+			"Variable Star of W Vir type [WV*]",
+			"Variable Star of alpha2 CVn type [a2*]",
+			"Variable Star of beta Cep type [bC*]",
+			"Variable Star of delta Sct type [dS*]",
+			"Variable Star of gamma Dor type [gD*]",
+			"Variable Star of irregular type [Ir*]",
+			"Variable Star with rapid variations [RI*]",
+			"Variable Star [V*]",
+			"Variable of BY Dra type [BY*]",
+			"Variable of RS CVn type [RS*]",
+			"Very red source [red]",
+			"White Dwarf Candidate [WD?]",
+			"White Dwarf [WD*]",
+			"Wolf-Rayet Star [WR*]",
+			"X-ray Binary [XB*]",
+			"X-ray binary Candidate [XB?]",
+			"X-ray source [X]",
+			"Yellow supergiant star [s*y]",
+			"Young Stellar Object Candidate [Y*?]",
+			"Young Stellar Object [Y*O]",
+			"centimetric Radio-source [cm]",
+			"gamma-ray Burst [gB]",
+			"gamma-ray source [gam]",
+			"metallic Absorption Line system [mAL]",
+			"metric Radio-source [mR]",
+			"millimetric Radio-source [mm]",
+			"radio Burst [rB]",
+			"sub-millimetric source [smm]",
+			"transient event [ev]"]
+		$("#SearchType").autocomplete({source:table});
+		$("#ui-id-1").css("z-index","1000000");
+		$("#SearchType").keyup(function(e){
+			var key = e.which;
+			if(key==13){
+				longname=$("#SearchType").val();
+				if(table.indexOf(longname)==-1&&longname!=""){
+					MessageBox.alertBox("This type doesn't exist");
+					return ;
+				}
+				var regex = /\[(.+?)\]/g;
+				var i = $("#SearchType").val().match(regex);
+				if(i!=undefined){
+					var j = i[0].substring(1,i[0].length - 1);
+					sourcetype = j;
+				}
+				else
+					sourcetype="";
+				if(sourcetype=="")
+					isFiltered=false;
+				else
+					isFiltered=true;
+				runConstraint();
+				//resetFilter();
+			}
+		})
 	};
 	
+	var setCatalog = function(catalog){
+		aladinCatalog = catalog
+	}
+	var runConstraint = function(){
+		if( aladinCatalog ) {
+			sources = aladinCatalog.getSources();
+			displayCatalogFiltered();
+	    }
+	};
+	
+	var displayCatalogFiltered = function(){
+		for(var i=0;i<sources.length;i++){
+			source = sources[i];
+			if(source.data.other_types.indexOf(sourcetype)!=-1 || source.data.main_type == sourcetype ){
+				source.show();
+			}
+			else{
+				source.hide();
+			}
+		}
+	}
+	
+	var getType = function(){
+		return sourcetype;
+	}
+	
+	var getisFiltered = function(){
+		return isFiltered;
+	}
+	
+	var resetFilter = function(){
+		$("#SearchType").val("");
+	}
+	
+	/*
+	 * These 2 functions are designed to get the data from http://simbad.u-strasbg.fr/simbad/sim-tap/sync
+	 */
+	function Query(adql){
+	    var site= "http://simbad.u-strasbg.fr/simbad/sim-tap/sync";
+	    var reTable;
+	    reTable = $.ajax({
+	      url: `${site}`,
+	      type: "GET",
+	      data: {query: `${adql}`, format: 'text', lang: 'ADQL', request :'doQuery'},
+	      async:false
+	      })
+	    .done(function(result){
+	        return result;
+	    })
+	  return reTable;
+	}
+	var getTable = function(){
+		adql = "SELECT  distinct \"public\".otypedef.otype_longname, \"public\".otypedef.otype_shortname FROM \"public\".otypedef order by otype_longname" 
+		       var obj = Query(adql);
+		       var content = obj.responseText;
+		       var list = content.split("|");
+		       var result=[];
+		       for(var i = 2;i<list.length;i++){
+		           var temp = list[i].split("\n");
+		           for(var j=0;j<temp.length;j++){
+		            result.push(temp[j]);
+		           }
+		       }
+		       var json={};
+		       for(var i =0;i<result.length;i++){
+		           result[i]=result[i+1]
+		       }
+		       for(var h=0;h<result.length-2;h=h+2){
+		           json[result[h]]=result[h+1];
+		       }
+		       console.log(json)
+	}
+	var retour = {
+			simbad : simbad,
+			setCatalog : setCatalog,
+			runConstraint : runConstraint,
+			displayCatalogFiltered :displayCatalogFiltered,
+			getType : getType,
+			resetFilter : resetFilter,
+			getisFiltered : getisFiltered,
+			getTable : getTable,
+			SearchType : SearchType
+	};
 	return retour;
 }();
 console.log('=============== >  SimbadCatalog.js ');

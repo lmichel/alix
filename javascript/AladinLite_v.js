@@ -67,7 +67,6 @@ var WaitingPanel = function(){
 		WaitingPanel.warn("Number of displayed sources limited to 999");
 	}
 	var warn = function(message) {
-		console.log("warn " + message)
 		var alert = $("#alert");
 		alert.html('<div class="alix_alert_fov_msg">' + message + '</div>');
 		$("#alert").fadeIn(100);
@@ -346,9 +345,10 @@ var AladinLiteX_mVc = function(){
 			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
 			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
 			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
+			    +'<b><input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none;"></b></div>'
+			    +'<div style = ""><b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
 			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
-			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
+			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div><br>'
 			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
 			    +'<select id="select_vizier" class="alix_selector_vizier "><option selected="select">--select--</option></select>'
 			    +'<div id="vizier" class="alix_vizier">'
@@ -437,6 +437,7 @@ var AladinLiteX_mVc = function(){
 		
 		aladin.on('click',function(){
 			targetDiv.blur();
+			//SimbadCatalog.resetFilter();
 		});
 		aladin.on('positionChanged', function(newPosition){
 			//targetDiv.blur();
@@ -447,6 +448,7 @@ var AladinLiteX_mVc = function(){
 					controller.updateCatalogs(aladinLiteView,'position');
 				}
 			}
+			SimbadCatalog.resetFilter();
 		});
 
 		aladin.on('zoomChanged', function(newFoV) {
@@ -456,7 +458,10 @@ var AladinLiteX_mVc = function(){
 		    	if(aladinLiteView.masterResource != undefined){
 		    		controller.updateCatalogs(aladinLiteView,'zoom');
 		    	}
-		    }	    
+		    }
+		    /*if(SimbadCatalog.getType()!=undefined)
+		    	SimbadCatalog.displayCatalogFiltered();*/
+		    SimbadCatalog.resetFilter();
 		});	
 		
 		/*if(aladinLiteView.masterResource.affichage.display == true){
@@ -564,7 +569,6 @@ var AladinLiteX_mVc = function(){
 				searchCataloge($(this).val());
 			}
 		});
-		
 		$("#menuDiv").on("click",".alix_btn_open", function(event){
 			event.stopPropagation();
 			$("#center").css("transition-timing-function","cubic-bezier(0.8,0.84,0.44,1.3)");
@@ -1306,13 +1310,13 @@ var AladinLiteX_mVc = function(){
 			var shown = false;
 			$("#vizier_list").find("li").each(function() {
 				   if ($(this).hasClass(obs_id)) {
-					   console.log("VizieR:"+obs_id+"exists already in library Catalog and is shown");
+					   //console.log("VizieR:"+obs_id+"exists already in library Catalog and is shown");
 					   shown = true;
 				   }
 			})
 			if(shown == false){
 				controller.createCatalogSelect(obs_id);
-				console.log("VizieR:"+obs_id+"exists already in library Catalog but not shown");
+				//console.log("VizieR:"+obs_id+"exists already in library Catalog but not shown");
 			}
 		}
 		$("#itemList").css("display", "none");
@@ -1786,7 +1790,7 @@ var AladinLiteX_mVc = function(){
 					var originColor = catalog.color;
 					var catalogRef = catalog.al_refs;
 					var currentColor = catalogRef.color;
-					console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
+					//console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
 					if(currentColor=="orange")currentColor="#ffa500";
 					if(currentColor=="red")currentColor = "#ff0000";//To avoid the color take the value"red" sometimes.
 					var hex = colorFadeOut(currentColor);
@@ -1803,7 +1807,7 @@ var AladinLiteX_mVc = function(){
 					var originColor = catalog.color;
 					var catalogRef = catalog.al_refs;
 					var currentColor = catalogRef.color;
-					console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
+					//console.log("catalog:" + name +",original color:"+ originColor + ",current color:"+currentColor);
 					if(currentColor=="orange")currentColor="#ffa500";
 					if(currentColor=="red")currentColor = "#ff0000";
 					if(originColor=="orange")originColor="#ffa500";
@@ -1826,8 +1830,17 @@ var AladinLiteX_mVc = function(){
 				sourceSize = LibraryCatalog.getCatalog(name).al_refs.sourceSize;
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
-				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize ,shape: shape}, WaitingPanel.hide(name));
-				aladin.addCatalog(catalog);			
+				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize 
+					,shape: shape}
+				    , WaitingPanel.hide(name)
+				    );
+				aladin.addCatalog(catalog);	
+				SimbadCatalog.setCatalog(catalog);
+				/*if(SimbadCatalog.getisFiltered())
+					SimbadCatalog.runConstraint();
+				SimbadCatalog.runConstraint()
+				if(SimbadCatalog.getType()!=undefined)
+					SimbadCatalog.displayCatalogFiltered();*/
 		}else if(name == 'NED'){
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){
@@ -1879,7 +1892,7 @@ var AladinLiteX_mVc = function(){
 						aladinLiteView.sourceSelected.y = params.y;
 						var data = params.data;
 						var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
-						console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
+						//console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
 						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 						}
@@ -1933,11 +1946,11 @@ var AladinLiteX_mVc = function(){
 								var idField = match[1];
 								var idvalue = data[idField];
 								var re =  new RegExp("\\{\\$" + idField + "\\}", 'g');
-								console.log(re)
+								//console.log(re)
 								var lien = aladinLiteView.masterResource.actions.showAssociated.url.replace(re ,idvalue);
-								console.log(re + " " + idField + " " + idvalue  + " " + lien);
+								//console.log(re + " " + idField + " " + idvalue  + " " + lien);
 
-								console.log($("#ACDS").css("color"));
+								//console.log($("#ACDS").css("color"));
 								var actualColor = $("#ACDS").css("color");
 								if(actualColor == "rgb(50, 255, 236)" ||actualColor == "#32FFEC"){
 									$("#ACDS").css("color","#888a85")
@@ -2284,8 +2297,8 @@ var AladinLiteX_mVc = function(){
                  },
                  function(data) { // errror callback
                       if (console) {
-                          console.log("Could not resolve object name " + targetName);
-                          console.log(data);
+                          //console.log("Could not resolve object name " + targetName);
+                          //console.log(data);
                       }
                       (typeof errorCallback === 'function') && errorCallback();
                  });

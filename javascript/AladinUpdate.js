@@ -119,6 +119,21 @@ URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
     return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
 };
 
+/*Aladin.prototype.increaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel+step);
+	
+};
+
+Aladin.prototype.decreaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel-step);
+	SimbadCatalog.displayCatalogFiltered();
+};*/
 
 var Location = (function() {
     // constructor

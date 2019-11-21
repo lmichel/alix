@@ -11,7 +11,7 @@ let Alix_Out = function() {
 		if( !packedMode ){
 			var e = new Error('dummy');	
 			var stk;
-			console.log(level + ": " + msg);
+			//console.log(level + ": " + msg);
 			/*
 			 * IE ignore the stack property of the object Error
 			 */
@@ -24,7 +24,7 @@ let Alix_Out = function() {
 				 */
 				for( var i=3 ; i<ls.length ; i++ ) {
 					//if( i == 3) continue;
-					console.log(ls[i]);
+					//console.log(ls[i]);
 					if( i > 3 && ! withTrace) break;
 				}
 			}
