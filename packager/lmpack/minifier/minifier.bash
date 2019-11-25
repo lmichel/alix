@@ -61,7 +61,8 @@ js_array_org=(
 	   	 "Alix_ModalResult.js"
           )   
           
-jsimport_array_org=( 
+jsimport_array_org=(
+         "jquery-ui.js" 
 	     "jquery.simplemodal.js"
 	   	 "jquery.alerts.js"
 	   	 "jquery.dataTables.js"

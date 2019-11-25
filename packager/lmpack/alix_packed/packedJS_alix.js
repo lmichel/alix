@@ -8177,6 +8177,9 @@ ProgressiveCat = (function() {
         this.selectSize = this.sourceSize + 2;
         this.selectionColor = '#00ff00'; // TODO: to be merged with Catalog
 
+        // allows for filtering of sources
+        this.filterFn = options.filter || undefined; // TODO: do the same for catalog
+
 
         this.onClick = options.onClick || undefined; // TODO: inherit from catalog
 
@@ -8477,14 +8480,20 @@ ProgressiveCat = (function() {
             if (! sources) {
                 return;
             }
+            var s;
             for (var k=0, len = sources.length; k<len; k++) {
-                cds.Catalog.drawSource(this, sources[k], ctx, projection, frame, width, height, largestDim, zoomFactor);
+                s = sources[k];
+                if (!this.filterFn || this.filterFn(s)) {
+                    cds.Catalog.drawSource(this, sources[k], ctx, projection, frame, width, height, largestDim, zoomFactor);
+                }
             }
             for (var k=0, len = sources.length; k<len; k++) {
                 if (! sources[k].isSelected) {
                     continue;
                 }
-                cds.Catalog.drawSourceSelection(this, sources[k], ctx);
+                if (!this.filterFn || this.filterFn(s)) {
+                    cds.Catalog.drawSourceSelection(this, sources[k], ctx);
+                }
             }
         },
 
@@ -10741,8 +10750,8 @@ View = (function() {
     View.prototype.getCanvasDataURL = function(imgType, width, height) {
         imgType = imgType || "image/png"; 
         var c = document.createElement('canvas');
-        width = width || this.width;
-        height = height || this.height;
+        width = width ||this.width;
+        height = height ||this.height;
         c.width = width;
         c.height = height;
         var ctx = c.getContext('2d');
@@ -12093,8 +12102,12 @@ View = (function() {
         else {
             newImageSurvey = imageSurvey;
         }
-   
+ 
+        // TODO: this is a temporary fix for issue https://github.com/cds-astro/aladin-lite/issues/16
+        // ideally, instead of creating a new TileBuffer object,
+        //  one should remove from TileBuffer all Tile objects still in the download queue qui sont encore dans la download queue
         this.tileBuffer = new TileBuffer();
+
         this.downloader.emptyQueue();
         
         newImageSurvey.isReady = false;
@@ -12323,6 +12336,8 @@ View = (function() {
         var overlay;
         var canvas=this.catalogCanvas;
         var ctx = canvas.getContext("2d");
+        // this makes footprint selection easier as the catch-zone is larger
+        ctx.lineWidth = 6;
 
         if (this.overlays) {
             for (var k=0; k<this.overlays.length; k++) {
@@ -12741,7 +12756,7 @@ Aladin = (function() {
 	};
 	
     /**** CONSTANTS ****/
-    Aladin.VERSION = "2019-11-14"; // will be filled by the build.sh script
+    Aladin.VERSION = "2019-11-22"; // will be filled by the build.sh script
     
     Aladin.JSONP_PROXY = "https://alasky.unistra.fr/cgi/JSONProxy";
     //Aladin.JSONP_PROXY = "https://alaskybis.unistra.fr/cgi/JSONProxy";
@@ -17866,7 +17881,7 @@ var AladinLiteX_mVc = function(){
 					controller.updateCatalogs(aladinLiteView,'position');
 				}
 			}
-			SimbadCatalog.resetFilter();
+			//SimbadCatalog.resetFilter();
 		});
 
 		aladin.on('zoomChanged', function(newFoV) {
@@ -17879,7 +17894,7 @@ var AladinLiteX_mVc = function(){
 		    }
 		    /*if(SimbadCatalog.getType()!=undefined)
 		    	SimbadCatalog.displayCatalogFiltered();*/
-		    SimbadCatalog.resetFilter();
+		    //SimbadCatalog.resetFilter();
 		});	
 		
 		/*if(aladinLiteView.masterResource.affichage.display == true){
@@ -19249,7 +19264,7 @@ var AladinLiteX_mVc = function(){
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
 				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize 
-					,shape: shape}
+					,shape: shape,filter:SimbadCatalog.filterSource}
 				    , WaitingPanel.hide(name)
 				    );
 				aladin.addCatalog(catalog);	
@@ -23630,7 +23645,29 @@ var SimbadCatalog = function(){
 			"radio Burst [rB]",
 			"sub-millimetric source [smm]",
 			"transient event [ev]"]
-		$("#SearchType").autocomplete({source:table});
+		$("#ui-id-1").css("z-index","1000000");
+		//$("#SearchType").autocomplete({source:table});
+		$("#SearchType").autocomplete({source:table,select:function(a, b){
+			$(this).val(b.item.value);
+			longname=$("#SearchType").val();
+			if(table.indexOf(longname)==-1&&longname!=""){
+				MessageBox.alertBox("This type doesn't exist");
+				return ;
+			}
+			var regex = /\[(.+?)\]/g;
+			var i = $("#SearchType").val().match(regex);
+			if(i!=undefined){
+				var j = i[0].substring(1,i[0].length - 1);
+				sourcetype = j;
+			}
+			else
+				sourcetype="";
+			if(sourcetype=="")
+				isFiltered=false;
+			else
+				isFiltered=true;
+			SimbadCatalog.runConstraint();
+		}})
 		$("#ui-id-1").css("z-index","1000000");
 		$("#SearchType").keyup(function(e){
 			var key = e.which;
@@ -23667,7 +23704,14 @@ var SimbadCatalog = function(){
 			displayCatalogFiltered();
 	    }
 	};
-	
+	var filterSource = function(source){
+		if(source.data.other_types.indexOf(sourcetype)!=-1 || source.data.main_type == sourcetype || sourcetype==undefined ){
+			return true;
+		}
+		else{
+			return false;
+		}
+	} 
 	var displayCatalogFiltered = function(){
 		for(var i=0;i<sources.length;i++){
 			source = sources[i];
@@ -23739,6 +23783,7 @@ var SimbadCatalog = function(){
 			resetFilter : resetFilter,
 			getisFiltered : getisFiltered,
 			getTable : getTable,
+			filterSource : filterSource,
 			SearchType : SearchType
 	};
 	return retour;

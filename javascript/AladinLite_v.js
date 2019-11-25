@@ -448,7 +448,7 @@ var AladinLiteX_mVc = function(){
 					controller.updateCatalogs(aladinLiteView,'position');
 				}
 			}
-			SimbadCatalog.resetFilter();
+			//SimbadCatalog.resetFilter();
 		});
 
 		aladin.on('zoomChanged', function(newFoV) {
@@ -461,7 +461,7 @@ var AladinLiteX_mVc = function(){
 		    }
 		    /*if(SimbadCatalog.getType()!=undefined)
 		    	SimbadCatalog.displayCatalogFiltered();*/
-		    SimbadCatalog.resetFilter();
+		    //SimbadCatalog.resetFilter();
 		});	
 		
 		/*if(aladinLiteView.masterResource.affichage.display == true){
@@ -1831,7 +1831,7 @@ var AladinLiteX_mVc = function(){
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
 				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize 
-					,shape: shape}
+					,shape: shape,filter:SimbadCatalog.filterSource}
 				    , WaitingPanel.hide(name)
 				    );
 				aladin.addCatalog(catalog);	

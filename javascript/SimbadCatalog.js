@@ -452,7 +452,29 @@ var SimbadCatalog = function(){
 			"radio Burst [rB]",
 			"sub-millimetric source [smm]",
 			"transient event [ev]"]
-		$("#SearchType").autocomplete({source:table});
+		$("#ui-id-1").css("z-index","1000000");
+		//$("#SearchType").autocomplete({source:table});
+		$("#SearchType").autocomplete({source:table,select:function(a, b){
+			$(this).val(b.item.value);
+			longname=$("#SearchType").val();
+			if(table.indexOf(longname)==-1&&longname!=""){
+				MessageBox.alertBox("This type doesn't exist");
+				return ;
+			}
+			var regex = /\[(.+?)\]/g;
+			var i = $("#SearchType").val().match(regex);
+			if(i!=undefined){
+				var j = i[0].substring(1,i[0].length - 1);
+				sourcetype = j;
+			}
+			else
+				sourcetype="";
+			if(sourcetype=="")
+				isFiltered=false;
+			else
+				isFiltered=true;
+			SimbadCatalog.runConstraint();
+		}})
 		$("#ui-id-1").css("z-index","1000000");
 		$("#SearchType").keyup(function(e){
 			var key = e.which;
@@ -489,7 +511,14 @@ var SimbadCatalog = function(){
 			displayCatalogFiltered();
 	    }
 	};
-	
+	var filterSource = function(source){
+		if(source.data.other_types.indexOf(sourcetype)!=-1 || source.data.main_type == sourcetype || sourcetype==undefined ){
+			return true;
+		}
+		else{
+			return false;
+		}
+	} 
 	var displayCatalogFiltered = function(){
 		for(var i=0;i<sources.length;i++){
 			source = sources[i];
@@ -561,6 +590,7 @@ var SimbadCatalog = function(){
 			resetFilter : resetFilter,
 			getisFiltered : getisFiltered,
 			getTable : getTable,
+			filterSource : filterSource,
 			SearchType : SearchType
 	};
 	return retour;

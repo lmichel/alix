@@ -8177,6 +8177,9 @@ ProgressiveCat = (function() {
         this.selectSize = this.sourceSize + 2;
         this.selectionColor = '#00ff00'; // TODO: to be merged with Catalog
 
+        // allows for filtering of sources
+        this.filterFn = options.filter || undefined; // TODO: do the same for catalog
+
 
         this.onClick = options.onClick || undefined; // TODO: inherit from catalog
 
@@ -8477,14 +8480,20 @@ ProgressiveCat = (function() {
             if (! sources) {
                 return;
             }
+            var s;
             for (var k=0, len = sources.length; k<len; k++) {
-                cds.Catalog.drawSource(this, sources[k], ctx, projection, frame, width, height, largestDim, zoomFactor);
+                s = sources[k];
+                if (!this.filterFn || this.filterFn(s)) {
+                    cds.Catalog.drawSource(this, sources[k], ctx, projection, frame, width, height, largestDim, zoomFactor);
+                }
             }
             for (var k=0, len = sources.length; k<len; k++) {
                 if (! sources[k].isSelected) {
                     continue;
                 }
-                cds.Catalog.drawSourceSelection(this, sources[k], ctx);
+                if (!this.filterFn || this.filterFn(s)) {
+                    cds.Catalog.drawSourceSelection(this, sources[k], ctx);
+                }
             }
         },
 
@@ -10741,8 +10750,8 @@ View = (function() {
     View.prototype.getCanvasDataURL = function(imgType, width, height) {
         imgType = imgType || "image/png"; 
         var c = document.createElement('canvas');
-        width = width || this.width;
-        height = height || this.height;
+        width = width ||this.width;
+        height = height ||this.height;
         c.width = width;
         c.height = height;
         var ctx = c.getContext('2d');
@@ -12093,8 +12102,12 @@ View = (function() {
         else {
             newImageSurvey = imageSurvey;
         }
-   
+ 
+        // TODO: this is a temporary fix for issue https://github.com/cds-astro/aladin-lite/issues/16
+        // ideally, instead of creating a new TileBuffer object,
+        //  one should remove from TileBuffer all Tile objects still in the download queue qui sont encore dans la download queue
         this.tileBuffer = new TileBuffer();
+
         this.downloader.emptyQueue();
         
         newImageSurvey.isReady = false;
@@ -12323,6 +12336,8 @@ View = (function() {
         var overlay;
         var canvas=this.catalogCanvas;
         var ctx = canvas.getContext("2d");
+        // this makes footprint selection easier as the catch-zone is larger
+        ctx.lineWidth = 6;
 
         if (this.overlays) {
             for (var k=0; k<this.overlays.length; k++) {
@@ -12741,7 +12756,7 @@ Aladin = (function() {
 	};
 	
     /**** CONSTANTS ****/
-    Aladin.VERSION = "2019-11-14"; // will be filled by the build.sh script
+    Aladin.VERSION = "2019-11-22"; // will be filled by the build.sh script
     
     Aladin.JSONP_PROXY = "https://alasky.unistra.fr/cgi/JSONProxy";
     //Aladin.JSONP_PROXY = "https://alaskybis.unistra.fr/cgi/JSONProxy";
