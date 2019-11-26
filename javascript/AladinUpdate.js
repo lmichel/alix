@@ -42,7 +42,6 @@ cds.Catalog.prototype.makeFlash = function() {
 // function called when a source is clicked. Called by the View object
 cds.Source.prototype.actionClicked = function() {
     if (this.catalog && this.catalog.onClick) {
-        console.log("actionClicked slect")
     	AladinLiteX_mVc.setLastSelectedPosition(this.catalog.name,this.ra, this.dec)
         var view = this.catalog.view;
         if (this.catalog.onClick=='showTable') {
@@ -64,9 +63,6 @@ cds.Source.prototype.actionClicked = function() {
         }
         else if (typeof this.catalog.onClick === 'function' ) {
             this.catalog.onClick(this);
-            var pos = "";
-            pos += this.ra + ' ' + this.dec;
-            Modalinfo.simbad(pos);
             view.lastClickedObject = this;
             this.select();
 
@@ -80,7 +76,7 @@ MeasurementTable.prototype.hide = function() {
     $("#SourceDiv").css("display","none");
     AladinLiteX_mVc.deleteSourceAuto();
     AladinLiteX_mVc.deleteLastSelectedPosition();
-    console.log("hide deslect")
+    $("#ACDS").css("color","#888a85");
 };
 //To clean the target when we click the empty part of aladin
 cds.Source.prototype.actionOtherObjectClicked = function() {
@@ -89,7 +85,7 @@ cds.Source.prototype.actionOtherObjectClicked = function() {
         $("#SourceDiv").css("display","none");
         AladinLiteX_mVc.cleanCatalog("Target");
         AladinLiteX_mVc.deleteLastSelectedPosition();
-        console.log("actionOtherObjectClicked deslect")
+        $("#ACDS").css("color","#888a85");
 	}
 };
 
@@ -123,6 +119,21 @@ URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
     return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
 };
 
+/*Aladin.prototype.increaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel+step);
+	
+};
+
+Aladin.prototype.decreaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel-step);
+	SimbadCatalog.displayCatalogFiltered();
+};*/
 
 var Location = (function() {
     // constructor
@@ -146,7 +157,6 @@ var Location = (function() {
             this.$div.html(coo.format('d/'));
             updateDiv.val(coo.format('d/'));
         }
-		//console.log("update locate box");
         this.$div.toggleClass('aladin-reticleColor', isViewCenterPosition);
         updateDiv.toggleClass('aladin-reticleColor', isViewCenterPosition);
 	};

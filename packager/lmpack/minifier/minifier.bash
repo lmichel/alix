@@ -20,14 +20,24 @@ outputDir="${script_dir}/../alix_packed" # directory where both packed JS and CS
 packedJS=$outputDir/packedJS_alix.js       # name of the file containing the packed JS
 packedJSmin=$outputDir/packedJSmin_alix.js 
 packedJSimport=$outputDir/packedJSimport_alix.js       # name of the file containing the packed JS
+packedJSimportmin=$outputDir/packedJSimportmin_alix.js
 #
 # List of alix JS objects
 # MVC template for names:
 #    Files without a js suffix are related to the MVC pattern.
 #    There are actually 3 files *_m/v/c.js 
 #
-js_array_org=( 
-	"Segment.js"
+js_array_org=(
+		 "aladin.js"
+		 "AladinUpdate.js" 
+		 "Alix_Modalinfo.js"
+		 "Alix_Out.js"
+		 "packedLoader.js"
+		 "Alix_PageLocation.js"
+		 "Alix_Printer.js"
+		 "Alix_Processing.js"
+		 "Alix_SkyGeometry.js"
+		 "Segment.js"
 	   	 "AstroCoo.js"
 	   	 "LibraryMap.js"
 	   	 "LibraryCatalog.js"
@@ -37,16 +47,36 @@ js_array_org=(
 	   	 "AladinLite_c.js"
 	   	 "Historique_m.js"
 	   	 "Historique_v.js"	
-	   	 "RegionEditor"
+	   	 "RegionEditor_v.js"
+	   	 "RegionEditor_m.js"
+	   	 "RegionEditor_c.js"
 	   	 "HipsSelector_m.js"
 	   	 "HipsSelector_v.js" 
 	   	 "SwarmDynamicFilter.js"
 	   	 "ConfigureALiX.js"
-	   	 "AladinUpdate.js"
+	   	 "VizierCatalog.js"
+	   	 "MessageBox.js"
+	   	 "SimbadCatalog.js"
+	   	 "Alix_CustomDataTable.js"
+	   	 "Alix_ModalResult.js"
           )   
           
-jsimport_array_org=( 
-	   	 "spectrum.js"
+jsimport_array_org=(
+         "jquery-ui.js" 
+	     "jquery.simplemodal.js"
+	   	 "jquery.alerts.js"
+	   	 "jquery.dataTables.js"
+	   	 "FixedHeader.js"
+	   	 "jquery.prints.js"
+	   	 "jquery.tooltip.js"
+	   	 "jquery.form.js"
+	   	 "dataTables.sort.plungin.js"
+	   	 "excanvas.js"
+	   	 "jquery.flot.js"
+	      "jquery.flot.navigate.js"
+		  "jquery.flot.symbol.js"
+		  "jquery.flot.errorbars.js"
+		  "jquery.flot.axislabels.js"
           )  
           
           
@@ -177,6 +207,10 @@ echo "=========== Packing is over"
 
 echo "=========== Compress JS"
 java -jar ${script_dir}/compiler.jar --js=$packedJS --js_output_file=$packedJSmin
+echo "=========== Compress is over"
+
+echo "=========== Compress JS import"
+java -jar ${script_dir}/compiler.jar --js=$packedJSimport --js_output_file=$packedJSimportmin
 echo "=========== Compress is over"
 
 exit

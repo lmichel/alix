@@ -72,22 +72,23 @@ var LibraryCatalog  = function() {
 		function addCatalog(params){
 			catalogs[params.name] = new LibraryCatalogItem(params);
 			catalogs[params.name].id = getUniqueID();
-			console.log("#####id>"+catalogs[params.name].id+"<catalog>"+params.name+"<saved successfully");
 			for(var name in catalogs){
-				console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name+">>>>name temporary:"+catalogs[name].nameTemp);
+				//console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name+">>>>name temporary:"+catalogs[name].nameTemp);
 			}
 		};
 		
 		function getCatalog(name){
 			if ( catalogs[name] == undefined )
-				console.log("catalogue >"+ name + "< not found");
+				//console.log("catalogue >"+ name + "< not found");
+			//console.log(catalogs)
+				;
 			return catalogs[name];
 		};
 		function delCatalog(name){
 			delete catalogs[name];
-			console.log("catalog>"+name+"<deleted successfully")
+			//console.log("catalog>"+name+"<deleted successfully")
 			for(var name in catalogs){
-				console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name);
+				//console.log("library>>>>>>>>>"+catalogs[name].id+":"+catalogs[name].name);
 			}
 			
 		};
@@ -102,11 +103,9 @@ var LibraryCatalog  = function() {
 			if(params.al_refs)catalogs[name].al_refs=params.al_refs;
 			if(params.obs_id)catalogs[name].obs_id=params.obs_id;
 			if(params.nameTemp)catalogs[name].nameTemp=params.nameTemp;
-			console.log("#####"+params.name+" updated successfully");
 			if(params.name == "Swarm"){
 				SwarmDynamicFilter.runConstraint();
 			}
-			//cata.
 		};
 	/*	function updCatalog(params){
 			var name = params.name;

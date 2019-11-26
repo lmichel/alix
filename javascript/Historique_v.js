@@ -40,9 +40,8 @@ Historique_mVc.prototype = {
 			}
 			//take the data in localstorage and show the list of marked history  
 			var html = '<b class="alix_titlle_image" style=" margin-left: 15px;">Bookmarks:</b><div style="height:230px;overflow:auto;"><ul id = "history_ul" style="padding-left:18px;">';
-			console.log("@@@@@@@@localStorage.length="+localStorage.length);
 			for(var key in localStorage){
-				console.log("Localstorage key="+key)	
+					
 			}
 			deleteAllObjs();
 			for (var k=0 ; k<localStorage.length; k++) {

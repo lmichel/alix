@@ -75,7 +75,6 @@ HipsSelector_mVc.prototype = {
 							+ jsondata[i].obs_description + "</span></div>");
 					$(document.getElementById("panel_"+jsondata[i].ID)).click(function(){
 						var id = $(this).attr('id')	.replace('panel_','').replace(/\//g, "\\/").replace(/\./g,'');//solve the problem that CXC can't show up
-						console.log($(this).attr('id'));
 						$("#" + id).slideToggle();	
 						$(this).toggleClass("alix_liste_item_close");
 					});
@@ -245,6 +244,9 @@ HipsSelector_mVc.prototype = {
 				 $("#btn-Simbad-configure").css("color", color);
 				 $("#btn-Simbad-flash").css("color", color);
 				self.model.aladinLite_V.displayCatalog(name, color, VizierCatalogue.showSourceData, url);
+				$("#SearchType").css("display","inline");
+				SimbadCatalog.SearchType();
+				SimbadCatalog.resetFilter();
 			}else{
 				cmdNode.attr("class", "alix_simbad_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
@@ -253,6 +255,7 @@ HipsSelector_mVc.prototype = {
 				self.model.aladinLite_V.cleanCatalog(name);
 				if(LibraryCatalog.getCatalog(name))LibraryCatalog.delCatalog(name);
 				AladinLiteX_mVc.closeContext();
+				$("#SearchType").css("display","none");
 			}
 			//AladinLiteX_mVc.bindToFade();
 		},
@@ -472,8 +475,8 @@ HipsSelector_mVc.prototype = {
 				var color= this.libraryMap.colorMap[name].color;
 				var clickType = 'showTable';
 				self.model.aladinLite_V.cleanCatalog(name);
-					WaitingPanel.show(name);
-					self.model.aladinLite_V.displayCatalog(name, color, clickType, url);
+				WaitingPanel.show(name);
+				self.model.aladinLite_V.displayCatalog(name, color, clickType, url);
 			}
 			//Update the vizier catalogs
 			if(LibraryCatalog.catalogs != null){
@@ -491,12 +494,12 @@ HipsSelector_mVc.prototype = {
 						var obs_id =catalog.obs_id;
 						if($(document.getElementById("cata_operate_"+id)).attr("class") == "alix_vizier_chosen "){
 						if(catalog.url!=undefined){
-							console.log("Progressive Vizier:"+name+"<<<url>>>"+catalog.url)
+							//console.log("Progressive Vizier:"+name+"<<<url>>>"+catalog.url)
 							self.model.aladinLite_V.cleanCatalog(name);
 							cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, catalog.color, 'showTable', catalog.url);
 							//self.model.cata_created[obs_id] = cataInit;
 						}else{
-							console.log("Unprogressive Vizier:"+name+"<<<no url>>>")
+							//console.log("Unprogressive Vizier:"+name+"<<<no url>>>")
 							self.model.aladinLite_V.cleanCatalog(name);
 							cataInit = self.model.aladinLite_V.displayVizierCatalog(obs_id, catalog.color, 'showTable');
 							//self.model.cata_created[obs_id] = cataInit;

@@ -40,13 +40,13 @@ var resourceLoader = function() {
 	var javascriptDir = baseScriptDir + "javascript/";
 	//var importsJstuffDir = "http://obs-stage-c11:8080/jsresources/saadajsbasics/javascript/";
 	var local_js = [
-		  "Modalinfo.js"
-		 ,"Out.js"
+		  "Alix_Modalinfo.js"
+		 ,"Alix_Out.js"
 		 ,"packedLoader.js"
-		 ,"PageLocation.js"
-		 ,"Printer.js"
-		 ,"Processing.js"
-		 ,"SkyGeometry.js"
+		 ,"Alix_PageLocation.js"
+		 ,"Alix_Printer.js"
+		 ,"Alix_Processing.js"
+		 ,"Alix_SkyGeometry.js"
 		 ,"Segment.js"
 	   	 ,"AstroCoo.js"
 	   	 ,"LibraryMap.js"
@@ -64,16 +64,28 @@ var resourceLoader = function() {
 	   	 ,"HipsSelector_v.js" 
 	   	 ,"SwarmDynamicFilter.js"
 	   	 ,"ConfigureALiX.js"
-	   	 ,"ConfigureALiX.js"
 	   	 ,"VizierCatalog.js"
 	   	 ,"MessageBox.js"
+	   	 ,"SimbadCatalog.js"
+	   	 ,"Alix_CustomDataTable.js"
+	   	 ,"Alix_ModalResult.js"
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 
 		 "aladinLite/aladin.js"
-		 ,"jsimports/spectrum.js"
+		// ,"jsimports/spectrum.js"
 	     ,"javascript/AladinUpdate.js"//we load these 2 js files in imp_js to make sure they're the last ones to be loaded 
 	   //  ,"javascript/configuration.js"//alixindex.js is for intializing the alix
+	     ,"jsimports/jquery-ui-1.12.1/jquery-ui.js"
+	     ,"jsimports/jquery-ui-1.12.1/jquery.ui.dialog.js"
+	     ,"jsimports/jqueryJSStuff/jquery.simplemodal.js"
+	     ,"jsimports/jqueryJSStuff/jquery.alerts.js"
+	     ,"jsimports/jqueryJSStuff/jquery.dataTables.js"
+	     ,"jsimports/jqueryJSStuff/FixedHeader.js"
+	     ,"jsimports/jqueryJSStuff/jquery.prints.js"
+	     ,"jsimports/jqueryJSStuff/jquery.tooltip.js"
+	     ,"jsimports/jqueryJSStuff/jquery.form.js"
+	     ,"jsimports/jqueryJSStuff/jquery-migrate-1.4.1.js"
 	                 ];
 	var imp_jsStuff_js = [
         ];
@@ -94,6 +106,8 @@ var resourceLoader = function() {
 	                  ];
 	var import_css = [
 		"styles/packedCSS/style_bundle.css"
+		,"styleimport/basics.css"
+		,"styleimport/domain.css"
 		/*    "bootstrap-3.3.7/bootstrap.min.css" 
 		   ,"menuDemo/font-awesome.min.css"
 		   ,"menuDemo/gooey.min.css"
@@ -259,9 +273,11 @@ var resourceLoader = function() {
 	 * and build the global list of resource to load
 	 */
 	var setScripts = function(externalscripts) {
-		//	console.log("----------- " + that.baseUrl + " " + baseScriptDir);
-		for( var i=0 ; i<local_js.length ; i++ ) {
-			var jsf =  baseUrl + javascriptDir + local_js[i];
+		for( var i=0 ; i<imp_js.length ; i++ ) {
+			js.push(baseUrl + jsimportsDir + imp_js[i]);
+		}
+		for( var i=0 ; i<imp_jsStuff_js.length ; i++ ) {
+			var jsf = importsJstuffDir + imp_jsStuff_js[i];
 			if( ! jsf.match(/.*\.js/)  ){
 				js.push(jsf + "_m.js");
 				js.push(jsf + "_v.js");
@@ -272,11 +288,9 @@ var resourceLoader = function() {
 
 			};
 		}
-		for( var i=0 ; i<imp_js.length ; i++ ) {
-			js.push(baseUrl + jsimportsDir + imp_js[i]);
-		}
-		for( var i=0 ; i<imp_jsStuff_js.length ; i++ ) {
-			var jsf = importsJstuffDir + imp_jsStuff_js[i];
+		//	console.log("----------- " + that.baseUrl + " " + baseScriptDir);
+		for( var i=0 ; i<local_js.length ; i++ ) {
+			var jsf =  baseUrl + javascriptDir + local_js[i];
 			if( ! jsf.match(/.*\.js/)  ){
 				js.push(jsf + "_m.js");
 				js.push(jsf + "_v.js");

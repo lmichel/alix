@@ -216,7 +216,6 @@ JOIN tap_schema.tables ON tap_schema.columns.table_name = tap_schema.tables.tabl
 WHERE      tap_schema.columns.table_name = 'II/306/sdss8' 
 			 */
 			var query = this.tapSchemaQuery.replace('{$CATID}', obs_id);
-			console.log(query);
 		    $.ajax({
 		        url: 'http://tapvizier.u-strasbg.fr/TAPVizieR/tap/sync',
 		        data: {"lang": "adql",
@@ -242,7 +241,6 @@ WHERE      tap_schema.columns.table_name = 'II/306/sdss8'
 		        		}
 		        				
 		        	}
-		        	console.log(response);
 		        },
 		        error: function(xhr, status, error) {
 		        	WaitingPanel.warn(xhr.responseText);

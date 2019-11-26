@@ -43,7 +43,7 @@ var masTest = {
 			},	
 			actions :{
 				showAssociated :{
-					active:true,
+					active:false,
 					name:'',
 					id : '',
 					format : {},
@@ -62,6 +62,7 @@ var masTest = {
 					label: "Show details",
 					description: "The function is called when we click a source. We can import other scripts to show more details about the source selected",	
 					handlerSelect: function(data,showPanel){
+						VizierCatalogue.showSourceData(data);
 						//CatalogMerged_mVc.draw(data,showPanel);
 						//The callback is called when we click a source. We can import other scripts to show more details about the source selected.
 					},
