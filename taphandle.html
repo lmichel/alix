@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>Test Taphandle</title>
+		<meta charset="utf-8" />
+	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
+		<script>var useDebugResources = false; var productionMode=false;</script>
+		<script type="text/javascript" src="javascript/loader.js"></script>	
+		<script type="text/javascript" src="javascript/packedLoader.js"></script>	
+		<script>
+		  $.browser={ msie: ( navigator.appName == 'Microsoft Internet Explorer') ? true : false } 
+		
+		  if( productionMode ) {
+		    	useDebugResources = false;
+		        packedResourceLoader.setCss([         
+		          "styles/packedCSS/style_bundle.css"
+		         ,"aladinLite/aladin.css"
+		   		 ,"styles/aladinliteX.css"
+		   		 ,"styleimport/basics.css"
+		 		 ,"styleimport/domain.css"
+		        ]);
+		        packedResourceLoader.setScripts([
+		        	"packager/lmpack/alix_packed/packedJSimport_alix.js"
+		        	,"packager/lmpack/alix_packed/packedJS_alix.js"
+		          ]);
+		        packedResourceLoader.loadAll();
+		    } else {
+
+		     var useDebugResources = true;
+		     resourceLoader.setCss([  
+		      
+		     ]);
+		     resourceLoader.setScripts([  
+		       ]);
+		     resourceLoader.loadAll();
+		     }
+     </script>
+	</head>
+	<body style="height: 100%">
+		<input value="01 33 50.904 +30 39 35.79" type="button" id="test_taphandle1" onclick="Alix_Modalinfo.showPopup(&quot;01 33 50.904 +30 39 35.79&quot;);"></br>
+		<input value="01 35 57.316 +30 14 42.99" type="button" id="test_taphandle2" onclick="Alix_Modalinfo.showPopup(&quot;01 35 57.316 +30 14 42.99&quot;);"></br>
+		<input value="01 38 4.015 +30 47 27.60" type="button" id="test_taphandle3" onclick="Alix_Modalinfo.showPopup(&quot;01 38 4.015 +30 47 27.60&quot;);"></br>
+		<input value="tracer un contour bleu1" type="button" id="test_taphandle4" onclick="Alix_Modalinfo.changeRefBlue(&quot;05 47 16.988 -51 04 0.56&quot;,[86.81985907146121,-51.063067857793584,86.82636111634562,-51.0661222480733,86.82652455775559,-51.06641964743554,86.82177997950002,-51.07057215871521,86.81517234024984,-51.067590370273734,86.81499830638369,-51.067153945527906]);"></br>
+		<input value="tracer un contour bleu2" type="button" id="test_taphandle4" onclick="Alix_Modalinfo.changeRefBlue(&quot;18 00 19.674 -28 56 59.20&quot;,[270.49358608212475,-29.31160316979306,269.66605147870206,-29.31216476349759,269.6723813250019,-28.584405402112793,270.49587006357973,-28.588413706890393]);"></br>
+		<input value="connecter à uner table TAP" type="button" id="test_taphandle5" onclick="window.open(&quot;http://obas-stg-c11:8080/taphandle/index.html?url=http%3A//simbad.u-strasbg.fr/simbad/sim-tap/#&quot;, &quot;blank&quot;);"></br>
+		
+	</body>
+	<script>
+	</script>
+</html>

@@ -155,7 +155,8 @@
   var openNewTab = function(url,name){
 	  if(name!="demo_popup"){
 	  window.open(url, "_blank");}else {
-	  window.open(url, "_blank", "location=yes,height=600,width=800,scrollbars=yes,status=yes,async=false");}
+		  Alix_Modalinfo.showPopup();
+	  }
   }
   
   //, "location=yes,height=1000,width=1000,scrollbars=yes,status=yes,async=false"

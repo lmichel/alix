@@ -244,52 +244,7 @@ var AladinLiteX_mVc = function(){
 		}
 		parentDiv = $('#' + parentDivId);
 		parentDiv.html('<div id="' + aladinDivId + '" class="alix_aladin_div"></div>');
-		//parentDiv.append('<div id="' + menuDivId + '" class="alix_menu_panel">'
-				//+'<input id="' + targetDivId + '" placeholder="target" class="alix_target  " ><span id="search" title="search" class="alix_search  glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>'
-				//+'<select  id ="' + selectDivId + '" class=" alix_select">'
-				//+'<option value="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
-				//+'</select>'
-				//+'<div id="menuDiv"><button id="menu" type="menu" title="open menu" class=" alix_btn_open alix_btn alix_btn-grey alix_menu_item " ><i id="icon_open" class="glyphicon glyphicon-list" style="font-size:18px;"></i></button>'
-				//+'<i id="credit" title="copyright-mark" class="alix_credit alix_menu_item glyphicon glyphicon-copyright-mark"></i>'
-				//+'<button id="center" type="center" title="center" class="alix_btn alix_btn-circle alix_btn-blue alix_menu_item alix_button_center" onclick="AladinLiteX_mVc.returnCenter();"><i class="glyphicon glyphicon-screenshot" style="font-size:15px;"></i></button>'
-			    //+'<button id="bookMark" type="bookMark" title="bookMark" class="alix_btn alix_btn-circle alix_btn-red alix_menu_item alix_button_bookMark" onclick="AladinLiteX_mVc.bookMark();"><i class="glyphicon glyphicon-heart" style="font-size:15px;"></i></button>'
-			    //+'<button id="history" type="history" title="history" class="alix_btn alix_btn-circle alix_btn-green alix_menu_item alix_button_history alix_unselected" onclick="AladinLiteX_mVc.getHistory();"><i class="glyphicon glyphicon-book" style="font-size:15px;"></i></button>'
-			    //+'<button id="region"  type="region" title="edit region" class="alix_btn alix_btn-circle alix_btn-yellow alix_menu_item alix_button_region alix_unselected" onclick="AladinLiteX_mVc.regionEditor();"><i class="glyphicon glyphicon-edit" style="font-size:15px;"></i></button></div>'
-			   // +'<form method = "post" onsubmit="return false;"><fieldset class="alix_image_panel alix_menu_item alix_fieldset">'
-			   // +'<legend class="alix_titlle_image alix_menu_item">Image'
-			   // +'<i id="color_map" title = "color map" style="cursor: pointer; opacity: .3;font-size: 14px; margin:8px"class="alix_menu_item glyphicon glyphicon-sunglasses" onclick = "AladinLiteX_mVc.showColorMap()"></i>'
-			  //  +'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: 150px; height: 50px; color: black;"><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
-			    //+'<select id="color_map_select" class ="alix_selector_cm alix_menu_item"></select>'
-			    //+'</legend>'
-			    //+'<div id = "color_map_box" style = "z-index: 20;position: absolute; width: 150px; height: 50px; color: black;">testetetetet</div>'
-			   // +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class="alix_menu_item alix_img_explorer"></input>'
-			    //+'<select id="status-select" class ="alix_selector_hips alix_menu_item"></select>'
-			    //+'<button id="detail"  type="detail" class="alix_menu_item alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button></fieldset></form>'
-			    /*+'<form method = "post" onsubmit="return false;"><fieldset class="alix_catalog_panel alix_menu_item alix_fieldset" >'
-			    +'<legend class="alix_titlle_catalog alix_menu_item">Catalogs'
-			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  alix_menu_item" title = "Fade out">-</div>'
-			    +'<i id="fade" title = "fade" class="alix_menu_item glyphicon glyphicon-lamp"></i>'
-			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  alix_menu_item" title = "Fade in">+</div>'
-			    +'</legend>' 
-			    +'<div><p id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu alix_menu_item alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</p>'
-			    + descriptionXMM()
-			    + configurationXMM()
-			    + hideXMMFlash()
-			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
-			    +'</div>'
-			    +'<div><p id="ACDS" class = "alix_acds" >'+ACDS+'  </p>'
-			    +'<div style = ""><p id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</p>'
-			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
-			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<p id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</p>'
-			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
-			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div>'
-			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
-			    +'<select id="select_vizier" class="alix_selector_vizier "></select>'
-			    +'<div id="vizier" class="alix_vizier">'
-			    +'<ul id="vizier_list"></ul></div></fieldset></form></div>'*/
-			   // +'</div>')
-		//parentDiv.append('<div id="open_all" class="alix_open_all glyphicon glyphicon-chevron-right"></div>');	 
+
 		parentDiv.append('<div id="newMenu" class="alix_menu_panel"></div><div id="itemList" class="alix_hips_panel"></div>')
 		parentDiv.append('<div id="SourceDiv" class="alix_source_panels"></div>')
 		VizierCatalogue.SourceDataMove();
@@ -431,7 +386,7 @@ var AladinLiteX_mVc = function(){
 		vizierDiv = $('#' + vizierDivId);
 		parentDiv = $("#" + aladinDivId);
 
-		
+		console.log(" selectDiv " + selectDiv.length)
 		setReferenceView(defaultView);
 		storeCurrentState();
 		
@@ -827,12 +782,18 @@ var AladinLiteX_mVc = function(){
 			ifpopup = false;
 		}else{
 		if(menuDiv.width()<100){
-			$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900});
+			$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close: function(event,obj){
+				ifpopup = false;
+			}});
 		}else{
 			if(contextDiv.height()<100){
-				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900});
+				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close: function(event,obj){
+					ifpopup = false;
+				}});
 			}else{
-				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:650,width:900});
+				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:650,width:900,close: function(event,obj){
+					ifpopup = false;
+				}});
 			}
 		}
 		ifpopup = true;
@@ -928,8 +889,8 @@ var AladinLiteX_mVc = function(){
 			//aladin.gotoRaDec(lastSelectedSourcePosition.ra,lastSelectedSourcePosition.dec)
 		}
 		else{
-			//alert("You haven't chose a source!");
-			MessageBox.alertBox("You haven't chose a source!");
+			//MessageBox.alertBox("You haven't chose a source!");
+			Alix_Modalinfo.info("You haven't chose a source!");
 			
 		}
 		//gotoObject(defaultPosition);
@@ -2292,7 +2253,7 @@ var AladinLiteX_mVc = function(){
   					   var ra = data.Target.Resolver.jradeg;
   					   var dec = data.Target.Resolver.jdedeg;
   					  gotoPosition(ra,dec);
-  					  setDefaultSurvey();//when the defaut ra dec is set, set default survey and build hips tab.
+  					  // Commented for TapHandle setDefaultSurvey();//when the defaut ra dec is set, set default survey and build hips tab.
                         // (typeof successCallback === 'function') && successCallback();
                  },
                  function(data) { // errror callback
@@ -2303,6 +2264,7 @@ var AladinLiteX_mVc = function(){
                       (typeof errorCallback === 'function') && errorCallback();
                  });
 	}
+	
 	var showColorMap = function(){
 		 //// COLOR MAP management ////////////////////////////////////////////
 		$("#SourceDiv").css("display","none");
@@ -2323,6 +2285,37 @@ var AladinLiteX_mVc = function(){
         	 aladin.view.imageSurvey.getColorMap().reverse(); 
         	 storeCurrentState();        	 
          });
+	};
+	var setRegion = function(region){
+		if( region != undefined ) {
+			var pts = [];
+			/*
+			 * Extract region or position from SaadaQL statement
+			 */
+			if (region.type == "array") {
+				x = controllers.regionEditor.view.parseArrayPolygon(region.value);
+			} else if (controllers.regionEditor.view.editionFrame.type == "soda") {
+				x = this.controllers.regionEditor.view.parseSodaPolygon(region.value);
+			} else {
+				alert("Polygone format " + points.type + " not understood");
+			}
+			if( x ){
+				var view = BasicGeometry.getEnclosingView(x);
+				defaultPosition = view.center.ra + " " +  view.center.dec
+				defaultFov = 1.2*view.size;
+				if( aladin == null ) {
+					aladin = A.aladin(parentDiv
+						, {survey: defaultSurvey, fov: defaultFov, showLayersControl: false, showFullscreenControl: false, showFrame: false, showGotoControl: false});
+					parentDiv.append();
+				}
+				setZoom(defaultFov);
+				gotoPosition(view.center.ra,view.center.dec);
+				overlay = A.graphicOverlay({color: 'blue', name: "Reference Frame"});
+				aladin.addOverlay(overlay);
+				overlay.addFootprints([A.polygon(x)]);
+			}
+
+		}
 	}
 	
 	var retour = {
@@ -2396,7 +2389,10 @@ var AladinLiteX_mVc = function(){
 			reselectSource : reselectSource,
 			setLastSelectedPosition : setLastSelectedPosition,
 			deleteLastSelectedPosition : deleteLastSelectedPosition,
-			deleteLastSelectedPositionByCatalog:deleteLastSelectedPositionByCatalog
+			deleteLastSelectedPositionByCatalog:deleteLastSelectedPositionByCatalog,
+			gotoObject : gotoObject,
+			gotoPositionByName : gotoPositionByName,
+			setRegion : setRegion
 	};
 	return retour
 	

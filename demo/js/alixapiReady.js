@@ -63,8 +63,7 @@ $().ready(function() {
    	});
  })
 
-/*
- * 
+
 var confData = {
 		parentDivId: "aladin-lite-div",
 		defaultView: {
@@ -81,7 +80,7 @@ var confData = {
 			hipsSelector: { }
 		}
 }
- */
+
 
 var masTest = {
 		defaultView: {
@@ -101,7 +100,7 @@ var masTest = {
 				format : 'votable',
 				label : "3XMM Catalogue",
 				description: "Texte plus complet qui donne plus d'informations",
-				display:true
+				display:false
 			},	
 			actions :{
 				showAssociated :{
@@ -110,7 +109,7 @@ var masTest = {
 					id : '',
 					format : {},
 					label:"ACDS Sources",
-					url : 'http://saada.unistra.fr/3xmmdr8/getalixassocie/acdslinks?oid={$oidsaada}&mode=aladinlite',
+					url : 'http://saada.unistra.fr/3xmmdr8xinyu/getalixassocie/acdslinks?oid={$oidsaada}&mode=aladinlite',
 					description: "Show original data panel",
 					handlerFadeOut: true,
 					handlerDeleteSource: true
@@ -138,8 +137,6 @@ var masTest = {
 		}		
 };
  
-/*
- * 
  var mixConf = function(localData,externalData) {      
 for(var key in externalData){
 	if(typeof(externalData[key])== "object" && localData[key])
@@ -155,7 +152,7 @@ var configureALIX = function(){
 	confData = mixConf(confData,masTest);
 	}
 	AladinLiteX_mVc.init(confData);
-}()*/
+}
  configureALIX(masTest);
 
 

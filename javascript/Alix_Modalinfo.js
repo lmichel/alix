@@ -10,6 +10,7 @@ let Alix_Modalinfo = function(){
 	var divAladinContainer = "aladin-lite-container";
 	var divAladin = "aladin-lite-catdiv";
 	var divInfoAladin = "aladin-lite-catdiv-info";
+	var newWindow;
 
 	var getTitle = function (replacement, title){
 		if( title == undefined ) {
@@ -1257,6 +1258,95 @@ let Alix_Modalinfo = function(){
 		parent.css("left", Math.max(0, (($(window).width() - parent.outerWidth()) / 2) + 
 				$(window).scrollLeft()) + "px");
 	};
+
+	var showPopup = function(position){
+		// mettre la position donnees en parametre
+		
+		//Cas 1 Div n'existe pas, creer la div et demarrer Alix dedans
+		if($("#aladin-lite-div").length<=0){
+			$('body').append('<div id="aladin-lite-div" style="width:500px;height:500px;padding:5px;display:none;overflow:hidden"></div>');
+			var masTest = {
+					defaultView: {
+						defaultSurvey: "DSS colored",
+					}	
+			};
+			configureALIX (masTest);
+			AladinLiteX_mVc.popup();
+			// autrement sir le dialog est ferme, la rendre visible
+		} else if( !$("#aladin-lite-div").dialog("isOpen")){
+			AladinLiteX_mVc.popup();
+		}
+		if(position!=undefined)
+			AladinLiteX_mVc.gotoPositionByName(position);
+	};
+	
+	var changeRefBlue = function(position,value){
+		if($("#aladin-lite-div").length<=0){
+			$('body').append('<div id="aladin-lite-div" style="width:500px;height:500px;padding:5px;display:none;overflow:hidden"></div>');
+			var masTest = {
+					defaultView: {
+						defaultSurvey: "DSS colored",
+					}	
+			};
+			configureALIX (masTest);
+			AladinLiteX_mVc.popup();
+			// autrement sir le dialog est ferme, la rendre visible
+		} else if( !$("#aladin-lite-div").dialog("isOpen")){
+			/*$("#aladin-lite-div").closest('.ui-dialog-content').dialog('close'); 
+			$("#aladin-lite-div").remove();
+			$('body').append('<div id="aladin-lite-div" style="width:500px;height:500px;padding:5px;display:none;overflow:hidden"></div>');
+			var masTest = {
+					defaultView : {
+		    	        defaultSurvey: "DSS colored",
+		     	        field: {
+		     	        	position:"01 33 50.904 +30 39 35.79",
+		     	        	defaultFov: "0.5"
+		     	        },
+						region: {
+			        		type:"array",
+			        		value:value
+		 				}
+					}		
+			};
+			configureALIX (masTest);*/
+			AladinLiteX_mVc.popup();
+		}
+		if(value!=undefined){
+			var region = {
+				type:"array",
+	        	value:value
+			}
+			AladinLiteX_mVc.setRegion(region);
+			AladinLiteX_mVc.gotoPositionByName(position);
+		}
+			
+	};
+	var confData = {
+			parentDivId: "aladin-lite-div",
+			defaultView: {
+				defaultSurvey: "DSS colored",
+				field: {
+					position: "M33",
+					defaultFov: "0.5",
+				},
+				panelState: true
+			},
+			controllers: {
+				historic: { },
+				regionEditor: { },
+				hipsSelector: { }
+			}
+	};
+	 var mixConf = function(localData,externalData) {      
+		 for(var key in externalData){
+		 	if(typeof(externalData[key])== "object" && localData[key])
+		 		{
+		 			externalData[key] = mixConf(localData[key],externalData[key])
+		 		}
+		 }
+		return Object.assign(localData,externalData)
+	}
+	
 	var pblc = {};
 	pblc.dump = dump;
 	pblc.dumpAscii = dumpAscii;
@@ -1284,6 +1374,8 @@ let Alix_Modalinfo = function(){
 	pblc.center = center;
 	pblc.addIconTitle=addIconTitle;
 	pblc.SimbadCatalog=SimbadCatalog;
+	pblc.showPopup = showPopup;
+	pblc.changeRefBlue = changeRefBlue;
 	return pblc;
 
 }();
