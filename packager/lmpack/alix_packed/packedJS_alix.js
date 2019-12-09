@@ -15626,7 +15626,7 @@ let Alix_Modalinfo = function(){
 				regionEditor: { },
 				hipsSelector: { }
 			}
-	};
+	}; 
 	 var mixConf = function(localData,externalData) {      
 		 for(var key in externalData){
 		 	if(typeof(externalData[key])== "object" && localData[key])
