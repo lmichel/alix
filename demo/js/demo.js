@@ -56,8 +56,10 @@
 		,title:" Pop up"
 		,url:"alixindex.html"
 		//,code1:'//html\n&lt;div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;">&lt;/div>'
+		//,button1 : "<button style='margin-right:10px' onclick='Alix_Modalinfo.showPopup(&quot;01 33 50.904 +30 39 35.79&quot;);'><i class=' glyphicon glyphicon-hand-right' style='font-size:16px;padding:3px;'></i><a href='javascript:void(0)''>01 33 50.904 +30 39 35.79</a></button>"
+		,button1 : "<button style='margin-right:10px' onclick='Alix_Modalinfo.showPopup(&quot;01 35 57.316 +30 14 42.99&quot;);'><i class=' glyphicon glyphicon-hand-right' style='font-size:16px;padding:3px;'></i><a href='javascript:void(0)''>01 35 57.316 +30 14 42.99</a></button>"
 		,code1:'//resourceLoader.setScripts([ "demo/js/alixindexReady.js"]);'
-		,code2:'window.open("alixindex.html", "_blank", "location=yes,height=600,width=800,scrollbars=yes,status=yes,async=false")\n//Test buttton\n\n'
+		,code2:'Alix_Modalinfo.showPopup(position);'
 		,description:" Pop up is the mode that allows to launch ALIX in a modalinfo window ,which don't need too much space and can be installed anywhere in the page."
 	  },
   	  {
@@ -88,7 +90,7 @@
 		//,code2:'masterResource: {\n\taffichage :{\n\t\t...\n\t\tprogressiveMode: true,\n\t\tprogressiveLimit: "Order By _n_detections desc Limit 15",\n\t\t...\n\t}\n\t...\n}//alixXproReady.js'
 		,description:""
 	  },
-  	  {
+  	  /*{
   		 name:"demo_xmmUnprogressive"
   		,title:" 3XMM no progressive"
   		,url:"alixxmmunprogressive.html"
@@ -96,23 +98,23 @@
   		,code1:'//html\n&lt;div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;">&lt;/div>'
   		,code2:'//js\n&lt;script>\n...\nconfigureALiX({\n\tmasterResource: {\n\taffichage :{\n\t\tlocation :{\n\t\t\turl_base: "http://saada.unistra.fr/3xmmdr8/getqueryreport?query={$query}&format={$format}&protocol=auto",\n\t\t\turl_query: "Select ENTRY From MergedEntry In MERGEDCATALOGUE WherePosition {isInCircle({$ra} {$dec}, {$fov},-, ICRS)}"\n\t\t\t},\n\t\tprogressiveMode: false,\n\t\tqueryMode: true,\n\t\tradiusUnit : "arcmin",\n\t\tformat : "votable",\n\t\tlabel : "3XMM Catalogue",\n\t\tdescription: "Texte plus complet qui donne plus d\'informations",\n\t\tdisplay:true\n\t}\n})\n&lt;/script>'
   		,description:""
-  	  },
+  	  },*/
 	  {
 		  name:"demo_tapProgressive"
 		,title:" TAP resource progressive"
-		,url:""
+		,url:"alixtaphandleprogressive.html"
 		,code1:"\n\n\n\n\n\n\n"
 		,code2:""
 		,description:""
 	  },
-  	 {
+  	 /*{
   		 name:"demo_tapProgressive"
   		,title:" TAP resource unprogressive"
   		,url:""
   		,code1:"\n\n\n\n\n\n\n"
   		,code2:""
   		,description:""
-  	  }
+  	  }*/
 
   ]
 	
@@ -155,7 +157,8 @@
   var openNewTab = function(url,name){
 	  if(name!="demo_popup"){
 	  window.open(url, "_blank");}else {
-		  Alix_Modalinfo.showPopup();
+		  //window.open("taphandle.html", "_blank");
+		  Alix_Modalinfo.showPopup("01 35 57.316 +30 14 42.99");
 	  }
   }
   

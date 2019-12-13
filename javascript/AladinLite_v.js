@@ -2286,8 +2286,11 @@ var AladinLiteX_mVc = function(){
         	 storeCurrentState();        	 
          });
 	};
-	var setRegion = function(region){
-		if( region != undefined ) {
+	var setRegion = function(region,id){
+		if(id==1){
+			aladin.removeLayers();
+		}
+		else if( region != undefined ) {
 			var pts = [];
 			/*
 			 * Extract region or position from SaadaQL statement
@@ -2302,7 +2305,10 @@ var AladinLiteX_mVc = function(){
 			if( x ){
 				var view = BasicGeometry.getEnclosingView(x);
 				defaultPosition = view.center.ra + " " +  view.center.dec
-				defaultFov = 1.2*view.size;
+				if(view.size==0)
+					defaultFov=0.9;
+				else
+					defaultFov = 2.5*view.size;
 				if( aladin == null ) {
 					aladin = A.aladin(parentDiv
 						, {survey: defaultSurvey, fov: defaultFov, showLayersControl: false, showFullscreenControl: false, showFrame: false, showGotoControl: false});
@@ -2310,12 +2316,19 @@ var AladinLiteX_mVc = function(){
 				}
 				setZoom(defaultFov);
 				gotoPosition(view.center.ra,view.center.dec);
+				aladin.removeLayers();
 				overlay = A.graphicOverlay({color: 'blue', name: "Reference Frame"});
 				aladin.addOverlay(overlay);
 				overlay.addFootprints([A.polygon(x)]);
 			}
 
 		}
+	}
+	
+	var cleanPolygon = function(){
+		//console.log(controller);
+		//aladinLiteView.clean();
+		this.controller.cleanPolygon();
 	}
 	
 	var retour = {
@@ -2392,7 +2405,8 @@ var AladinLiteX_mVc = function(){
 			deleteLastSelectedPositionByCatalog:deleteLastSelectedPositionByCatalog,
 			gotoObject : gotoObject,
 			gotoPositionByName : gotoPositionByName,
-			setRegion : setRegion
+			setRegion : setRegion,
+			cleanPolygon : cleanPolygon
 	};
 	return retour
 	

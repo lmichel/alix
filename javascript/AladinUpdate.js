@@ -21,7 +21,14 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
  * IN THE SOFTWARE. 
 **/
-
+/*View.prototype.addOverlay = function(overlay) {
+        this.overlays=[];
+        this.allOverlayLayers=[];
+        overlay.name = this.makeUniqLayerName(overlay.name);
+        this.overlays.push(overlay);
+        this.allOverlayLayers.push(overlay);
+        overlay.setView(this);
+    };*/
 cds.Catalog.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
     if (show) {
       this.show();

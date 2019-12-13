@@ -5,21 +5,40 @@
 <title>Alix examples</title>
 <link rel="stylesheet" href="styleimport/highlight/styles/default.css">
 <link rel="stylesheet" href="demo/css/demoStyle.css" />
-<link rel="stylesheet" href="styles/packedCSS/style_bundle.css" />
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+<!--link rel="stylesheet" href="styles/packedCSS/style_bundle.css" /-->
+<!--link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" /-->
 <script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
 <script src="styleimport/highlight/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script>var useDebugResources = true; var productionMode=false;</script>
 <script type="text/javascript" src="javascript/loader.js"></script>
+<script type="text/javascript" src="javascript/packedLoader.js"></script>
 <script>
 $.browser={ msie: ( navigator.appName == 'Microsoft Internet Explorer') ? true : false } 
-     resourceLoader.setCss([  
-     ]);
-     resourceLoader.setScripts([
-    	 "demo/js/alixindexReady.js"
-       ]);
-     resourceLoader.loadAll(); 
+if( productionMode ) {
+	useDebugResources = false;
+    packedResourceLoader.setCss([         
+      "styles/packedCSS/style_bundle.css"
+     ,"aladinLite/aladin.css"
+		 ,"styles/aladinliteX.css"
+		 ,"styleimport/basics.css"
+		 ,"styleimport/domain.css"
+    ]);
+    packedResourceLoader.setScripts([
+    	"packager/lmpack/alix_packed/packedJSimport_alix.js"
+    	,"packager/lmpack/alix_packed/packedJS_alix.js"
+      ]);
+    packedResourceLoader.loadAll();
+} else {
+
+ var useDebugResources = true;
+ resourceLoader.setCss([  
+  
+ ]);
+ resourceLoader.setScripts([  
+   ]);
+ resourceLoader.loadAll();
+ }
  </script>
 <script>
   /*$( function() {
@@ -29,7 +48,7 @@ $.browser={ msie: ( navigator.appName == 'Microsoft Internet Explorer') ? true :
 <script type="text/javascript" src="demo/js/demo.js" charset="utf-8"></script>
 </head>
 <body>
-<div id="aladin-lite-div" style="width:500px;height:500px;padding:5px;display:none;overflow:auto"></div>
+
 <div id = "demo_banner">ALIX Demos</div>
 <div id = "demo_body">
 </div>

@@ -14141,7 +14141,14 @@ console.log('=============== >  aladin.js ');
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
  * IN THE SOFTWARE. 
 **/
-
+/*View.prototype.addOverlay = function(overlay) {
+        this.overlays=[];
+        this.allOverlayLayers=[];
+        overlay.name = this.makeUniqLayerName(overlay.name);
+        this.overlays.push(overlay);
+        this.allOverlayLayers.push(overlay);
+        overlay.setView(this);
+    };*/
 cds.Catalog.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
     if (show) {
       this.show();
@@ -15565,12 +15572,13 @@ let Alix_Modalinfo = function(){
 			// autrement sir le dialog est ferme, la rendre visible
 		} else if( !$("#aladin-lite-div").dialog("isOpen")){
 			AladinLiteX_mVc.popup();
+			AladinLiteX_mVc.setRegion("",1);
 		}
 		if(position!=undefined)
 			AladinLiteX_mVc.gotoPositionByName(position);
 	};
 	
-	var changeRefBlue = function(position,value){
+	var changeRefBlue = function(value){
 		if($("#aladin-lite-div").length<=0){
 			$('body').append('<div id="aladin-lite-div" style="width:500px;height:500px;padding:5px;display:none;overflow:hidden"></div>');
 			var masTest = {
@@ -15582,23 +15590,6 @@ let Alix_Modalinfo = function(){
 			AladinLiteX_mVc.popup();
 			// autrement sir le dialog est ferme, la rendre visible
 		} else if( !$("#aladin-lite-div").dialog("isOpen")){
-			/*$("#aladin-lite-div").closest('.ui-dialog-content').dialog('close'); 
-			$("#aladin-lite-div").remove();
-			$('body').append('<div id="aladin-lite-div" style="width:500px;height:500px;padding:5px;display:none;overflow:hidden"></div>');
-			var masTest = {
-					defaultView : {
-		    	        defaultSurvey: "DSS colored",
-		     	        field: {
-		     	        	position:"01 33 50.904 +30 39 35.79",
-		     	        	defaultFov: "0.5"
-		     	        },
-						region: {
-			        		type:"array",
-			        		value:value
-		 				}
-					}		
-			};
-			configureALIX (masTest);*/
 			AladinLiteX_mVc.popup();
 		}
 		if(value!=undefined){
@@ -15606,36 +15597,20 @@ let Alix_Modalinfo = function(){
 				type:"array",
 	        	value:value
 			}
-			AladinLiteX_mVc.setRegion(region);
+			var defaultView={
+				defaultSurvey: "DSS colored",
+			}	
+			AladinLiteX_mVc.setReferenceView(defaultView);
+			//AladinLiteX_mVc.cleanPolygon();
+			AladinLiteX_mVc.setRegion(region,2);
+			var view = BasicGeometry.getEnclosingView(x);
+			var strlon = Numbers.toSexagesimal(view.center.ra/15, 8, false);
+			var strlat = Numbers.toSexagesimal(view.center.dec, 7, false);
+			var position = strlon + " " +  strlat
 			AladinLiteX_mVc.gotoPositionByName(position);
 		}
 			
 	};
-	var confData = {
-			parentDivId: "aladin-lite-div",
-			defaultView: {
-				defaultSurvey: "DSS colored",
-				field: {
-					position: "M33",
-					defaultFov: "0.5",
-				},
-				panelState: true
-			},
-			controllers: {
-				historic: { },
-				regionEditor: { },
-				hipsSelector: { }
-			}
-	}; 
-	 var mixConf = function(localData,externalData) {      
-		 for(var key in externalData){
-		 	if(typeof(externalData[key])== "object" && localData[key])
-		 		{
-		 			externalData[key] = mixConf(localData[key],externalData[key])
-		 		}
-		 }
-		return Object.assign(localData,externalData)
-	}
 	
 	var pblc = {};
 	pblc.dump = dump;
@@ -19811,8 +19786,11 @@ var AladinLiteX_mVc = function(){
         	 storeCurrentState();        	 
          });
 	};
-	var setRegion = function(region){
-		if( region != undefined ) {
+	var setRegion = function(region,id){
+		if(id==1){
+			aladin.removeLayers();
+		}
+		else if( region != undefined ) {
 			var pts = [];
 			/*
 			 * Extract region or position from SaadaQL statement
@@ -19827,7 +19805,10 @@ var AladinLiteX_mVc = function(){
 			if( x ){
 				var view = BasicGeometry.getEnclosingView(x);
 				defaultPosition = view.center.ra + " " +  view.center.dec
-				defaultFov = 1.2*view.size;
+				if(view.size==0)
+					defaultFov=0.9;
+				else
+					defaultFov = 2.5*view.size;
 				if( aladin == null ) {
 					aladin = A.aladin(parentDiv
 						, {survey: defaultSurvey, fov: defaultFov, showLayersControl: false, showFullscreenControl: false, showFrame: false, showGotoControl: false});
@@ -19835,12 +19816,19 @@ var AladinLiteX_mVc = function(){
 				}
 				setZoom(defaultFov);
 				gotoPosition(view.center.ra,view.center.dec);
+				aladin.removeLayers();
 				overlay = A.graphicOverlay({color: 'blue', name: "Reference Frame"});
 				aladin.addOverlay(overlay);
 				overlay.addFootprints([A.polygon(x)]);
 			}
 
 		}
+	}
+	
+	var cleanPolygon = function(){
+		//console.log(controller);
+		//aladinLiteView.clean();
+		this.controller.cleanPolygon();
 	}
 	
 	var retour = {
@@ -19917,7 +19905,8 @@ var AladinLiteX_mVc = function(){
 			deleteLastSelectedPositionByCatalog:deleteLastSelectedPositionByCatalog,
 			gotoObject : gotoObject,
 			gotoPositionByName : gotoPositionByName,
-			setRegion : setRegion
+			setRegion : setRegion,
+			cleanPolygon : cleanPolygon
 	};
 	return retour
 	

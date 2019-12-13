@@ -80,7 +80,7 @@ module.exports = {
 	        	    {
 	        	    	 loader: 'file-loader',
 	        	         options: {
-	        	           name: '/images/[name].[ext]',
+	        	           name: 'images/[name].[ext]',
 	        	     /* loader: 'image-webpack-loader',
 	        	      options: {
 	        	        bypassOnDebug: true, // webpack@1.x

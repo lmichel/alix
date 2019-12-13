@@ -147,7 +147,7 @@ a.sampOff {
 	width: 0px;
 	overflow: visible;
 	padding: 16px 0px 16px 38px;
-	background: transparent url(../icons/sampOff.png) center left no-repeat;
+	background: transparent url(../images/sampOff.png) center left no-repeat;
 }
 a:hover.sampOff {	
 	filter: alpha(opacity = 50);
@@ -315,7 +315,7 @@ a:hover.dlprinter  {
 	width: 32px;
 	height: 32px;
 	border:0px;
-	background:transparent  url(../icons/ajax-loader.gif) center no-repeat;
+	background:transparent  url(images/ajax-loader.gif) center no-repeat;
 }
 a.printer {
 	display: inline-block;
