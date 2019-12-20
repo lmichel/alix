@@ -3,20 +3,44 @@
 		<title>TapHandle Progressive</title>
 		<meta charset="utf-8" />
 	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>  
+		<!--script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script-->  
 		<script>var useDebugResources = true; var productionMode=false;</script>
 		<script type="text/javascript" src="javascript/loader.js"></script>
+		<script type="text/javascript" src="javascript/packedLoader.js"></script>
 		<script>
-     resourceLoader.setCss([  
-     ]);
-     resourceLoader.setScripts([ 
-    	 "demo/js/alixTproReady.js"
-       ]);
-     resourceLoader.loadAll();      
+		 $.browser={ msie: ( navigator.appName == 'Microsoft Internet Explorer') ? true : false } 
+		 if( productionMode ) {
+		    	useDebugResources = false;
+		        packedResourceLoader.setCss([         
+		          "styles/packedCSS/style_bundle.css"
+		         ,"aladinLite/aladin.css"
+		   		 ,"styles/aladinliteX.css"
+		   		 ,"styleimport/basics.css"
+		 		 ,"styleimport/domain.css"
+		        ]);
+		        packedResourceLoader.setScripts([
+		        	"packager/lmpack/alix_packed/packedJSimport_alix.js"
+		        	,"packager/lmpack/alix_packed/packedJS_alix.js"
+		        	,"demo/js/alixTproReady.js"
+		          ]);
+		        packedResourceLoader.loadAll();
+		    } else {
+
+		     var useDebugResources = true;
+		     resourceLoader.setCss([  
+		      
+		     ]);
+		     resourceLoader.setScripts([  
+		    	 "demo/js/alixTproReady.js"
+		       ]);
+		     resourceLoader.loadAll();
+		     } 
      </script>
 	</head>
 	<body style="height: 100%">
 	<div id = "demo_banner">ALIX Demo: 3XMM catalog in progressive mode</div>
 		<div id="aladin-lite-div" style="width:100%;height:100%;padding:5px;"></div>
+		<button id="showSimbad" title="Simbad">Simbad</button>
+		<button id="showCaom" title="CAOM">CAOM</button>
 	</body>
 </html>

@@ -1303,7 +1303,7 @@ let Alix_Modalinfo = function(){
 			var defaultView={
 				defaultSurvey: "DSS colored",
 			}	
-			AladinLiteX_mVc.setReferenceView(defaultView);
+			//AladinLiteX_mVc.setReferenceView(defaultView);
 			//AladinLiteX_mVc.cleanPolygon();
 			AladinLiteX_mVc.setRegion(region,2);
 			var view = BasicGeometry.getEnclosingView(x);

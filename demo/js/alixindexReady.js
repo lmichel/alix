@@ -40,7 +40,7 @@ var masTest = {
 				format : 'votable',
 				label : "3XMM Catalogue",
 				description: "Texte plus complet qui donne plus d'informations",
-				display:false
+				display:true
 			},	
 			actions :{
 				showAssociated :{
@@ -56,7 +56,7 @@ var masTest = {
 					//This function is to delete the associated blue sources and unselect the source when we click the empty part of AladinLite.  
 				},
 				showPanel :{
-					active:false
+					active:true
 					//It's to show or hide the panel of detail. 
 				},
 				externalProcessing : {

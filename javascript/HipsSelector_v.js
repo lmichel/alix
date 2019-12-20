@@ -393,6 +393,7 @@ HipsSelector_mVc.prototype = {
 		 */
 		//display local catalog such as 3XMM
 		displayDataXml: function(aladinLiteView,url){
+			var label = aladinLiteView.masterResource.affichage.label;
 			var self = this;
 			var name = 'Swarm';
 			var cmdNode = $("#XMM");
@@ -401,7 +402,19 @@ HipsSelector_mVc.prototype = {
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
 			}
-				if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp"){
+			if(cmdNode.html()!=label){
+				console.log(cmdNode.html());
+				WaitingPanel.show(name);
+				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
+				cmdNode.css("color", color);
+				$("#btn-XMM-description").css("color" , color);
+				$("#btn-XMM-flash").css("color" ,color);
+				$("#btn-XMM-configure").css("color" ,color);
+				if(cmdNode.html()=="3XMM Catalogue")
+					$("#ACDS").css("display" , "inline");
+				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
+			}
+			else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp"){
 //				if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false){
 //					WaitingPanel.warnFov();
 //				}else{
@@ -411,7 +424,8 @@ HipsSelector_mVc.prototype = {
 					$("#btn-XMM-description").css("color" , color);
 					$("#btn-XMM-flash").css("color" ,color);
 					$("#btn-XMM-configure").css("color" ,color);
-					$("#ACDS").css("display" , "inline");
+					if(cmdNode.html()=="3XMM Catalogue")
+						$("#ACDS").css("display" , "inline");
 					self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 //				}
 				/*}else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp_nochange"){

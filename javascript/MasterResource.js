@@ -77,11 +77,11 @@ MasterResource.prototype = {
 			var strlat = Numbers.toSexagesimal(aladinLiteView.dec, 7, false);
 			var affichage = aladinLiteView.masterResource.affichage;
 			var location = affichage.location;
-			if(!this.filtered && aladinLiteView.fov>1){
+			if(!this.filtered && aladinLiteView.fov>0.15){
 				if(affichage.progressiveMode == true){
 					fov = aladinLiteView.fov
 				}else{
-					fov = 1;
+					fov = 0.15;
 					WaitingPanel.warnFov();	
 				}
 			}else{
@@ -92,28 +92,55 @@ MasterResource.prototype = {
 			//if {$query} exists in the base url, replace it with the url_query, if not, replace only fov ra dec format. 
 			var base = location.url_base;
 			if(base.includes('{$query}')){
-				var query = location.url_query;
-				var progressiveLimit = "";
-				if(affichage.progressiveMode == true &&  affichage.location.url_limit != undefined){
-					progressiveLimit = affichage.location.url_limit;
+				//if RUNID exists in the base url, replace it with RUNID
+				if(base.includes('{$RUNID}')){
+					var query = location.url_query;
+					var progressiveLimit = "";
+					if(affichage.progressiveMode == true &&  affichage.location.url_limit != undefined){
+						progressiveLimit = affichage.location.url_limit;
+					}
+					var RUNIDEncode = encodeURI(affichage.RUNID);
+					query = query.replace(/\{\$limitQuery\}/g,progressiveLimit);
+					query = query.replace(/\{\$ra\}/g,'($ra)');
+					query = query.replace(/\{\$dec\}/g,'($dec)');
+					query = query.replace(/\{\$fov\}/g,'($fov)');
+					var queryEncoded = encodeURI(query);
+					queryEncoded = queryEncoded.replace(/\'/g,'%27'); 
+					url = base.replace(/\{\$query\}/g,queryEncoded);
+					url = url.replace(/\{\$RUNID\}/g,RUNIDEncode);
+					url = url.replace(/\{\$format\}/g,affichage.format);
+					url = url.replace(/\(\$ra\)/g,aladinLiteView.ra);
+					url = url.replace(/\(\$dec\)/g,aladinLiteView.dec);
+					url = url.replace(/\(\$fov\)/g,size);
 				}
-				query = query.replace(/\{\$limitQuery\}/g,progressiveLimit);
-				query = query.replace(/\{\$ra\}/g,'($ra)');
-				query = query.replace(/\{\$dec\}/g,'($dec)');
-				query = query.replace(/\{\$fov\}/g,'($fov)');
-				var queryEncoded = encodeURI(query);
-				url = base.replace(/\{\$query\}/g,queryEncoded);
-				url = url.replace(/\{\$format\}/g,affichage.format);
-				url = url.replace(/\(\$ra\)/g,'%22'+aladinLiteView.ra);
-				url = url.replace(/\(\$dec\)/g,aladinLiteView.dec+'%22');
-				url = url.replace(/\(\$fov\)/g,size);
+				else{
+					var query = location.url_query;
+					var progressiveLimit = "";
+					if(affichage.progressiveMode == true &&  affichage.location.url_limit != undefined){
+						progressiveLimit = affichage.location.url_limit;
+					}
+					query = query.replace(/\{\$limitQuery\}/g,progressiveLimit);
+					query = query.replace(/\{\$ra\}/g,'($ra)');
+					query = query.replace(/\{\$dec\}/g,'($dec)');
+					query = query.replace(/\{\$fov\}/g,'($fov)');
+					var queryEncoded = encodeURI(query);
+					queryEncoded = queryEncoded.replace(/\'/g,'%27');
+					//var queryEncoded = encodeURIComponent(query);
+					//var queryEncoded = escape(query);
+					url = base.replace(/\{\$query\}/g,queryEncoded);
+					url = url.replace(/\{\$format\}/g,affichage.format);
+					url = url.replace(/\(\$ra\)/g,aladinLiteView.ra);
+					url = url.replace(/\(\$dec\)/g,aladinLiteView.dec);
+					url = url.replace(/\(\$fov\)/g,size);
+				}
 			}else{
 				url = this.url.replace(/\{\$ra\}/g,aladinLiteView.ra);
 				url = url.replace(/\{\$dec\}/g,aladinLiteView.dec);
 				url = url.replace(/\{\$fov\}/g,size);
 				url = url.replace(/\{\$format\}/g,affichage.format);
 			}
-			//console.log(url);
+			console.log(url);
+			console.log(decodeURI(url))
 			return url;
 		},
 		

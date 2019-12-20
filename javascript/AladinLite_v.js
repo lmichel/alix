@@ -59,7 +59,7 @@ var WaitingPanel = function(){
 
 		var alert = $("#alert");
 		alert.html('<div class="alix_alert_fov_img"><i class="glyphicon glyphicon-alert" style="font-size:16px;padding:3px;"></i></div>'
-		         + '<div class="alix_alert_fov_msg">Search radius limited to 1&deg;</div>');
+		         + '<div class="alix_alert_fov_msg" >Search radius limited to 0.3deg;</div>');
 		$("#alert").fadeIn(100);
 		setTimeout("$('#alert').fadeOut('slow')",1300);
 	}
@@ -287,15 +287,15 @@ var AladinLiteX_mVc = function(){
 		var panel_catalog = '<div id="panel_catalog" class="alix_right_panels">'
 			    +'<div class="alix_catalog_panel" >'
 			    +'<b class="alix_titlle_catalog ">Catalogs</b>' 
-			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div>'
+			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div></b>'
 			    +'<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>'
 			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div>'
-			    +'<div><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
+			    +'<div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
 			    + descriptionXMM()
 			    + configurationXMM()
 			    + hideXMMFlash()
 			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
-			    +'</div>'
+			    +'</div></br>'
 			    +'<div><b id="ACDS" class = "alix_acds" >'+ACDS+'  </b>'
 			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
 			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
@@ -1857,7 +1857,7 @@ var AladinLiteX_mVc = function(){
 						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 						}
-						var r1="", r2="";
+						/*var r1="", r2="";
 						for( var k  in data){
 							r1 += "<td >" + k + "</td>";
 							r2 += "<td >" + data[k] + "</td>";
@@ -1870,7 +1870,7 @@ var AladinLiteX_mVc = function(){
 							$(".dataTable").css("display","table");
 						}else{
 							$(".dataTable").css("display","none");
-						};
+						};*/
 						
 						if( masterResource != undefined&&!aladinLiteView.masterResource.actions.showAssociated) {
 							openContextPanel(html);
@@ -2330,7 +2330,13 @@ var AladinLiteX_mVc = function(){
 		//aladinLiteView.clean();
 		this.controller.cleanPolygon();
 	}
-	
+	//in order to display de query from taphandle
+	var changeMasterResource = function(masterResource){
+		//aladinLiteView.masterResource=masterResource;
+		aladinLiteView.masterResource = new MasterResource(masterResource);
+		AladinLiteX_mVc.displayDataXml();
+		
+	}
 	var retour = {
 			popup : popup,
 			refresh : refresh,
@@ -2406,7 +2412,8 @@ var AladinLiteX_mVc = function(){
 			gotoObject : gotoObject,
 			gotoPositionByName : gotoPositionByName,
 			setRegion : setRegion,
-			cleanPolygon : cleanPolygon
+			cleanPolygon : cleanPolygon,
+			changeMasterResource : changeMasterResource
 	};
 	return retour
 	

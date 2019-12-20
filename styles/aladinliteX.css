@@ -253,8 +253,8 @@ background-color: #f3ebddc2;
 .alix_alert_fov_img{
 	position:relative;
 	left:2px;
-	width:25px;
-	height:25px;
+	width:50px;
+	height:50px;
 	color:red;
 }
 
@@ -264,7 +264,7 @@ background-color: #f3ebddc2;
 	left:41px;
 	text-align: center;
 	line-height:22px;
-	font-size:15;
+	font-size:12;
 	font-weight:bold;
 }
 .alix_context_panel{

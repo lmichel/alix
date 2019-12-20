@@ -15600,7 +15600,7 @@ let Alix_Modalinfo = function(){
 			var defaultView={
 				defaultSurvey: "DSS colored",
 			}	
-			AladinLiteX_mVc.setReferenceView(defaultView);
+			//AladinLiteX_mVc.setReferenceView(defaultView);
 			//AladinLiteX_mVc.cleanPolygon();
 			AladinLiteX_mVc.setRegion(region,2);
 			var view = BasicGeometry.getEnclosingView(x);
@@ -17174,11 +17174,11 @@ MasterResource.prototype = {
 			var strlat = Numbers.toSexagesimal(aladinLiteView.dec, 7, false);
 			var affichage = aladinLiteView.masterResource.affichage;
 			var location = affichage.location;
-			if(!this.filtered && aladinLiteView.fov>1){
+			if(!this.filtered && aladinLiteView.fov>0.15){
 				if(affichage.progressiveMode == true){
 					fov = aladinLiteView.fov
 				}else{
-					fov = 1;
+					fov = 0.15;
 					WaitingPanel.warnFov();	
 				}
 			}else{
@@ -17189,28 +17189,55 @@ MasterResource.prototype = {
 			//if {$query} exists in the base url, replace it with the url_query, if not, replace only fov ra dec format. 
 			var base = location.url_base;
 			if(base.includes('{$query}')){
-				var query = location.url_query;
-				var progressiveLimit = "";
-				if(affichage.progressiveMode == true &&  affichage.location.url_limit != undefined){
-					progressiveLimit = affichage.location.url_limit;
+				//if RUNID exists in the base url, replace it with RUNID
+				if(base.includes('{$RUNID}')){
+					var query = location.url_query;
+					var progressiveLimit = "";
+					if(affichage.progressiveMode == true &&  affichage.location.url_limit != undefined){
+						progressiveLimit = affichage.location.url_limit;
+					}
+					var RUNIDEncode = encodeURI(affichage.RUNID);
+					query = query.replace(/\{\$limitQuery\}/g,progressiveLimit);
+					query = query.replace(/\{\$ra\}/g,'($ra)');
+					query = query.replace(/\{\$dec\}/g,'($dec)');
+					query = query.replace(/\{\$fov\}/g,'($fov)');
+					var queryEncoded = encodeURI(query);
+					queryEncoded = queryEncoded.replace(/\'/g,'%27'); 
+					url = base.replace(/\{\$query\}/g,queryEncoded);
+					url = url.replace(/\{\$RUNID\}/g,RUNIDEncode);
+					url = url.replace(/\{\$format\}/g,affichage.format);
+					url = url.replace(/\(\$ra\)/g,aladinLiteView.ra);
+					url = url.replace(/\(\$dec\)/g,aladinLiteView.dec);
+					url = url.replace(/\(\$fov\)/g,size);
 				}
-				query = query.replace(/\{\$limitQuery\}/g,progressiveLimit);
-				query = query.replace(/\{\$ra\}/g,'($ra)');
-				query = query.replace(/\{\$dec\}/g,'($dec)');
-				query = query.replace(/\{\$fov\}/g,'($fov)');
-				var queryEncoded = encodeURI(query);
-				url = base.replace(/\{\$query\}/g,queryEncoded);
-				url = url.replace(/\{\$format\}/g,affichage.format);
-				url = url.replace(/\(\$ra\)/g,'%22'+aladinLiteView.ra);
-				url = url.replace(/\(\$dec\)/g,aladinLiteView.dec+'%22');
-				url = url.replace(/\(\$fov\)/g,size);
+				else{
+					var query = location.url_query;
+					var progressiveLimit = "";
+					if(affichage.progressiveMode == true &&  affichage.location.url_limit != undefined){
+						progressiveLimit = affichage.location.url_limit;
+					}
+					query = query.replace(/\{\$limitQuery\}/g,progressiveLimit);
+					query = query.replace(/\{\$ra\}/g,'($ra)');
+					query = query.replace(/\{\$dec\}/g,'($dec)');
+					query = query.replace(/\{\$fov\}/g,'($fov)');
+					var queryEncoded = encodeURI(query);
+					queryEncoded = queryEncoded.replace(/\'/g,'%27');
+					//var queryEncoded = encodeURIComponent(query);
+					//var queryEncoded = escape(query);
+					url = base.replace(/\{\$query\}/g,queryEncoded);
+					url = url.replace(/\{\$format\}/g,affichage.format);
+					url = url.replace(/\(\$ra\)/g,aladinLiteView.ra);
+					url = url.replace(/\(\$dec\)/g,aladinLiteView.dec);
+					url = url.replace(/\(\$fov\)/g,size);
+				}
 			}else{
 				url = this.url.replace(/\{\$ra\}/g,aladinLiteView.ra);
 				url = url.replace(/\{\$dec\}/g,aladinLiteView.dec);
 				url = url.replace(/\{\$fov\}/g,size);
 				url = url.replace(/\{\$format\}/g,affichage.format);
 			}
-			//console.log(url);
+			console.log(url);
+			console.log(decodeURI(url))
 			return url;
 		},
 		
@@ -17559,7 +17586,7 @@ var WaitingPanel = function(){
 
 		var alert = $("#alert");
 		alert.html('<div class="alix_alert_fov_img"><i class="glyphicon glyphicon-alert" style="font-size:16px;padding:3px;"></i></div>'
-		         + '<div class="alix_alert_fov_msg">Search radius limited to 1&deg;</div>');
+		         + '<div class="alix_alert_fov_msg" >Search radius limited to 0.3deg;</div>');
 		$("#alert").fadeIn(100);
 		setTimeout("$('#alert').fadeOut('slow')",1300);
 	}
@@ -17787,15 +17814,15 @@ var AladinLiteX_mVc = function(){
 		var panel_catalog = '<div id="panel_catalog" class="alix_right_panels">'
 			    +'<div class="alix_catalog_panel" >'
 			    +'<b class="alix_titlle_catalog ">Catalogs</b>' 
-			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div>'
+			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div></b>'
 			    +'<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>'
 			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div>'
-			    +'<div><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
+			    +'<div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
 			    + descriptionXMM()
 			    + configurationXMM()
 			    + hideXMMFlash()
 			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
-			    +'</div>'
+			    +'</div></br>'
 			    +'<div><b id="ACDS" class = "alix_acds" >'+ACDS+'  </b>'
 			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
 			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
@@ -19357,7 +19384,7 @@ var AladinLiteX_mVc = function(){
 						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 						}
-						var r1="", r2="";
+						/*var r1="", r2="";
 						for( var k  in data){
 							r1 += "<td >" + k + "</td>";
 							r2 += "<td >" + data[k] + "</td>";
@@ -19370,7 +19397,7 @@ var AladinLiteX_mVc = function(){
 							$(".dataTable").css("display","table");
 						}else{
 							$(".dataTable").css("display","none");
-						};
+						};*/
 						
 						if( masterResource != undefined&&!aladinLiteView.masterResource.actions.showAssociated) {
 							openContextPanel(html);
@@ -19830,7 +19857,13 @@ var AladinLiteX_mVc = function(){
 		//aladinLiteView.clean();
 		this.controller.cleanPolygon();
 	}
-	
+	//in order to display de query from taphandle
+	var changeMasterResource = function(masterResource){
+		//aladinLiteView.masterResource=masterResource;
+		aladinLiteView.masterResource = new MasterResource(masterResource);
+		AladinLiteX_mVc.displayDataXml();
+		
+	}
 	var retour = {
 			popup : popup,
 			refresh : refresh,
@@ -19906,7 +19939,8 @@ var AladinLiteX_mVc = function(){
 			gotoObject : gotoObject,
 			gotoPositionByName : gotoPositionByName,
 			setRegion : setRegion,
-			cleanPolygon : cleanPolygon
+			cleanPolygon : cleanPolygon,
+			changeMasterResource : changeMasterResource
 	};
 	return retour
 	
@@ -22678,6 +22712,7 @@ HipsSelector_mVc.prototype = {
 		 */
 		//display local catalog such as 3XMM
 		displayDataXml: function(aladinLiteView,url){
+			var label = aladinLiteView.masterResource.affichage.label;
 			var self = this;
 			var name = 'Swarm';
 			var cmdNode = $("#XMM");
@@ -22686,7 +22721,19 @@ HipsSelector_mVc.prototype = {
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
 			}
-				if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp"){
+			if(cmdNode.html()!=label){
+				console.log(cmdNode.html());
+				WaitingPanel.show(name);
+				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
+				cmdNode.css("color", color);
+				$("#btn-XMM-description").css("color" , color);
+				$("#btn-XMM-flash").css("color" ,color);
+				$("#btn-XMM-configure").css("color" ,color);
+				if(cmdNode.html()=="3XMM Catalogue")
+					$("#ACDS").css("display" , "inline");
+				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
+			}
+			else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp"){
 //				if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false){
 //					WaitingPanel.warnFov();
 //				}else{
@@ -22696,7 +22743,8 @@ HipsSelector_mVc.prototype = {
 					$("#btn-XMM-description").css("color" , color);
 					$("#btn-XMM-flash").css("color" ,color);
 					$("#btn-XMM-configure").css("color" ,color);
-					$("#ACDS").css("display" , "inline");
+					if(cmdNode.html()=="3XMM Catalogue")
+						$("#ACDS").css("display" , "inline");
 					self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 //				}
 				/*}else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp_nochange"){
@@ -24553,4 +24601,77 @@ let Alix_ModalResult = function() {
 	return pblc;
 }();
 console.log('=============== >  Alix_ModalResult.js ');
+
+var TapCatalog = function(){
+	var setTapTableAsMaster = function(bag){
+		var url_base = bag.url_base+"sync?RUNID={$RUNID}&REQUEST=doQuery&lang=ADQL&query={$query}";
+		var index = bag.url_query.indexOf("CIRCLE");
+		bag.url_query = bag.url_query.slice(0,index);
+		bag.url_query = bag.url_query+" CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1)";
+		var url_query = bag.url_query;
+		var RUNID = bag.RUNID;
+		var format = bag.format;
+		var label = bag.label;
+		masterResource={
+				affichage :{
+					location :{
+						//url_base: "http://saada.unistra.fr/3xmmdr8/getqueryreport?query={$query}&format={$format}&protocol=auto",
+						//url_base: "http://simbad.u-strasbg.fr/simbad/sim-tap/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
+						//url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
+						//url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?RUNID={$RUNID}&REQUEST=doQuery&lang=ADQL&query={$query}",
+						url_base : url_base,
+						
+						//url_query: "Select ENTRY From MergedEntry In MERGEDCATALOGUE WherePosition {isInCircle({$ra} {$dec}, {$fov},-, ICRS)} {$limitQuery}",
+						//url_query: "SELECT TOP 10000 * FROM \"public\".basic WHERE CONTAINS(POINT(\'ICRS\', ra, dec), CIRCLE(\'ICRS\', {$ra}, {$dec}, {$fov})) = 1",
+						//url_query: "SELECT  TOP 100 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
+						//url_query:  "SELECT TOP 100 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
+						url_query : url_query
+						
+					},
+					progressiveMode: false,
+					RUNID : RUNID,
+					radiusUnit : 'deg',
+					format : format,
+					label : label,
+					description: "Texte plus complet qui donne plus d'informations",
+					display:true
+				},
+				actions : {
+					showAssociated :{
+						active:false,
+						handlerFadeOut: true,
+						handlerDeleteSource: true
+						//This function is to delete the associated blue sources and unselect the source when we click the empty part of AladinLite.  
+					},
+					showPanel :{
+						active:true
+						//It's to show or hide the panel of detail. 
+					},
+					externalProcessing : {
+						label: "Show details",
+						description: "The function is called when we click a source. We can import other scripts to show more details about the source selected",	
+						handlerSelect: function(data,showPanel){
+							VizierCatalogue.showSourceData(data);
+							//CatalogMerged_mVc.draw(data,showPanel);
+							//The callback is called when we click a source. We can import other scripts to show more details about the source selected.
+						},
+						handlerDeselect : function(){
+							
+						},
+						handlerInitial: function(){
+							//SourceFilter_mVc.draw();
+						}//The handlerFilter function will be called in the beginning when the web is loaded.
+					}
+				}
+			}
+   		AladinLiteX_mVc.changeMasterResource(masterResource);
+	}
+	var retour = {
+			setTapTableAsMaster:setTapTableAsMaster	
+	}
+	
+	return retour;
+	
+}();
+console.log('=============== >  TapCatalog.js ');
 

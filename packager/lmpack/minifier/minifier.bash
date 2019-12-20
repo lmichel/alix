@@ -59,6 +59,7 @@ js_array_org=(
 	   	 "SimbadCatalog.js"
 	   	 "Alix_CustomDataTable.js"
 	   	 "Alix_ModalResult.js"
+	   	 "TapCatalog.js"
           )   
           
 jsimport_array_org=(

@@ -69,6 +69,7 @@ var resourceLoader = function() {
 	   	 ,"SimbadCatalog.js"
 	   	 ,"Alix_CustomDataTable.js"
 	   	 ,"Alix_ModalResult.js"
+	   	 ,"TapCatalog.js"
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 
