@@ -47,6 +47,11 @@ $().ready(function() {
 					display:true
 				}
 			}
+		/*TapCatalog.setTapTableAsMaster({url_base: "http://simbad.u-strasbg.fr/simbad/sim-tap/",
+			url_query: "SELECT  TOP 100  * FROM \"public\".basic WHERE CONTAINS(POINT(\'ICRS\', ra, dec), CIRCLE(\'ICRS\', 23.462083, +30.659917, 0.016666666666666666)) = 1 ",
+			format: "votable/td",
+			RUNID : 'TapHandle-cadcnrcca-argus;ivoa;ObsCore',
+			label : "CADC TAP"});*/
    		AladinLiteX_mVc.changeMasterResource(masterResource);
 		$("#XMM").html("Simbad TAP");
 		
@@ -111,7 +116,9 @@ var masTest = {
 				},
 				progressiveMode: false,
 				RUNID : 'TapHandle-archivestsciedu-caomtap;ivoa;obscore',
+				//radiusUnit :'arcmin',
 				radiusUnit : 'deg',
+				//format : 'votable',
 				format : 'votable/td',
 				label : "Simbad TAP",
 				description: "Texte plus complet qui donne plus d'informations",
@@ -131,7 +138,7 @@ var masTest = {
 					//This function is to delete the associated blue sources and unselect the source when we click the empty part of AladinLite.  
 				},
 				showPanel :{
-					active:false
+					active:true
 					//It's to show or hide the panel of detail. 
 				},
 				externalProcessing : {
@@ -150,7 +157,7 @@ var masTest = {
 					}//The handlerFilter function will be called in the beginning when the web is loaded.
 				}
 			}
-		}		
+		}
 };
 /*var mixConf = function(localData,externalData) {      
 for(var key in externalData){

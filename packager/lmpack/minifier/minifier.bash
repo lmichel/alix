@@ -63,6 +63,7 @@ js_array_org=(
           )   
           
 jsimport_array_org=(
+         "spectrum.js"
          "jquery-ui.js" 
 	     "jquery.simplemodal.js"
 	   	 "jquery.alerts.js"

@@ -74,7 +74,7 @@ var resourceLoader = function() {
 	var local_min_js = [];
 	var imp_js = [ 
 		 "aladinLite/aladin.js"
-		// ,"jsimports/spectrum.js"
+		 ,"jsimports/spectrum.js"
 	     ,"javascript/AladinUpdate.js"//we load these 2 js files in imp_js to make sure they're the last ones to be loaded 
 	   //  ,"javascript/configuration.js"//alixindex.js is for intializing the alix
 	     ,"jsimports/jquery-ui-1.12.1/jquery-ui.js"

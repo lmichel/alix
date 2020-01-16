@@ -24604,14 +24604,26 @@ console.log('=============== >  Alix_ModalResult.js ');
 
 var TapCatalog = function(){
 	var setTapTableAsMaster = function(bag){
-		var url_base = bag.url_base+"sync?RUNID={$RUNID}&REQUEST=doQuery&lang=ADQL&query={$query}";
+		var url_base = bag.url_base+"sync?RUNID={$RUNID}&REQUEST=doQuery&format={$format}&lang=ADQL&query={$query}";
 		var index = bag.url_query.indexOf("CIRCLE");
 		bag.url_query = bag.url_query.slice(0,index);
-		bag.url_query = bag.url_query+" CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1)";
+		bag.url_query = bag.url_query+" CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1";
+		var leftbracket = bag.url_query.match(/[(]/g).length;
+		var rightbracket = bag.url_query.match(/[)]/g).length;
+		if(leftbracket!=rightbracket)
+			bag.url_query = bag.url_query+")";
 		var url_query = bag.url_query;
+		/*
+		if(url_query.indexOf("public")!=-1){
+			var a = '\\"';
+			url_query=url_query.replace(/"/g,a);
+			var b = "\\'";
+			url_query=url_query.replace(/'/g,b);
+		}*/
 		var RUNID = bag.RUNID;
 		var format = bag.format;
 		var label = bag.label;
+		console.log(url_query);
 		masterResource={
 				affichage :{
 					location :{
