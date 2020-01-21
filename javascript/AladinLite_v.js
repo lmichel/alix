@@ -1796,7 +1796,9 @@ var AladinLiteX_mVc = function(){
 				    , WaitingPanel.hide(name)
 				    );
 				aladin.addCatalog(catalog);	
+				LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
 				SimbadCatalog.setCatalog(catalog);
+				//controller.createCatalogSelect("Simbad");
 				/*if(SimbadCatalog.getisFiltered())
 					SimbadCatalog.runConstraint();
 				SimbadCatalog.runConstraint()
@@ -1822,11 +1824,11 @@ var AladinLiteX_mVc = function(){
 				, function() {WaitingPanel.hide(name)});
 				aladin.addCatalog(catalog);
 			}
-		/*	if(!LibraryCatalog.getCatalog(name)){
+		if(!LibraryCatalog.getCatalog(name)){
 			LibraryCatalog.addCatalog({url:url, name: name,color: color, shape :shape ,fade : "", al_refs: catalog});
 			} else{
 			LibraryCatalog.updCatalog({url:url, name: name ,color: color, shape :shape ,fade :"", al_refs: catalog});
-		    };*/
+		    };
 		}else if(name == 'Swarm'){
 			if(aladinLiteView.masterResource){
 				aladinLiteView.masterResource.cleanTab();	
