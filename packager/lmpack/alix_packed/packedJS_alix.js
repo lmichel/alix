@@ -19331,6 +19331,7 @@ var AladinLiteX_mVc = function(){
 				SimbadCatalog.runConstraint()
 				if(SimbadCatalog.getType()!=undefined)
 					SimbadCatalog.displayCatalogFiltered();*/
+				SimbadCatalog.resetFilter();
 		}else if(name == 'NED'){
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){
@@ -23860,7 +23861,7 @@ var SimbadCatalog = function(){
 	}
 	
 	var resetFilter = function(){
-		$("#SearchType").val("");
+		$("#SearchType").val(longname);
 	}
 	
 	/*

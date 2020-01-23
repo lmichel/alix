@@ -540,7 +540,7 @@ var SimbadCatalog = function(){
 	}
 	
 	var resetFilter = function(){
-		$("#SearchType").val("");
+		$("#SearchType").val(longname);
 	}
 	
 	/*
