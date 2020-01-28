@@ -40,7 +40,7 @@ var masTest = {
 				format : 'votable',
 				label : "3XMM Catalogue",
 				description: "Texte plus complet qui donne plus d'informations",
-				display:true
+				display:false
 			},	
 			actions :{
 				showAssociated :{
