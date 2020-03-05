@@ -582,14 +582,6 @@ RegionEditor_Mvc.prototype = {
 
 				this.ArrayToObject(this.node);
 
-				//console.log('this.node: ' + typeof(this.node));
-				/*for( var i in this.node)
-				{	
-					console.log('i : ' + i);
-					console.log('this.node x: ' + this.node[i].cx);
-					console.log('this.node y: ' + this.node[i].cy);				
-				}*/
-
 				this.Redrawn(this.node);	
 			}
 

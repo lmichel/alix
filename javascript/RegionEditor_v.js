@@ -48,7 +48,6 @@ function RegionEditor_mVc(aladinLite_V, parentDivId, contextDivId, handler,/* po
 var browseSaved = null;
 RegionEditor_mVc.prototype = {
 		init: function (){	
-			console.log("RERERE");
 			var self = this;
 			if( this.parentDiv == null )
 				this.parentDiv = $('#' + this.parentDivId);
@@ -65,7 +64,6 @@ RegionEditor_mVc.prototype = {
 			 */
 			var that = this;
 			if(!AladinLiteX_mVc.regionEditorInit){
-			console.log("RERE"+this.parentDiv.id);
 			this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
 			this.lineCanvas[0].width =this.parentDiv.width() ;
 			this.lineCanvas[0].height = this.parentDiv.height();
@@ -130,7 +128,6 @@ RegionEditor_mVc.prototype = {
 			this.editBtn.click(function(event) { 
 				that.setEditMode();
 				that.controller.DeleteOverlay();
-				console.log("test region editor");
 				that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);            
 				that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
 				that.controller.almacenar();
@@ -251,7 +248,6 @@ RegionEditor_mVc.prototype = {
 			/*
 			 * Set the region passed by the client if it exists
 			 */
-			console.log(points)
 			this.points = points;
 			//this.controller.CleanPoligon();
 			if( this.points ){

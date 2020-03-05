@@ -12,7 +12,6 @@ var TapCatalog = function(){
 		var RUNID = bag.RUNID;
 		var format = bag.format;
 		var label = bag.label;
-		console.log(url_query);
 		masterResource={
 				affichage :{
 					location :{

@@ -40,9 +40,8 @@ var resourceLoader = function() {
 	var javascriptDir = baseScriptDir + "javascript/";
 	//var importsJstuffDir = "http://obs-stage-c11:8080/jsresources/saadajsbasics/javascript/";
 	var local_js = [
-		  "Alix_Modalinfo.js"
+		 "Alix_Modalinfo.js"
 		 ,"Alix_Out.js"
-		 ,"packedLoader.js"
 		 ,"Alix_PageLocation.js"
 		 ,"Alix_Printer.js"
 		 ,"Alix_Processing.js"
@@ -75,8 +74,11 @@ var resourceLoader = function() {
 	var imp_js = [ 
 		 "aladinLite/aladin.js"
 		 ,"jsimports/spectrum.js"
+		 ,"jsimports/Alix_Logger.js"
+
+		 //,"jsimports/log4js.min.js"
 	     ,"javascript/AladinUpdate.js"//we load these 2 js files in imp_js to make sure they're the last ones to be loaded 
-	   //  ,"javascript/configuration.js"//alixindex.js is for intializing the alix
+	     //,"javascript/configuration.js"//alixindex.js is for intializing the alix
 	     ,"jsimports/jquery-ui-1.12.1/jquery-ui.js"
 	     ,"jsimports/jquery-ui-1.12.1/jquery.ui.dialog.js"
 	     ,"jsimports/jqueryJSStuff/jquery.simplemodal.js"
@@ -348,7 +350,8 @@ var resourceLoader = function() {
 	 */
 	var loadAll = function() {
 		loadNextCss();
-		loadScripts();
+		loadScripts();	
+
 	};
 
 	var jss = {};

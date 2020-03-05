@@ -403,7 +403,6 @@ HipsSelector_mVc.prototype = {
 				color = LibraryCatalog.getCatalog(name).color;
 			}
 			if(cmdNode.html()!=label){
-				console.log(cmdNode.html());
 				WaitingPanel.show(name);
 				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
 				cmdNode.css("color", color);

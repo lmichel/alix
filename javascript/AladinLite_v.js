@@ -332,24 +332,30 @@ var AladinLiteX_mVc = function(){
 				+'<div>')
 		$('#button_locate').click(function(event){
 			var id = '#panel_locate';
+			AlixLogger.trackAction("button_locate");
 			panel_check(id);
 		});	
 		$('#button_bookmark').click(function(event){
+			AlixLogger.trackAction("bookmark");
 			alert("Saved successfully! You can click the history(yellow) button to check your bookmarks.");
 			});	
 		$('#button_history').click(function(event){
+			AlixLogger.trackAction("history");
 			var id ='#panel_history'
 			panel_check(id);
 			});	
 		$('#button_region').click(function(event){
+			AlixLogger.trackAction("region");
 			var id = '#panel_region';
-				panel_check(id);
+			panel_check(id);
 			});	
 		$('#button_image').click(function(event){
+			AlixLogger.trackAction("image selector");
 			var id ='#panel_image';
 			panel_check(id);
 			});	
 		$('#button_catalog').click(function(event){
+			AlixLogger.trackAction("catalogue selector");
 			$("#SourceDiv").css("display","none");
 			var id ='#panel_catalog';
 			panel_check(id);
@@ -386,7 +392,6 @@ var AladinLiteX_mVc = function(){
 		vizierDiv = $('#' + vizierDivId);
 		parentDiv = $("#" + aladinDivId);
 
-		console.log(" selectDiv " + selectDiv.length)
 		setReferenceView(defaultView);
 		storeCurrentState();
 		
@@ -474,6 +479,7 @@ var AladinLiteX_mVc = function(){
 		});
 		//add the note to the target
 		$("#targetNote").click(function(event){
+			AlixLogger.trackAction("annotate target");
 			var targetName=selectDiv.children('option:selected').attr('id');
 			var regex=/\[(.+?)\]/g;
 			var strs=selectDiv.children('option:selected').val();
@@ -642,7 +648,6 @@ var AladinLiteX_mVc = function(){
 		+ "&SR=" + fil[0] 
 		+ "&fmt=json&get=record&casesensitive=false";
 		var productType = "image";
-		var imageIdPattern 	= new RegExp(/.*\/C\/.*/);
 		var imageTilePattern = new RegExp(/.*((jpeg)|(png)).*/);
 		$.getJSON(baseUrl, function(jsondata) {
 			if( productType != undefined ){
@@ -739,7 +744,7 @@ var AladinLiteX_mVc = function(){
 				 */
 				setZoom(defaultFov);
 				gotoPosition(view.center.ra,view.center.dec);
-				overlay = A.graphicOverlay({color: 'blue', name: "Reference Frame"});
+				let overlay = A.graphicOverlay({color: 'blue', name: "Reference Frame"});
 				aladin.addOverlay(overlay);
 				overlay.addFootprints([A.polygon(x)]);
 			}
@@ -774,7 +779,6 @@ var AladinLiteX_mVc = function(){
 		}
 		setDefaultSurvey();
 	}
-	var positionRef;
 	var ifpopup = false;
 	var popup = function(){
 		if(ifpopup == true){
@@ -798,8 +802,6 @@ var AladinLiteX_mVc = function(){
 		}
 		ifpopup = true;
 		}
-		//$("#popup").css("display", "none");
-		//$("#closeAll").css("display", "inline");
 	}
 
 
@@ -1285,6 +1287,8 @@ var AladinLiteX_mVc = function(){
 
 	var displaySelectedHips = function(ID) {
 		var hips = controller.getSelectedHips(ID);
+		AlixLogger.trackAction("Display Hips " + hips.obs_title);
+
 		aladinLiteView.survey = hips;
 		if (hips === undefined) {
 			console.error('unknown HiPS');
@@ -1785,6 +1789,7 @@ var AladinLiteX_mVc = function(){
 		var sourceSize=8;
 		clickType=VizierCatalogue.showSourceData;
 		if(name == 'Simbad'){
+			AlixLogger.trackAction("Display Simbad");
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
@@ -1798,14 +1803,9 @@ var AladinLiteX_mVc = function(){
 				aladin.addCatalog(catalog);	
 				LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
 				SimbadCatalog.setCatalog(catalog);
-				//controller.createCatalogSelect("Simbad");
-				/*if(SimbadCatalog.getisFiltered())
-					SimbadCatalog.runConstraint();
-				SimbadCatalog.runConstraint()
-				if(SimbadCatalog.getType()!=undefined)
-					SimbadCatalog.displayCatalogFiltered();*/
 				SimbadCatalog.resetFilter();
 		}else if(name == 'NED'){
+			AlixLogger.trackAction("Display Ned");
 			var shape="square";
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
@@ -1831,6 +1831,7 @@ var AladinLiteX_mVc = function(){
 			LibraryCatalog.updCatalog({url:url, name: name ,color: color, shape :shape ,fade :"", al_refs: catalog});
 		    };
 		}else if(name == 'Swarm'){
+			AlixLogger.trackAction("Display SWARM");
 			if(aladinLiteView.masterResource){
 				aladinLiteView.masterResource.cleanTab();	
 			}
@@ -1860,20 +1861,6 @@ var AladinLiteX_mVc = function(){
 						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 						}
-						/*var r1="", r2="";
-						for( var k  in data){
-							r1 += "<td >" + k + "</td>";
-							r2 += "<td >" + data[k] + "</td>";
-						}
-						var html = "<table class='dataTable' border=1 style='font-size: small;display:none;'><tr style='font-weight: bold;'>" + r1 + "</tr><tr align=center>" + r2 + "</tr></table>"					
-						
-				
-						if(aladinLiteView.masterResource != undefined&&aladinLiteView.masterResource.actions.showPanel.active == true ) {
-							openContextPanel(html);
-							$(".dataTable").css("display","table");
-						}else{
-							$(".dataTable").css("display","none");
-						};*/
 						
 						if( masterResource != undefined&&!aladinLiteView.masterResource.actions.showAssociated) {
 							openContextPanel(html);
@@ -1885,23 +1872,6 @@ var AladinLiteX_mVc = function(){
 							cleanCatalog("oid");
 							var ct = A.catalog({name: "Target"});
 							aladin.addCatalog(ct);
-							//Take off the circle on the catalog alix_selected
-							//ct.addSources([A.marker(data.pos_ra_csa, data.pos_dec_csa,  {popupTitle:'oid: '+data.oidsaada})]);
-							//aladinLiteView.target.push({ra:data.pos_ra_csa, dec:data.pos_dec_csa, ct:ct});
-							/*
-							 * draw oid and url corresponded in context panel
-							 */
-							/*var myRegexp = /\{\$(.*)\}/g;
-							var match = myRegexp.exec(aladinLiteView.masterResource.actions.showAssociated.url);
-							var idField = match[1];
-							var idvalue = data[idField];
-							var re =  new RegExp("\\{\\$" + idField + "\\}", 'g');
-							console.log(re)
-							var lien = aladinLiteView.masterResource.actions.showAssociated.url.replace(re ,idvalue);
-							lienArray=[];
-							lienArray.push(lien);
-							console.log(re + " " + idField + " " + idvalue  + " " + lien);
-							*/
 							//make the associated source shown directly
 							$("#ACDS").off("click");
 							$("#ACDS").click(function(event){
@@ -1920,24 +1890,26 @@ var AladinLiteX_mVc = function(){
 									$("#ACDS").css("color","#888a85")
 									AladinLiteX_mVc.deleteSourceAuto();
 								    AladinLiteX_mVc.deleteLastSelectedPosition();
-								}
-								else{
+								} else{
 									$("#ACDS").css("color","rgb(50, 255, 236)")
 									if(aladinLiteView.masterResource.actions.showAssociated.active == true) {
 									$("#XMM").attr("class", "alix_XMM_in_menu  alix_datahelp");//to freeze the view , and don't reload the XMM source when position is changed unless we use 'keypress' to go far away
 									$('#'+ idvalue).css("color","#32FFEC");
-										$.getJSON(lien, function(jsondata) {
+									Processing.show("Fetching Data");
+									$.getJSON(lien, function(jsondata) {
+											Processing.hide()
 											var cat = A.catalog({name: idField + " " + idvalue, sourceSize: sourceSize, color: '#32FFEC', shape: shape, onClick:VizierCatalogue.showSourceData});
 											aladin.addCatalog(cat);
 											for( var i=0 ; i<jsondata.CounterParts.length ; i++ ){
 												var point=jsondata.CounterParts[i].source;
-												cat.addSources([A.source(point.position.ra, point.position.dec, {ra: Numbers.toSexagesimal(point.position.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.position.dec, 7, true), Name: point.name, Description: point.description})]);
-												//cat.addSources([A.source(point.ra, point.dec, {ra: Numbers.toSexagesimal(point.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.dec, 7, true), Name: point.name, Description: point.description})]);
-											};
+												//cat.addSources([A.source(point.position.ra, point.position.dec, {ra: Numbers.toSexagesimal(point.position.ra/15, 7, false), dec:  Numbers.toSexagesimal(point.position.dec, 7, true), Name: point.name, CatalogName: jsondata.CounterParts[i].catalogue.name})]);
+												cat.addSources([A.source(point.position.ra, point.position.dec, 
+														point)]);
+											}
 											if(aladinLiteView.masterResource.actions.showAssociated.handlerFadeOut == true){
 												AladinLiteX_mVc.fadeOutAuto()
-											};
-										});
+											}
+									});
 									}
 								}
 							});
@@ -1953,13 +1925,6 @@ var AladinLiteX_mVc = function(){
 			//When the XMM sources is updated by changing the position or zoom, recall the filter
 				} /*WaitingPanel.hide()*/
 			);
-			/*if(!LibraryCatalog.getCatalog(name)){
-			LibraryCatalog.addCatalog({url:url, name: "Swarm",color: color, shape :shape,fade : "", al_refs: catalog});
-			
-		} else{
-			LibraryCatalog.updCatalog({url:url, name: "Swarm",color: color, shape :shape,fade : "", al_refs: catalog});
-			
-	    };*///if name == SWARM
 			bindToFade();
 			
 			aladin.addCatalog(catalog);
@@ -1984,6 +1949,7 @@ var AladinLiteX_mVc = function(){
 		var self=this;
 		var sourceSize =8;
 		var shape ="square";
+		AlixLogger.trackAction("Display Vizier " + obs_id);
 		if(LibraryCatalog.getCatalog('VizieR:'+obs_id)){
 			color = LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs.color;
 			sourceSize = LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs.sourceSize;
@@ -2041,23 +2007,7 @@ var AladinLiteX_mVc = function(){
 			        error: function(xhr, status, error) {
 			        	WaitingPanel.warn(xhr.responseText);
 			        }
-			    }); 
-		/*********
-			fov = aladin.getFov()[0];
-
-			catalog = A.catalogFromVizieR(obs_id
-					, aladin.getRaDec()[0] + " " + aladin.getRaDec()[1]
-					, fov
-					, {onClick: 'showTable', color: color}
-					, function(sources) {
-						WaitingPanel.hide(obs_id);
-						if( sources.length >= 999) {
-							WaitingPanel.warnNbSources();
-						}
-					});
-		}
-		****************/
-		
+			    }); 		
 		}
 		aladin.addCatalog(catalog);
 		if(!LibraryCatalog.getCatalog('VizieR:'+obs_id)){

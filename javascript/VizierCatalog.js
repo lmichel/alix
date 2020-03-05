@@ -22,24 +22,26 @@ var VizierCatalogue = function(){
 			else
 				SourceDiv.css("top",y);
 		}
-		var name = (data.data) ? data.catalog.name : "XMM"
-		 SourceDiv.html("<span class=strong style='font-size: 18px;'><center><strong>" + name + "</center></strong></span>\n"
+		var name = (data.data) ? data.catalog.name : "Alix Master Catalogue"
+		var source_label = ""
+		if (data.data ) {
+			if(data.data.CatalogName){
+				name = data.data.CatalogName;
+			}
+			if(data.data.name){
+				source_label = "<span class=strong style='font-size: 15px;'><center><strong>" + data.data.name + "</center></strong></span>";
+			}
+		}
+		 SourceDiv.html("<span class=strong style='font-size: 15px;'><center><strong>" + name + "</center></strong></span>\n"
 					+ '<a href="#" onclick="$(&quot;#SourceDiv&quot;).css(&quot;display&quot;, &quot;none&quot;);" '
 					+ 'style="top: 18px;float: right;" class="ui-dialog-titlebar-close ui-corner-all" role="button">'
 					+ '<span class="glyphicon_SourceClose glyphicon-remove"></span></a>'
-					+"<span class=strong style='font-size: 15px;'><center><strong>" + '    '+strlon + ' ' +strlat + "</center></strong></span><br>");
+					+ source_label
+					+ "<span class=strong style='font-size: 15px;'><center><strong>" + '    '+strlon + ' ' +strlat + "</center></strong></span><br>");
 		 //var header = '<thead><tr>';
 	     var content = '<thead>';
-	     /*for (key in data.data) {
-	    	 header += '<th>' + key + '</th>';
-	         content += '<td>' + data.data[key] + '</td>';
-	     }*/
-	     //header += '</tr></thead>';
-	     //content += '</tr>';
-	     //SourceDiv.append('<table>' + header + content + '</table>');
-		 //$("#aladin-lite-div").append(SourceDiv);
 	     if( data.data != undefined){
-	    	 for (key in data.data){
+	    	 for (var key in data.data){
 		    	 if(data.data[key])
 		    		 content+='<tr><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
 		     }

@@ -1,7 +1,5 @@
 var SimbadCatalog = function(){
-	var alixCat;
 	var sources;
-	var aladinLiteView;
 	var sourcetype;
 	var aladinCatalog = null;
 	var isFiltered= false;
@@ -16,24 +14,24 @@ var SimbadCatalog = function(){
 		var pos = strlon+" " +strlat;
 		var content = '<div id="SimbadSourceDiv" class="alix_source_panels"><div id="SourceDiv_Child" style="height:300px"><table id="SourceDiv_table"><thead>';
 		if( data.data != undefined){
-	    	for (key in data.data){
-	    		if(key=="main_type"){
-	    			if(longname!=undefined&&longname!=""&&longname.indexOf("[")!=-1)
-	    				content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+'  '+longname+'</td></tr>';
-	    			else
-	    				content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+data.data[key]+'</td></tr>';
-	    		}
-	    		else if(data.data[key])
-		    		content+='<tr style="background-color:#f2f2f2;"><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
-		    }
-	    }
-	    else{
-	    	for (key in data){
-		    	if(data[key])
-		    		content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+data[key]+'</td></tr>';
-		    }
-	    }
-	    content += '</table></div></div>';
+			for (var key in data.data){
+				if(key=="main_type"){
+					if(longname!=undefined&&longname!=""&&longname.indexOf("[")!=-1)
+						content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+'  '+longname+'</td></tr>';
+					else
+						content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+data.data[key]+'</td></tr>';
+				}
+				else if(data.data[key])
+					content+='<tr style="background-color:#f2f2f2;"><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
+			}
+		}
+		else{
+			for (key in data){
+				if(data[key])
+					content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+data[key]+'</td></tr>';
+			}
+		}
+		content += '</table></div></div>';
 		/**
 		 * Translate SimbadTooltip.java
 		 */
@@ -44,11 +42,11 @@ var SimbadCatalog = function(){
 		$.ajax({
 			url: url,
 			method: 'GET',
-	        async: true,
-	        dataType: 'text',
-	        success: function(jsdata){
-	        	Alix_Processing.hide();
-				
+			async: true,
+			dataType: 'text',
+			success: function(jsdata){
+				Alix_Processing.hide();
+
 				var boeuf;
 				var data_found = false;
 				var json = {};
@@ -85,14 +83,14 @@ var SimbadCatalog = function(){
 							darray.push(type.trim());
 							dataarray.push(darray);
 							datasize++;
-							if( datasize >= 15 ) {
+							/**if( datasize >= 15 ) {
 								var darray = [];
 								darray.push("truncated to 15");
 								darray.push("");
 								darray.push("");
 								dataarray.push(darray);
 								datasize++;									
-							}
+							} **/
 						}
 					}
 					else if(boeuf.startsWith("::data")){
@@ -103,7 +101,7 @@ var SimbadCatalog = function(){
 				json["aaData"] = dataarray;
 				json["iTotalRecords"]= datasize;
 				json["iTotalDisplayRecords"] = datasize;
-				
+
 				if( Alix_Processing.jsonError(json, "Simbad Tooltip Failure") ) {
 					return;
 				} else {
@@ -145,22 +143,22 @@ var SimbadCatalog = function(){
 					}*/
 
 					var position = [
-					                { "name": img,
-					                	"pos": "top-left"
-					                },
-					                { "name": "filter",
-					                	"pos": "top-right"
-					                },
-					                { "name": 'information',
-					                	"pos" : "bottom-left"
-					                },
-					                { "name": "pagination",
-					                	"pos" : "bottom-center"
-					                },
-					                { "name": " ",
-					                	"pos" : "bottom-right"
-					                }
-					                ];
+						{ "name": img,
+							"pos": "top-left"
+						},
+						{ "name": "filter",
+							"pos": "top-right"
+						},
+						{ "name": 'information',
+							"pos" : "bottom-left"
+						},
+						{ "name": "pagination",
+							"pos" : "bottom-center"
+						},
+						{ "name": " ",
+							"pos" : "bottom-right"
+						}
+						];
 
 					Alix_CustomDataTable.create("simbadtable", options, position);
 					$("#simbadtable_paginate").css("left","250px");
@@ -187,35 +185,35 @@ var SimbadCatalog = function(){
 					$("#"+id_modal).css("top","15px");
 					$("#"+id_modal).css("min-height","93.16px");
 					var SourceDiv = $("#SimbadSourceDiv");
-				    SourceDiv.css("display","block");
-				    SourceDiv.css("position","absolute");
-				    SourceDiv.css("top","70px");
-				    SourceDiv.css("left","0px");
-				    SourceDiv.css("background-color","#ffeded");
+					SourceDiv.css("display","block");
+					SourceDiv.css("position","absolute");
+					SourceDiv.css("top","70px");
+					SourceDiv.css("left","0px");
+					SourceDiv.css("background-color","#ffeded");
 					$("#simbadtable_next").html("&nbsp;&nbsp;&nbsp;");
 					$("#simbadtable_previous").html("&nbsp;&nbsp;&nbsp;");
 				}
-	        }
+			}
 		});
 		Alix_Processing.hide();
 	}
-	
+
 	var SearchType = function(){
 		var type=["LM?", "LXB", "BNe","HII", "PN", "Pec?", "ev", "GiG", "bub", "BD*", 
-			      "CV*", "BY*", "WD?", "?", "Al*", "vid", "Ae?", "ULX", "El*", "LyA", "reg", "TT*", "err", "Bz?",
-				  "mm", "a2*", "Em*", "WR*", "LM*", "AB*", "XB?", "RC?", "RV*", "HX?", "sg?", "HH", "**?","Le?", 
-				  "DN*", "Ce*", "AM*", "LX?", "WD*", "Cl*", "*", "N*", "gLe", "GlC", "FIR", "LP*", "BiC", "WU*",
-				  "AB?", "cC*", "BS?", "Ir*", "cor", "dS*", "ALS", "bL*", "C?G", "s?y", "BH?", "blu", "GrG", "Y*O",
-                  "Lev", "gam", "Be*", "ERO", "Ce?", "OH*", "grv", "BS*", "Pe*", "XB*", "s?r", "Ae*", "Pl", "sg*", 
-                  "N*?", "CGb", "pr?", "Pu*", "St*", "Sy?", "V*", "X", "RR?", "C*?", "SNR", "ClG", "BL?", "LeI", 
-                  "GWE", "Fl*", "PoC", "GiP", "SX*","C?*","bC*","GNe","RC*","DLA","SCG","HV*","Gr?","s*y","sh","HXB",
-                  "s*b", "gB", "pr*","PaG","Or*","Be?","As*","glb","SyG","RS*","NL*","pA?","Gl?","LS?", "EmG","G?","HS?",
-                  "BAL", "pA*","Er*","mul","IR","DNe","CGG","HI","CV?","EB*","C*","ISM","H2G","No*","Sy1","LeG","LI?","LSB",
-                  "UV", "RR*","AGN","PM*","*i*","HB*", "MoC","No?","OpC","UX?","Cld","SBG","TT?","LeQ","S*","HzG","Psr","SB*",
-                  "HS*", "red","PN?","FU*","Mi?","SN?","**","BLL","s?b","WV*","of?","RB?","SN*","LP?","DQ*","LLS","EB?",
-                  "GiC", "smm","LIN","cm","Sy2","S*?","Bla","IG","HB?","Ro*","V*?","Y*?","QSO","Q?","HVC","SFR","bCG","EmO",
-				  "Pl?", "MGr","s*r","sv?","EP*","AG?","Mas","Mi*","PoG","gLS","SR?","Sy*","WR?","RNe","G","NIR","*iN","rG","rB",
-				  "BD?", "gD*","*iC","out","Rad", "RG*"];
+			"CV*", "BY*", "WD?", "?", "Al*", "vid", "Ae?", "ULX", "El*", "LyA", "reg", "TT*", "err", "Bz?",
+			"mm", "a2*", "Em*", "WR*", "LM*", "AB*", "XB?", "RC?", "RV*", "HX?", "sg?", "HH", "**?","Le?", 
+			"DN*", "Ce*", "AM*", "LX?", "WD*", "Cl*", "*", "N*", "gLe", "GlC", "FIR", "LP*", "BiC", "WU*",
+			"AB?", "cC*", "BS?", "Ir*", "cor", "dS*", "ALS", "bL*", "C?G", "s?y", "BH?", "blu", "GrG", "Y*O",
+			"Lev", "gam", "Be*", "ERO", "Ce?", "OH*", "grv", "BS*", "Pe*", "XB*", "s?r", "Ae*", "Pl", "sg*", 
+			"N*?", "CGb", "pr?", "Pu*", "St*", "Sy?", "V*", "X", "RR?", "C*?", "SNR", "ClG", "BL?", "LeI", 
+			"GWE", "Fl*", "PoC", "GiP", "SX*","C?*","bC*","GNe","RC*","DLA","SCG","HV*","Gr?","s*y","sh","HXB",
+			"s*b", "gB", "pr*","PaG","Or*","Be?","As*","glb","SyG","RS*","NL*","pA?","Gl?","LS?", "EmG","G?","HS?",
+			"BAL", "pA*","Er*","mul","IR","DNe","CGG","HI","CV?","EB*","C*","ISM","H2G","No*","Sy1","LeG","LI?","LSB",
+			"UV", "RR*","AGN","PM*","*i*","HB*", "MoC","No?","OpC","UX?","Cld","SBG","TT?","LeQ","S*","HzG","Psr","SB*",
+			"HS*", "red","PN?","FU*","Mi?","SN?","**","BLL","s?b","WV*","of?","RB?","SN*","LP?","DQ*","LLS","EB?",
+			"GiC", "smm","LIN","cm","Sy2","S*?","Bla","IG","HB?","Ro*","V*?","Y*?","QSO","Q?","HVC","SFR","bCG","EmO",
+			"Pl?", "MGr","s*r","sv?","EP*","AG?","Mas","Mi*","PoG","gLS","SR?","Sy*","WR?","RNe","G","NIR","*iN","rG","rB",
+			"BD?", "gD*","*iC","out","Rad", "RG*"];
 		var table=["(Micro)Lensing Event [Lev]",
 			"Absorption Line system [ALS]",
 			"Active Galaxy Nucleus [AGN]",
@@ -452,8 +450,8 @@ var SimbadCatalog = function(){
 			"radio Burst [rB]",
 			"sub-millimetric source [smm]",
 			"transient event [ev]"]
+		// Put the pop list in front (does not work sometime)
 		$("#ui-id-1").css("z-index","1000000");
-		//$("#SearchType").autocomplete({source:table});
 		$("#SearchType").autocomplete({source:table,select:function(a, b){
 			$(this).val(b.item.value);
 			longname=$("#SearchType").val();
@@ -474,10 +472,11 @@ var SimbadCatalog = function(){
 			else
 				isFiltered=true;
 			SimbadCatalog.runConstraint();
-		}})
-		$("#ui-id-1").css("z-index","1000000");
+		}}).css('z-index', 10000);
 		$("#SearchType").keyup(function(e){
 			var key = e.which;
+			$("#ui-id-1").css("z-index","1000000");
+
 			if(key==13){
 				longname=$("#SearchType").val();
 				if(table.indexOf(longname)==-1&&longname!=""){
@@ -501,7 +500,7 @@ var SimbadCatalog = function(){
 			}
 		})
 	};
-	
+
 	var setCatalog = function(catalog){
 		aladinCatalog = catalog
 	}
@@ -509,7 +508,7 @@ var SimbadCatalog = function(){
 		if( aladinCatalog ) {
 			sources = aladinCatalog.getSources();
 			displayCatalogFiltered();
-	    }
+		}
 	};
 	var filterSource = function(source){
 		if(source.data.other_types.indexOf(sourcetype)!=-1 || source.data.main_type == sourcetype || sourcetype==undefined ){
@@ -521,7 +520,7 @@ var SimbadCatalog = function(){
 	} 
 	var displayCatalogFiltered = function(){
 		for(var i=0;i<sources.length;i++){
-			source = sources[i];
+			var source = sources[i];
 			if(source.data.other_types.indexOf(sourcetype)!=-1 || source.data.main_type == sourcetype ){
 				source.show();
 			}
@@ -530,56 +529,55 @@ var SimbadCatalog = function(){
 			}
 		}
 	}
-	
+
 	var getType = function(){
 		return sourcetype;
 	}
-	
+
 	var getisFiltered = function(){
 		return isFiltered;
 	}
-	
+
 	var resetFilter = function(){
 		$("#SearchType").val(longname);
 	}
-	
+
 	/*
 	 * These 2 functions are designed to get the data from http://simbad.u-strasbg.fr/simbad/sim-tap/sync
 	 */
 	function Query(adql){
-	    var site= "http://simbad.u-strasbg.fr/simbad/sim-tap/sync";
-	    var reTable;
-	    reTable = $.ajax({
-	      url: `${site}`,
-	      type: "GET",
-	      data: {query: `${adql}`, format: 'text', lang: 'ADQL', request :'doQuery'},
-	      async:false
-	      })
-	    .done(function(result){
-	        return result;
-	    })
-	  return reTable;
+		//var site= "http://simbad.u-strasbg.fr/simbad/sim-tap/sync";
+		var reTable;
+		reTable = $.ajax({
+			url: '${site}',
+			type: "GET",
+			data: {query: "${adql}", format: 'text', lang: 'ADQL', request :'doQuery'},
+			async:false
+		})
+		.done(function(result){
+			return result;
+		});
+		return reTable;
 	}
 	var getTable = function(){
-		adql = "SELECT  distinct \"public\".otypedef.otype_longname, \"public\".otypedef.otype_shortname FROM \"public\".otypedef order by otype_longname" 
-		       var obj = Query(adql);
-		       var content = obj.responseText;
-		       var list = content.split("|");
-		       var result=[];
-		       for(var i = 2;i<list.length;i++){
-		           var temp = list[i].split("\n");
-		           for(var j=0;j<temp.length;j++){
-		            result.push(temp[j]);
-		           }
-		       }
-		       var json={};
-		       for(var i =0;i<result.length;i++){
-		           result[i]=result[i+1]
-		       }
-		       for(var h=0;h<result.length-2;h=h+2){
-		           json[result[h]]=result[h+1];
-		       }
-		       console.log(json)
+		var adql = "SELECT  distinct \"public\".otypedef.otype_longname, \"public\".otypedef.otype_shortname FROM \"public\".otypedef order by otype_longname" ;
+		var obj = Query(adql);
+		var content = obj.responseText;
+		var list = content.split("|");
+		var result=[];
+		for(var i = 2;i<list.length;i++){
+			var temp = list[i].split("\n");
+			for(var j=0;j<temp.length;j++){
+				result.push(temp[j]);
+			}
+		}
+		var json={};
+		for(var i =0;i<result.length;i++){
+			result[i]=result[i+1]
+		}
+		for(var h=0;h<result.length-2;h=h+2){
+			json[result[h]]=result[h+1];
+		}
 	}
 	var retour = {
 			simbad : simbad,
