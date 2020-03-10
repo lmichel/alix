@@ -300,7 +300,7 @@ var AladinLiteX_mVc = function(){
 			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
 			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
 			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<b><input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none;"></b></div>'
+			    +'<b><span title="Click to activate the source type selector" id="SearchTypeNot"  style="color: rgb(136, 138, 133);">all</span> <input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none; width: 120px;"></b></div>'
 			    +'<div style = ""><b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
 			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
 			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div><br>'
@@ -397,7 +397,6 @@ var AladinLiteX_mVc = function(){
 		
 		aladin.on('click',function(){
 			targetDiv.blur();
-			//SimbadCatalog.resetFilter();
 		});
 		aladin.on('positionChanged', function(newPosition){
 			//targetDiv.blur();
@@ -408,7 +407,6 @@ var AladinLiteX_mVc = function(){
 					controller.updateCatalogs(aladinLiteView,'position');
 				}
 			}
-			//SimbadCatalog.resetFilter();
 		});
 
 		aladin.on('zoomChanged', function(newFoV) {
@@ -419,19 +417,8 @@ var AladinLiteX_mVc = function(){
 		    		controller.updateCatalogs(aladinLiteView,'zoom');
 		    	}
 		    }
-		    /*if(SimbadCatalog.getType()!=undefined)
-		    	SimbadCatalog.displayCatalogFiltered();*/
-		    //SimbadCatalog.resetFilter();
 		});	
-		
-		/*if(aladinLiteView.masterResource.affichage.display == true){
-			AladinLiteX_mVc.displayDataXml();
-		}
-		*/
-		/*function closeWaitingInterface(){
-			document.getElementById("waiting_interface").style.display;
-		}*/
-		
+				
 		//add a button for closing the waiting panel
 		$("#closeWaitingPanel").click(function(event){
 			document.getElementById("waiting_interface").style.display="none";
@@ -633,6 +620,8 @@ var AladinLiteX_mVc = function(){
 				contextDiv.html("<pre>" + JSON.stringify(jsondata, null, 2) + "</pre>");
 			});
 		});
+		
+		SimbadCatalog.activateControle();
    
 		/////Filter the sources /////////////////////////
 		if(masterResource != undefined&&masterResource.actions.externalProcessing.handlerInitial){
@@ -1165,9 +1154,11 @@ var AladinLiteX_mVc = function(){
 	 * go to the object by enter its name 
 	 */
 	var gotoObject = function(posName, posthandler){
+		
 		selectDiv.val($('#'+posName).val());
-		targetDiv.val(posName);
-        aladin.gotoObject(posName,{
+		var cleanedPosName = posName.replace("_SpAcE_", " ")
+		targetDiv.val(cleanedPosName);
+        aladin.gotoObject(cleanedPosName,{
         	success: function(pos){
         		aladinLiteView.name = targetDiv.val();
         		aladinLiteView.ra = pos[0];
@@ -1177,7 +1168,7 @@ var AladinLiteX_mVc = function(){
         		var l = aladin.getFov();
         		aladinLiteView.fov = l[0];
     			controller.updateCatalogs(aladinLiteView,'position');
-    			var re = /^[0-9a-zA-Z]*$/;        //determine if it is a name
+    			var re = /^[0-9a-zA-Z_\s]*$/;        //determine if it is a name
     			if(re.test(posName))
     				addPositionInSelector(posName);
     			else
@@ -1186,7 +1177,7 @@ var AladinLiteX_mVc = function(){
         			posthandler();
         		}
         	}
-        	,error: function(){alert('It\'s not a correct position');}
+        	,error: function(){alert("Object " + posName + ' cannot be resolved');}
         	});		        		
 	}
 	
@@ -1378,7 +1369,7 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		if(pos != ""){
-			var pos_select = '<option id="'+pos+'">'+pos+'</option>';
+			var pos_select = '<option id="'+pos.replace(' ', "_SpAcE_")+'">'+pos+'</option>';
 			selectDiv.append(pos_select);
 			selectDiv.val(pos);
 		}
@@ -1796,14 +1787,14 @@ var AladinLiteX_mVc = function(){
 				sourceSize = LibraryCatalog.getCatalog(name).al_refs.sourceSize;
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			 }
-				catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize 
-					,shape: shape,filter:SimbadCatalog.filterSource}
+			catalog = A.catalogHiPS(url, {onClick: SimbadCatalog.simbad,name: name,color: color,sourceSize:sourceSize 
+					, shape: shape
+					, filter:SimbadCatalog.sourceFilter}
 				    , WaitingPanel.hide(name)
 				    );
-				aladin.addCatalog(catalog);	
-				LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
-				SimbadCatalog.setCatalog(catalog);
-				SimbadCatalog.resetFilter();
+			aladin.addCatalog(catalog);	
+			LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
+			SimbadCatalog.setCatalog(catalog);
 		}else if(name == 'NED'){
 			AlixLogger.trackAction("Display Ned");
 			var shape="square";
@@ -2353,7 +2344,6 @@ var AladinLiteX_mVc = function(){
 			//hideXMMFlash : hideXMMFlash,
 			getCurrentView: getCurrentView,
 			setReferenceView: setReferenceView,
-			//displayCatalogFiltered:  displayCatalogFiltered,
 			updateColorOfCatalog :updateColorOfCatalog,
 			updateShapeOfCatalog :updateShapeOfCatalog,
 			updateSizeOfCatalog :updateSizeOfCatalog,

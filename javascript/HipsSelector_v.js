@@ -226,7 +226,6 @@ HipsSelector_mVc.prototype = {
 			
 	
 		},
-
 		displaySimbadCatalog : function(){
 			var self=this;
 			var name = 'Simbad';
@@ -236,7 +235,6 @@ HipsSelector_mVc.prototype = {
 				color = LibraryCatalog.getCatalog(name).color;
 			}
 			var url = 'http://axel.u-strasbg.fr/HiPSCatService/Simbad';
-			var clickType = 'showTable';
 			if(cmdNode.attr("class") == "alix_simbad_in_menu  alix_datahelp" ){
 				WaitingPanel.show(name);
 				cmdNode.attr("class", "alix_simbad_in_menu  alix_datahelp_selected");
@@ -244,9 +242,6 @@ HipsSelector_mVc.prototype = {
 				 $("#btn-Simbad-configure").css("color", color);
 				 $("#btn-Simbad-flash").css("color", color);
 				self.model.aladinLite_V.displayCatalog(name, color, VizierCatalogue.showSourceData, url);
-				$("#SearchType").css("display","inline");
-				SimbadCatalog.SearchType();
-				SimbadCatalog.resetFilter();
 			}else{
 				cmdNode.attr("class", "alix_simbad_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
