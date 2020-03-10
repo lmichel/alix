@@ -4,7 +4,7 @@ target/**
 *.war
 *.ear
 *.class
-
+packed*.js
 # eclipse specific
 *.pydevproject
 .project
