@@ -432,9 +432,6 @@ var AladinLiteX_mVc = function(){
 		if(defaultView.panelState == true ){
 			switchPanel();
 		}
-		if(masterResource != undefined&&masterResource.affichage.display == true){
-			setTimeout( function() {AladinLiteX_mVc.displayDataXml();},1000)	
-		}
 		/*
 		 * Set the default position
 		 */	        
@@ -627,6 +624,10 @@ var AladinLiteX_mVc = function(){
 		if(masterResource != undefined&&masterResource.actions.externalProcessing.handlerInitial){
 			masterResource.actions.externalProcessing.handlerInitial();
 		}
+		if(masterResource != undefined&&masterResource.affichage.display == true){
+			setTimeout( function() {AladinLiteX_mVc.displayDataXml();},1000)	
+		}
+
 	}
 	var setDefaultSurvey = function(defaultView){
 		var lieu = aladin.getRaDec();
@@ -753,6 +754,8 @@ var AladinLiteX_mVc = function(){
 				defaultFov = 0.9;
 			}
 			if( aladin == null ) {
+				console.log(defaultSurvey)
+				console.log(defaultFov)
 				aladin = A.aladin(parentDiv
 					, {survey: defaultSurvey, fov: defaultFov, showLayersControl: false, showFullscreenControl: false, showFrame: false, showGotoControl: false});
 				parentDiv.append();
@@ -1795,6 +1798,7 @@ var AladinLiteX_mVc = function(){
 			aladin.addCatalog(catalog);	
 			LibraryCatalog.addCatalog({url:url, name: name ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,color: color, shape :shape ,fade :"", al_refs: catalog});
 			SimbadCatalog.setCatalog(catalog);
+			
 		}else if(name == 'NED'){
 			AlixLogger.trackAction("Display Ned");
 			var shape="square";
