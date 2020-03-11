@@ -116,7 +116,7 @@ minifySet "${alixDir}/javascript"   \
 
 echo "=========== Compress JS"
 #java -jar ${script_dir}/compiler.jar --js=$packedJS --js_output_file=$packedJSmin
-java -jar yuicompressor-2.4.8.jar --line-break 48 -o $packedJSmin --type js $packedJS  || exit 1
+java -jar yuicompressor-2.4.8.jar --line-break 48 -v -o $packedJSmin --type js $packedJS  || exit 1
 
 echo "=========== Compress is over"
 
