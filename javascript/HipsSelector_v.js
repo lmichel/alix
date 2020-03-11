@@ -485,6 +485,7 @@ HipsSelector_mVc.prototype = {
 				self.model.aladinLite_V.cleanCatalog(name);
 				WaitingPanel.show(name);
 				self.model.aladinLite_V.displayCatalog(name, color, clickType, url);
+				SimbadCatalog.displayCatalogFiltered();
 			}
 			//Update the vizier catalogs
 			if(LibraryCatalog.catalogs != null){
