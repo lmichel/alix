@@ -544,8 +544,8 @@ Logger.log = function(action, params) {
         $.ajax({
             url: logUrl,
             data: {"action": action, "params": paramStr, "pageUrl": window.location.href, "referer": document.referrer ? document.referrer : ""},
-            method: 'GET',
-            dataType: 'json' // as alasky supports CORS, we do not need JSONP any longer
+            method: 'GET'//,
+            //dataType: 'json' // as alasky supports CORS, we do not need JSONP any longer
         });
         
     }
