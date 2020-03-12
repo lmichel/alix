@@ -17,17 +17,16 @@ var SimbadCatalog = function(){
 		var content = '<div id="SimbadSourceDiv" class="alix_source_panels"><div id="SourceDiv_Child" style="height:300px"><table id="SourceDiv_table"><thead>';
 		if( data.data != undefined){
 			for (var key in data.data){
-				if(key=="main_type"){
-					if(longname!=undefined&&longname!=""&&longname.indexOf("[")!=-1)
-						content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+'  '+longname+'</td></tr>';
-					else
+				//if(key=="main_type"){
+					//if(longname!=undefined&&longname!=""&&longname.indexOf("[")!=-1)
+						//content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+'  '+longname+'</td></tr>';
+					//else
 						content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+data.data[key]+'</td></tr>';
-				}
-				else if(data.data[key])
-					content+='<tr style="background-color:#f2f2f2;"><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
+				//}
+				//else if(data.data[key])
+				//	content+='<tr style="background-color:#f2f2f2;"><th style="text-align:right">'+key+':'+'</th>'+'<td>'+'  '+data.data[key]+'</td></tr>';
 			}
-		}
-		else{
+		} else{
 			for (key in data){
 				if(data[key])
 					content+='<tr><th style="text-align:right">'+key+':&nbsp;'+'</th>'+'<td style="text-align:justify">'+data[key]+'</td></tr>';
@@ -521,7 +520,7 @@ var SimbadCatalog = function(){
 	};
 	
 	var sourceFilter = function(source){
-		var filterCondition  = (source.data.other_types.indexOf(sourceType)!=-1 || source.data.main_type == sourceType);
+		var filterCondition  = (source.data.other_types.indexOf(sourceType)!=-1 || source.data.main_type.startsWith(sourceType));
 		if( filterMode == "all" ) {
 			return true;
 		} else if( (filterMode == "not" && !filterCondition ) || (filterMode == "only" && filterCondition) ){
