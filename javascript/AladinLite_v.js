@@ -630,11 +630,28 @@ var AladinLiteX_mVc = function(){
 
 	}
 	var setDefaultSurvey = function(defaultView){
-		var lieu = aladin.getRaDec();
+		
+		Sesame.resolve(defaultPosition,
+                 function(data) { // success callback
+  					   var ra = data.Target.Resolver.jradeg;
+  					   var dec = data.Target.Resolver.jdedeg;
+  					   console.log("Take " + defaultPosition + "(" + ra + " " + dec + ") as default position");
+  					   console.log(ra + " " + dec)
+  					   setDefaultSurveyForPosition(ra, dec)
+
+                  },
+                 function(data) { // errror callback
+ 					   console.log(defaultPosition + "(" + ra + " " + dec + ") could ben resolved, take (23. 33)");
+ 					   setDefaultSurveyForPosition(23, 33);
+                 });
+
+	}
+	
+	var setDefaultSurveyForPosition = function(ra, dec){
 		var fil =  aladin.getFov();
 
 		var baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
-			+ '23' + "&DEC=" + '33' 
+			+ ra + "&DEC=" + dec 
 		+ "&SR=" + fil[0] 
 		+ "&fmt=json&get=record&casesensitive=false";
 		var productType = "image";
@@ -684,6 +701,7 @@ var AladinLiteX_mVc = function(){
 				}
 			}
 		});
+
 	}
 	var setReferenceView = function(defaultView){
 		/*
