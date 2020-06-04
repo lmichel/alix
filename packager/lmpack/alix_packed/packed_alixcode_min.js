@@ -560,94 +560,93 @@ $("#alert").fadeIn(100);setTimeout("$('#alert').fadeOut('slow')",1300)
 };var e={show:b,hide:c,warnNbSources:d,warnFov:a,warn:g};
 return e}();var AladinLiteX_mVc=function(){var V=this;
 var aC;var E;var aX;var aB;var j;var ao;var aZ;var aT;
-var T;var a3;var aH;var ax;var ab;var L;var aQ;var m;
-var a0;var bl;var bi;var ag;var aO;var n;var bk="AladinHipsImagesExplorer_mask";
-var aE="status-select";var aK="Aladin-Cataloge";var bj="detail-cata";
-var a8="vizier";var bc=new AladinLiteView();var a=null;
-var a5;var ac=null;var aq={name:null,ra:null,dec:null};
-var aL=false;var ap=false;var aF=function(bn){T=bn.parentDivId;
-aZ=bn.parentDivId+"-main";aH=bn.parentDivId+"-menu";
-aQ=bn.parentDivId+"-context";ab=bn.parentDivId+"-target";
-a0=bn.parentDivId+"-select";var bm=bn.showAssociated;
-var bo=bn.showPanel;if(bn.masterResource!=undefined){bc.masterResource=new MasterResource(bn.masterResource)
-}else{bc.masterResource=null}if(bn.controllers.historic!=undefined){bn.controllers.historic.model=new Historique_Mvc("panel_history",this)
-}if(bn.controllers.regionEditor!=undefined||(bn.defaultView!=undefined&&bn.defaultView.region!=undefined)){bn.controllers.regionEditor.view=new RegionEditor_mVc(this,T,"panel_region",function(bp){if(bp.userAction){AladinLiteX_mVc.storePolygon(bp.region);
-alert(JSON.stringify(bp))}},bn.defaultView.defaultRegion)
-}if(bn.controllers.hipsSelector!=undefined){bn.controllers.hipsSelector.model=new HipsSelector_Mvc(T,this)
-}aC=bn.controllers;E=new AladinLite_mvC(V,bn.controllers);
-aI(bn.defaultView,bn.controllers,bn.masterResource);
+var T;var a4;var aH;var ax;var ab;var L;var aQ;var m;
+var a0;var bm;var bj;var ag;var aO;var n;var bl="AladinHipsImagesExplorer_mask";
+var aE="status-select";var aK="Aladin-Cataloge";var bk="detail-cata";
+var a9="vizier";var bd=new AladinLiteView();var a=null;
+var a6;var ac=null;var aq={name:null,ra:null,dec:null};
+var aL=false;var ap=false;var aF=function(bo){T=bo.parentDivId;
+aZ=bo.parentDivId+"-main";aH=bo.parentDivId+"-menu";
+aQ=bo.parentDivId+"-context";ab=bo.parentDivId+"-target";
+a0=bo.parentDivId+"-select";var bn=bo.showAssociated;
+var bp=bo.showPanel;if(bo.masterResource!=undefined){bd.masterResource=new MasterResource(bo.masterResource)
+}else{bd.masterResource=null}if(bo.controllers.historic!=undefined){bo.controllers.historic.model=new Historique_Mvc("panel_history",this)
+}if(bo.controllers.regionEditor!=undefined||(bo.defaultView!=undefined&&bo.defaultView.region!=undefined)){bo.controllers.regionEditor.view=new RegionEditor_mVc(this,T,"panel_region",function(bq){if(bq.userAction){AladinLiteX_mVc.storePolygon(bq.region);
+alert(JSON.stringify(bq))}},bo.defaultView.defaultRegion)
+}if(bo.controllers.hipsSelector!=undefined){bo.controllers.hipsSelector.model=new HipsSelector_Mvc(T,this)
+}aC=bo.controllers;E=new AladinLite_mvC(V,bo.controllers);
+aI(bo.defaultView,bo.controllers,bo.masterResource);
 $(".aladin-reticleCanvas").click(function(){$(ac).css("display","none");
-$("#itemList").css("display","none")});if(bn.masterResource!=undefined){XMMorALIX=true
+$("#itemList").css("display","none")});if(bo.masterResource!=undefined){XMMorALIX=true
 }};var aj=function(){$("#minus").trigger("click")
-};var aa=function(){if(bc.masterResource!=undefined&&bc.masterResource.actions.showAssociated.handlerDeleteSource==true){R("oid");
-for(var bm=0;bm<5;bm++){$("#plus").trigger("click")
-}ae()}if(bc.masterResource!=undefined&&bc.masterResource.actions.externalProcessing.handlerDeselect){bc.masterResource.actions.externalProcessing.handlerDeselect()
-}bc.sourceSelected.x=null;bc.sourceSelected.y=null;
+};var aa=function(){if(bd.masterResource!=undefined&&bd.masterResource.actions.showAssociated.handlerDeleteSource==true){R("oid");
+for(var bn=0;bn<5;bn++){$("#plus").trigger("click")
+}ae()}if(bd.masterResource!=undefined&&bd.masterResource.actions.externalProcessing.handlerDeselect){bd.masterResource.actions.externalProcessing.handlerDeselect()
+}bd.sourceSelected.x=null;bd.sourceSelected.y=null;
 $("#XMM").attr("class","alix_XMM_in_menu  alix_datahelp_selected")
-};var H=function(){aa();if(a5){a5.deselectAll()}};
-var f=function(){aJ();var bm=bi.val();k(bm)};var aI=function(bx,bn,bv){var bq;
-if(bv!=undefined){bq=bv.affichage.label}else{bq=""
-}var bo;if(bv!=undefined&&bv.actions.showAssociated){bo=bv.actions.showAssociated.label
-}else{bo=""}aT=$("#"+T);aT.html('<div id="'+aZ+'" class="alix_aladin_div"></div>');
+};var H=function(){aa();if(a6){a6.deselectAll()}};
+var f=function(){aJ();var bn=bj.val();k(bn)};var aI=function(by,bo,bw){var br;
+if(bw!=undefined){br=bw.affichage.label}else{br=""
+}var bp;if(bw!=undefined&&bw.actions.showAssociated){bp=bw.actions.showAssociated.label
+}else{bp=""}aT=$("#"+T);aT.html('<div id="'+aZ+'" class="alix_aladin_div"></div>');
 aT.append('<div id="newMenu" class="alix_menu_panel"></div><div id="itemList" class="alix_hips_panel"></div>');
 aT.append('<div id="SourceDiv" class="alix_source_panels"></div>');
-VizierCatalogue.SourceDataMove();var bt=$("#newMenu");
-var br='<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>';
-var by='<button id="button_center" class="alix_btn alix_btn-circle alix_btn-red" title ="back to center" onclick="AladinLiteX_mVc.returnCenter();"><i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i></button>';
-var bA='<button id="button_bookmark" class="alix_btn alix_btn-circle alix_btn-orange" title ="save a bookmark" onclick="AladinLiteX_mVc.bookMark();"><i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i></button>';
-var bC='<button id="button_history" class="alix_btn alix_btn-circle alix_btn-yellow" title ="history of bookmark" ><i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i></button>';
-var bD='<button id="button_region" class="alix_btn alix_btn-circle alix_btn-green" title ="region editor" onclick="AladinLiteX_mVc.regionEditor();" ><i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i></button>';
-var bm='<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" onclick="AladinLiteX_mVc.showColorMap();" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>';
-var bw='<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search a catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>';
-var bB='<div style="z-index:100"><input id="'+ab+'" placeholder="target" class="alix_target" onfocus="this.select()"><select  id ="'+a0+'" class="alix_select"><option id="'+bx.field.position+'">'+bx.field.position+'</option></select><button id="targetNote" title="Note" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:absolute;left:392px;top:8px;" ><i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i></button></div>';
-var bs='<div id="panel_history" class="alix_right_panels"></div>';
-var bu='<div id="panel_region" class="alix_right_panels"></div>';
-var bz='<div id="panel_image" class="alix_right_panels"><p class="alix_titlle_image ">Image</p><input type="text" id="'+bk+'"  placeholder="Survey" size=11 class=" alix_img_explorer"></input><select id="status-select" class ="alix_selector_hips "><option selected="selected">CDS/P/DSS2/color</option></select><button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button><div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;"><b>Color Map : </b><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div><div id="panel_image_detail"></div></div>';
-var bp='<div id="panel_catalog" class="alix_right_panels"><div class="alix_catalog_panel" ><b class="alix_titlle_catalog ">Catalogs</b><div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div></b><i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i><div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div><div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+bq+"</b>"+P()+u()+B()+'</div></br><div><b id="ACDS" class = "alix_acds" >'+bo+'  </b><div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b><i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i><i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i><b><input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none;"></b></div><div style = ""><b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b><i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i><i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div><br><div><input type="text" id="'+aK+'"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input><select id="select_vizier" class="alix_selector_vizier "><option selected="select">--select--</option></select><div id="vizier" class="alix_vizier"><ul id="vizier_list"></ul></div></div><div id="panel_catalog_detail"></div></div>';
-aT.append(bB);bt.append('<div id="alix_left_menu"><ul id="alix_left_menu_ul" style="list-style-type:none; padding: 5px;"><li>'+by+"</li><li>"+bA+"</li><li>"+bC+"</li><li>"+bD+"</li><li>"+bm+"</li><li>"+bw+'</li></ul></div><div id="alix_right_menu">'+bs+bu+bz+bp+"<div>");
-$("#button_locate").click(function(bF){var bG="#panel_locate";
-AlixLogger.trackAction("button_locate");bE(bG)});
-$("#button_bookmark").click(function(bF){AlixLogger.trackAction("bookmark");
+VizierCatalogue.SourceDataMove();var bu=$("#newMenu");
+var bs='<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>';
+var bz='<button id="button_center" class="alix_btn alix_btn-circle alix_btn-red" title ="back to center" onclick="AladinLiteX_mVc.returnCenter();"><i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i></button>';
+var bB='<button id="button_bookmark" class="alix_btn alix_btn-circle alix_btn-orange" title ="save a bookmark" onclick="AladinLiteX_mVc.bookMark();"><i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i></button>';
+var bD='<button id="button_history" class="alix_btn alix_btn-circle alix_btn-yellow" title ="history of bookmark" ><i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i></button>';
+var bE='<button id="button_region" class="alix_btn alix_btn-circle alix_btn-green" title ="region editor" onclick="AladinLiteX_mVc.regionEditor();" ><i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i></button>';
+var bn='<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" onclick="AladinLiteX_mVc.showColorMap();" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>';
+var bx='<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search a catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>';
+var bC='<div style="z-index:100"><input id="'+ab+'" placeholder="target" class="alix_target" onfocus="this.select()"><select  id ="'+a0+'" class="alix_select"><option id="'+by.field.position+'">'+by.field.position+'</option></select><button id="targetNote" title="Note" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:absolute;left:392px;top:8px;" ><i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i></button></div>';
+var bt='<div id="panel_history" class="alix_right_panels"></div>';
+var bv='<div id="panel_region" class="alix_right_panels"></div>';
+var bA='<div id="panel_image" class="alix_right_panels"><p class="alix_titlle_image ">Image</p><input type="text" id="'+bl+'"  placeholder="Survey" size=11 class=" alix_img_explorer"></input><select id="status-select" class ="alix_selector_hips "><option selected="selected">CDS/P/DSS2/color</option></select><button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button><div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;"><b>Color Map : </b><select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div><div id="panel_image_detail"></div></div>';
+var bq='<div id="panel_catalog" class="alix_right_panels"><div class="alix_catalog_panel" ><b class="alix_titlle_catalog ">Catalogs</b><div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div></b><i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i><div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div><div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+br+"</b>"+P()+u()+B()+'</div></br><div><b id="ACDS" class = "alix_acds" >'+bp+'  </b><div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b><i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i><i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i><b><span title="Click to activate the source type selector" id="SearchTypeNot"  style="color: rgb(136, 138, 133);">all</span> <input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none; width: 120px;"></b></div><div style = ""><b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b><i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i><i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div><br><div><input type="text" id="'+aK+'"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input><select id="select_vizier" class="alix_selector_vizier "><option selected="select">--select--</option></select><div id="vizier" class="alix_vizier"><ul id="vizier_list"></ul></div></div><div id="panel_catalog_detail"></div></div>';
+aT.append(bC);bu.append('<div id="alix_left_menu"><ul id="alix_left_menu_ul" style="list-style-type:none; padding: 5px;"><li>'+bz+"</li><li>"+bB+"</li><li>"+bD+"</li><li>"+bE+"</li><li>"+bn+"</li><li>"+bx+'</li></ul></div><div id="alix_right_menu">'+bt+bv+bA+bq+"<div>");
+$("#button_locate").click(function(bG){var bH="#panel_locate";
+AlixLogger.trackAction("button_locate");bF(bH)});
+$("#button_bookmark").click(function(bG){AlixLogger.trackAction("bookmark");
 alert("Saved successfully! You can click the history(yellow) button to check your bookmarks.")
-});$("#button_history").click(function(bF){AlixLogger.trackAction("history");
-var bG="#panel_history";bE(bG)});$("#button_region").click(function(bF){AlixLogger.trackAction("region");
-var bG="#panel_region";bE(bG)});$("#button_image").click(function(bF){AlixLogger.trackAction("image selector");
-var bG="#panel_image";bE(bG)});$("#button_catalog").click(function(bF){AlixLogger.trackAction("catalogue selector");
-$("#SourceDiv").css("display","none");var bG="#panel_catalog";
-bE(bG)});var bE=function(bF){$(bF).toggle();if(ac!=bF){$(ac).css("display","none")
-}ac=bF};a3=$("#"+aH);aT.append('<div id="'+aQ+'" class="alix_context_panel" ><b class="alix_context" style="display: none;"> context </b></div>');
+});$("#button_history").click(function(bG){AlixLogger.trackAction("history");
+var bH="#panel_history";bF(bH)});$("#button_region").click(function(bG){AlixLogger.trackAction("region");
+var bH="#panel_region";bF(bH)});$("#button_image").click(function(bG){AlixLogger.trackAction("image selector");
+var bH="#panel_image";bF(bH)});$("#button_catalog").click(function(bG){AlixLogger.trackAction("catalogue selector");
+$("#SourceDiv").css("display","none");var bH="#panel_catalog";
+bF(bH)});var bF=function(bG){$(bG).toggle();if(ac!=bG){$(ac).css("display","none")
+}ac=bG};a4=$("#"+aH);aT.append('<div id="'+aQ+'" class="alix_context_panel" ><b class="alix_context" style="display: none;"> context </b></div>');
 aT.append('<div id="waiting_interface" class="alix_waiting_interface" style="display:none;"><div class="alix_grey_bg"></div><div class="alix_fetching_data"><input type="button" id="closeWaitingPanel" value="x"><div class="alix_fetching_img"></div><div id="fetchingMessage" class="alix_fetching_message">fetching data...</div></div></div>');
 aT.append('<div id="alert" class="alix_alert_fov" style="display:none;"><div class="alix_alert_fov_img"><i class="glyphicon glyphicon-alert" style="font-size:16px;padding:3px;"></i></div><div class="alix_alert_fov_msg">Search radius limited to 1&deg;</div></div>');
 aT.append('<div class="alix_tester" id="tester"><ul></ul></div>');
-L=$("#"+aQ);ax=$("#"+ab);m=$("#"+a0);bl=$("#"+bk);
-bi=$("#"+aE);ag=$("#"+aK);aO=$("#"+bj);n=$("#"+a8);
-aT=$("#"+aZ);bf(bx);ay();ao.on("click",function(){ax.blur()
-});ao.on("positionChanged",function(bF){if(bF.dragging==false){ay();
-ax.val(bF.ra.toFixed(4)+","+bF.dec.toFixed(4));if(bc.masterResource!=undefined){E.updateCatalogs(bc,"position")
-}}});ao.on("zoomChanged",function(bF){var bG=bc.fov;
-ay();if(bF>=bG){if(bc.masterResource!=undefined){E.updateCatalogs(bc,"zoom")
-}}});$("#closeWaitingPanel").click(function(bF){document.getElementById("waiting_interface").style.display="none"
-});$("#open_all").click(function(bF){bF.stopPropagation();
-K();ae()});if(bx.panelState==true){K()}if(bv!=undefined&&bv.affichage.display==true){setTimeout(function(){AladinLiteX_mVc.displayDataXml()
-},1000)}ax.val(bx.field.position);ax.click(function(bF){bF.stopPropagation()
-});ax.bind("keypress",function(bF){if(bF.which==13){if(bc.region!=null){E.cleanPolygon()
-}bc.clean();H();bF.preventDefault();aA(ax.val())}});
-$("#input_target").bind("keypress",function(bF){if(bF.which==13){be()
-}});m.click(function(bF){bF.stopPropagation()});$("#targetNote").click(function(bH){AlixLogger.trackAction("annotate target");
-var bF=m.children("option:selected").attr("id");var bG=/\[(.+?)\]/g;
-var bI=m.children("option:selected").val();var bJ=bI.match(bG);
-if(bJ){MessageBox.inputBox("Write your note on this target",bJ[0].replace(/\[|]/g,""));
-$("#target_note").val(bJ[0].replace(/\[|]/g,""))}else{MessageBox.inputBox("Write your note on this target","");
+L=$("#"+aQ);ax=$("#"+ab);m=$("#"+a0);bm=$("#"+bl);
+bj=$("#"+aE);ag=$("#"+aK);aO=$("#"+bk);n=$("#"+a9);
+aT=$("#"+aZ);bg(by);ay();ao.on("click",function(){ax.blur()
+});ao.on("positionChanged",function(bG){if(bG.dragging==false){ay();
+ax.val(bG.ra.toFixed(4)+","+bG.dec.toFixed(4));if(bd.masterResource!=undefined){E.updateCatalogs(bd,"position")
+}}});ao.on("zoomChanged",function(bG){var bH=bd.fov;
+ay();if(bG>=bH){if(bd.masterResource!=undefined){E.updateCatalogs(bd,"zoom")
+}}});$("#closeWaitingPanel").click(function(bG){document.getElementById("waiting_interface").style.display="none"
+});$("#open_all").click(function(bG){bG.stopPropagation();
+K();ae()});if(by.panelState==true){K()}ax.val(by.field.position);
+ax.click(function(bG){bG.stopPropagation()});ax.bind("keypress",function(bG){if(bG.which==13){if(bd.region!=null){E.cleanPolygon()
+}bd.clean();H();bG.preventDefault();aA(ax.val())}});
+$("#input_target").bind("keypress",function(bG){if(bG.which==13){bf()
+}});m.click(function(bG){bG.stopPropagation()});$("#targetNote").click(function(bI){AlixLogger.trackAction("annotate target");
+var bG=m.children("option:selected").attr("id");var bH=/\[(.+?)\]/g;
+var bJ=m.children("option:selected").val();var bK=bJ.match(bH);
+if(bK){MessageBox.inputBox("Write your note on this target",bK[0].replace(/\[|]/g,""));
+$("#target_note").val(bK[0].replace(/\[|]/g,""))}else{MessageBox.inputBox("Write your note on this target","");
 $("#target_note").val("")}});m.change(function(){if($(this).val()=="--select--"){return
 }ak($(this).children("option:selected").attr("id"));
-event.stopPropagation()});bl.click(function(bF){bF.stopPropagation()
-});bl.keyup(function(bF){if($(this).val().length>=3||bF.which==13){aV($(this).val())
-}});bi.change(function(){if($(this).val()=="--select--"){return
-}h($(this).val());f($(this).val())});bi.click(function(bF){bF.stopPropagation()
-});$("#select_vizier").change(function(){var bF=$(this).val();
-if(bF=="--select--"){return}var bG=bF.match(/^([^\s]*)\s\[(.*)\]$/);
-aw(bG[1],bG[2])});ag.keyup(function(bF){if($(this).val().length>=2||bF.which==13){al($(this).val())
-}});$("#menuDiv").on("click",".alix_btn_open",function(bF){bF.stopPropagation();
+event.stopPropagation()});bm.click(function(bG){bG.stopPropagation()
+});bm.keyup(function(bG){if($(this).val().length>=3||bG.which==13){aV($(this).val())
+}});bj.change(function(){if($(this).val()=="--select--"){return
+}h($(this).val());f($(this).val())});bj.click(function(bG){bG.stopPropagation()
+});$("#select_vizier").change(function(){var bG=$(this).val();
+if(bG=="--select--"){return}var bH=bG.match(/^([^\s]*)\s\[(.*)\]$/);
+aw(bH[1],bH[2])});ag.keyup(function(bG){if($(this).val().length>=2||bG.which==13){al($(this).val())
+}});$("#menuDiv").on("click",".alix_btn_open",function(bG){bG.stopPropagation();
 $("#center").css("transition-timing-function","cubic-bezier(0.8,0.84,0.44,1.3)");
 $("#center").css("transform","translate3d(45px,0px,0px)");
 $("#center").css("transition-duration","100ms");$("#bookMark").css("transition-timing-function","cubic-bezier(0.8,0.84,0.44,1.3)");
@@ -661,7 +660,7 @@ $("#region").css("transform","translate3d(180px,0px,0px)");
 $("#region").css("transition-duration","400ms");$("#menu").addClass("alix_btn_open_2");
 $("#menu").removeClass("alix_btn_open");$("#icon_open").addClass("glyphicon-remove");
 $("#icon_open").removeClass("glyphicon-list");$("#credit").css("display","none")
-});$("#menuDiv").on("click",".alix_btn_open_2",function(bF){bF.stopPropagation();
+});$("#menuDiv").on("click",".alix_btn_open_2",function(bG){bG.stopPropagation();
 $("#center").css("transition-timing-function","ease-out");
 $("#center").css("transform","translate3d(0px,0px,0px)");
 $("#center").css("transition-duration","100ms");$("#bookMark").css("transition-timing-function","ease-out");
@@ -675,301 +674,305 @@ $("#region").css("transform","translate3d(0px,0px,0px)");
 $("#region").css("transition-duration","400ms");$("#menu").addClass("alix_btn_open");
 $("#menu").removeClass("alix_btn_open_2");$("#icon_open").addClass("glyphicon-list");
 $("#icon_open").removeClass("glyphicon-remove");$("#credit").css("display","inline")
-});$("#vizier").click(function(bF){bF.stopPropagation()
-});$(".alix_target_selecte").click(function(bH){if($(this).attr("class")=="alix_target_selecte alix_unselected"){for(var bG=0;
-bG<bc.target.length;bG++){var bI=bG;var bF=bc.target[bG].ct;
-var bJ=bc.target[bG].ra;var bK=bc.target[bG].dec;
-ao.addCatalog(bF);bF.addSources([A.marker(bJ,bK,{popupTitle:"target"},bI)])
+});$("#vizier").click(function(bG){bG.stopPropagation()
+});$(".alix_target_selecte").click(function(bI){if($(this).attr("class")=="alix_target_selecte alix_unselected"){for(var bH=0;
+bH<bd.target.length;bH++){var bJ=bH;var bG=bd.target[bH].ct;
+var bK=bd.target[bH].ra;var bL=bd.target[bH].dec;
+ao.addCatalog(bG);bG.addSources([A.marker(bK,bL,{popupTitle:"target"},bJ)])
 }$(this).attr("class","alix_target_selecte alix_selected");
 $(this).css("color","#87F6FF")}else{R("target");$(this).attr("class","alix_target_selecte alix_unselected");
-$(this).css("color","#888a85")}});$(".alix_select_trash").click(function(bF){$(".alix_target_selecte").css("display","none");
+$(this).css("color","#888a85")}});$(".alix_select_trash").click(function(bG){$(".alix_target_selecte").css("display","none");
 $(this).css("display","none");$(".alix_select_flash").css("display","none");
-R("target")});$(".alix_select_flash").click(function(bG){for(var bF=0;
-bF<bc.target.length;bF++){bc.target[bF].ct.makeFlash()
-}});$("#credit").click(function(bF){aJ();L.css("max-height","200px");
+R("target")});$(".alix_select_flash").click(function(bH){for(var bG=0;
+bG<bd.target.length;bG++){bd.target[bG].ct.makeFlash()
+}});$("#credit").click(function(bG){aJ();L.css("max-height","200px");
 if(L.height()<100){L.animate({height:"200px"},"fast");
 L.css("border-width","0.2px")}else{L.animate({height:"0px"},"fast");
-L.css("border-width","0px")}$.getJSON("http://saada.unistra.fr/alix/licences/credit.json",function(bG){L.html("<pre>"+JSON.stringify(bG,null,2)+"</pre>")
-})});if(bv!=undefined&&bv.actions.externalProcessing.handlerInitial){bv.actions.externalProcessing.handlerInitial()
-}};var U=function(bq){var bm=ao.getRaDec();var bn=ao.getFov();
-var bp="http://alasky.unistra.fr/MocServer/query?RA=23&DEC=33&SR="+bn[0]+"&fmt=json&get=record&casesensitive=false";
-var br="image";var bo=new RegExp(/.*((jpeg)|(png)).*/);
-$.getJSON(bp,function(bv){if(br!=undefined){for(var bt=bv.length-1;
-bt>=0;bt--){if(bv[bt].dataproduct_type!=br){bv.splice(bt,1)
-}}if(br=="image"){for(var bt=bv.length-1;bt>=0;bt--){var bx=0;
-if($.isArray(bv[bt].hips_tile_format)){for(var bs=0;
-bs<bv[bt].hips_tile_format.length;bs++){if(bo.test(bv[bt].hips_tile_format[bs])){bx=1;
-break}}}else{if(bo.test(bv[bt].hips_tile_format)){bx=1
-}}if(bx==0){bv.splice(bt,1)}}}E.modules.hipsSelectorModel.storeHips(bv);
-var bu=false;for(var bt=0;bt<bv.length;bt++){var bw=bv[bt].ID;
-if(bw==aX){h(bw);au(bw,"DSS colored");bu=true}}if(!bu){h("CDS/P/DSS2/color");
-au("CDS/P/DSS2/color","DSS colored")}}})};var bf=function(bo){if(ao!=null){for(var bn=0;
-bn<ao.view.overlays.length;bn++){if(ao.view.overlays[bn].name=="Reference Frame"){ao.view.overlays[bn].removeAll();
-break}}}if(bo.defaultSurvey!=undefined){aX=bo.defaultSurvey;
+L.css("border-width","0px")}$.getJSON("http://saada.unistra.fr/alix/licences/credit.json",function(bH){L.html("<pre>"+JSON.stringify(bH,null,2)+"</pre>")
+})});SimbadCatalog.activateControle();if(bw!=undefined&&bw.actions.externalProcessing.handlerInitial){bw.actions.externalProcessing.handlerInitial()
+}if(bw!=undefined&&bw.affichage.display==true){setTimeout(function(){AladinLiteX_mVc.displayDataXml()
+},1000)}};var U=function(bn){Sesame.resolve(j,function(bo){var bp=bo.Target.Resolver.jradeg;
+var bq=bo.Target.Resolver.jdedeg;console.log("Take "+j+"("+bp+" "+bq+") as default position");
+console.log(bp+" "+bq);a1(bp,bq)},function(bo){console.log(j+"("+ra+" "+dec+") could ben resolved, take (23. 33)");
+a1(23,33)})};var a1=function(br,bs){var bn=ao.getFov();
+var bp="http://alasky.unistra.fr/MocServer/query?RA="+br+"&DEC="+bs+"&SR="+bn[0]+"&fmt=json&get=record&casesensitive=false";
+var bq="image";var bo=new RegExp(/.*((jpeg)|(png)).*/);
+$.getJSON(bp,function(bw){if(bq!=undefined){for(var bu=bw.length-1;
+bu>=0;bu--){if(bw[bu].dataproduct_type!=bq){bw.splice(bu,1)
+}}if(bq=="image"){for(var bu=bw.length-1;bu>=0;bu--){var by=0;
+if($.isArray(bw[bu].hips_tile_format)){for(var bt=0;
+bt<bw[bu].hips_tile_format.length;bt++){if(bo.test(bw[bu].hips_tile_format[bt])){by=1;
+break}}}else{if(bo.test(bw[bu].hips_tile_format)){by=1
+}}if(by==0){bw.splice(bu,1)}}}E.modules.hipsSelectorModel.storeHips(bw);
+var bv=false;for(var bu=0;bu<bw.length;bu++){var bx=bw[bu].ID;
+if(bx==aX){h(bx);au(bx,"DSS colored");bv=true}}if(!bv){h("CDS/P/DSS2/color");
+au("CDS/P/DSS2/color","DSS colored")}}})};var bg=function(bp){if(ao!=null){for(var bo=0;
+bo<ao.view.overlays.length;bo++){if(ao.view.overlays[bo].name=="Reference Frame"){ao.view.overlays[bo].removeAll();
+break}}}if(bp.defaultSurvey!=undefined){aX=bp.defaultSurvey;
 E.modules.historicModel.hips_tab.push("CDS/P/DSS2/color")
-}if(bo.region!=undefined){var bp=[];if(bo.region.type=="array"){x=aC.regionEditor.view.parseArrayPolygon(bo.region.value)
-}else{if(aC.regionEditor.view.editionFrame.type=="soda"){x=this.controllers.regionEditor.view.parseSodaPolygon(bo.region.value)
+}if(bp.region!=undefined){var bq=[];if(bp.region.type=="array"){x=aC.regionEditor.view.parseArrayPolygon(bp.region.value)
+}else{if(aC.regionEditor.view.editionFrame.type=="soda"){x=this.controllers.regionEditor.view.parseSodaPolygon(bp.region.value)
 }else{alert("Polygone format "+points.type+" not understood")
-}}if(x){var bm=BasicGeometry.getEnclosingView(x);
-j=bm.center.ra+" "+bm.center.dec;aB=1.2*bm.size;if(ao==null){ao=A.aladin(aT,{survey:aX,fov:aB,showLayersControl:false,showFullscreenControl:false,showFrame:false,showGotoControl:false});
-aT.append()}aN(aB);aG(bm.center.ra,bm.center.dec);
+}}if(x){var bn=BasicGeometry.getEnclosingView(x);
+j=bn.center.ra+" "+bn.center.dec;aB=1.2*bn.size;if(ao==null){ao=A.aladin(aT,{survey:aX,fov:aB,showLayersControl:false,showFullscreenControl:false,showFrame:false,showGotoControl:false});
+aT.append()}aN(aB);aG(bn.center.ra,bn.center.dec);
 let overlay=A.graphicOverlay({color:"blue",name:"Reference Frame"});
 ao.addOverlay(overlay);overlay.addFootprints([A.polygon(x)])
-}}else{if(bo.field!=undefined){if(bo.field.defaultFov!=undefined){aB=bo.field.defaultFov
-}else{aB=0.9}if(bo.field.position!=undefined){j=bo.field.position
-}else{j="M51"}}else{j="M51";aB=0.9}if(ao==null){ao=A.aladin(aT,{survey:aX,fov:aB,showLayersControl:false,showFullscreenControl:false,showFrame:false,showGotoControl:false});
+}}else{if(bp.field!=undefined){if(bp.field.defaultFov!=undefined){aB=bp.field.defaultFov
+}else{aB=0.9}if(bp.field.position!=undefined){j=bp.field.position
+}else{j="M51"}}else{j="M51";aB=0.9}if(ao==null){console.log(aX);
+console.log(aB);ao=A.aladin(aT,{survey:aX,fov:aB,showLayersControl:false,showFullscreenControl:false,showFrame:false,showGotoControl:false});
 aT.append()}Z(j);setTimeout(function(){ao.setZoom(aB)
-},200)}U()};var a9=false;var aM=function(){if(a9==true){$("#aladin-lite-div").closest(".ui-dialog-content").dialog("close");
-a9=false}else{if(a3.width()<100){$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close:function(bm,bn){a9=false
-}})}else{if(L.height()<100){$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close:function(bm,bn){a9=false
-}})}else{$("#aladin-lite-div").dialog({title:"AladinLiteX",height:650,width:900,close:function(bm,bn){a9=false
-}})}}a9=true}};var aY=function(){aA(j);ao.setFov(aB);
+},200)}U()};var ba=false;var aM=function(){if(ba==true){$("#aladin-lite-div").closest(".ui-dialog-content").dialog("close");
+ba=false}else{if(a4.width()<100){$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close:function(bn,bo){ba=false
+}})}else{if(L.height()<100){$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close:function(bn,bo){ba=false
+}})}else{$("#aladin-lite-div").dialog({title:"AladinLiteX",height:650,width:900,close:function(bn,bo){ba=false
+}})}}ba=true}};var aY=function(){aA(j);ao.setFov(aB);
 $("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:440})
-};var a1=function(bm){ao.addOverlay(bm)};var aG=function(bm,bn){ao.gotoPosition(bm,bn)
-};var M=function(bm,bn){return ao.world2pix(bm,bn)
-};var aN=function(bm){ao.setZoom(bm)};var S=function(){ao.increaseZoom()
-};var an=function(){ao.decreaseZoom()};var aS=function(bm,bn){return ao.pix2world(bm,bn)
-};var G=function(bm,bn){return ao.setImageSurvey(bm,bn)
-};var v=function(br,bp,bn,bq,bm,bo){return ao.createImageSurvey(br,bp,bn,bq,bm,bo)
+};var a2=function(bn){ao.addOverlay(bn)};var aG=function(bn,bo){ao.gotoPosition(bn,bo)
+};var M=function(bn,bo){return ao.world2pix(bn,bo)
+};var aN=function(bn){ao.setZoom(bn)};var S=function(){ao.increaseZoom()
+};var an=function(){ao.decreaseZoom()};var aS=function(bn,bo){return ao.pix2world(bn,bo)
+};var G=function(bn,bo){return ao.setImageSurvey(bn,bo)
+};var v=function(bs,bq,bo,br,bn,bp){return ao.createImageSurvey(bs,bq,bo,br,bn,bp)
 };var s=function(){aL=false;aq.name=null;aq.ra=null;
-aq.dec=null};var p=function(bm){if(bm!=undefined&&aL){var bn=bm.length;
-if(aq.name.slice(0,bn)==bm){aL=false}}};var bd=function(bm,bo,bp){if(bm!=undefined&&bo!=undefined&&bp!=undefined){aL=true;
-var bn=/[:]/g;bm=bm.split(bn);aq.name=bm[1];aq.ra=bo;
-aq.dec=bp}else{aL=false}};var am=function(){aJ();
-$("#SourceDiv").css("display","none");if(aL){bc.clean();
+aq.dec=null};var p=function(bn){if(bn!=undefined&&aL){var bo=bn.length;
+if(aq.name.slice(0,bo)==bn){aL=false}}};var be=function(bn,bp,bq){if(bn!=undefined&&bp!=undefined&&bq!=undefined){aL=true;
+var bo=/[:]/g;bn=bn.split(bo);aq.name=bn[1];aq.ra=bp;
+aq.dec=bq}else{aL=false}};var am=function(){aJ();
+$("#SourceDiv").css("display","none");if(aL){bd.clean();
 H();aA(aq.ra+" "+aq.dec)}else{Alix_Modalinfo.info("You haven't chose a source!")
 }E.cleanPolygon()};var z=false;var af=false;var e=function(){aJ();
 $("#SourceDiv").css("display","none");L.css("max-height","200px");
 if(L.height()<200){L.css("height","auto");L.css("border-width","0.2px");
-height_ul=$("#history_ul").height()+80}bc.XMM=false;
-for(var bm=0;bm<ao.view.catalogs.length;bm++){if(ao.view.catalogs[bm].name.startsWith("Swarm")){bc.XMM=true
-}}ay();E.bookMark(bc)};var aJ=function(){if(browseSaved==false){var bm=confirm("Do you want to save your polygon?");
-if(bm==true){$("#regionEditor_a").trigger("click")
+height_ul=$("#history_ul").height()+80}bd.XMM=false;
+for(var bn=0;bn<ao.view.catalogs.length;bn++){if(ao.view.catalogs[bn].name.startsWith("Swarm")){bd.XMM=true
+}}ay();E.bookMark(bd)};var aJ=function(){if(browseSaved==false){var bn=confirm("Do you want to save your polygon?");
+if(bn==true){$("#regionEditor_a").trigger("click")
 }else{browseSaved=null;E.cleanPolygon()}}};var y=function(){aJ();
 $("#SourceDiv").css("display","none");L.css("max-height","200px");
 E.getHistory();if(L.height()<10){L.css("height","auto");
 L.css("border-width","0.2px");z=true;af=false}else{if(L.height()>10){if(z){L.animate({height:0},"fast");
 z=false;af=false}else{L.css("height","auto");L.css("border-width","0.2px");
-z=true;af=false}}}};var D=function(bm){if(bc.region!=null){E.cleanPolygon()
-}bc=jQuery.extend(true,{},bm);ax.val(bc.name);ao.gotoRaDec(bc.ra,bc.dec);
-ao.setFoV(bc.fov);h(bc.survey.ID);bi.val(bc.survey.ID);
-if(bc.region!=null){if(!g){E.editRegion()}var bn={type:null,value:[]};
-bn.type=bc.region.format;bn.value=bc.region.points;
-E.setInitialValue(bn)}};var W=function(bu){R("all");
-var bs=E.restoreViewById(bu);D(bs);if(bs.catalogTab!=null){E.buildCataTab(bs)
-}if(bc.XMM==true){E.displayDataXml(bc)}var bo='<select id="status" class ="alix_selector_hips ">';
-bo+="<option value='"+bc.survey.ID+"'>"+bc.survey.ID+"</option>";
-for(var bv=0;bv<E.modules.historicModel.hips_tab.length;
-bv++){if(E.modules.historicModel.hips_tab[bv]!=bc.survey.ID){bo+="<option value='"+E.modules.historicModel.hips_tab[bv]+"'>"+E.modules.historicModel.hips_tab[bv]+"</option>"
-}}bo+="</select>";bi.html(bo);if(bc.target.length>0){for(var bp=0;
-bp<bc.target.length;bp++){var bm=bc.target[bp].ra;
-var bn=bc.target[bp].dec;var bq=A.catalog({name:"target",color:"green"});
-ao.addCatalog(bq);bq.addSources([A.marker(bm,bn,{popupTitle:"target"})])
-}}ao.view.imageSurvey.getColorMap().update(bc.colorMap);
-if(bc.reverseColor){ao.view.imageSurvey.getColorMap().reverse()
-}if(bc.sourceSelected.x&&bc.sourceSelected.y){WaitingPanel.show("the selected source");
-var bt=bc.sourceSelected.x;var br=bc.sourceSelected.y;
-setTimeout(function(){a2(bt,br);WaitingPanel.hide("the selected source")
-},2500)}};var a2=function(bm,bq){var bp=ao.view.closestObjects(bm,bq,5);
-if(bp){var bo=bp[0];if(bo instanceof Footprint||bo instanceof Circle){bo.dispatchClickEvent()
-}else{if(bo.marker){ao.view.popup.setTitle(bo.popupTitle);
-ao.view.popup.setText(bo.popupDesc);ao.view.popup.setSource(bo);
+z=true;af=false}}}};var D=function(bn){if(bd.region!=null){E.cleanPolygon()
+}bd=jQuery.extend(true,{},bn);ax.val(bd.name);ao.gotoRaDec(bd.ra,bd.dec);
+ao.setFoV(bd.fov);h(bd.survey.ID);bj.val(bd.survey.ID);
+if(bd.region!=null){if(!g){E.editRegion()}var bo={type:null,value:[]};
+bo.type=bd.region.format;bo.value=bd.region.points;
+E.setInitialValue(bo)}};var W=function(bv){R("all");
+var bt=E.restoreViewById(bv);D(bt);if(bt.catalogTab!=null){E.buildCataTab(bt)
+}if(bd.XMM==true){E.displayDataXml(bd)}var bp='<select id="status" class ="alix_selector_hips ">';
+bp+="<option value='"+bd.survey.ID+"'>"+bd.survey.ID+"</option>";
+for(var bw=0;bw<E.modules.historicModel.hips_tab.length;
+bw++){if(E.modules.historicModel.hips_tab[bw]!=bd.survey.ID){bp+="<option value='"+E.modules.historicModel.hips_tab[bw]+"'>"+E.modules.historicModel.hips_tab[bw]+"</option>"
+}}bp+="</select>";bj.html(bp);if(bd.target.length>0){for(var bq=0;
+bq<bd.target.length;bq++){var bn=bd.target[bq].ra;
+var bo=bd.target[bq].dec;var br=A.catalog({name:"target",color:"green"});
+ao.addCatalog(br);br.addSources([A.marker(bn,bo,{popupTitle:"target"})])
+}}ao.view.imageSurvey.getColorMap().update(bd.colorMap);
+if(bd.reverseColor){ao.view.imageSurvey.getColorMap().reverse()
+}if(bd.sourceSelected.x&&bd.sourceSelected.y){WaitingPanel.show("the selected source");
+var bu=bd.sourceSelected.x;var bs=bd.sourceSelected.y;
+setTimeout(function(){a3(bu,bs);WaitingPanel.hide("the selected source")
+},2500)}};var a3=function(bn,br){var bq=ao.view.closestObjects(bn,br,5);
+if(bq){var bp=bq[0];if(bp instanceof Footprint||bp instanceof Circle){bp.dispatchClickEvent()
+}else{if(bp.marker){ao.view.popup.setTitle(bp.popupTitle);
+ao.view.popup.setText(bp.popupDesc);ao.view.popup.setSource(bp);
 ao.view.popup.show()}else{if(ao.view.lastClickedObject){ao.view.lastClickedObject.actionOtherObjectClicked&&ao.view.lastClickedObject.actionOtherObjectClicked()
-}bo.actionClicked()}}ao.view.lastClickedObject=bo;
-var bn=ao.view.aladin.callbacksByEventName.objectClicked;
-(typeof bn==="function")&&bn(bo)}else{if(ao.view.lastClickedObject){ao.view.aladin.measurementTable.hide();
+}bp.actionClicked()}}ao.view.lastClickedObject=bp;
+var bo=ao.view.aladin.callbacksByEventName.objectClicked;
+(typeof bo==="function")&&bo(bp)}else{if(ao.view.lastClickedObject){ao.view.aladin.measurementTable.hide();
 ao.view.popup.hide();if(ao.view.lastClickedObject instanceof Footprint){}else{ao.view.lastClickedObject.actionOtherObjectClicked()
-}ao.view.lastClickedObject=null;var bn=ao.view.aladin.callbacksByEventName.objectClicked;
-(typeof bn==="function")&&bn(null)}}};var ay=function(){var bo=ao.getRaDec();
-bc.name=ax.val();bc.ra=bo[0];bc.dec=bo[1];var bm=ao.getFov();
-bc.fov=bm[0];bc.img=ao.getViewDataURL({width:400,height:400});
-bc.catalogTab=E.currentCatalogTab(ao.view.catalogs);
-bc.colorMap=ao.view.imageSurvey.getColorMap().mapName;
-bc.reverseColor=ao.view.imageSurvey.getColorMap().reversed;
-var bp=Numbers.toSexagesimal(bc.ra/15,8,false);var bn=Numbers.toSexagesimal(bc.dec,7,false)
-};var av=function(bm){bc.region=bm};var g=false;var Q=function(){aJ();
+}ao.view.lastClickedObject=null;var bo=ao.view.aladin.callbacksByEventName.objectClicked;
+(typeof bo==="function")&&bo(null)}}};var ay=function(){var bp=ao.getRaDec();
+bd.name=ax.val();bd.ra=bp[0];bd.dec=bp[1];var bn=ao.getFov();
+bd.fov=bn[0];bd.img=ao.getViewDataURL({width:400,height:400});
+bd.catalogTab=E.currentCatalogTab(ao.view.catalogs);
+bd.colorMap=ao.view.imageSurvey.getColorMap().mapName;
+bd.reverseColor=ao.view.imageSurvey.getColorMap().reversed;
+var bq=Numbers.toSexagesimal(bd.ra/15,8,false);var bo=Numbers.toSexagesimal(bd.dec,7,false)
+};var av=function(bn){bd.region=bn};var g=false;var Q=function(){aJ();
 $("#SourceDiv").css("display","none");L.css("max-height","200px");
-ay();if(!g){E.editRegion()}z=false;af=true};var aA=function(bn,bm){m.val($("#"+bn).val());
-ax.val(bn);ao.gotoObject(bn,{success:function(bs){bc.name=ax.val();
-bc.ra=bs[0];bc.dec=bs[1];var br=Numbers.toSexagesimal(bc.ra/15,8,false);
-var bq=Numbers.toSexagesimal(bc.dec,7,false);var bo=ao.getFov();
-bc.fov=bo[0];E.updateCatalogs(bc,"position");var bp=/^[0-9a-zA-Z]*$/;
-if(bp.test(bn)){bh(bn)}else{bh(br+" +"+bq)}if(bm){bm()
-}},error:function(){alert("It's not a correct position")
-}})};var K=function(){if(a3.width()<100){a3.animate({width:"+=250px"},"fast");
+ay();if(!g){E.editRegion()}z=false;af=true};var aA=function(bo,bn){m.val($("#"+bo).val());
+var bp=bo.replace("_SpAcE_"," ");ax.val(bp);ao.gotoObject(bp,{success:function(bu){bd.name=ax.val();
+bd.ra=bu[0];bd.dec=bu[1];var bt=Numbers.toSexagesimal(bd.ra/15,8,false);
+var bs=Numbers.toSexagesimal(bd.dec,7,false);var bq=ao.getFov();
+bd.fov=bq[0];E.updateCatalogs(bd,"position");var br=/^[0-9a-zA-Z_\s]*$/;
+if(br.test(bo)){bi(bo)}else{bi(bt+" +"+bs)}if(bn){bn()
+}},error:function(){alert("Object "+bo+" cannot be resolved")
+}})};var K=function(){if(a4.width()<100){a4.animate({width:"+=250px"},"fast");
 $(".alix_menu_item").css("display","inline");$("#open_all").animate({left:"+=250px"},"fast");
 $("#open_all").attr("class","alix_open_all glyphicon glyphicon-chevron-left")
-}else{a3.animate({width:"-=250px"},"fast");$(".alix_menu_item").css("display","none");
+}else{a4.animate({width:"-=250px"},"fast");$(".alix_menu_item").css("display","none");
 $("#open_all").animate({left:"-=250px"},"fast");$("#open_all").attr("class","alix_open_all glyphicon glyphicon-chevron-right")
 }};var ae=function(){aJ();L.css("max-height","200px");
 if(L.height()>99){L.animate({height:"0px"},"fast");
 L.css("border-width","0px");$(".alix_context").css("display","none");
-L.html("");ax.val(bc.name)}};var C=function(){document.getElementById("bookMark").disabled=true;
+L.html("");ax.val(bd.name)}};var C=function(){document.getElementById("bookMark").disabled=true;
 document.getElementById("history").disabled=true;
 document.getElementById("center").disabled=true};
 var X=function(){document.getElementById("bookMark").disabled=false;
 document.getElementById("history").disabled=false;
 document.getElementById("center").disabled=false};
-var F=function(bm){E.deleteHistory(bm)};var aV=function(bm){E.searchHips(bm,bc)
-};var a4=function(bm,bn){h(bm);au(bm,bn);J(bm)};var aw=function(bo,bp){var bn=(bp)?" ["+bp+"]":" [No title]";
-if(!LibraryCatalog.getCatalog("VizieR:"+bo)){E.createCatalogSelect(bo);
-ba(bo,bn)}else{var bm=false;$("#vizier_list").find("li").each(function(){if($(this).hasClass(bo)){bm=true
-}});if(bm==false){E.createCatalogSelect(bo)}}$("#itemList").css("display","none")
-};var h=function(bm){var bo=E.getSelectedHips(bm);
-AlixLogger.trackAction("Display Hips "+bo.obs_title);
-bc.survey=bo;if(bo===undefined){console.error("unknown HiPS");
-return}$("#itemList").css("display","none");var bn="";
-if(bo.hips_tile_format.indexOf("png")>=0){bn="png"
-}else{bn="jpg"}if(bn!=""){G(v(bo.obs_title,bo.obs_title,bo.hips_service_url,bo.hips_frame,bo.hips_order,{imgFormat:bn}))
-}else{G(v(bo.obs_title,bo.obs_title,bo.hips_service_url,bo.hips_frame,bo.hips_order))
-}};var au=function(bq,bt){var bu=document.getElementById(aE);
-var bn=bu.options.length;for(var bp=0;bp<bn;bp++){if(bu.options[bp].text==bq){return false
-}}E.modules.historicModel.hips_tab.push(bq);var bm=(bt)?" ["+bt+"]":" [no title]";
-var bo='<select id="status" class ="alix_selector_hips ">';
-bo+="<option value='"+bq+"'>"+bq+bm+"</option>";for(var bv=0;
-bv<E.modules.historicModel.hips_tab.length;bv++){if(E.modules.historicModel.hips_tab[bv]!=bq){var br=E.getSelectedHips(E.modules.historicModel.hips_tab[bv]);
-var bs=(br.obs_title)?" ["+br.obs_title+"]":" [no title]";
-bo+="<option value='"+E.modules.historicModel.hips_tab[bv]+"'>"+E.modules.historicModel.hips_tab[bv]+bs+"</option>"
-}}bo+="</select>";bi.html(bo)};var bh=function(bq){var bn=document.getElementById("aladin-lite-div-select");
-var bo=bn.options.length;for(var bm=0;bm<bo;bm++){if(bn.options[bm].id==bq){return false
-}}if(bq!=""){var bp='<option id="'+bq+'">'+bq+"</option>";
-m.append(bp);m.val(bq)}};var ba=function(bp,bo){var br=document.getElementById("select_vizier");
-var bq=br.options.length;$("#select_vizier").val(bp);
-for(var bn=0;bn<bq;bn++){if(br.options[bn].text.startsWith(bp+" ")){return false
-}}var bm="<option>"+bp+bo+"</option>";$("#select_vizier").append(bm)
-};var J=function(bm){var bn=E.getSelectedHips(bm);
-if(bn!=undefined){var bo='<p style="color:#4D36DC;margin:10px;" >';
-bo+=bn.obs_title+"</p><span style='font-size:small;color : #727371;margin:10px;'>"+bm+"</span><p style='font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;'>&nbsp;&nbsp;"+bn.obs_description+"<br>";
-bo+="</p>";$("#panel_image_detail").html(bo);$("#panel_image_detail").toggle()
-}};var k=function(bm){aJ();L.css("max-height","200px");
+var F=function(bn){E.deleteHistory(bn)};var aV=function(bn){E.searchHips(bn,bd)
+};var a5=function(bn,bo){h(bn);au(bn,bo);J(bn)};var aw=function(bp,bq){var bo=(bq)?" ["+bq+"]":" [No title]";
+if(!LibraryCatalog.getCatalog("VizieR:"+bp)){E.createCatalogSelect(bp);
+bb(bp,bo)}else{var bn=false;$("#vizier_list").find("li").each(function(){if($(this).hasClass(bp)){bn=true
+}});if(bn==false){E.createCatalogSelect(bp)}}$("#itemList").css("display","none")
+};var h=function(bn){var bp=E.getSelectedHips(bn);
+AlixLogger.trackAction("Display Hips "+bp.obs_title);
+bd.survey=bp;if(bp===undefined){console.error("unknown HiPS");
+return}$("#itemList").css("display","none");var bo="";
+if(bp.hips_tile_format.indexOf("png")>=0){bo="png"
+}else{bo="jpg"}if(bo!=""){G(v(bp.obs_title,bp.obs_title,bp.hips_service_url,bp.hips_frame,bp.hips_order,{imgFormat:bo}))
+}else{G(v(bp.obs_title,bp.obs_title,bp.hips_service_url,bp.hips_frame,bp.hips_order))
+}};var au=function(br,bu){var bv=document.getElementById(aE);
+var bo=bv.options.length;for(var bq=0;bq<bo;bq++){if(bv.options[bq].text==br){return false
+}}E.modules.historicModel.hips_tab.push(br);var bn=(bu)?" ["+bu+"]":" [no title]";
+var bp='<select id="status" class ="alix_selector_hips ">';
+bp+="<option value='"+br+"'>"+br+bn+"</option>";for(var bw=0;
+bw<E.modules.historicModel.hips_tab.length;bw++){if(E.modules.historicModel.hips_tab[bw]!=br){var bs=E.getSelectedHips(E.modules.historicModel.hips_tab[bw]);
+var bt=(bs.obs_title)?" ["+bs.obs_title+"]":" [no title]";
+bp+="<option value='"+E.modules.historicModel.hips_tab[bw]+"'>"+E.modules.historicModel.hips_tab[bw]+bt+"</option>"
+}}bp+="</select>";bj.html(bp)};var bi=function(br){var bo=document.getElementById("aladin-lite-div-select");
+var bp=bo.options.length;for(var bn=0;bn<bp;bn++){if(bo.options[bn].id==br){return false
+}}if(br!=""){var bq='<option id="'+br.replace(" ","_SpAcE_")+'">'+br+"</option>";
+m.append(bq);m.val(br)}};var bb=function(bq,bp){var bs=document.getElementById("select_vizier");
+var br=bs.options.length;$("#select_vizier").val(bq);
+for(var bo=0;bo<br;bo++){if(bs.options[bo].text.startsWith(bq+" ")){return false
+}}var bn="<option>"+bq+bp+"</option>";$("#select_vizier").append(bn)
+};var J=function(bn){var bo=E.getSelectedHips(bn);
+if(bo!=undefined){var bp='<p style="color:#4D36DC;margin:10px;" >';
+bp+=bo.obs_title+"</p><span style='font-size:small;color : #727371;margin:10px;'>"+bn+"</span><p style='font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;'>&nbsp;&nbsp;"+bo.obs_description+"<br>";
+bp+="</p>";$("#panel_image_detail").html(bp);$("#panel_image_detail").toggle()
+}};var k=function(bn){aJ();L.css("max-height","200px");
 if(L.height()>100){L.animate({height:"0px"},"fast");
-L.css("border-width","0px")}else{J(bm)}};var r=function(bq,bm){var br=E.getSelectedCatalog(bq);
-var bn=bq.split("/");bn.pop();bn=bn.join("/");var bp=bn.length-1;
-if(br!=undefined){var bo='<div style="background-color:'+bm+';border-radius: 5px;box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);"><a href="#" onclick="$(&quot;#itemList&quot;).css(&quot;display&quot;, &quot;none&quot;);" style="top: 18px;float: right; margin-right: 8px; margin-top: 2px;" class="ui-dialog-titlebar-close ui-corner-all" role="button"><span class="glyphicon glyphicon-remove" style="color: white;"></span></a><br></div><iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=100% src="http://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+bn+'/?format=html&tex=true" frameborder="0"style = "" ></iframe>';
-$("#itemList").html(bo);$("#itemList").css("display","block");
-L.html(bo)}else{alert("Please choose a catalog")}};
-var c=function(bq,bv){var bq=bq;var bo;var bx;var br;
-var bw;var bz;if(bq=="XMM"){if(LibraryCatalog.getCatalog("Swarm")){bw=LibraryCatalog.getCatalog("Swarm").al_refs
-}bx=bq;if(bv=="red"){bz="rgb(255,0,0)"}else{bz=bv
-}}else{if(bq=="Simbad"||bq=="NED"){if(LibraryCatalog.getCatalog(bq)){bw=LibraryCatalog.getCatalog(bq).al_refs
-}bx=bq;if(bv=="red"){bz="rgb(255,0,0)"}else{if(bv=="orange"){bz="rgb(255,165,0)"
-}else{bz=bv}}}else{bx=$("#cata_operate_"+bq).text();
-bo=$("#cata_operate_"+bq).text();bw=LibraryCatalog.getCatalog("VizieR:"+bo).al_refs;
-bz=document.getElementById("cata_operate_"+bq).style.color
-}}var bp=bz.substring(4,bz.length-1);bp=bp.split(",");
-function bn(bA){var bB=Number(bA).toString(16);if(bB.length<2){bB="0"+bB
-}return bB}function bu(bC,bB,bA){return"#"+bn(bC)+bn(bB)+bn(bA)
-}var bm=bp[0];var bt=bp[1];var by=bp[2];br=bu(bm,bt,by);
-if(bw!=undefined){var bs='<div id="'+bx+'"class="'+bq+'" style = "box-shadow: 0 0 20px 2px '+br+' ;height=140px; margin-left: 5px; height: 140px;"><div class="alix_configurationShape" ><b>Shape:</b><i id="shape_plus" title="plus" class="glyphicon glyphicon-plus alix_shapeChoice " style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_cross" title="cross" class="glyphicon glyphicon-remove alix_shapeChoice " style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_circle" title="circle" class="glyphicon glyphicon-record alix_shapeChoice " style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_triangle" title="triangle" class="glyphicon glyphicon-triangle-top alix_shapeChoice" style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_rhomb" title="rhomb" class="glyphicon glyphicon-unchecked alix_shapeChoice " style="cursor: pointer;transform: rotate(45deg);" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_square" title="square" class="glyphicon glyphicon-stop alix_shapeChoice" style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i></div><div class="alix_configurationShape"><b>Size:</b><div id="sliderBox"><span class="alix_min-value">1</span><input id="slider_Shape" class=" alix_slider_Shape"  type="range" step="1" value="8" min="1" max="50" oninput="AladinLiteX_mVc.updateSizeOfCatalog(this.value,this.id)"><span class="alix_max-value">50</span><span class="range-value" id="range-value0"></span></div></div><div class="alix_configurationShape"><b>Color:  </b><input id="colorSelect" type = "text" style = "margin-left: 15px;"></input></div></div>';
-$("#panel_catalog_detail").html(bs);$("#panel_catalog_detail").toggle();
-$("#colorSelect").spectrum({color:br,preferredFormat:"hex3",showInput:true,showPalette:true,palette:[["red","rgba(0, 255, 0, .5)","rgb(0, 0, 255)"]],change:function(bA){AladinLiteX_mVc.updateColorOfCatalog(bA.toHexString(),"colorSelect")
-}})}else{alert("Please choose a catalog")}};var a7=function(bo,bq){var bp=document.getElementById(bq).parentNode.parentNode;
-var bm=bp.className;bp.style.boxShadow="0 0 20px 2px "+bo;
-if(bm=="XMM"){catalog=LibraryCatalog.getCatalog("Swarm").al_refs;
-$("#"+bm).css("color",bo);$("#btn-"+bm+"-description").css("color",bo);
-$("#btn-"+bm+"-configure").css("color",bo);$("#btn-"+bm+"-flash").css("color",bo);
-LibraryCatalog.updCatalog({name:"Swarm",color:bo})
-}else{if(bm=="Simbad"||bm=="NED"){catalog=LibraryCatalog.getCatalog(bm).al_refs;
-$("#"+bm).css("color",bo);$("#btn-"+bm+"-configure").css("color",bo);
-$("#btn-"+bm+"-flash").css("color",bo);LibraryCatalog.updCatalog({name:bm,color:bo})
-}else{var bn=$("#cata_operate_"+bm).text();catalog=LibraryCatalog.getCatalog("VizieR:"+bn).al_refs;
-$("#cata_operate_"+bm).css("color",bo);$("#btn_detail_catalog_"+bm).css("color",bo);
-$("#btn_flash_catalog_"+bm).css("color",bo);$("#btn_configure_catalog_"+bm).css("color",bo);
-$("#btn_delete_catalog_"+bm).css("color",bo);LibraryCatalog.updCatalog({name:"VizieR:"+bn,color:bo})
-}}catalog.updateShape({color:bo})};var d=function(bn,bp){var bo=document.getElementById(bp).parentNode.parentNode.id;
-var bm;if(bo=="XMM"){bm=LibraryCatalog.getCatalog("Swarm").al_refs
-}else{if(bo=="Simbad"||bo=="NED"){bm=LibraryCatalog.getCatalog(bo).al_refs
-}else{bm=LibraryCatalog.getCatalog("VizieR:"+bo).al_refs
-}}bm.updateShape({shape:bn})};var l=function(bn,bp){var bo=document.getElementById(bp).parentNode.parentNode.parentNode.id;
-var bm;if(bo=="XMM"){bm=LibraryCatalog.getCatalog("Swarm").al_refs
-}else{if(bo=="Simbad"||bo=="NED"){bm=LibraryCatalog.getCatalog(bo).al_refs
-}else{bm=LibraryCatalog.getCatalog("VizieR:"+bo).al_refs
-}}bm.updateShape({sourceSize:Number(bn)})};var bb=function(bn){var bm=E.getSelectedHips(bn);
-return bm.obs_description};var al=function(bm){E.searchCataloge(bm,bc)
-};var ak=function(bn){var bm;if(bn){bm=bn}else{bm=ax.val()
-}if(bc.region!=null){E.cleanPolygon()}bc.clean();
-aA(bm)};var Y=function(){E.displaySimbadCatalog()
-};var az=function(){ay();E.displayNedCatalog(bc)};
-var O=function(bm){aJ();var bo=$("#cata_operate_"+bm).text();
-var bn=document.getElementById("cata_operate_"+bm).style.color;
-r(bo,bn)};var q=function(){aJ();ay();L.html("");ae();
-E.displayDataXml(bc)};var aP=function(){if(a!=null){a.makeFlash()
-}};var aW=function(){if(LibraryCatalog.getCatalog("Simbad")){var bm=LibraryCatalog.getCatalog("Simbad").al_refs
-}if(bm!=null){bm.makeFlash()}};var o=function(){if(LibraryCatalog.getCatalog("NED")){var bm=LibraryCatalog.getCatalog("NED").al_refs
-}if(bm!=null){bm.makeFlash()}};var ar=function(bm){aJ();
+L.css("border-width","0px")}else{J(bn)}};var r=function(br,bn){var bs=E.getSelectedCatalog(br);
+var bo=br.split("/");bo.pop();bo=bo.join("/");var bq=bo.length-1;
+if(bs!=undefined){var bp='<div style="background-color:'+bn+';border-radius: 5px;box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);"><a href="#" onclick="$(&quot;#itemList&quot;).css(&quot;display&quot;, &quot;none&quot;);" style="top: 18px;float: right; margin-right: 8px; margin-top: 2px;" class="ui-dialog-titlebar-close ui-corner-all" role="button"><span class="glyphicon glyphicon-remove" style="color: white;"></span></a><br></div><iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=100% src="http://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+bo+'/?format=html&tex=true" frameborder="0"style = "" ></iframe>';
+$("#itemList").html(bp);$("#itemList").css("display","block");
+L.html(bp)}else{alert("Please choose a catalog")}};
+var c=function(br,bw){var br=br;var bp;var by;var bs;
+var bx;var bA;if(br=="XMM"){if(LibraryCatalog.getCatalog("Swarm")){bx=LibraryCatalog.getCatalog("Swarm").al_refs
+}by=br;if(bw=="red"){bA="rgb(255,0,0)"}else{bA=bw
+}}else{if(br=="Simbad"||br=="NED"){if(LibraryCatalog.getCatalog(br)){bx=LibraryCatalog.getCatalog(br).al_refs
+}by=br;if(bw=="red"){bA="rgb(255,0,0)"}else{if(bw=="orange"){bA="rgb(255,165,0)"
+}else{bA=bw}}}else{by=$("#cata_operate_"+br).text();
+bp=$("#cata_operate_"+br).text();bx=LibraryCatalog.getCatalog("VizieR:"+bp).al_refs;
+bA=document.getElementById("cata_operate_"+br).style.color
+}}var bq=bA.substring(4,bA.length-1);bq=bq.split(",");
+function bo(bB){var bC=Number(bB).toString(16);if(bC.length<2){bC="0"+bC
+}return bC}function bv(bD,bC,bB){return"#"+bo(bD)+bo(bC)+bo(bB)
+}var bn=bq[0];var bu=bq[1];var bz=bq[2];bs=bv(bn,bu,bz);
+if(bx!=undefined){var bt='<div id="'+by+'"class="'+br+'" style = "box-shadow: 0 0 20px 2px '+bs+' ;height=140px; margin-left: 5px; height: 140px;"><div class="alix_configurationShape" ><b>Shape:</b><i id="shape_plus" title="plus" class="glyphicon glyphicon-plus alix_shapeChoice " style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_cross" title="cross" class="glyphicon glyphicon-remove alix_shapeChoice " style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_circle" title="circle" class="glyphicon glyphicon-record alix_shapeChoice " style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_triangle" title="triangle" class="glyphicon glyphicon-triangle-top alix_shapeChoice" style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_rhomb" title="rhomb" class="glyphicon glyphicon-unchecked alix_shapeChoice " style="cursor: pointer;transform: rotate(45deg);" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i><i id="shape_square" title="square" class="glyphicon glyphicon-stop alix_shapeChoice" style="cursor: pointer;" onclick="AladinLiteX_mVc.updateShapeOfCatalog(this.title,this.id)"></i></div><div class="alix_configurationShape"><b>Size:</b><div id="sliderBox"><span class="alix_min-value">1</span><input id="slider_Shape" class=" alix_slider_Shape"  type="range" step="1" value="8" min="1" max="50" oninput="AladinLiteX_mVc.updateSizeOfCatalog(this.value,this.id)"><span class="alix_max-value">50</span><span class="range-value" id="range-value0"></span></div></div><div class="alix_configurationShape"><b>Color:  </b><input id="colorSelect" type = "text" style = "margin-left: 15px;"></input></div></div>';
+$("#panel_catalog_detail").html(bt);$("#panel_catalog_detail").toggle();
+$("#colorSelect").spectrum({color:bs,preferredFormat:"hex3",showInput:true,showPalette:true,palette:[["red","rgba(0, 255, 0, .5)","rgb(0, 0, 255)"]],change:function(bB){AladinLiteX_mVc.updateColorOfCatalog(bB.toHexString(),"colorSelect")
+}})}else{alert("Please choose a catalog")}};var a8=function(bp,br){var bq=document.getElementById(br).parentNode.parentNode;
+var bn=bq.className;bq.style.boxShadow="0 0 20px 2px "+bp;
+if(bn=="XMM"){catalog=LibraryCatalog.getCatalog("Swarm").al_refs;
+$("#"+bn).css("color",bp);$("#btn-"+bn+"-description").css("color",bp);
+$("#btn-"+bn+"-configure").css("color",bp);$("#btn-"+bn+"-flash").css("color",bp);
+LibraryCatalog.updCatalog({name:"Swarm",color:bp})
+}else{if(bn=="Simbad"||bn=="NED"){catalog=LibraryCatalog.getCatalog(bn).al_refs;
+$("#"+bn).css("color",bp);$("#btn-"+bn+"-configure").css("color",bp);
+$("#btn-"+bn+"-flash").css("color",bp);LibraryCatalog.updCatalog({name:bn,color:bp})
+}else{var bo=$("#cata_operate_"+bn).text();catalog=LibraryCatalog.getCatalog("VizieR:"+bo).al_refs;
+$("#cata_operate_"+bn).css("color",bp);$("#btn_detail_catalog_"+bn).css("color",bp);
+$("#btn_flash_catalog_"+bn).css("color",bp);$("#btn_configure_catalog_"+bn).css("color",bp);
+$("#btn_delete_catalog_"+bn).css("color",bp);LibraryCatalog.updCatalog({name:"VizieR:"+bo,color:bp})
+}}catalog.updateShape({color:bp})};var d=function(bo,bq){var bp=document.getElementById(bq).parentNode.parentNode.id;
+var bn;if(bp=="XMM"){bn=LibraryCatalog.getCatalog("Swarm").al_refs
+}else{if(bp=="Simbad"||bp=="NED"){bn=LibraryCatalog.getCatalog(bp).al_refs
+}else{bn=LibraryCatalog.getCatalog("VizieR:"+bp).al_refs
+}}bn.updateShape({shape:bo})};var l=function(bo,bq){var bp=document.getElementById(bq).parentNode.parentNode.parentNode.id;
+var bn;if(bp=="XMM"){bn=LibraryCatalog.getCatalog("Swarm").al_refs
+}else{if(bp=="Simbad"||bp=="NED"){bn=LibraryCatalog.getCatalog(bp).al_refs
+}else{bn=LibraryCatalog.getCatalog("VizieR:"+bp).al_refs
+}}bn.updateShape({sourceSize:Number(bo)})};var bc=function(bo){var bn=E.getSelectedHips(bo);
+return bn.obs_description};var al=function(bn){E.searchCataloge(bn,bd)
+};var ak=function(bo){var bn;if(bo){bn=bo}else{bn=ax.val()
+}if(bd.region!=null){E.cleanPolygon()}bd.clean();
+aA(bn)};var Y=function(){E.displaySimbadCatalog()
+};var az=function(){ay();E.displayNedCatalog(bd)};
+var O=function(bn){aJ();var bp=$("#cata_operate_"+bn).text();
+var bo=document.getElementById("cata_operate_"+bn).style.color;
+r(bp,bo)};var q=function(){aJ();ay();L.html("");ae();
+E.displayDataXml(bd)};var aP=function(){if(a!=null){a.makeFlash()
+}};var aW=function(){if(LibraryCatalog.getCatalog("Simbad")){var bn=LibraryCatalog.getCatalog("Simbad").al_refs
+}if(bn!=null){bn.makeFlash()}};var o=function(){if(LibraryCatalog.getCatalog("NED")){var bn=LibraryCatalog.getCatalog("NED").al_refs
+}if(bn!=null){bn.makeFlash()}};var ar=function(bn){aJ();
 L.css("max-height","200px");if(L.height()>39){L.css("height","101px");
-L.html(bm)}else{L.animate({height:"101px"},"fast");
-L.css("border-width","0.2px");L.html(bm)}};var ad=function(bm){$(".catalogMerged").css("display","none")
-};var aU=function(){var bm=null;var bp=new Array();
-var bn;var bo;$("#minus").unbind("click").click(function(bv){for(var bs in LibraryCatalog.catalogs){if(bs.startsWith("Swarm")){bs="Swarm"
-}if(bs.startsWith("Simbad")){bs="Simbad"}if(bs.startsWith("NED")){bs="NED"
-}var br=LibraryCatalog.getCatalog(bs);var bw=br.color;
-var bt=br.al_refs;var bq=bt.color;if(bq=="orange"){bq="#ffa500"
-}if(bq=="red"){bq="#ff0000"}var bu=t(bq);bt.updateShape({color:bu})
-}});$("#plus").unbind("click").click(function(bv){for(var bs in LibraryCatalog.catalogs){var br=LibraryCatalog.catalogs[bs];
-if(bs.startsWith("Swarm")){bs="Swarm"}if(bs.startsWith("Simbad")){bs="Simbad"
-}if(bs.startsWith("NED")){bs="NED"}var br=LibraryCatalog.getCatalog(bs);
-var bw=br.color;var bt=br.al_refs;var bq=bt.color;
-if(bq=="orange"){bq="#ffa500"}if(bq=="red"){bq="#ff0000"
-}if(bw=="orange"){bw="#ffa500"}if(bw=="red"){bw="#ff0000"
-}var bu=ai(bq,bw);bt.updateShape({color:bu})}})};
-var I=function(bn,bp,bs,bo,bt){var bq;var bu=this;
-var bm=8;bs=VizierCatalogue.showSourceData;if(bn=="Simbad"){AlixLogger.trackAction("Display Simbad");
-var br="square";if(LibraryCatalog.getCatalog(bn)){bp=LibraryCatalog.getCatalog(bn).color;
-bm=LibraryCatalog.getCatalog(bn).al_refs.sourceSize;
-br=LibraryCatalog.getCatalog(bn).al_refs.shape}bq=A.catalogHiPS(bo,{onClick:SimbadCatalog.simbad,name:bn,color:bp,sourceSize:bm,shape:br,filter:SimbadCatalog.filterSource},WaitingPanel.hide(bn));
-ao.addCatalog(bq);LibraryCatalog.addCatalog({url:bo,name:bn,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,color:bp,shape:br,fade:"",al_refs:bq});
-SimbadCatalog.setCatalog(bq);SimbadCatalog.resetFilter()
-}else{if(bn=="NED"){AlixLogger.trackAction("Display Ned");
-var br="square";if(LibraryCatalog.getCatalog(bn)){bp=LibraryCatalog.getCatalog(bn).color;
-bm=LibraryCatalog.getCatalog(bn).al_refs.sourceSize;
-br=LibraryCatalog.getCatalog(bn).al_refs.shape}if(ao.getFov()[0]>0.02){bq=A.catalogFromNED(ao.getRaDec()[0]+" "+ao.getRaDec()[1],0.02,{onClick:bs,name:bn,color:bp,sourceSize:bm,shape:br},function(){WaitingPanel.hide(bn)
-});ao.addCatalog(bq)}else{bq=A.catalogFromNED(ao.getRaDec()[0]+" "+ao.getRaDec()[1],ao.getFov()[0],{onClick:bs,name:bn,color:bp,sourceSize:bm,shape:br},function(){WaitingPanel.hide(bn)
-});ao.addCatalog(bq)}if(!LibraryCatalog.getCatalog(bn)){LibraryCatalog.addCatalog({url:bo,name:bn,color:bp,shape:br,fade:"",al_refs:bq})
-}else{LibraryCatalog.updCatalog({url:bo,name:bn,color:bp,shape:br,fade:"",al_refs:bq})
-}}else{if(bn=="Swarm"){AlixLogger.trackAction("Display SWARM");
-if(bc.masterResource){bc.masterResource.cleanTab()
-}R("Target");R("Swarm");var br="plus";if(LibraryCatalog.getCatalog(bn)){bp=LibraryCatalog.getCatalog(bn).al_refs.color;
-bm=LibraryCatalog.getCatalog(bn).al_refs.sourceSize;
-br=LibraryCatalog.getCatalog(bn).al_refs.shape}if(bo!=undefined){bq=a=A.catalogFromURL(bo,{name:bn,sourceSize:bm,shape:br,color:bp,onClick:function(bx){a5=this;
-bc.sourceSelected.x=bx.x;bc.sourceSelected.y=bx.y;
-var bw=bx.data;var by=bc.masterResource.actions.showPanel.active;
-if(bc.masterResource&&typeof(bc.masterResource.actions.externalProcessing.handlerSelect)=="function"){bc.masterResource.actions.externalProcessing.handlerSelect(bw,by)
-}if(bt!=undefined&&!bc.masterResource.actions.showAssociated){ar(html)
-}else{R("Target");R("oid");var bv=A.catalog({name:"Target"});
-ao.addCatalog(bv);$("#ACDS").off("click");$("#ACDS").click(function(bD){var bG=/\{\$(.*)\}/g;
-var bA=bG.exec(bc.masterResource.actions.showAssociated.url);
-var bz=bA[1];var bF=bw[bz];var bC=new RegExp("\\{\\$"+bz+"\\}","g");
-var bE=bc.masterResource.actions.showAssociated.url.replace(bC,bF);
-var bB=$("#ACDS").css("color");if(bB=="rgb(50, 255, 236)"||bB=="#32FFEC"){$("#ACDS").css("color","#888a85");
+L.html(bn)}else{L.animate({height:"101px"},"fast");
+L.css("border-width","0.2px");L.html(bn)}};var ad=function(bn){$(".catalogMerged").css("display","none")
+};var aU=function(){var bn=null;var bq=new Array();
+var bo;var bp;$("#minus").unbind("click").click(function(bw){for(var bt in LibraryCatalog.catalogs){if(bt.startsWith("Swarm")){bt="Swarm"
+}if(bt.startsWith("Simbad")){bt="Simbad"}if(bt.startsWith("NED")){bt="NED"
+}var bs=LibraryCatalog.getCatalog(bt);var bx=bs.color;
+var bu=bs.al_refs;var br=bu.color;if(br=="orange"){br="#ffa500"
+}if(br=="red"){br="#ff0000"}var bv=t(br);bu.updateShape({color:bv})
+}});$("#plus").unbind("click").click(function(bw){for(var bt in LibraryCatalog.catalogs){var bs=LibraryCatalog.catalogs[bt];
+if(bt.startsWith("Swarm")){bt="Swarm"}if(bt.startsWith("Simbad")){bt="Simbad"
+}if(bt.startsWith("NED")){bt="NED"}var bs=LibraryCatalog.getCatalog(bt);
+var bx=bs.color;var bu=bs.al_refs;var br=bu.color;
+if(br=="orange"){br="#ffa500"}if(br=="red"){br="#ff0000"
+}if(bx=="orange"){bx="#ffa500"}if(bx=="red"){bx="#ff0000"
+}var bv=ai(br,bx);bu.updateShape({color:bv})}})};
+var I=function(bo,bq,bt,bp,bu){var br;var bv=this;
+var bn=8;bt=VizierCatalogue.showSourceData;if(bo=="Simbad"){AlixLogger.trackAction("Display Simbad");
+var bs="square";if(LibraryCatalog.getCatalog(bo)){bq=LibraryCatalog.getCatalog(bo).color;
+bn=LibraryCatalog.getCatalog(bo).al_refs.sourceSize;
+bs=LibraryCatalog.getCatalog(bo).al_refs.shape}br=A.catalogHiPS(bp,{onClick:SimbadCatalog.simbad,name:bo,color:bq,sourceSize:bn,shape:bs,filter:SimbadCatalog.sourceFilter},WaitingPanel.hide(bo));
+ao.addCatalog(br);LibraryCatalog.addCatalog({url:bp,name:bo,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,color:bq,shape:bs,fade:"",al_refs:br});
+SimbadCatalog.setCatalog(br)}else{if(bo=="NED"){AlixLogger.trackAction("Display Ned");
+var bs="square";if(LibraryCatalog.getCatalog(bo)){bq=LibraryCatalog.getCatalog(bo).color;
+bn=LibraryCatalog.getCatalog(bo).al_refs.sourceSize;
+bs=LibraryCatalog.getCatalog(bo).al_refs.shape}if(ao.getFov()[0]>0.02){br=A.catalogFromNED(ao.getRaDec()[0]+" "+ao.getRaDec()[1],0.02,{onClick:bt,name:bo,color:bq,sourceSize:bn,shape:bs},function(){WaitingPanel.hide(bo)
+});ao.addCatalog(br)}else{br=A.catalogFromNED(ao.getRaDec()[0]+" "+ao.getRaDec()[1],ao.getFov()[0],{onClick:bt,name:bo,color:bq,sourceSize:bn,shape:bs},function(){WaitingPanel.hide(bo)
+});ao.addCatalog(br)}if(!LibraryCatalog.getCatalog(bo)){LibraryCatalog.addCatalog({url:bp,name:bo,color:bq,shape:bs,fade:"",al_refs:br})
+}else{LibraryCatalog.updCatalog({url:bp,name:bo,color:bq,shape:bs,fade:"",al_refs:br})
+}}else{if(bo=="Swarm"){AlixLogger.trackAction("Display SWARM");
+if(bd.masterResource){bd.masterResource.cleanTab()
+}R("Target");R("Swarm");var bs="plus";if(LibraryCatalog.getCatalog(bo)){bq=LibraryCatalog.getCatalog(bo).al_refs.color;
+bn=LibraryCatalog.getCatalog(bo).al_refs.sourceSize;
+bs=LibraryCatalog.getCatalog(bo).al_refs.shape}if(bp!=undefined){br=a=A.catalogFromURL(bp,{name:bo,sourceSize:bn,shape:bs,color:bq,onClick:function(by){a6=this;
+bd.sourceSelected.x=by.x;bd.sourceSelected.y=by.y;
+var bx=by.data;var bz=bd.masterResource.actions.showPanel.active;
+if(bd.masterResource&&typeof(bd.masterResource.actions.externalProcessing.handlerSelect)=="function"){bd.masterResource.actions.externalProcessing.handlerSelect(bx,bz)
+}if(bu!=undefined&&!bd.masterResource.actions.showAssociated){ar(html)
+}else{R("Target");R("oid");var bw=A.catalog({name:"Target"});
+ao.addCatalog(bw);$("#ACDS").off("click");$("#ACDS").click(function(bE){var bH=/\{\$(.*)\}/g;
+var bB=bH.exec(bd.masterResource.actions.showAssociated.url);
+var bA=bB[1];var bG=bx[bA];var bD=new RegExp("\\{\\$"+bA+"\\}","g");
+var bF=bd.masterResource.actions.showAssociated.url.replace(bD,bG);
+var bC=$("#ACDS").css("color");if(bC=="rgb(50, 255, 236)"||bC=="#32FFEC"){$("#ACDS").css("color","#888a85");
 AladinLiteX_mVc.deleteSourceAuto();AladinLiteX_mVc.deleteLastSelectedPosition()
 }else{$("#ACDS").css("color","rgb(50, 255, 236)");
-if(bc.masterResource.actions.showAssociated.active==true){$("#XMM").attr("class","alix_XMM_in_menu  alix_datahelp");
-$("#"+bF).css("color","#32FFEC");Processing.show("Fetching Data");
-$.getJSON(bE,function(bK){Processing.hide();var bI=A.catalog({name:bz+" "+bF,sourceSize:bm,color:"#32FFEC",shape:br,onClick:VizierCatalogue.showSourceData});
-ao.addCatalog(bI);for(var bJ=0;bJ<bK.CounterParts.length;
-bJ++){var bH=bK.CounterParts[bJ].source;bI.addSources([A.source(bH.position.ra,bH.position.dec,bH)])
-}if(bc.masterResource.actions.showAssociated.handlerFadeOut==true){AladinLiteX_mVc.fadeOutAuto()
-}})}}})}return true}},function(){SwarmDynamicFilter.runConstraint(bc);
-WaitingPanel.hide("Swarm")});aU();ao.addCatalog(bq);
-R("oid");if(!LibraryCatalog.getCatalog(bn)){LibraryCatalog.addCatalog({url:bo,name:bn,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,color:bp,shape:br,fade:"",al_refs:bq})
-}else{LibraryCatalog.updCatalog({url:bo,name:bn,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,color:bp,shape:br,fade:"",al_refs:bq})
-}}else{WaitingPanel.hide("Swarm")}}}}};var bg=function(bn,bo,bs,bt){var bq;
-var bp;var bu=this;var bm=8;var br="square";AlixLogger.trackAction("Display Vizier "+bn);
-if(LibraryCatalog.getCatalog("VizieR:"+bn)){bo=LibraryCatalog.getCatalog("VizieR:"+bn).al_refs.color;
-bm=LibraryCatalog.getCatalog("VizieR:"+bn).al_refs.sourceSize;
-br=LibraryCatalog.getCatalog("VizieR:"+bn).al_refs.shape
-}if(bt!=undefined){bq=A.catalogHiPS(bt,{onClick:VizierCatalogue.showSourceData,name:"VizieR:"+bn,color:bo,sourceSize:bm,shape:br},WaitingPanel.hide(bn))
-}else{var bq=null;$.ajax({url:"http://alasky.u-strasbg.fr/footprints/estimate-nbrows/estimate-radius",data:{viz_table_id:bn,ra:ao.getRaDec()[0],dec:ao.getRaDec()[1],nb_min:1000,nb_max:2000},method:"GET",async:false,dataType:"text",success:function(bw){var bx=Math.sqrt((ao.getFov()[0]*ao.getFov()[0])+(ao.getFov()[1]*ao.getFov()[1]))/2;
-var bv=parseFloat(bw);if(bx<0){alert("displayVizierCatalog : Sorry, rayon AL is negative = "+bx+"radius estime: "+bv);
-return false}if(bv>bx){bv=bx}else{WaitingPanel.warn("Search radius reduced to "+(Math.round(bv*600)/10)+"arcmin to get less than 2000 sources")
-}WaitingPanel.show(bn);bq=A.catalogFromVizieR(bn,ao.getRaDec()[0]+" "+ao.getRaDec()[1],bv,{onClick:VizierCatalogue.showSourceData,color:bo,sourceSize:bm,shape:br},function(by){WaitingPanel.hide(bn)
-})},error:function(bx,bv,bw){WaitingPanel.warn(bx.responseText)
-}})}ao.addCatalog(bq);if(!LibraryCatalog.getCatalog("VizieR:"+bn)){LibraryCatalog.addCatalog({url:bt,name:"VizieR:"+bn,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,obs_id:bn,color:bo,shape:br,fade:"",al_refs:bq})
-}else{LibraryCatalog.updCatalog({url:bt,name:"VizieR:"+bn,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,obs_id:bn,color:bo,shape:br,fade:"",al_refs:bq})
-}aU();return bq};var R=function(bm){if(bm=="all"){for(var bn=0;
-bn<ao.view.catalogs.length;bn++){ao.view.catalogs.splice(bn,1);
-ao.view.mustClearCatalog=true;bn--}ao.view.requestRedraw();
+if(bd.masterResource.actions.showAssociated.active==true){$("#XMM").attr("class","alix_XMM_in_menu  alix_datahelp");
+$("#"+bG).css("color","#32FFEC");Processing.show("Fetching Data");
+$.getJSON(bF,function(bL){Processing.hide();var bJ=A.catalog({name:bA+" "+bG,sourceSize:bn,color:"#32FFEC",shape:bs,onClick:VizierCatalogue.showSourceData});
+ao.addCatalog(bJ);for(var bK=0;bK<bL.CounterParts.length;
+bK++){var bI=bL.CounterParts[bK].source;bJ.addSources([A.source(bI.position.ra,bI.position.dec,bI)])
+}if(bd.masterResource.actions.showAssociated.handlerFadeOut==true){AladinLiteX_mVc.fadeOutAuto()
+}})}}})}return true}},function(){SwarmDynamicFilter.runConstraint(bd);
+WaitingPanel.hide("Swarm")});aU();ao.addCatalog(br);
+R("oid");if(!LibraryCatalog.getCatalog(bo)){LibraryCatalog.addCatalog({url:bp,name:bo,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,color:bq,shape:bs,fade:"",al_refs:br})
+}else{LibraryCatalog.updCatalog({url:bp,name:bo,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,color:bq,shape:bs,fade:"",al_refs:br})
+}}else{WaitingPanel.hide("Swarm")}}}}};var bh=function(bo,bp,bt,bu){var br;
+var bq;var bv=this;var bn=8;var bs="square";AlixLogger.trackAction("Display Vizier "+bo);
+if(LibraryCatalog.getCatalog("VizieR:"+bo)){bp=LibraryCatalog.getCatalog("VizieR:"+bo).al_refs.color;
+bn=LibraryCatalog.getCatalog("VizieR:"+bo).al_refs.sourceSize;
+bs=LibraryCatalog.getCatalog("VizieR:"+bo).al_refs.shape
+}if(bu!=undefined){br=A.catalogHiPS(bu,{onClick:VizierCatalogue.showSourceData,name:"VizieR:"+bo,color:bp,sourceSize:bn,shape:bs},WaitingPanel.hide(bo))
+}else{var br=null;$.ajax({url:"http://alasky.u-strasbg.fr/footprints/estimate-nbrows/estimate-radius",data:{viz_table_id:bo,ra:ao.getRaDec()[0],dec:ao.getRaDec()[1],nb_min:1000,nb_max:2000},method:"GET",async:false,dataType:"text",success:function(bx){var by=Math.sqrt((ao.getFov()[0]*ao.getFov()[0])+(ao.getFov()[1]*ao.getFov()[1]))/2;
+var bw=parseFloat(bx);if(by<0){alert("displayVizierCatalog : Sorry, rayon AL is negative = "+by+"radius estime: "+bw);
+return false}if(bw>by){bw=by}else{WaitingPanel.warn("Search radius reduced to "+(Math.round(bw*600)/10)+"arcmin to get less than 2000 sources")
+}WaitingPanel.show(bo);br=A.catalogFromVizieR(bo,ao.getRaDec()[0]+" "+ao.getRaDec()[1],bw,{onClick:VizierCatalogue.showSourceData,color:bp,sourceSize:bn,shape:bs},function(bz){WaitingPanel.hide(bo)
+})},error:function(by,bw,bx){WaitingPanel.warn(by.responseText)
+}})}ao.addCatalog(br);if(!LibraryCatalog.getCatalog("VizieR:"+bo)){LibraryCatalog.addCatalog({url:bu,name:"VizieR:"+bo,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,obs_id:bo,color:bp,shape:bs,fade:"",al_refs:br})
+}else{LibraryCatalog.updCatalog({url:bu,name:"VizieR:"+bo,nameTemp:ao.view.catalogs[ao.view.catalogs.length-1].name,obs_id:bo,color:bp,shape:bs,fade:"",al_refs:br})
+}aU();return br};var R=function(bn){if(bn=="all"){for(var bo=0;
+bo<ao.view.catalogs.length;bo++){ao.view.catalogs.splice(bo,1);
+ao.view.mustClearCatalog=true;bo--}ao.view.requestRedraw();
 $("#XMM").attr("class","alix_XMM_in_menu  alix_datahelp");
 $("#XMM").css("color","#888a85");$("#btn-XMM-flash").css("color","#888a85");
 $("#btn-XMM-description").css("color","#888a85");
@@ -979,62 +982,62 @@ $("#Simbad").css("color","#888a85");$("#btn-Simbad-flash").css("color","#888a85"
 $("#btn-Simbad-configure").css("color","#888a85");
 $("#NED").attr("class","alix_ned_in_menu  alix_datahelp");
 $("#NED").css("color","#888a85");$("#btn-NED-flash").css("color","#888a85");
-$("#btn-NED-configure").css("color","#888a85")}for(var bn=0;
-bn<ao.view.catalogs.length;bn++){if(ao.view.catalogs[bn].name.startsWith(bm)){ao.view.catalogs.splice(bn,1);
+$("#btn-NED-configure").css("color","#888a85")}for(var bo=0;
+bo<ao.view.catalogs.length;bo++){if(ao.view.catalogs[bo].name.startsWith(bn)){ao.view.catalogs.splice(bo,1);
 ao.view.mustClearCatalog=true;ao.view.requestRedraw();
-bn--}}};var N=function(bm){for(var bn=0;bn<ao.view.catalogs.length;
-bn++){if(ao.view.catalogs[bn].name==bm){return ao.view.catalogs[bn]
-}}return null};var t=function(bs){var bo=bs.replace(/\#/g,"");
-var bp=bo.match(/.{2}/g);var br=[3];for(var bm=0;
-bm<bp.length;bm++){if(parseInt(bp[bm],16)>1){br[bm]=parseInt(parseInt(bp[bm],16)/2)
-}else{br[bm]=1}}var bq="#";for(var bn=0;bn<br.length;
-bn++){if(br[bn].toString(16).length==1){bq+="0"+br[bn].toString(16)
-}else{bq+=br[bn].toString(16)}}return bq};var ai=function(bn,bu){var bs=bn.replace(/\#/g,"");
-var bt=bs.match(/.{2}/g);var br=[3];br[0]=parseInt(parseInt(bt[0],16)*2);
-br[1]=parseInt(parseInt(bt[1],16)*2);br[2]=parseInt(parseInt(bt[2],16)*2);
-var bp=bu.replace(/\#/g,"");var bm=bp.match(/.{2}/g);
-var bv=[3];bv[0]=parseInt(bm[0],16);bv[1]=parseInt(bm[1],16);
-bv[2]=parseInt(bm[2],16);var bo="#";for(var bq=0;
-bq<br.length;bq++){if(br[bq]>bv[bq]){br[bq]=bv[bq]
-}if(br[bq].toString(16).length==1){bo+="0"+br[bq].toString(16)
-}else{bo+=br[bq].toString(16)}}return bo};var be=function(bm){var bn=$("#input_target").val();
-aA(bn,function(){var bo;if((bo=N("target"))==null){bo=A.catalog({name:"target",color:"green"});
-ao.addCatalog(bo)}var bp=ao.getRaDec();bo.addSources([A.marker(bp[0],bp[1],{popupTitle:"target: "+bp[0]+", "+bp[1]})]);
-bc.target.push({ra:bp[0],dec:bp[1],ct:bo});E.updateCatalogs(bc,"position");
+bo--}}};var N=function(bn){for(var bo=0;bo<ao.view.catalogs.length;
+bo++){if(ao.view.catalogs[bo].name==bn){return ao.view.catalogs[bo]
+}}return null};var t=function(bt){var bp=bt.replace(/\#/g,"");
+var bq=bp.match(/.{2}/g);var bs=[3];for(var bn=0;
+bn<bq.length;bn++){if(parseInt(bq[bn],16)>1){bs[bn]=parseInt(parseInt(bq[bn],16)/2)
+}else{bs[bn]=1}}var br="#";for(var bo=0;bo<bs.length;
+bo++){if(bs[bo].toString(16).length==1){br+="0"+bs[bo].toString(16)
+}else{br+=bs[bo].toString(16)}}return br};var ai=function(bo,bv){var bt=bo.replace(/\#/g,"");
+var bu=bt.match(/.{2}/g);var bs=[3];bs[0]=parseInt(parseInt(bu[0],16)*2);
+bs[1]=parseInt(parseInt(bu[1],16)*2);bs[2]=parseInt(parseInt(bu[2],16)*2);
+var bq=bv.replace(/\#/g,"");var bn=bq.match(/.{2}/g);
+var bw=[3];bw[0]=parseInt(bn[0],16);bw[1]=parseInt(bn[1],16);
+bw[2]=parseInt(bn[2],16);var bp="#";for(var br=0;
+br<bs.length;br++){if(bs[br]>bw[br]){bs[br]=bw[br]
+}if(bs[br].toString(16).length==1){bp+="0"+bs[br].toString(16)
+}else{bp+=bs[br].toString(16)}}return bp};var bf=function(bn){var bo=$("#input_target").val();
+aA(bo,function(){var bp;if((bp=N("target"))==null){bp=A.catalog({name:"target",color:"green"});
+ao.addCatalog(bp)}var bq=ao.getRaDec();bp.addSources([A.marker(bq[0],bq[1],{popupTitle:"target: "+bq[0]+", "+bq[1]})]);
+bd.target.push({ra:bq[0],dec:bq[1],ct:bp});E.updateCatalogs(bd,"position");
 $(".alix_target_selecte").css("display","inline");
 $(".alix_target_selecte").css("color","#87F6FF");
 $(".alix_target_selecte").attr("class","alix_target_selecte alix_selected");
 $(".alix_select_flash").css("display","inline");$(".alix_select_trash").css("display","inline");
-if(bm!=null){bm(bp[0],bp[1])}})};var B=function(){if(bc.masterResource!=undefined){return'<i id="btn-XMM-flash" title = "flash" class="alix_btn-XMM-flash  glyphicon glyphicon-flash" onclick="AladinLiteX_mVc.XMMFlash(); "></i>'
-}else{return""}};var P=function(){if(bc.masterResource!=undefined){return'<i id="btn-XMM-description" title="detail" class="alix_btn-XMM-description  glyphicon glyphicon-info-sign alix_btn-operate-catalog" style = "color: #888a85;" onclick="AladinLiteX_mVc.showXMMDesciption();"></i>'
-}else{return""}};var u=function(){if(bc.masterResource!=undefined){return'<i id="btn-XMM-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'XMM\',this.style.color)"></i>'
-}else{return""}};var w=function(){var bm="No description";
-if(bc.masterResource!=undefined&&bc.masterResource.affichage.description){bm=bc.masterResource.affichage.description
-}html='<p style="color:#4D36DC;margin:10px;">XMM-Newton Catalog</p><p style="font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;">'+bm+"</p>";
+if(bn!=null){bn(bq[0],bq[1])}})};var B=function(){if(bd.masterResource!=undefined){return'<i id="btn-XMM-flash" title = "flash" class="alix_btn-XMM-flash  glyphicon glyphicon-flash" onclick="AladinLiteX_mVc.XMMFlash(); "></i>'
+}else{return""}};var P=function(){if(bd.masterResource!=undefined){return'<i id="btn-XMM-description" title="detail" class="alix_btn-XMM-description  glyphicon glyphicon-info-sign alix_btn-operate-catalog" style = "color: #888a85;" onclick="AladinLiteX_mVc.showXMMDesciption();"></i>'
+}else{return""}};var u=function(){if(bd.masterResource!=undefined){return'<i id="btn-XMM-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'XMM\',this.style.color)"></i>'
+}else{return""}};var w=function(){var bn="No description";
+if(bd.masterResource!=undefined&&bd.masterResource.affichage.description){bn=bd.masterResource.affichage.description
+}html='<p style="color:#4D36DC;margin:10px;">XMM-Newton Catalog</p><p style="font-size:small;margin:10px;font-weight:200;line-height:1.5;color:#000000;">'+bn+"</p>";
 $("#panel_catalog_detail").html(html);$("#panel_catalog_detail").toggle()
-};var ah=function(){return bc};var Z=function(bm){bh(bm);
-ax.val(bm);Sesame.resolve(bm,function(bn){var bo=bn.Target.Resolver.jradeg;
-var bp=bn.Target.Resolver.jdedeg;aG(bo,bp)},function(bn){if(console){}(typeof errorCallback==="function")&&errorCallback()
+};var ah=function(){return bd};var Z=function(bn){bi(bn);
+ax.val(bn);Sesame.resolve(bn,function(bo){var bp=bo.Target.Resolver.jradeg;
+var bq=bo.Target.Resolver.jdedeg;aG(bp,bq)},function(bo){if(console){}(typeof errorCallback==="function")&&errorCallback()
 })};var aD=function(){$("#SourceDiv").css("display","none");
-var bo=$(".alix_colorMapBox");var bn=bo.find(".aladin-cmSelection");
-for(var bm=0;bm<ColorMap.MAPS_NAMES.length;bm++){bn.append($("<option />").text(ColorMap.MAPS_NAMES[bm]))
-}bn.val(ao.view.imageSurvey.getColorMap().mapName);
-bo.find(".aladin-cmSelection").change(function(){var bp=$(this).find(":selected").val();
-ao.view.imageSurvey.getColorMap().update(bp);ay()
-});bo.find(".aladin-reverseCm").click(function(){ao.view.imageSurvey.getColorMap().reverse();
-ay()})};var a6=function(bn,bp){if(bp==1){ao.removeLayers()
-}else{if(bn!=undefined){var bo=[];if(bn.type=="array"){x=aC.regionEditor.view.parseArrayPolygon(bn.value)
-}else{if(aC.regionEditor.view.editionFrame.type=="soda"){x=this.controllers.regionEditor.view.parseSodaPolygon(bn.value)
+var bp=$(".alix_colorMapBox");var bo=bp.find(".aladin-cmSelection");
+for(var bn=0;bn<ColorMap.MAPS_NAMES.length;bn++){bo.append($("<option />").text(ColorMap.MAPS_NAMES[bn]))
+}bo.val(ao.view.imageSurvey.getColorMap().mapName);
+bp.find(".aladin-cmSelection").change(function(){var bq=$(this).find(":selected").val();
+ao.view.imageSurvey.getColorMap().update(bq);ay()
+});bp.find(".aladin-reverseCm").click(function(){ao.view.imageSurvey.getColorMap().reverse();
+ay()})};var a7=function(bo,bq){if(bq==1){ao.removeLayers()
+}else{if(bo!=undefined){var bp=[];if(bo.type=="array"){x=aC.regionEditor.view.parseArrayPolygon(bo.value)
+}else{if(aC.regionEditor.view.editionFrame.type=="soda"){x=this.controllers.regionEditor.view.parseSodaPolygon(bo.value)
 }else{alert("Polygone format "+points.type+" not understood")
-}}if(x){var bm=BasicGeometry.getEnclosingView(x);
-j=bm.center.ra+" "+bm.center.dec;if(bm.size==0){aB=0.9
-}else{aB=2.5*bm.size}if(ao==null){ao=A.aladin(aT,{survey:aX,fov:aB,showLayersControl:false,showFullscreenControl:false,showFrame:false,showGotoControl:false});
-aT.append()}aN(aB);aG(bm.center.ra,bm.center.dec);
+}}if(x){var bn=BasicGeometry.getEnclosingView(x);
+j=bn.center.ra+" "+bn.center.dec;if(bn.size==0){aB=0.9
+}else{aB=2.5*bn.size}if(ao==null){ao=A.aladin(aT,{survey:aX,fov:aB,showLayersControl:false,showFullscreenControl:false,showFrame:false,showGotoControl:false});
+aT.append()}aN(aB);aG(bn.center.ra,bn.center.dec);
 ao.removeLayers();overlay=A.graphicOverlay({color:"blue",name:"Reference Frame"});
 ao.addOverlay(overlay);overlay.addFootprints([A.polygon(x)])
 }}}};var at=function(){this.controller.cleanPolygon()
-};var b=function(bm){bc.masterResource=new MasterResource(bm);
-AladinLiteX_mVc.displayDataXml()};var aR={popup:aM,refresh:aY,init:aF,showDetailByID:f,fadeOutAuto:aj,deleteSourceAuto:aa,deselectSource:H,closeContext:ae,returnCenter:am,bookMark:e,getHistory:y,restoreView:D,regionEditor:Q,addOverlayer:a1,world2pix:M,pix2world:aS,disabledButton:C,reabledButton:X,storePolygon:av,deleteHistory:F,restoreViewById:W,hipsFunction:a4,searchCataloge:al,searchPosition:ak,catalogFunction:aw,displayCatalogDetailInContext:r,displaySimbadCatalog:Y,displayNedCatalog:az,detailCatalogOperator:O,configureCatalog:c,displayDataXml:q,XMMFlash:aP,SimbadFlash:aW,NEDFlash:o,showXMMDesciption:w,bindToFade:aU,displayCatalog:I,cleanCatalog:R,displayVizierCatalog:bg,showDetail:k,storeCurrentState:ay,colorFadeOut:t,colorFadeIn:ai,displayTarget:be,getCurrentView:ah,setReferenceView:bf,updateColorOfCatalog:a7,updateShapeOfCatalog:d,updateSizeOfCatalog:l,showColorMap:aD,reselectSource:a2,setLastSelectedPosition:bd,deleteLastSelectedPosition:s,deleteLastSelectedPositionByCatalog:p,gotoObject:aA,gotoPositionByName:Z,setRegion:a6,cleanPolygon:at,changeMasterResource:b};
+};var b=function(bn){bd.masterResource=new MasterResource(bn);
+AladinLiteX_mVc.displayDataXml()};var aR={popup:aM,refresh:aY,init:aF,showDetailByID:f,fadeOutAuto:aj,deleteSourceAuto:aa,deselectSource:H,closeContext:ae,returnCenter:am,bookMark:e,getHistory:y,restoreView:D,regionEditor:Q,addOverlayer:a2,world2pix:M,pix2world:aS,disabledButton:C,reabledButton:X,storePolygon:av,deleteHistory:F,restoreViewById:W,hipsFunction:a5,searchCataloge:al,searchPosition:ak,catalogFunction:aw,displayCatalogDetailInContext:r,displaySimbadCatalog:Y,displayNedCatalog:az,detailCatalogOperator:O,configureCatalog:c,displayDataXml:q,XMMFlash:aP,SimbadFlash:aW,NEDFlash:o,showXMMDesciption:w,bindToFade:aU,displayCatalog:I,cleanCatalog:R,displayVizierCatalog:bh,showDetail:k,storeCurrentState:ay,colorFadeOut:t,colorFadeIn:ai,displayTarget:bf,getCurrentView:ah,setReferenceView:bg,updateColorOfCatalog:a8,updateShapeOfCatalog:d,updateSizeOfCatalog:l,showColorMap:aD,reselectSource:a3,setLastSelectedPosition:be,deleteLastSelectedPosition:s,deleteLastSelectedPositionByCatalog:p,gotoObject:aA,gotoPositionByName:Z,setRegion:a7,cleanPolygon:at,changeMasterResource:b};
 return aR}();console.log("=============== >  AladinLite_v.js ");
 function AladinLite_mvC(a,b){this.modules={};this.aladinView=a;
 if(b.historic!=undefined){this.modules.historicModel=b.historic.model
@@ -1478,12 +1481,11 @@ LibraryCatalog.getCatalog(m).al_refs.makeFlash()})
 var e=$("#"+d);var a=this.libraryMap.colorMap[d].color;
 if(LibraryCatalog.getCatalog(d)){a=LibraryCatalog.getCatalog(d).color
 }var c="http://axel.u-strasbg.fr/HiPSCatService/Simbad";
-var f="showTable";if(e.attr("class")=="alix_simbad_in_menu  alix_datahelp"){WaitingPanel.show(d);
+if(e.attr("class")=="alix_simbad_in_menu  alix_datahelp"){WaitingPanel.show(d);
 e.attr("class","alix_simbad_in_menu  alix_datahelp_selected");
 e.css("color",a);$("#btn-Simbad-configure").css("color",a);
-$("#btn-Simbad-flash").css("color",a);b.model.aladinLite_V.displayCatalog(d,a,VizierCatalogue.showSourceData,c);
-$("#SearchType").css("display","inline");SimbadCatalog.SearchType();
-SimbadCatalog.resetFilter()}else{e.attr("class","alix_simbad_in_menu  alix_datahelp");
+$("#btn-Simbad-flash").css("color",a);b.model.aladinLite_V.displayCatalog(d,a,VizierCatalogue.showSourceData,c)
+}else{e.attr("class","alix_simbad_in_menu  alix_datahelp");
 e.css("color","#888a85");$("#btn-Simbad-configure").css("color","#888a85");
 $("#btn-Simbad-flash").css("color","#888a85");b.model.aladinLite_V.cleanCatalog(d);
 if(LibraryCatalog.getCatalog(d)){LibraryCatalog.delCatalog(d)
@@ -1557,8 +1559,8 @@ if(k.fov>=1&&k.masterResource.affichage.progressiveMode==false){WaitingPanel.war
 var b="http://axel.u-strasbg.fr/HiPSCatService/Simbad";
 var c="Simbad";var f=this.libraryMap.colorMap[c].color;
 var l="showTable";n.model.aladinLite_V.cleanCatalog(c);
-WaitingPanel.show(c);n.model.aladinLite_V.displayCatalog(c,f,l,b)
-}if(LibraryCatalog.catalogs!=null){n.model.aladinLite_V.storeCurrentState();
+WaitingPanel.show(c);n.model.aladinLite_V.displayCatalog(c,f,l,b);
+SimbadCatalog.displayCatalogFiltered()}if(LibraryCatalog.catalogs!=null){n.model.aladinLite_V.storeCurrentState();
 var m=null;if(a=="zoom"){for(var c in LibraryCatalog.catalogs){if(c.startsWith("VizieR:")){var h=null;
 var j=LibraryCatalog.catalogs[c];var g=LibraryCatalog.catalogs[c].al_refs;
 var d=j.id;var e=j.obs_id;if($(document.getElementById("cata_operate_"+d)).attr("class")=="alix_vizier_chosen "){if(j.url!=undefined){n.model.aladinLite_V.cleanCatalog(c);
@@ -1639,77 +1641,82 @@ if(h==""){$("#aladin-lite-div-select").children("option:selected").html(g+" [nul
 }else{$("#aladin-lite-div-select").children("option:selected").html(g+" ["+h+"] ")
 }};var d={alertBox:c,inputBox:b,closeAlertBox:a,closeInputBox:f,returnInputMessage:e};
 return d}();console.log("=============== >  MessageBox.js ");
-var SimbadCatalog=function(){var a;var h;var q=null;
-var d=false;var o;var p=function(w){Alix_Processing.show("Waiting on Simbad Response");
-var y=(w.ra)?Numbers.toSexagesimal(w.ra/15,8,false):" ";
-var v=(w.dec)?"+"+Numbers.toSexagesimal(w.dec,7,false):"";
-var z=y+" "+v;var u='<div id="SimbadSourceDiv" class="alix_source_panels"><div id="SourceDiv_Child" style="height:300px"><table id="SourceDiv_table"><thead>';
-if(w.data!=undefined){for(var t in w.data){if(t=="main_type"){if(o!=undefined&&o!=""&&o.indexOf("[")!=-1){u+='<tr><th style="text-align:right">'+t+':&nbsp;</th><td style="text-align:justify">  '+o+"</td></tr>"
-}else{u+='<tr><th style="text-align:right">'+t+':&nbsp;</th><td style="text-align:justify">'+w.data[t]+"</td></tr>"
-}}else{if(w.data[t]){u+='<tr style="background-color:#f2f2f2;"><th style="text-align:right">'+t+":</th><td>  "+w.data[t]+"</td></tr>"
-}}}}else{for(t in w){if(w[t]){u+='<tr><th style="text-align:right">'+t+':&nbsp;</th><td style="text-align:justify">'+w[t]+"</td></tr>"
-}}}u+="</table></div></div>";var s="http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
-s+=encodeURIComponent('format object "%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)"\n'+z+" radius=1m","ISO-8859-1");
-$.ajax({url:s,method:"GET",async:true,dataType:"text",success:function(Y){Alix_Processing.hide();
-var L;var I=false;var V={};var S=[];var J=[];var E={};
-E.sTitle="ID";J.push(E);var D={};D.sTitle="Position";
-J.push(D);var B={};B.sTitle="Type";J.push(B);V.aoColumns=J;
-var W=0;var C=Y.split("\n");var T=0;while((L=C[T])!=undefined){if(I){var Q=L.trim().split("|",-1);
-let z=Q.length-1;if(z>=3){var G=Q[z];z--;var N=Q[z];
-z--;var R=Q[z];var O=Q[0].split(/\s{2,}/)[0].trim();
-var M=[];M.push(O.trim());M.push(R+" "+N);M.push(G.trim());
-S.push(M);W++}}else{if(L.startsWith("::data")){I=true
-}}T++}V.aaData=S;V.iTotalRecords=W;V.iTotalDisplayRecords=W;
-if(Alix_Processing.jsonError(V,"Simbad Tooltip Failure")){return
-}else{var U="";U+='<table cellpadding="0" cellspacing="0" border="0"  id="simbadtable" class="display table"></table>';
-var X=Alix_Modalinfo.nextId();Alix_Modalinfo.setModal(X,false,"Simbad Summary for Position "+z+'<a class=simbad target=blank href="http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord='+encodeURIComponent(z)+'"></a>',U);
-Alix_Modalinfo.setShadow(X);Alix_Modalinfo.whenClosed(X);
-$("#"+X).css("overflow","hidden");var F={aoColumns:V.aoColumns,aaData:V.aaData,bPaginate:true,sPaginationType:"full_numbers",aaSorting:[],bSort:false,bFilter:true,bAutoWidth:true,bDestroy:true};
-var aa;var Z=[{name:aa,pos:"top-left"},{name:"filter",pos:"top-right"},{name:"information",pos:"bottom-left"},{name:"pagination",pos:"bottom-center"},{name:" ",pos:"bottom-right"}];
-Alix_CustomDataTable.create("simbadtable",F,Z);$("#simbadtable_paginate").css("left","250px");
-$(".txt-left").remove();$("#"+X).find(".dataTables_filter").css("margin-top","34%");
-$("#"+X).find(".dataTables_filter").css("position","absolute");
-$("#"+X).find(".dataTables_filter").css("left","1000px");
-$("#"+X).find(".dataTables_filter").css("top","-394px");
-$("#"+X).find(".dataTables_filter").css("z-index","1");
-var P=$("#"+X).find(".dataTables_filter");P.css("top","-275px");
-P.css("left","767px");$("#"+X).dialog("option","position",{my:"center",at:"center",of:window});
-var K=$("#"+X).parent("div");K.append(u);K.append(P);
-K.css("width","950px");K.css("height","400px");$("#"+X).css("width","650px");
-$("#"+X).css("left","298px");$("#"+X).css("height","auto");
-$("#"+X).css("top","15px");$("#"+X).css("min-height","93.16px");
-var H=$("#SimbadSourceDiv");H.css("display","block");
-H.css("position","absolute");H.css("top","70px");
-H.css("left","0px");H.css("background-color","#ffeded");
+var SimbadCatalog=function(){var a;var h="";var o=null;
+var m="all";var l;var k=true;var n=function(t){Alix_Processing.show("Waiting on Simbad Response");
+var u=(t.ra)?Numbers.toSexagesimal(t.ra/15,8,false):" ";
+var s=(t.dec)?"+"+Numbers.toSexagesimal(t.dec,7,false):"";
+var v=u+" "+s;var r='<div id="SimbadSourceDiv" class="alix_source_panels"><div id="SourceDiv_Child" style="height:300px"><table id="SourceDiv_table"><thead>';
+if(t.data!=undefined){for(var q in t.data){r+='<tr><th style="text-align:right">'+q+':&nbsp;</th><td style="text-align:justify">'+t.data[q]+"</td></tr>"
+}}else{for(q in t){if(t[q]){r+='<tr><th style="text-align:right">'+q+':&nbsp;</th><td style="text-align:justify">'+t[q]+"</td></tr>"
+}}}r+="</table></div></div>";var p="http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
+p+=encodeURIComponent('format object "%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)"\n'+v+" radius=1m","ISO-8859-1");
+$.ajax({url:p,method:"GET",async:true,dataType:"text",success:function(V){Alix_Processing.hide();
+var I;var F=false;var S={};var P=[];var G=[];var B={};
+B.sTitle="ID";G.push(B);var z={};z.sTitle="Position";
+G.push(z);var w={};w.sTitle="Type";G.push(w);S.aoColumns=G;
+var T=0;var y=V.split("\n");var Q=0;while((I=y[Q])!=undefined){if(F){var N=I.trim().split("|",-1);
+let v=N.length-1;if(v>=3){var D=N[v];v--;var K=N[v];
+v--;var O=N[v];var L=N[0].split(/\s{2,}/)[0].trim();
+var J=[];J.push(L.trim());J.push(O+" "+K);J.push(D.trim());
+P.push(J);T++}}else{if(I.startsWith("::data")){F=true
+}}Q++}S.aaData=P;S.iTotalRecords=T;S.iTotalDisplayRecords=T;
+if(Alix_Processing.jsonError(S,"Simbad Tooltip Failure")){return
+}else{var R="";R+='<table cellpadding="0" cellspacing="0" border="0"  id="simbadtable" class="display table"></table>';
+var U=Alix_Modalinfo.nextId();Alix_Modalinfo.setModal(U,false,"Simbad Summary for Position "+v+'<a class=simbad target=blank href="http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord='+encodeURIComponent(v)+'"></a>',R);
+Alix_Modalinfo.setShadow(U);Alix_Modalinfo.whenClosed(U);
+$("#"+U).css("overflow","hidden");var C={aoColumns:S.aoColumns,aaData:S.aaData,bPaginate:true,sPaginationType:"full_numbers",aaSorting:[],bSort:false,bFilter:true,bAutoWidth:true,bDestroy:true};
+var X;var W=[{name:X,pos:"top-left"},{name:"filter",pos:"top-right"},{name:"information",pos:"bottom-left"},{name:"pagination",pos:"bottom-center"},{name:" ",pos:"bottom-right"}];
+Alix_CustomDataTable.create("simbadtable",C,W);$("#simbadtable_paginate").css("left","250px");
+$(".txt-left").remove();$("#"+U).find(".dataTables_filter").css("margin-top","34%");
+$("#"+U).find(".dataTables_filter").css("position","absolute");
+$("#"+U).find(".dataTables_filter").css("left","1000px");
+$("#"+U).find(".dataTables_filter").css("top","-394px");
+$("#"+U).find(".dataTables_filter").css("z-index","1");
+var M=$("#"+U).find(".dataTables_filter");M.css("top","-275px");
+M.css("left","767px");$("#"+U).dialog("option","position",{my:"center",at:"center",of:window});
+var H=$("#"+U).parent("div");H.append(r);H.append(M);
+H.css("width","950px");H.css("height","400px");$("#"+U).css("width","650px");
+$("#"+U).css("left","298px");$("#"+U).css("height","auto");
+$("#"+U).css("top","15px");$("#"+U).css("min-height","93.16px");
+var E=$("#SimbadSourceDiv");E.css("display","block");
+E.css("position","absolute");E.css("top","70px");
+E.css("left","0px");E.css("background-color","#ffeded");
 $("#simbadtable_next").html("&nbsp;&nbsp;&nbsp;");
 $("#simbadtable_previous").html("&nbsp;&nbsp;&nbsp;")
-}}});Alix_Processing.hide()};var m=function(){var s=["LM?","LXB","BNe","HII","PN","Pec?","ev","GiG","bub","BD*","CV*","BY*","WD?","?","Al*","vid","Ae?","ULX","El*","LyA","reg","TT*","err","Bz?","mm","a2*","Em*","WR*","LM*","AB*","XB?","RC?","RV*","HX?","sg?","HH","**?","Le?","DN*","Ce*","AM*","LX?","WD*","Cl*","*","N*","gLe","GlC","FIR","LP*","BiC","WU*","AB?","cC*","BS?","Ir*","cor","dS*","ALS","bL*","C?G","s?y","BH?","blu","GrG","Y*O","Lev","gam","Be*","ERO","Ce?","OH*","grv","BS*","Pe*","XB*","s?r","Ae*","Pl","sg*","N*?","CGb","pr?","Pu*","St*","Sy?","V*","X","RR?","C*?","SNR","ClG","BL?","LeI","GWE","Fl*","PoC","GiP","SX*","C?*","bC*","GNe","RC*","DLA","SCG","HV*","Gr?","s*y","sh","HXB","s*b","gB","pr*","PaG","Or*","Be?","As*","glb","SyG","RS*","NL*","pA?","Gl?","LS?","EmG","G?","HS?","BAL","pA*","Er*","mul","IR","DNe","CGG","HI","CV?","EB*","C*","ISM","H2G","No*","Sy1","LeG","LI?","LSB","UV","RR*","AGN","PM*","*i*","HB*","MoC","No?","OpC","UX?","Cld","SBG","TT?","LeQ","S*","HzG","Psr","SB*","HS*","red","PN?","FU*","Mi?","SN?","**","BLL","s?b","WV*","of?","RB?","SN*","LP?","DQ*","LLS","EB?","GiC","smm","LIN","cm","Sy2","S*?","Bla","IG","HB?","Ro*","V*?","Y*?","QSO","Q?","HVC","SFR","bCG","EmO","Pl?","MGr","s*r","sv?","EP*","AG?","Mas","Mi*","PoG","gLS","SR?","Sy*","WR?","RNe","G","NIR","*iN","rG","rB","BD?","gD*","*iC","out","Rad","RG*"];
-var t=["(Micro)Lensing Event [Lev]","Absorption Line system [ALS]","Active Galaxy Nucleus [AGN]","Association of Stars [As*]","Asymptotic Giant Branch Star (He-burning) [AB*]","Asymptotic Giant Branch Star candidate [AB?]","BL Lac - type object [BLL]","Be Star [Be*]","Black Hole Candidate [BH?]","Blazar [Bla]","Blue Straggler Star [BS*]","Blue compact Galaxy [bCG]","Blue object [blu]","Blue supergiant star [s*b]","Bright Nebula [BNe]","Brightest galaxy in a Cluster (BCG) [BiC]","Broad Absorption Line system [BAL]","Brown Dwarf (M<0.08solMass) [BD*]","Brown Dwarf Candidate [BD?]","Bubble [bub]","CV DQ Her type (intermediate polar) [DQ*]","CV of AM Her type (polar) [AM*]","Candidate blue Straggler Star [BS?]","Candidate objects [..?]","Carbon Star [C*]","Cataclysmic Binary Candidate [CV?]","Cataclysmic Variable Star [CV*]","Cepheid variable Star [Ce*]","Classical Cepheid (delta Cep type) [cC*]","Cloud [Cld]","Cluster of Galaxies [ClG]","Cluster of Stars [Cl*]","Cometary Globule [CGb]","Compact Group of Galaxies [CGG]","Composite object [mul]","Confirmed Neutron Star [N*]","Damped Ly-alpha Absorption Line system [DLA]","Dark Cloud (nebula) [DNe]","Dense core [cor]","Double or multiple star [**]","Dwarf Nova [DN*]","Eclipsing Binary Candidate [EB?]","Eclipsing binary of Algol type (detached) [Al*]","Eclipsing binary of W UMa type (contact binary) [WU*]","Eclipsing binary of beta Lyr type (semi-detached)[bL*]","Eclipsing binary [EB*]","Ellipsoidal variable Star [El*]","Emission Object [EmO]","Emission-line Star [Em*]","Emission-line galaxy [EmG]","Eruptive variable Star [Er*]","Evolved supergiant star [sg*]","Extra-solar Confirmed Planet [Pl]","Extra-solar Planet Candidate [Pl?]","Extremely Red Object [ERO]","Far-IR source (lambda >= 30 {mu}m) [FIR]","Flare Star [Fl*]","Galactic Nebula [GNe]","Galaxy in Cluster of Galaxies [GiC]","Galaxy in Group of Galaxies [GiG]","Galaxy in Pair of Galaxies [GiP]","Galaxy with high redshift [HzG]","Galaxy [G]","Globular Cluster [GlC]","Globule (low-mass dark cloud) [glb]","Gravitational Lens System (lens+images) [gLS]","Gravitational Lens [gLe]","Gravitational Source [grv]","Gravitational Wave Event [GWE]","Gravitationally Lensed Image of a Galaxy [LeG]","Gravitationally Lensed Image of a Quasar [LeQ]","Gravitationally Lensed Image [LeI]","Group of Galaxies [GrG]","HI (21cm) source [HI]","HI shell [sh]","HII (ionized) region [HII]","HII Galaxy [H2G]","Herbig Ae/Be star [Ae*]","Herbig-Haro Object [HH]","High Mass X-ray Binary [HXB]","High proper-motion Star [PM*]","High-Mass X-ray binary Candidate [HX?]","High-velocity Cloud [HVC]","High-velocity Star [HV*]","Horizontal Branch Star [HB*]","Hot subdwarf candidate [HS?]","Hot subdwarf [HS*]","Infra-Red source [IR]","Interacting Galaxies [IG]","Interstellar matter [ISM]","LINER-type Active Galaxy Nucleus [LIN]","Long Period Variable candidate [LP?]","Long-period variable star [LP*]","Low Mass X-ray Binary [LXB]","Low Surface Brightness Galaxy [LSB]","Low-Mass X-ray binary Candidate [LX?]","Low-mass star (M<1solMass) [LM*]","Low-mass star candidate [LM?]","Ly alpha Absorption Line system [LyA]","Lyman limit system [LLS]","Maser [Mas]","Mira candidate [Mi?]","Molecular Cloud [MoC]","Moving Group [MGr]","Near-IR source (lambda < 10 {mu}m) [NIR]","Neutron Star Candidate [N*?]","Not an object (error, artefact, ...) [err]","Nova Candidate [No?]","Nova [No*]","Nova-like Star [NL*]","OH/IR star [OH*]","Object of unknown nature [?]","Open (galactic) Cluster [OpC]","Optically Violently Variable object [OVV]","Outflow candidate [of?]","Outflow [out]","Pair of Galaxies [PaG]","Part of Cloud [PoC]","Part of a Galaxy [PoG]","Peculiar Star [Pe*]","Physical Binary Candidate [**?]","Planetary Nebula [PN]","Possible (open) star cluster [C?*]","Possible Active Galaxy Nucleus [AG?]","Possible BL Lac [BL?]","Possible Be Star [Be?]","Possible Blazar [Bz?]","Possible Blue supergiant star [s?b]","Possible Carbon Star [C*?]","Possible Cepheid [Ce?]","Possible Cluster of Galaxies [C?G]","Possible Galaxy [G?]","Possible Globular Cluster [Gl?]","Possible Group of Galaxies [Gr?]","Possible Herbig Ae/Be Star [Ae?]","Possible Horizontal Branch Star [HB?]","Possible Peculiar Star [Pec?]","Possible Planetary Nebula [PN?]","Possible Quasar [Q?]","Possible Red Giant Branch star [RB?]","Possible Red supergiant star [s?r]","Possible S Star [S*?]","Possible Star of RR Lyr type [RR?]","Possible Star with envelope of CH type [CH?]","Possible Star with envelope of OH/IR type [OH?]","Possible Supercluster of Galaxies [SC?]","Possible Supergiant star [sg?]","Possible Wolf-Rayet Star [WR?]","Possible Yellow supergiant star [s?y]","Possible gravitational lens System [LS?]","Possible gravitational lens [Le?]","Possible gravitationally lensed image [LI?]","Post-AGB Star (proto-PN) [pA*]","Post-AGB Star Candidate [pA?]","Pre-main sequence Star Candidate [pr?]","Pre-main sequence Star [pr*]","Pulsar [Psr]","Pulsating White Dwarf [ZZ*]","Pulsating variable Star [Pu*]","Quasar [QSO]","Radio Galaxy [rG]","Radio-source [Rad]","Red Giant Branch star [RG*]","Red supergiant star [s*r]","Reflection Nebula [RNe]","Region defined in the sky [reg]","Rotationally variable Star [Ro*]","S Star [S*]","Semi-regular pulsating Star [sr*]","Semi-regular variable candidate [sv?]","Seyfert 1 Galaxy [Sy1]","Seyfert 2 Galaxy [Sy2]","Seyfert Galaxy [SyG]","Spectroscopic binary [SB*]","Star forming region [SFR]","Star in Association [*iA]","Star in Cluster [*iC]","Star in Nebula [*iN]","Star in double system [*i*]","Star showing eclipses by its planet [EP*]","Star suspected of Variability [V*?]","Star with envelope of CH type [CH*]","Star [*]","Starburst Galaxy [SBG]","Stellar Stream [St*]","Sub-stellar object [su*]","SuperNova Candidate [SN?]","SuperNova Remnant Candidate [SR?]","SuperNova Remnant [SNR]","SuperNova [SN*]","Supercluster of Galaxies [SCG]","Symbiotic Star Candidate [Sy?]","Symbiotic Star [Sy*]","T Tau star Candidate [TT?]","T Tau-type Star [TT*]","UV-emission source [UV]","Ultra-luminous X-ray candidate [UX?]","Ultra-luminous X-ray source [ULX]","Underdense region of the Universe [vid]","Variable Star of FU Ori type [FU*]","Variable Star of Mira Cet type [Mi*]","Variable Star of Orion Type [Or*]","Variable Star of R CrB type candiate [RC?]","Variable Star of R CrB type [RC*]","Variable Star of RR Lyr type [RR*]","Variable Star of RV Tau type [RV*]","Variable Star of SX Phe type (subdwarf) [SX*]","Variable Star of W Vir type [WV*]","Variable Star of alpha2 CVn type [a2*]","Variable Star of beta Cep type [bC*]","Variable Star of delta Sct type [dS*]","Variable Star of gamma Dor type [gD*]","Variable Star of irregular type [Ir*]","Variable Star with rapid variations [RI*]","Variable Star [V*]","Variable of BY Dra type [BY*]","Variable of RS CVn type [RS*]","Very red source [red]","White Dwarf Candidate [WD?]","White Dwarf [WD*]","Wolf-Rayet Star [WR*]","X-ray Binary [XB*]","X-ray binary Candidate [XB?]","X-ray source [X]","Yellow supergiant star [s*y]","Young Stellar Object Candidate [Y*?]","Young Stellar Object [Y*O]","centimetric Radio-source [cm]","gamma-ray Burst [gB]","gamma-ray source [gam]","metallic Absorption Line system [mAL]","metric Radio-source [mR]","millimetric Radio-source [mm]","radio Burst [rB]","sub-millimetric source [smm]","transient event [ev]"];
-$("#ui-id-1").css("z-index","1000000");$("#SearchType").autocomplete({source:t,select:function(v,u){$(this).val(u.item.value);
-o=$("#SearchType").val();if(t.indexOf(o)==-1&&o!=""){MessageBox.alertBox("This type doesn't exist");
-return}var z=/\[(.+?)\]/g;var y=$("#SearchType").val().match(z);
-if(y!=undefined){var w=y[0].substring(1,y[0].length-1);
-h=w}else{h=""}if(h==""){d=false}else{d=true}SimbadCatalog.runConstraint()
-}}).css("z-index",10000);$("#SearchType").keyup(function(z){var w=z.which;
-$("#ui-id-1").css("z-index","1000000");if(w==13){o=$("#SearchType").val();
-if(t.indexOf(o)==-1&&o!=""){MessageBox.alertBox("This type doesn't exist");
-return}var y=/\[(.+?)\]/g;var v=$("#SearchType").val().match(y);
-if(v!=undefined){var u=v[0].substring(1,v[0].length-1);
-h=u}else{h=""}if(h==""){d=false}else{d=true}g()}})
-};var c=function(s){q=s};var g=function(){if(q){a=q.getSources();
-f()}};var b=function(s){if(s.data.other_types.indexOf(h)!=-1||s.data.main_type==h||h==undefined){return true
-}else{return false}};var f=function(){for(var s=0;
-s<a.length;s++){var t=a[s];if(t.data.other_types.indexOf(h)!=-1||t.data.main_type==h){t.show()
-}else{t.hide()}}};var n=function(){return h};var r=function(){return d
-};var k=function(){$("#SearchType").val(o)};function j(t){var s;
-s=$.ajax({url:"${site}",type:"GET",data:{query:"${adql}",format:"text",lang:"ADQL",request:"doQuery"},async:false}).done(function(u){return u
-});return s}var l=function(){var t='SELECT  distinct "public".otypedef.otype_longname, "public".otypedef.otype_shortname FROM "public".otypedef order by otype_longname';
-var u=j(t);var z=u.responseText;var y=z.split("|");
-var D=[];for(var v=2;v<y.length;v++){var B=y[v].split("\n");
-for(var s=0;s<B.length;s++){D.push(B[s])}}var C={};
-for(var v=0;v<D.length;v++){D[v]=D[v+1]}for(var w=0;
-w<D.length-2;w=w+2){C[D[w]]=D[w+1]}};var e={simbad:p,setCatalog:c,runConstraint:g,displayCatalogFiltered:f,getType:n,resetFilter:k,getisFiltered:r,getTable:l,filterSource:b,SearchType:m};
-return e}();console.log("=============== >  SimbadCatalog.js ");
+}}});Alix_Processing.hide()};var j=function(){if(k){k=false;
+var p=["(Micro)Lensing Event [Lev]","Absorption Line system [ALS]","Active Galaxy Nucleus [AGN]","Association of Stars [As*]","Asymptotic Giant Branch Star (He-burning) [AB*]","Asymptotic Giant Branch Star candidate [AB?]","BL Lac - type object [BLL]","Be Star [Be*]","Black Hole Candidate [BH?]","Blazar [Bla]","Blue Straggler Star [BS*]","Blue compact Galaxy [bCG]","Blue object [blu]","Blue supergiant star [s*b]","Bright Nebula [BNe]","Brightest galaxy in a Cluster (BCG) [BiC]","Broad Absorption Line system [BAL]","Brown Dwarf (M<0.08solMass) [BD*]","Brown Dwarf Candidate [BD?]","Bubble [bub]","CV DQ Her type (intermediate polar) [DQ*]","CV of AM Her type (polar) [AM*]","Candidate blue Straggler Star [BS?]","Candidate objects [..?]","Carbon Star [C*]","Cataclysmic Binary Candidate [CV?]","Cataclysmic Variable Star [CV*]","Cepheid variable Star [Ce*]","Classical Cepheid (delta Cep type) [cC*]","Cloud [Cld]","Cluster of Galaxies [ClG]","Cluster of Stars [Cl*]","Cometary Globule [CGb]","Compact Group of Galaxies [CGG]","Composite object [mul]","Confirmed Neutron Star [N*]","Damped Ly-alpha Absorption Line system [DLA]","Dark Cloud (nebula) [DNe]","Dense core [cor]","Double or multiple star [**]","Dwarf Nova [DN*]","Eclipsing Binary Candidate [EB?]","Eclipsing binary of Algol type (detached) [Al*]","Eclipsing binary of W UMa type (contact binary) [WU*]","Eclipsing binary of beta Lyr type (semi-detached)[bL*]","Eclipsing binary [EB*]","Ellipsoidal variable Star [El*]","Emission Object [EmO]","Emission-line Star [Em*]","Emission-line galaxy [EmG]","Eruptive variable Star [Er*]","Evolved supergiant star [sg*]","Extra-solar Confirmed Planet [Pl]","Extra-solar Planet Candidate [Pl?]","Extremely Red Object [ERO]","Far-IR source (lambda >= 30 {mu}m) [FIR]","Flare Star [Fl*]","Galactic Nebula [GNe]","Galaxy in Cluster of Galaxies [GiC]","Galaxy in Group of Galaxies [GiG]","Galaxy in Pair of Galaxies [GiP]","Galaxy with high redshift [HzG]","Galaxy [G]","Globular Cluster [GlC]","Globule (low-mass dark cloud) [glb]","Gravitational Lens System (lens+images) [gLS]","Gravitational Lens [gLe]","Gravitational Source [grv]","Gravitational Wave Event [GWE]","Gravitationally Lensed Image of a Galaxy [LeG]","Gravitationally Lensed Image of a Quasar [LeQ]","Gravitationally Lensed Image [LeI]","Group of Galaxies [GrG]","HI (21cm) source [HI]","HI shell [sh]","HII (ionized) region [HII]","HII Galaxy [H2G]","Herbig Ae/Be star [Ae*]","Herbig-Haro Object [HH]","High Mass X-ray Binary [HXB]","High proper-motion Star [PM*]","High-Mass X-ray binary Candidate [HX?]","High-velocity Cloud [HVC]","High-velocity Star [HV*]","Horizontal Branch Star [HB*]","Hot subdwarf candidate [HS?]","Hot subdwarf [HS*]","Infra-Red source [IR]","Interacting Galaxies [IG]","Interstellar matter [ISM]","LINER-type Active Galaxy Nucleus [LIN]","Long Period Variable candidate [LP?]","Long-period variable star [LP*]","Low Mass X-ray Binary [LXB]","Low Surface Brightness Galaxy [LSB]","Low-Mass X-ray binary Candidate [LX?]","Low-mass star (M<1solMass) [LM*]","Low-mass star candidate [LM?]","Ly alpha Absorption Line system [LyA]","Lyman limit system [LLS]","Maser [Mas]","Mira candidate [Mi?]","Molecular Cloud [MoC]","Moving Group [MGr]","Near-IR source (lambda < 10 {mu}m) [NIR]","Neutron Star Candidate [N*?]","Not an object (error, artefact, ...) [err]","Nova Candidate [No?]","Nova [No*]","Nova-like Star [NL*]","OH/IR star [OH*]","Object of unknown nature [?]","Open (galactic) Cluster [OpC]","Optically Violently Variable object [OVV]","Outflow candidate [of?]","Outflow [out]","Pair of Galaxies [PaG]","Part of Cloud [PoC]","Part of a Galaxy [PoG]","Peculiar Star [Pe*]","Physical Binary Candidate [**?]","Planetary Nebula [PN]","Possible (open) star cluster [C?*]","Possible Active Galaxy Nucleus [AG?]","Possible BL Lac [BL?]","Possible Be Star [Be?]","Possible Blazar [Bz?]","Possible Blue supergiant star [s?b]","Possible Carbon Star [C*?]","Possible Cepheid [Ce?]","Possible Cluster of Galaxies [C?G]","Possible Galaxy [G?]","Possible Globular Cluster [Gl?]","Possible Group of Galaxies [Gr?]","Possible Herbig Ae/Be Star [Ae?]","Possible Horizontal Branch Star [HB?]","Possible Peculiar Star [Pec?]","Possible Planetary Nebula [PN?]","Possible Quasar [Q?]","Possible Red Giant Branch star [RB?]","Possible Red supergiant star [s?r]","Possible S Star [S*?]","Possible Star of RR Lyr type [RR?]","Possible Star with envelope of CH type [CH?]","Possible Star with envelope of OH/IR type [OH?]","Possible Supercluster of Galaxies [SC?]","Possible Supergiant star [sg?]","Possible Wolf-Rayet Star [WR?]","Possible Yellow supergiant star [s?y]","Possible gravitational lens System [LS?]","Possible gravitational lens [Le?]","Possible gravitationally lensed image [LI?]","Post-AGB Star (proto-PN) [pA*]","Post-AGB Star Candidate [pA?]","Pre-main sequence Star Candidate [pr?]","Pre-main sequence Star [pr*]","Pulsar [Psr]","Pulsating White Dwarf [ZZ*]","Pulsating variable Star [Pu*]","Quasar [QSO]","Radio Galaxy [rG]","Radio-source [Rad]","Red Giant Branch star [RG*]","Red supergiant star [s*r]","Reflection Nebula [RNe]","Region defined in the sky [reg]","Rotationally variable Star [Ro*]","S Star [S*]","Semi-regular pulsating Star [sr*]","Semi-regular variable candidate [sv?]","Seyfert 1 Galaxy [Sy1]","Seyfert 2 Galaxy [Sy2]","Seyfert Galaxy [SyG]","Spectroscopic binary [SB*]","Star forming region [SFR]","Star in Association [*iA]","Star in Cluster [*iC]","Star in Nebula [*iN]","Star in double system [*i*]","Star showing eclipses by its planet [EP*]","Star suspected of Variability [V*?]","Star with envelope of CH type [CH*]","Star [*]","Starburst Galaxy [SBG]","Stellar Stream [St*]","Sub-stellar object [su*]","SuperNova Candidate [SN?]","SuperNova Remnant Candidate [SR?]","SuperNova Remnant [SNR]","SuperNova [SN*]","Supercluster of Galaxies [SCG]","Symbiotic Star Candidate [Sy?]","Symbiotic Star [Sy*]","T Tau star Candidate [TT?]","T Tau-type Star [TT*]","UV-emission source [UV]","Ultra-luminous X-ray candidate [UX?]","Ultra-luminous X-ray source [ULX]","Underdense region of the Universe [vid]","Variable Star of FU Ori type [FU*]","Variable Star of Mira Cet type [Mi*]","Variable Star of Orion Type [Or*]","Variable Star of R CrB type candiate [RC?]","Variable Star of R CrB type [RC*]","Variable Star of RR Lyr type [RR*]","Variable Star of RV Tau type [RV*]","Variable Star of SX Phe type (subdwarf) [SX*]","Variable Star of W Vir type [WV*]","Variable Star of alpha2 CVn type [a2*]","Variable Star of beta Cep type [bC*]","Variable Star of delta Sct type [dS*]","Variable Star of gamma Dor type [gD*]","Variable Star of irregular type [Ir*]","Variable Star with rapid variations [RI*]","Variable Star [V*]","Variable of BY Dra type [BY*]","Variable of RS CVn type [RS*]","Very red source [red]","White Dwarf Candidate [WD?]","White Dwarf [WD*]","Wolf-Rayet Star [WR*]","X-ray Binary [XB*]","X-ray binary Candidate [XB?]","X-ray source [X]","Yellow supergiant star [s*y]","Young Stellar Object Candidate [Y*?]","Young Stellar Object [Y*O]","centimetric Radio-source [cm]","gamma-ray Burst [gB]","gamma-ray source [gam]","metallic Absorption Line system [mAL]","metric Radio-source [mR]","millimetric Radio-source [mm]","radio Burst [rB]","sub-millimetric source [smm]","transient event [ev]"];
+$("[id^=ui-id-]").css("z-index","1000000");$("#SearchType").autocomplete({source:p,select:function(r,q){$(this).val(q.item.value);
+l=$("#SearchType").val();if(p.indexOf(l)==-1&&l!=""){MessageBox.alertBox("This type doesn't exist");
+return}var u=/\[(.+?)\]/g;var t=$("#SearchType").val().match(u);
+if(t!=undefined){var s=t[0].substring(1,t[0].length-1);
+h=s;d()}else{h="";$("#SearchTypeNot").text("all");
+m="all";$(this).css("display","none");d()}}}).css("z-index",10000);
+$("#SearchType").keyup(function(u){var s=u.which;
+$("[id^=ui-id-]").css("z-index","1000000");if(s==13){l=$("#SearchType").val();
+if(p.indexOf(l)==-1&&l!=""){MessageBox.alertBox("This type doesn't exist");
+return}var t=/\[(.+?)\]/g;var r=$("#SearchType").val().match(t);
+if(r!=undefined){var q=r[0].substring(1,r[0].length-1);
+h=q;d()}else{h="";$("#SearchTypeNot").text("all");
+m="all";$(this).css("display","none");d()}}});$("#SearchTypeNot").click(function(){var q=$(this).text();
+if(q=="all"){$(this).text("only");$(this).attr("title","Only display sources matching the type (click to change)");
+m="only";d();$("#SearchType").css("display","inline")
+}else{if(q=="only"){$(this).text("not");$(this).attr("title","Only display sources not matching the type (click to change)");
+m="not";$("#SearchType").css("display","inline");
+d()}else{$(this).text("all");$(this).attr("title","Display all sources (click to change)");
+m="all";$("#SearchType").css("display","none");d()
+}}})}};var b=function(p){o=p};var e=function(q){var p=(q.data.other_types.indexOf(h)!=-1||q.data.main_type.startsWith(h));
+if(m=="all"){return true}else{if((m=="not"&&!p)||(m=="only"&&p)){return true
+}else{return false}}};var d=function(){a=o.getSources();
+for(var p=0;p<a.length;p++){let source=a[p];if(e(source)){source.show()
+}else{source.hide()}}return};function f(q){var p;
+p=$.ajax({url:"${site}",type:"GET",data:{query:"${adql}",format:"text",lang:"ADQL",request:"doQuery"},async:false}).done(function(r){return r
+});return p}var g=function(){var q='SELECT  distinct "public".otypedef.otype_longname, "public".otypedef.otype_shortname FROM "public".otypedef order by otype_longname';
+var r=f(q);var u=r.responseText;var t=u.split("|");
+var y=[];for(let i=2;i<t.length;i++){var v=t[i].split("\n");
+for(var p=0;p<v.length;p++){y.push(v[p])}}var w={};
+for(let i=0;i<y.length;i++){y[i]=y[i+1]}for(var s=0;
+s<y.length-2;s=s+2){w[y[s]]=y[s+1]}};var c={simbad:n,setCatalog:b,displayCatalogFiltered:d,getTable:g,sourceFilter:e,activateControle:j};
+return c}();console.log("=============== >  SimbadCatalog.js ");
 let Alix_CustomDataTable=function(){var g=0;var f=[];
 var c=function(l,j,h){if(j.sPaginationType!=undefined){if(j.sPaginationType==="full_numbers"){j=a(j,"oLanguage",{sSearch:""})
 }}else{j=a(j,"oLanguage",{sSearch:"",oPaginate:{sNext:"",sPrevious:""}})
