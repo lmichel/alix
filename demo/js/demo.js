@@ -82,7 +82,7 @@
   	  },
 	  {
 		  name:"demo_xmmProgressive"
-		,title:" 3XMM progressive"
+		,title:" 3XMM progressive NEW"
 		,url:"alixxmmprogressive.html"
 		//,code1:'resourceLoader.setScripts([ "demo/js/alixXproReady.js"]);//html'
 		,code1:'//html\n&lt;div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;">&lt;/div>'
@@ -100,10 +100,13 @@
   		,description:""
   	  },*/
 	  {
-		  name:"demo_tapProgressive"
-		,title:" TAP resource progressive"
+		 name:"demo_tapProgressive"
+		,title:" TAP resource progressive NEW:CAOM"
 		,url:"alixtaphandleprogressive.html"
-		,code1:"\n\n\n\n\n\n\n"
+		,code1:"\n location : { \n\n url_base:  'http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync?RUNID=TapHandle-betacadc;ivoa;ObsCore&PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}"+
+		      "\n\n url_query:  'SELECT TOP 1000 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016)) = 1',\n\n}\n"
+					
+				
 		,code2:""
 		,description:""
 	  },

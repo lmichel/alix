@@ -40,9 +40,7 @@ var resourceLoader = function() {
 	var javascriptDir = baseScriptDir + "javascript/";
 	//var importsJstuffDir = "http://obs-stage-c11:8080/jsresources/saadajsbasics/javascript/";
 	var local_js = [
-		 "Alix_Modalinfo.js"
-		 ,"Alix_Out.js"
-		 ,"Alix_PageLocation.js"
+		"Alix_PageLocation.js"
 		 ,"Alix_Printer.js"
 		 ,"Alix_Processing.js"
 		 ,"Alix_SkyGeometry.js"
@@ -135,7 +133,7 @@ var resourceLoader = function() {
 		/*
 		 * Check if saadajsbasics resources are installed locally
 		 */
-		baseUrl = "";
+		baseUrl = "http://localhost/alix/";
 		$.ajax({
 			url: baseUrl + 'javascript/loader.js',
 			async: false, 
@@ -169,7 +167,7 @@ var resourceLoader = function() {
 		/*
 		 * Check if saadajsbasics resources are installed locally
 		 */
-		baseUrl = "";
+		baseUrl = "http://localhost/alix/";
 		console.log("Try " + baseUrl + " as jsresource base URL");					
 		$.ajax({
 			url: 'javascript/loader.js',

@@ -32,8 +32,12 @@ $().ready(function() {
 						//url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
 						//url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?RUNID={$RUNID}&REQUEST=doQuery&lang=ADQL&query={$query}",
 						
+						/*url_query: "SELECT  TOP 100  * "
+                              +"FROM ivoa.ObsCore"+
+							  + " WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, + {$dec}, 0.016666666666666666)) = 1 ",*/
+					
 						//url_query: "Select ENTRY From MergedEntry In MERGEDCATALOGUE WherePosition {isInCircle({$ra} {$dec}, {$fov},-, ICRS)} {$limitQuery}",
-						url_query: "SELECT TOP 10000 * FROM \"public\".basic WHERE CONTAINS(POINT(\'ICRS\', ra, dec), CIRCLE(\'ICRS\', {$ra}, {$dec}, {$fov})) = 1",
+						//url_query: "SELECT TOP 10000 * FROM \"public\".basic WHERE CONTAINS(POINT(\'ICRS\', ra, dec), CIRCLE(\'ICRS\', {$ra}, {$dec}, {$fov})) = 1",
 						//url_query: "SELECT  TOP 100 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
 						//url_query:  "SELECT TOP 100 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
 						
@@ -72,6 +76,7 @@ $().ready(function() {
 						//url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
 						url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?RUNID={$RUNID}&REQUEST=doQuery&lang=ADQL&query={$query}",
 						
+						
 						//url_query: "Select ENTRY From MergedEntry In MERGEDCATALOGUE WherePosition {isInCircle({$ra} {$dec}, {$fov},-, ICRS)} {$limitQuery}",
 						//url_query: "SELECT TOP 10000 * FROM \"public\".basic WHERE CONTAINS(POINT(\'ICRS\', ra, dec), CIRCLE(\'ICRS\', {$ra}, {$dec}, {$fov})) = 1",
 						//url_query: "SELECT  TOP 100 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
@@ -104,14 +109,16 @@ var masTest = {
 			affichage :{
 				location :{
 					//url_base: "http://saada.unistra.fr/3xmmdr8/getqueryreport?query={$query}&format={$format}&protocol=auto",
-					url_base: "http://simbad.u-strasbg.fr/simbad/sim-tap/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
-					//url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
+					//rl_base: "http://simbad.u-strasbg.fr/simbad/sim-tap/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
+					//url_base: "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync?query={$query}&format={$format}&lang=ADQL&request=doQuery",
 					//url_base: "http://vao.stsci.edu/CAOMTAP/TapService.aspx/sync?RUNID={$RUNID}&REQUEST=doQuery&lang=ADQL&query={$query}",
 					
+					url_base:  "http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync?RUNID=TapHandle-betacadc;ivoa;ObsCore&PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}",
+					url_query:  "SELECT TOP 1000 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016)) = 1",
 					//url_query: "Select ENTRY From MergedEntry In MERGEDCATALOGUE WherePosition {isInCircle({$ra} {$dec}, {$fov},-, ICRS)} {$limitQuery}",
-					url_query: "SELECT TOP 10000 * FROM \"public\".basic WHERE CONTAINS(POINT(\'ICRS\', ra, dec), CIRCLE(\'ICRS\', {$ra}, {$dec}, {$fov})) = 1",
+					//url_query: "SELECT TOP 100 * FROM \"public\".basic WHERE CONTAINS(POINT(\'ICRS\', ra, dec), CIRCLE(\'ICRS\', {$ra}, {$dec}, {$fov})) = 1",
 					//url_query: "SELECT  TOP 100 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
-					//url_query:  "SELECT TOP 100 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
+					//url_query:  "SELECT TOP 10 * FROM ivoa.obscore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, {$fov})) = 1",
 					//url_limit:  "Order By _n_detections desc Limit 15",
 				},
 				progressiveMode: false,
@@ -120,7 +127,7 @@ var masTest = {
 				radiusUnit : 'deg',
 				//format : 'votable',
 				format : 'votable/td',
-				label : "Simbad TAP",
+				label : "CAOM TAP",
 				description: "Texte plus complet qui donne plus d'informations",
 				display:true
 			},	
