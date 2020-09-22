@@ -31,29 +31,85 @@
 		<div style="position:relative;margin :15px;" >
 		
 		<!-- my code -->
-		
-		<i> URL : </i>
-		<select name="url" id=input_url>
-		<option selected="choisir l'url"/>choisir l'url</option>
-		<option>http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync</option>
-		<option>http://xcatdb.unistra.fr/3xmmdr8/tap/sync</option>
-		
-		</select>
-		<!--input id="input_url" style = "margin-bottom:5px" value="http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync" placeholder="exemple: http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync"></input-->
-		<i> Table : </i>
-		<input id="input_target2"  class="form-control " style = "margin-bottom:5px" placeholder="exemple: ivoa.ObsCore"></input>
-		<button id="addTarget2" class="btn btn-success" title="Move the view to the target (coords or object name)">get result</button>
+		<div class="container">
+		 <div class="row">
+		  <div class="col-sm-4">
+			<i> URL : </i>
+			<select name="url" class="form-control " id=input_url>
+			<option selected="choisir l'url"/>choisir l'url</option>
+			<option>http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync</option>
+			<option>http://xcatdb.unistra.fr/3xmmdr8/tap/sync</option>
+			
+			</select>
+			<!--input id="input_url" style = "margin-bottom:5px" value="http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync" placeholder="exemple: http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync"></input-->
+			<i> Table : </i>
+			<input id="input_target2"  class="form-control " style = "margin-bottom:5px" placeholder="exemple: ivoa.ObsCore"></input>
+			<button id="addTarget2" class="btn btn-success" title="Move the view to the target (coords or object name)">get result</button>
+		</div>
+		</div>
+	 </div>
 		<br><hr>
 		
 		<!-- PARTIE POUR LES SERVICE -->
 		<div class="container-fluid">
 			<div class="row">
-			 <div class ="col-sm-4">
-			  <div class="card text-white bg-primary mb-3" style="max-width: 30rem;">
+			 <div class ="col-sm-12">
+			  <div class="card text-white bg-primary mb-3">
 				<div class="card-header">BASE DE DONNEE POPULAIRES</div>
 					<div class="card-body">
-					 <h5 class="card-title">SERVICES</h5>
-						<select name="service" id="input_service" class="form-control ">
+					 <h5 class="card-title center">SERVICES</h5>
+					 
+						 <table class="table table-dark">
+						  <thead>
+						    <tr>
+						      <th scope="col">BD</th>
+						      <th scope="col">BASE URL</th>
+						      <th scope="col">TABLE</th>
+						      <th scope="col">QUERY</th>
+						      <th scope="col">POSITIONS</th>
+						      <th scope="col">ACTION</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <th scope="row">3XMMDR8 <input type="text" value="3XMMDR8"  id="xmm_bd" class="disabled hidden"></th>
+						      <td><input type="text" id="xmm_url" class="form-control disabled" value="http://xcatdb.unistra.fr/3xmmdr8/tap/sync"/></td>
+						      <td><input type="text" id="xmm_table" class="form-control disabled" value="ivoa.ObsCore"/></td>
+						      <td><input type="text" id="xmm_query" class="form-control disabled" value="SELECT TOP 100 * FROM ivoa.ObsCore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1"/></td>
+						   	  <td><input type="text" id="xmm_position" class="form-control" value="83.635209 22.01175"/></td>
+						   	  <td><button id="xmm_result" class="btn btn-success" title="Move the view to the target (coords or object name)">Get xmm result</button></td>
+						    </tr>
+						    <tr>
+						      <th scope="row" >CACD<input type="text" value="CACD"  id="cacd_bd" class="disabled hidden"></th>
+						      <td><input type="text" id="cacd_url" class="form-control disabled" value="http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync"/></td>
+						      <td><input type="text" id="cacd_table" class="form-control disabled" value="ivoa.ObsCore"/></td>
+						      <td><input type="text" id="cacd_query" class="form-control disabled" value="SELECT TOP 100 * FROM ivoa.ObsCore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1"/></td>
+						   	  <td><input type="text" id="cacd_position" class="form-control" value="187.75779 65.499204"/></td>
+						   	  <td><button id="cacd_result" class="btn btn-success" title="Move the view to the target (coords or object name)">Get cacd result</button></td>
+						    </tr>
+						    <tr>
+						      <th scope="row" >GAVO<input type="text" value="GAVO"  id="gavo_bd" class="disabled hidden"></th>
+						      <td><input type="text" id="gavo_url" class="form-control disabled" value="http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync"/></td>
+						      <td><input type="text" id="gavo_table" class="form-control disabled" value="ivoa.ObsCore"/></td>
+						      <td><input type="text" id="gavo_query" class="form-control disabled" value="SELECT TOP 100 * FROM ivoa.ObsCore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1"/></td>
+						   	  <td><input type="text" id="gavo_position" class="form-control" value="68.988479 71.748572"/></td>
+						   	  <td><button id="gavo_result" class="btn btn-success" title="Move the view to the target (coords or object name)">Get gavo result</button></td>
+						    </tr>
+						    <tr>
+						      <th scope="row">SIMBAD<input type="text" value="SIMBAD"  id="simbad_bd" class="disabled hidden"></th>
+						      <td><input type="text" id="simbad_url" class="form-control disabled" value="http://simbad.u-strasbg.fr/simbad/sim-tap/sync"/></td>
+						      <td><input type="text" id="simbad_table" class="form-control disabled" value="ivoa.ObsCore"/></td>
+						      <td><input type="text" id="simbad_query" class="form-control disabled" value="SELECT TOP 100 * FROM public.basic WHERE CONTAINS(POINT('ICRS',ra,dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1"/></td>
+						   	  <td><input type="text" id="simbad_position" class="form-control" value="193.14282	42.404911"/></td>
+						   	  <td><button id="simbad_result" class="btn btn-success" title="Move the view to the target (coords or object name)">Get simba result</button></td>
+						    </tr>
+						  </tbody>
+						</table>
+					 
+					 
+					 
+					 
+						<!--select name="service" id="input_service" class="form-control ">
 						 	<option seleted >Choisir une Base de donnée 
 						 		<option class="">3XMMDR8</option>
 						 		<option class="">CACD</option>
@@ -66,9 +122,9 @@
 						 		<option class="">SDSS9</option>
 						 		<option class="">NED</option>
 						 		<option class="">STSCI</option>
-						 		<option class="">EZA GAIA-EPN</option>			 		
+						 		<option class="">ESA GAIA-EPN</option>			 		
 						 	 </option>
-					 	</select>
+					 	</select>  -->
 					 </div>
 					</div>
 				</div>

@@ -1,4 +1,9 @@
 http://xcatdb.unistra.fr/3xmmdr8/tap/sync?REQUEST=doQuery&LANG=ADQL&QUERY=SELECT TOP 1000 * FROM ivoa.ObsCore10 WHERE CONTAINS (POINT (%27ICRS%27%2C s_ra%2C s_dec%29%2C CIRCLE (%27ICRS%27%2C0%2C 0%2C 0.016%29%29 %3D 1",
+http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT TOP 100 * FROM ivoa.ObsCore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1"	
+
+ttp://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT+TOP+100+%2A+FROM+ivoa.ObsCore+WHERE+CONTAINS%28POINT%28%27ICRS%27%2C+s_ra%2C+s_dec%29%2C+CIRCLE%28%27ICRS%27%2C+83.633042%2C+22.014500%2C+0.016%29%29%3D1%0D%0A
+
+http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}=SELECT TOP 100 * FROM ivoa.ObsCore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', 68.988479 ,71.748572, 0.016))=1
 	
 	Alix apiredi.js
 	/**

@@ -202,6 +202,30 @@ $().ready(function() {
 		
 			
     	});
+
+		$('#xmm_result').click(function(bd,url_base,table,query,position){
+			bd=$("#xmm_bd").val();
+			//alert(bd);
+			displayResult(bd,url_base,table,query,position);
+			
+		});
+		$('#cacd_result').click(function(bd,url_base,table,query,position){
+			bd=$("#cacd_bd").val();
+			//alert(bd);
+			displayResult(bd,url_base,table,query,position);
+			
+		});
+		$('#gavo_result').click(function(bd,url_base,table,query,position){
+			bd=$("#gavo_bd").val();
+			//alert(bd);
+			displayResult(bd,url_base,table,query,position);
+			
+		});
+		$('#simbad_result').click(function(bd,url_base,table,query,position){
+			bd=$("#simbad_bd").val();
+			displayResult(bd,url_base,table,query,position);
+			
+		});
    
  })
 
@@ -217,7 +241,7 @@ $().ready(function() {
 		req ="SELECT TOP 100 * FROM "+table+" WHERE CONTAINS(POINT('ICRS', position_center_ra, position_center_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1";
 
 	}else{
-		alert("les text ne prennent pas en compte la table choisie. cause: les valeurs (s_ra,s_dec) pour cette table possedent de noms différent les données qui s'afficherons seront celle de la table obscore!'")
+		//alert("les text ne prennent pas en compte la table choisie. cause: les valeurs (s_ra,s_dec) pour cette table possedent de noms différent les données qui s'afficherons seront celle de la table obscore!'")
 		req ="SELECT TOP 100 * FROM "+table+" WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1";
 
 	}
@@ -225,6 +249,129 @@ $().ready(function() {
 					
 	return req;
 
+}
+
+function defaulDisplayView(position){
+	defaultView = {
+	        defaultSurvey: "CDS/P/DSS2/color",
+     	        field: {
+	       		position: position,
+				defaultFov: "0.5"
+	        }
+		};
+		
+		return defaultView;
+}
+
+function resetParameterView(url_base,query,parameter){
+	masTest.masterResource.affichage.location.url_base=url_base+"?"+parameter;
+	masTest.masterResource.affichage.location.url_query=query;
+}
+
+function displayResult(bd,url_base,table,query,position){
+	switch(bd){
+		case "3XMMDR8":
+			url_base = $("#xmm_url").val();
+			table    = $("#xmm_table").val();
+			query    = $("#xmm_query").val();
+			position = $("#xmm_position").val();
+			defaultView = defaulDisplayView(position);   
+			AladinLiteX_mVc.setReferenceView(defaultView);
+			if(table==""||query==""||url_base==""){
+				alert("the fields are required")
+			}else {
+			//alert(query+"  "+table+" "+bd);
+			resetParameterView(url_base,query,param);
+			//masTest.masterResource.affichage.location.url_base=url_base+"?"+param;
+			//masTest.masterResource.affichage.location.url_query=a;
+			//alert(masTest.masterResource.affichage.location.url_query+" "+masTest.masterResource.affichage.location.url_base);
+			AladinLiteX_mVc.displayDataXml();
+			}
+			break;
+		
+		case "CACD":
+			url_base = $("#cacd_url").val();
+			table    = $("#cacd_table").val();
+			query    = $("#cacd_query").val();
+			position = $("#cacd_position").val();
+			defaultView = defaulDisplayView(position);
+		    AladinLiteX_mVc.setReferenceView(defaultView);
+			if(table==""||query==""||url_base==""){
+				alert("the fields are required")
+			}else {
+			
+			resetParameterView(url_base,query,param);
+			
+			//masTest.masterResource.affichage.location.url_base=url_base+"?"+param;
+			//masTest.masterResource.affichage.location.url_query=a;
+			//alert(masTest.masterResource.affichage.location.url_query+" "+masTest.masterResource.affichage.location.url_base);
+			AladinLiteX_mVc.displayDataXml();
+			}
+			break;
+			
+		case "GAVO":
+		
+			url_base = $("#gavo_url").val();
+			table    = $("#gavo_table").val();
+			query    = $("#gavo_query").val();
+			position = $("#gavo_position").val();
+			defaultView = defaulDisplayView(position);
+			alert ("sorry but the base 64 doesn't work yet !!! '");
+		    AladinLiteX_mVc.setReferenceView(defaultView);
+			if(table==""||query==""||url_base==""){
+				alert("the fields are required")
+			}else {
+			
+			resetParameterView(url_base,query,param);
+			//masTest.masterResource.affichage.location.url_base=url_base+"?"+param;
+			//masTest.masterResource.affichage.location.url_query=a;
+			//alert(masTest.masterResource.affichage.location.url_query+" "+masTest.masterResource.affichage.location.url_base);
+			AladinLiteX_mVc.displayDataXml();
+			}
+			break;
+			
+		case "SIMBAD":
+			url_base = $("#simbad_url").val();
+			table    = $("#simbad_table").val();
+			query    = $("#simbad_query").val();
+			query = "SELECT TOP 100 * FROM \"public\".basic WHERE CONTAINS(POINT('ICRS',ra,dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1"
+			
+			position = $("#simbad_position").val();
+			
+			alert ("sorry but the base 64 doesn't work yet !!! '");
+			defaultView = defaulDisplayView(position);
+		    AladinLiteX_mVc.setReferenceView(defaultView);
+			if(table==""||query==""||url_base==""){
+				alert("the fields are required")
+			}else {
+			console.log(query)
+			resetParameterView(url_base,query,param);
+			//masTest.masterResource.affichage.location.url_base=url_base+"?"+param;
+			//masTest.masterResource.affichage.location.url_query=a;
+			//alert(masTest.masterResource.affichage.location.url_query+" "+masTest.masterResource.affichage.location.url_base);
+			AladinLiteX_mVc.displayDataXml();
+			}
+			break;
+			
+		default :
+		   url_base = $("#xmm_url").val();
+			table    = $("#xmm_table").val();
+			query    = $("#xmm_query").val();
+			position = $("#xmm_position").val();
+			defaultView = defaulDisplayView(position);
+		    AladinLiteX_mVc.setReferenceView(defaultView);
+			if(table==""||query==""||url_base==""){
+				alert("the fields are required")
+			}else {
+			
+			resetParameterView(url_base,query,param);
+			//masTest.masterResource.affichage.location.url_base=url_base+"?"+param;
+			//masTest.masterResource.affichage.location.url_query=a;
+			//alert(masTest.masterResource.affichage.location.url_query+" "+masTest.masterResource.affichage.location.url_base);
+			AladinLiteX_mVc.displayDataXml();
+			}
+	}
+	
 }
 
 //--- end my function ----
