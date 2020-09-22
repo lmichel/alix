@@ -139,6 +139,7 @@ MasterResource.prototype = {
 				url = url.replace(/\{\$fov\}/g,size);
 				url = url.replace(/\{\$format\}/g,affichage.format);
 			}
+			//alert(url);
 			return url;
 		},
 		

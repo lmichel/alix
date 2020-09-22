@@ -5,24 +5,78 @@
 	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
 		<!--<script type="text/javascript" src="http://obs-stage-c11:8080/3xmmdr8/xcatweb/jsimports/jquery.js"></script>-->	
 	<!--	<script type="text/javascript" src="xcatweb/alix/jsimports/jquery-ui-1.12.1/jquery-ui.min.js"></script>-->	
-		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>  
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script> 
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+		 
 		
 		<script>var useDebugResources = true; var productionMode=false;</script>
 		<script type="text/javascript" src="javascript/loader.js"></script>
+		<script type="text/javascript" src="javascript/packedLoader.js"></script>
 		<script>
      resourceLoader.setCss([  
      ]);
+     // A REMETTRE DANS SETSCRIPT "demo/js/alixapiReady.js",
      resourceLoader.setScripts([ 
-     "demo/js/alixapiReady.js"
+     
+     "demo/js/alixCADCReady.js",
+    	
        ]);
      resourceLoader.loadAll(); 
       
      </script>
 	</head>
 	<body style="height: 100%">
-	<div id = "demo_banner">ALIX Demos(API)</div>
+	<div id = "demo_banner">ALIX Demos(APIss)</div>
 	<div id="aladin-lite-div" style="width:100%;height:100%;padding:5px;"></div>
 		<div style="position:relative;margin :15px;" >
+		
+		<!-- my code -->
+		
+		<i> URL : </i>
+		<select name="url" id=input_url>
+		<option selected="choisir l'url"/>choisir l'url</option>
+		<option>http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync</option>
+		<option>http://xcatdb.unistra.fr/3xmmdr8/tap/sync</option>
+		
+		</select>
+		<!--input id="input_url" style = "margin-bottom:5px" value="http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync" placeholder="exemple: http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync"></input-->
+		<i> Table : </i>
+		<input id="input_target2"  class="form-control " style = "margin-bottom:5px" placeholder="exemple: ivoa.ObsCore"></input>
+		<button id="addTarget2" class="btn btn-success" title="Move the view to the target (coords or object name)">get result</button>
+		<br><hr>
+		
+		<!-- PARTIE POUR LES SERVICE -->
+		<div class="container-fluid">
+			<div class="row">
+			 <div class ="col-sm-4">
+			  <div class="card text-white bg-primary mb-3" style="max-width: 30rem;">
+				<div class="card-header">BASE DE DONNEE POPULAIRES</div>
+					<div class="card-body">
+					 <h5 class="card-title">SERVICES</h5>
+						<select name="service" id="input_service" class="form-control ">
+						 	<option seleted >Choisir une Base de donnée 
+						 		<option class="">3XMMDR8</option>
+						 		<option class="">CACD</option>
+						 		<option class="">GAVO</option>
+						 		<option class="">VIZIER-CDS</option>
+						 		<option class="">SIMBA-CDS</option>
+						 		<option class="">VO-PLANET-PARIS</option>
+						 		<option class="">HEASARCH</option>
+						 		<option class="">CHANDRA-ARCHIVE</option>
+						 		<option class="">SDSS9</option>
+						 		<option class="">NED</option>
+						 		<option class="">STSCI</option>
+						 		<option class="">EZA GAIA-EPN</option>			 		
+						 	 </option>
+					 	</select>
+					 </div>
+					</div>
+				</div>
+		</div>
+		
+		<hr>
+		<!-- FIN PARTIE POUR LES SERVICE -->
+		<!-- end my code -->
 		<i> Position: </i>
 		<input id="input_target" style = "margin-bottom:5px"></input>
 		<button id="addTarget" title="Move the view to the target (coords or object name)">target</button>

@@ -546,6 +546,7 @@ Logger.log = function(action, params) {
             data: {"action": action, "params": paramStr, "pageUrl": window.location.href, "referer": document.referrer ? document.referrer : ""},
             method: 'GET'//,
             //dataType: 'json' // as alasky supports CORS, we do not need JSONP any longer
+
         });
         
     }
@@ -2828,12 +2829,14 @@ Utils.loadFromMirrors = function(urls, options) {
 // return the jquery ajax object configured with the requested parameters
 // by default, we use the proxy (safer, as we don't know if the remote server supports CORS)
 Utils.getAjaxObject = function(url, method, dataType, useProxy) {
+
         if (useProxy!==false) {
             useProxy = true;
         }
-
+//
         if (useProxy===true) {
             var urlToRequest = Aladin.JSONP_PROXY + '?url=' + encodeURIComponent(url);
+         console.log(urlToRequest +" "+method);
         }
         else {
             urlToRequest = url;
@@ -2846,6 +2849,8 @@ Utils.getAjaxObject = function(url, method, dataType, useProxy) {
             method: method,
             dataType: dataType
         }); 
+
+//alert(url+" "+method);
 };
 
 // return true if script is executed in a HTTPS context
@@ -4016,7 +4021,8 @@ HiPSDefinition = (function() {
 
         // try first without proxy
         var ajax = Utils.getAjaxObject(propertiesUrl, 'GET', 'text', false);
-        ajax
+       
+		 ajax
             .done(function(data) {
                 callbackWhenPropertiesLoaded(data);
             })
@@ -7709,21 +7715,23 @@ cds.Catalog = (function() {
             }
 
             // still not found ? try some common names for RA and Dec columns
+
             if (raFieldIdx==null && decFieldIdx==null) {
                 for (var l=0, len=fields.length; l<len; l++) {
                     var field = fields[l];
                     var name = field.name || field.ID || '';
                     name = name.toLowerCase();
-                    
+
                     if ( ! raFieldIdx) {
-                        if (name.indexOf('ra')==0 || name.indexOf('_ra')==0 || name.indexOf('ra(icrs)')==0 || name.indexOf('_ra')==0 || name.indexOf('alpha')==0) {
+                        if (name.indexOf('s_ra')==0 || name.indexOf('ra')==0 || name.indexOf('_ra')==0 || name.indexOf('ra(icrs)')==0 || name.indexOf('_ra')==0 || name.indexOf('alpha')==0) {
                             raFieldIdx = l;
+
                             continue;
                         }
                     }
 
                     if ( ! decFieldIdx) {
-                        if (name.indexOf('dej2000')==0 || name.indexOf('_dej2000')==0 || name.indexOf('de')==0 || name.indexOf('de(icrs)')==0 || name.indexOf('_de')==0 || name.indexOf('delta')==0) {
+                        if (name.indexOf('s_dec')==0 || name.indexOf('dej2000')==0 || name.indexOf('_dej2000')==0 || name.indexOf('de')==0 || name.indexOf('de(icrs)')==0 || name.indexOf('_de')==0 || name.indexOf('delta')==0) {
                             decFieldIdx = l;
                             continue;
                         }
@@ -7735,8 +7743,9 @@ cds.Catalog = (function() {
             // last resort: take two first fieds
             if (raFieldIdx==null || decFieldIdx==null) {
                 raFieldIdx  = 0;
-                decFieldIdx = 1
+                decFieldIdx = 1;
             }
+
 
             return [raFieldIdx, decFieldIdx];
         };
@@ -7775,6 +7784,7 @@ cds.Catalog = (function() {
             return prefix;
         }
 
+// fonction qui l'appel'
         function doParseVOTable(xml, callback) {
             xml = xml.replace(/^\s+/g, ''); // we need to trim whitespaces at start of document
             var attributes = ["name", "ID", "ucd", "utype", "unit", "datatype", "arraysize", "width", "precision"];
@@ -7842,6 +7852,7 @@ cds.Catalog = (function() {
         ajax.done(function(xml) {
             doParseVOTable(xml, callback);
         });
+
     };
 
     // API
@@ -12923,6 +12934,7 @@ Aladin = (function() {
         var url = '//simbad.u-strasbg.fr/simbad/sim-tap/sync?query=' + encodeURIComponent(query) + '&request=doQuery&lang=adql&format=json&phase=run';
 
         var ajax = Utils.getAjaxObject(url, 'GET', 'json', false)
+
         ajax.done(function(result) {
             var defaultFov = 4 / 60; // 4 arcmin
             var fov = defaultFov;

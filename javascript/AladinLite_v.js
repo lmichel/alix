@@ -26,6 +26,7 @@ f * @preserve LICENSE
 //var t = require('../javascript/AladinLiteView.js');
 //var CircularJSON = import 'circular-json';
 
+
 var getSexadecimalString = function(ra, dec){
 	var strlon = Numbers.toSexagesimal(ra/15, 8, false);
     var strlat = Numbers.toSexagesimal(dec, 7, false);
@@ -625,7 +626,9 @@ var AladinLiteX_mVc = function(){
 			masterResource.actions.externalProcessing.handlerInitial();
 		}
 		if(masterResource != undefined&&masterResource.affichage.display == true){
-			setTimeout( function() {AladinLiteX_mVc.displayDataXml();},1000)	
+			setTimeout( function() 
+			{AladinLiteX_mVc.displayDataXml();
+			},1000)	
 		}
 
 	}

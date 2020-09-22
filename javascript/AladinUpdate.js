@@ -56,11 +56,12 @@ cds.Source.prototype.actionClicked = function() {
             this.select();
         }
         else if (this.catalog.onClick=='showPopup') {
-            view.popup.setTitle('<br><br>');
-            var m = '<div class="aladin-marker-measurement">';
+        
+    		view.popup.setTitle('<br><br>');
+            var m = '<div class="aladin-marker-measurement" style="background:black">';
             m += '<table>';
             for (var key in this.data) {
-                m += '<tr><td>' + key + '</td><td>' + this.data[key] + '</td></tr>';
+                m += '<tr><td style="color:red;">' + key + '</td><td>' + this.data[key] + '</td></tr><hr>';
             }
             m += '</table>';
             m += '</div>';
@@ -69,7 +70,7 @@ cds.Source.prototype.actionClicked = function() {
             view.popup.show();
         }
         else if (typeof this.catalog.onClick === 'function' ) {
-            this.catalog.onClick(this);
+           this.catalog.onClick(this);
             view.lastClickedObject = this;
             this.select();
 
