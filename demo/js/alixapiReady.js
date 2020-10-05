@@ -64,6 +64,8 @@ $().ready(function() {
    	$("#center").click(function() {
 		AladinLiteX_mVc.returnCenter();
    	});
+
+	
  })
 
 
@@ -207,15 +209,10 @@ $().ready(function() {
 		AladinLiteX_mVc.displayDataXml();
 		}
 		
-		//alert(document.URL);
 		
-		
-		//location.reload();
-		//
 		
 			
     	});
-//configureALIX(masTest);
 
    
  })

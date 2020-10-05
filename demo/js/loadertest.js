@@ -30,7 +30,8 @@ var resourceLoader = function() {
 	   	 ,"RegionEditor_m.js"
 	   	 ,"RegionEditor_c.js"
 	   	 ,"HipsSelector_m.js"
-	   	 ,"HipsSelector_v.js"  
+	   	 ,"HipsSelector_v.js"
+		 ,"aliAPI.js"  
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 
@@ -177,6 +178,7 @@ var resourceLoader = function() {
 	/**
 	 * Recursive function loading the first script of the list
 	 */
+		
 	var loadNextScript = function() {
 		var script = document.createElement("script");
 		var head = document.getElementsByTagName('HEAD').item(0);

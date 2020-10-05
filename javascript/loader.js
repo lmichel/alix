@@ -67,6 +67,7 @@ var resourceLoader = function() {
 	   	 ,"Alix_CustomDataTable.js"
 	   	 ,"Alix_ModalResult.js"
 	   	 ,"TapCatalog.js"
+		 ,"alixAPI.js"
 	                ];
 	var local_min_js = [];
 	var imp_js = [ 

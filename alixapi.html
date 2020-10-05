@@ -18,7 +18,7 @@
      // A REMETTRE DANS SETSCRIPT "demo/js/alixapiReady.js",
      resourceLoader.setScripts([ 
      
-     "demo/js/alixCADCReady.js",
+     "demo/js/AlixApiReady.js",
     	
        ]);
      resourceLoader.loadAll(); 
@@ -52,6 +52,7 @@
 		
 		<!-- PARTIE POUR LES SERVICE -->
 		<div class="container-fluid">
+		
 			<div class="row">
 			 <div class ="col-sm-12">
 			  <div class="card text-white bg-primary mb-3">
@@ -100,7 +101,7 @@
 						      <td><input type="text" id="simbad_url" class="form-control disabled" value="http://simbad.u-strasbg.fr/simbad/sim-tap/sync"/></td>
 						      <td><input type="text" id="simbad_table" class="form-control disabled" value="ivoa.ObsCore"/></td>
 						      <td><input type="text" id="simbad_query" class="form-control disabled" value="SELECT TOP 100 * FROM public.basic WHERE CONTAINS(POINT('ICRS',ra,dec), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1"/></td>
-						   	  <td><input type="text" id="simbad_position" class="form-control" value="193.14282	42.404911"/></td>
+						   	  <td><input type="text" id="simbad_position" class="form-control" value="193.14282 42.404911"/></td>
 						   	  <td><button id="simbad_result" class="btn btn-success" title="Move the view to the target (coords or object name)">Get simba result</button></td>
 						    </tr>
 						  </tbody>
@@ -134,13 +135,14 @@
 		<!-- FIN PARTIE POUR LES SERVICE -->
 		<!-- end my code -->
 		<i> Position: </i>
-		<input id="input_target" style = "margin-bottom:5px"></input>
-		<button id="addTarget" title="Move the view to the target (coords or object name)">target</button>
+		<input id="input_target" class="form-control" style = "margin-bottom:5px"></input>
+		<button id="addTarget" class = "btn btn-default" title="Move the view to the target (coords or object name)">target</button>
 		<br>
-		<button id="getView" title="Get data of this current view">Get Current View</button>
-		<button id="changeRef" title="Take WR101 as reference position">Change Reference</button>
-		<button id="changeRefBlue">Change Reference Blue</button>
-		<button id="center" title="Back to center position : M33">Center</button>
+		<button id="getView" class="btn btn-dark" title="Get data of this current view">Get Current View</button>
+		<button id="changeRef" class="btn btn-primary" title="Take WR101 as reference position">Change Reference</button>
+		<button id="deletePolygone" class="btn btn-danger" title="rrrrrrrrrrrrrrrrrrrrr">Delete Polygone</button>
+		<button id="changeRefBlue" class="btn btn-warning">Change Reference Blue</button>
+		<button id="center"  class="btn btn-success" title="Back to center position : M33">Center</button>
 		</div>
 
 	</body>

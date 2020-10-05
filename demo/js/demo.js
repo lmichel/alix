@@ -53,13 +53,13 @@
 	  },
 	  {
 		  name :"demo_popup"
-		,title:" Pop up"
+		,title:" Pop up NEW"
 		,url:"alixindex.html"
 		//,code1:'//html\n&lt;div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;">&lt;/div>'
 		//,button1 : "<button style='margin-right:10px' onclick='Alix_Modalinfo.showPopup(&quot;01 33 50.904 +30 39 35.79&quot;);'><i class=' glyphicon glyphicon-hand-right' style='font-size:16px;padding:3px;'></i><a href='javascript:void(0)''>01 33 50.904 +30 39 35.79</a></button>"
-		,button1 : "<button style='margin-right:10px' onclick='Alix_Modalinfo.showPopup(&quot;01 35 57.316 +30 14 42.99&quot;);'><i class=' glyphicon glyphicon-hand-right' style='font-size:16px;padding:3px;'></i><a href='javascript:void(0)''>01 35 57.316 +30 14 42.99</a></button>"
+		,button1 : "<button style='margin-right:10px' onclick='alixapi.showPopup(&quot;01 35 57.316 +30 14 42.99&quot;);'><i class=' glyphicon glyphicon-hand-right' style='font-size:16px;padding:3px;'></i><a href='javascript:void(0)''>01 35 57.316 +30 14 42.99</a></button>"
 		,code1:'//resourceLoader.setScripts([ "demo/js/alixindexReady.js"]);'
-		,code2:'Alix_Modalinfo.showPopup(position);'
+		,code2:'alixapi.showPopup(position);'
 		,description:" Pop up is the mode that allows to launch ALIX in a modalinfo window ,which don't need too much space and can be installed anywhere in the page."
 	  },
   	  {
@@ -77,7 +77,7 @@
   		,url:"alixapi.html"
   		,code1:'//html\n&lt;div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;">&lt;/div>\n//js\nconfigureALIX(user_configuration)'
   		//,code1:'resourceLoader.setScripts([ "demo/js/alixapiReady.js"]);//html'//JSON.stringify(confData)
-  		,code2:'$("#addTarget").click(function() {\n\tAladinLiteX_mVc.displayTarget(function(ra,dec){alert([ra, dec]);});\n});\n$("#getView").click(function() {\nalert(JSON.stringify(AladinLiteX_mVc.getCurrentView()))\n});\n$("#changeRef").click(function() {\n\tdefaultView = {\n\tdefaultSurvey: "CDS/P/DSS2/color",\n\t\tfield: {\n\t\tposition: "M33",\n\t\tdefaultFov: "0.9",\n\t\t}\n\t };\nAladinLiteX_mVc.setReferenceView(defaultView);\n});\n$("#changeRefBlue").click(function() {\n\tdefaultView = {\n\t\tdefaultSurvey: "ESAVO/P/XMM/EPIC-RGB",\n\t\t\tregion: {\n\t\t\ttype:"array",\n\t\t\tvalue:[\n\t\t\t\t202.86460559637285,47.508903373646355,\n\t\t\t\t202.9658591997302,46.884383185785104,\n\t\t\t\t202.00061058533635,47.16490427482837\n\t\t\t]   \n\t\t\t}\n\t};\nAladinLiteX_mVc.setReferenceView(defaultView);\n});\n$("#center").click(function() {\nAladinLiteX_mVc.returnCenter();\n});//alixapiReady.js\n\n\n\n'
+  		,code2:'$("#addTarget").click(function() {\n\talixapi.displayTarget();\n});\n$("#getView").click(function() {\nalert(JSON.stringify(aliapi.getCurrentView()))\n});\n$("#changeRef").click(function() {\n\talixapi.changeRef());\n$("#changeRefBlue").click(function() {\n\talixapi.changeRefBlue\n});\n$("#center").click(function() {\n alixapi.returnCenter();\n});//alixapiReady.js an alixAPI for detail\n\n\n\n'
   		,description:""
   	  },
 	  {
@@ -86,7 +86,7 @@
 		,url:"alixxmmprogressive.html"
 		//,code1:'resourceLoader.setScripts([ "demo/js/alixXproReady.js"]);//html'
 		,code1:'//html\n&lt;div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;">&lt;/div>'
-		,code2:'//js\n&lt;script>\n...\nconfigureALiX({\n\tmasterResource: {\n\taffichage :{\n\t\tlocation :{\n\t\t\turl_base: "http://saada.unistra.fr/3xmmdr8/getqueryreport?query={$query}&format={$format}&protocol=auto",\n\t\t\turl_query: "Select ENTRY From MergedEntry In MERGEDCATALOGUE WherePosition {isInCircle({$ra} {$dec}, {$fov},-, ICRS)} {$limitQuery}"\n\t\t\turl_limit:  "Order By _n_detections desc Limit 15"\n\t\t},\n\t\tprogressiveMode: true,\n\t\tqueryMode: true,\n\t\tradiusUnit : "arcmin",\n\t\tformat : "votable",\n\t\tlabel : "3XMM Catalogue",\n\t\tdescription: "Texte plus complet qui donne plus d\'informations",\n\t\tdisplay:true\n\t}\n})\n&lt;/script>'
+		,code2:'//js\n&lt;script>\n...\nconfigureALiX({\n\tmasterResource: {\n\taffichage :{\n\t\tlocation :{\n\t\t\turl_base: "http://saada.unistra.fr/3xmmdr8/getqueryreport?query={$query}&format={$format}&protocol=auto",\n\t\t\turl_query: SELECT TOP 100 * FROM ivoa.ObsCore WHERE CONTAINS(POINT("ICRS", s_ra, s_dec), CIRCLE("ICRS", {$ra}, {$dec}, 0.016))=1 {$limitQuery}"\n\t\t\turl_limit:  "Order By _n_detections desc Limit 15"\n\t\t},\n\t\tprogressiveMode: true,\n\t\tqueryMode: true,\n\t\tradiusUnit : "arcmin",\n\t\tformat : "votable",\n\t\tlabel : "3XMM Catalogue",\n\t\tdescription: "Texte plus complet qui donne plus d\'informations",\n\t\tdisplay:true\n\t}\n})\n&lt;/script>'
 		//,code2:'masterResource: {\n\taffichage :{\n\t\t...\n\t\tprogressiveMode: true,\n\t\tprogressiveLimit: "Order By _n_detections desc Limit 15",\n\t\t...\n\t}\n\t...\n}//alixXproReady.js'
 		,description:""
 	  },

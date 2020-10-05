@@ -39,6 +39,8 @@ var alix_height =  $("#aladin-lite-div").height() ;
 var WaitingPanel = function(){
 	var callers = {};
 
+
+
 	var show = function(label){
 		$("#fetchingMessage").html("Fetching data from " + label);
 		$("#waiting_interface").css("height","100%");
@@ -366,7 +368,10 @@ var AladinLiteX_mVc = function(){
 			if(panel_last!=id){
 			$(panel_last).css("display","none");}
 			panel_last =id;
-		}			
+		}
+		
+		
+				
 		
 		menuDiv  = $('#' + menuDivId);
 		parentDiv.append('<div id="' + contextDivId + '" class="alix_context_panel" >'
@@ -742,7 +747,7 @@ var AladinLiteX_mVc = function(){
 			if( x ){
 				var view = BasicGeometry.getEnclosingView(x);
 				defaultPosition = view.center.ra + " " +  view.center.dec
-				defaultFov = 1.2*view.size;
+				defaultFov = 2.5*view.size;
 				if( aladin == null ) {
 					aladin = A.aladin(parentDiv
 						, {survey: defaultSurvey, fov: defaultFov, showLayersControl: false, showFullscreenControl: false, showFrame: false, showGotoControl: false});
@@ -792,6 +797,10 @@ var AladinLiteX_mVc = function(){
 		}
 		setDefaultSurvey();
 	}
+	
+	var h = document.getElementById("aladin-lite-div");
+	
+	
 	var ifpopup = false;
 	var popup = function(){
 		if(ifpopup == true){
@@ -799,7 +808,12 @@ var AladinLiteX_mVc = function(){
 			ifpopup = false;
 		}else{
 		if(menuDiv.width()<100){
-			$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close: function(event,obj){
+			$("#aladin-lite-div").dialog({
+				title:'<label class="form-check-label" for="XMM2">Click to Display or Hide Data &nbsp</label><input type="checkbox" id="XMM2" title="Show/hide master sources" class="form-check-input" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'
+						
+
+				,height:450,width:900,close: function(event,obj){
+			
 				ifpopup = false;
 			}});
 		}else{
@@ -1485,7 +1499,7 @@ var AladinLiteX_mVc = function(){
 				//$(".ui-dialog").animate({height:'400px'},"fast");
 				
 			}else{
-				alert("Please choose a catalog");
+				//alert("Please choose a catalog");
 			}
 			
 		//}
@@ -2294,6 +2308,22 @@ var AladinLiteX_mVc = function(){
 		}
 	}
 	
+	// function to remove alls polygone to alix
+	
+	var removeAllLayers= function(){
+		if( aladin != null ) {
+			
+			for( var i =0; i<aladin.view.overlays.length ; i++){
+				console.log(aladin.view.overlays.length+"  "+aladin.view.overlays[i].name)
+				if( aladin.view.overlays[i].name ==  "Reference Frame"){
+					aladin.view.overlays[i].removeAll();	
+					//break;
+				}else{
+					aladin.view.overlays[i].removeAll();
+				}
+			}
+			}
+	} 
 	var cleanPolygon = function(){
 		//console.log(controller);
 		//aladinLiteView.clean();
@@ -2306,6 +2336,11 @@ var AladinLiteX_mVc = function(){
 		AladinLiteX_mVc.displayDataXml();
 		
 	}
+	
+	
+	
+	
+	
 	var retour = {
 			popup : popup,
 			refresh : refresh,
@@ -2381,7 +2416,9 @@ var AladinLiteX_mVc = function(){
 			gotoPositionByName : gotoPositionByName,
 			setRegion : setRegion,
 			cleanPolygon : cleanPolygon,
-			changeMasterResource : changeMasterResource
+			changeMasterResource : changeMasterResource,
+			removeAllLayers : removeAllLayers,
+			
 	};
 	return retour
 	

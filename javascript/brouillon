@@ -3,8 +3,27 @@ http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=do
 
 ttp://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT+TOP+100+%2A+FROM+ivoa.ObsCore+WHERE+CONTAINS%28POINT%28%27ICRS%27%2C+s_ra%2C+s_dec%29%2C+CIRCLE%28%27ICRS%27%2C+83.633042%2C+22.014500%2C+0.016%29%29%3D1%0D%0A
 
-http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}=SELECT TOP 100 * FROM ivoa.ObsCore WHERE CONTAINS(POINT('ICRS', s_ra, s_dec), CIRCLE('ICRS', 68.988479 ,71.748572, 0.016))=1
+http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT TOP 100 * FROM  &#34;public&#34;.basic WHERE CONTAINS(POINT('ICRS',ra,dec), CIRCLE('ICRS', 68.988479 ,71.748572, 0.016))=1
+http://simbad.u-strasbg.fr/simbad/sim-tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT TOP 100 * FROM  &#34;public&#34;.basic WHERE CONTAINS(POINT('ICRS',ra,dec), CIRCLE('ICRS', 68.988479 ,71.748572, 0.016))=1
+
+http://xcatdb.unistra.fr/3xmmdr8/tap/sync?forma=votable/td&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT%20TOP%201000%20%2A%20FROM%20ivoa.ObsCore10%20%20WHERE%20%20%20%20%20%20CONTAINS%28POINT%28%27ICRS%27%2C%20s_ra%2C%20s_dec%29%2C%20CIRCLE%28%27ICRS%27%2C%2083.633042%2C%20%2B22.014500%2C%200.016666666666666666%29%29%20%3D%201
+dc.zah.uni-heidelberg.de/__system__/tap/run/tap/sync?PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT%20TOP%20100%20%2A%20FROM%20%20%26%2334%3Bpublic%26%2334%3B.basic%20WHERE%20CONTAINS%28POINT%28%27ICRS%27%2Cra%2Cdec%29%2C%20CIRCLE%28%27ICRS%27%2C%20%7B%24ra%7D%2C%20%7B%24dec%7D%2C%200.016%29%29%3D1
+http://simbad.u-strasbg.fr/simbad/sim-tap/sync?forma=votable/td&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT%20TOP%201000%20%2A%20FROM%20%3Bpublic%26%2334%3B.basic%20%20WHERE%20%20%20%20%20%20CONTAINS%28POINT%28%27ICRS%27%2C%20s_ra%2C%20s_dec%29%2C%20CIRCLE%28%27ICRS%27%2C%2083.633042%2C%20%2B22.014500%2C%200.016666666666666666%29%29%20%3D%201"
 	
+	
+	
+	
+	
+	------------------------------simbad-------------------------
+	http://simbad.u-strasbg.fr/simbad/sim-tap/sync?forma=votable/td&PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT TOP 100 * FROM "public".basic WHERE CONTAINS(POINT('ICRS',ra,dec), CIRCLE('ICRS', 193.14282,42.404911, 0.016))=1
+	
+	
+	
+	
+	http://simbad.u-strasbg.fr/simbad/sim-tap/sync?forma=votable/td&PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT+TOP+100+*+FROM+%22public%22.basic+WHERE+CONTAINS%28POINT%28%27ICRS%27%2Cra%2Cdec%29%2C+CIRCLE%28%27ICRS%27%2C+193.14282%2C42.404911%2C+0.016%29%29%3D1
+	
+	
+								
 	Alix apiredi.js
 	/**
 f * @preserve LICENSE
@@ -278,6 +297,67 @@ var configureALIX = function(){
 
 
 
+
+///////////////////////////////////// Region ////////////////////////////////////
+var values = [];
+			values= region.getAladinScript().substring(";").split(" ");
+			var t="",f;
+     		console.log("VALUES => "+values);
+
+			for(var i=1;i<values.length;i++){
+				
+				if(values[i].endsWith(";")){
+					f=values[i]+","+f;
+					
+				}else{
+					t=values[i]+","+t;
+				}
+				
+				 
+				//contentScript[i]=values[i];
+				
+			}
+			var tab1 = t.split(',');
+			var t1;
+			for(var i=1;i<tab1.length;i++){
+				
+				if(tab1[i]=="zoom"){
+					tab1.splice(i,1)
+					f=values[i]+" "+f;
+					
+				}else{
+					t1=tab1[i]+","+t1;
+				}
+				
+			}
+			var r=f.split(";")
+			var r2 =r[0].split(" ");
+			console.log(r.length+"   "+r2[0]+" => "+r[1]+" => "+r[2]+" => "+r[3]+" => "+r[6]);
+			//t=t+f;
+    		//console.log(t);
+			//var tab2 = f.split(';');
+			var d=r[1].split(",");
+			var d2=r[3].split(",");
+			r[1]=d[1];r[3]=d2[1];
+			var tab = t1.split(',');
+			tab.splice(tab.length-1,1)
+			tab.splice(0,1)
+			//t1=tab[0];
+			
+			tab.push(r[1]);tab.push(r2[0]);tab.push(r[3])
+			var gootab=[];
+			  for(var i=0;i<tab.length;i+=2){
+				gootab.push(tab[i],tab[i+1]);
+				console.log(tab[i]);
+			}  		
+		
+			console.log(gootab);
+			console.log(region.points);
+			alert(stcRegion);
+			console.log(region.decCenter);
+			console.log(region.size);
+			console.log(region.raCenter);
+			console.log(alixapi.testFigure(stcRegion));
 
 
 
