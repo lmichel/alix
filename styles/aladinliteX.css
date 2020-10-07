@@ -1141,7 +1141,7 @@ position:absolute;
 #SourceDiv{
     background-color: #f3ebddc2;
     width: 300px;
-    height: 300px;
+    height: 340px;
     border: azure;
     position: absolute;
     border-radius: 20px;
@@ -1152,7 +1152,7 @@ position:absolute;
 	background-color: transparent;
 	font-size : 10px;
     width: 300px;
-    height: 150px;
+    height: 300px;
     border: azure;
     position: absolute;
     //border-radius: 20px;

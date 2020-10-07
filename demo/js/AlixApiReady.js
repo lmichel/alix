@@ -151,7 +151,8 @@ $().ready(function() {
 			alixapi.connectTapService(bd,url_base,table,query,position);
 		});
 		$("#deletePolygone").click(function(){
-		
+		//alert();
+		alixapi.getXmmId();
 		alixapi.removePolygone();
 	
 	})

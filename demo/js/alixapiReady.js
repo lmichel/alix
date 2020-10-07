@@ -32,6 +32,7 @@ $().ready(function() {
 		alert(JSON.stringify(AladinLiteX_mVc.getCurrentView()))
 	});
    	$("#changeRef").click(function() {
+	
   	    defaultView = {
 	        defaultSurvey: "CDS/P/DSS2/color",
      	        field: {
@@ -39,9 +40,10 @@ $().ready(function() {
 	        	defaultFov: "1",
 	        }
   	    };
-		AladinLiteX_mVc.setReferenceView(defaultView);
+		//AladinLiteX_mVc.setReferenceView(defaultView);
 	});
    	$("#changeRefBlue").click(function() {
+	
   	  defaultView = {
     	       // defaultSurvey: "ESAVO/P/XMM/EPIC-RGB",
      	        field: {

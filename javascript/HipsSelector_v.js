@@ -389,11 +389,14 @@ HipsSelector_mVc.prototype = {
 		//display local catalog such as 3XMM
 		displayDataXml: function(aladinLiteView,url){
 			var label = aladinLiteView.masterResource.affichage.label;
+			
 			var self = this;
-			var name = 'Swarm';
+			var name = 'Swarm';	
 			var cmdNode = $("#XMM");
+			//var name =cmdNode.html().replace("&gt;",">");
 			var clickType = 'handler';
 			var color= '#ff0000';
+			//var caom = 
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
 			}
@@ -404,7 +407,10 @@ HipsSelector_mVc.prototype = {
 				$("#btn-XMM-description").css("color" , color);
 				$("#btn-XMM-flash").css("color" ,color);
 				$("#btn-XMM-configure").css("color" ,color);
-				if(cmdNode.html()=="3XMM Catalogue")
+				/**
+				TODO 
+				 */
+				if(cmdNode.html()=="3XMM Catalogue" || cmdNode.html().startsWith("TAP") )
 					$("#ACDS").css("display" , "inline");
 				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 			}

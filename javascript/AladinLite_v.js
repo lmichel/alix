@@ -42,16 +42,23 @@ var WaitingPanel = function(){
 
 
 	var show = function(label){
+		label = document.getElementById("XMM").innerText
+		//alert(label);
+		console.log("show " + label)
 		$("#fetchingMessage").html("Fetching data from " + label);
 		$("#waiting_interface").css("height","100%");
 		$("#waiting_interface").css("width","100%");
 		$("#waiting_interface").css("display","inline");
 		callers[label] = true;
+		//return label;
 	}
 	var hide = function(label){
+		console.log("hide " + label)
 
 		delete callers[label];
 		for( var c in callers){
+			console.log("hide >>>" + c)
+
 			$("#fetchingMessage").html("Fetching data from " + c);
 			return;
 		}
@@ -236,6 +243,7 @@ var AladinLiteX_mVc = function(){
 		var XMM;
 		if(masterResource != undefined){
 			XMM=masterResource.affichage.label;
+			
 		}else{
 			XMM="";
 		}
@@ -245,6 +253,7 @@ var AladinLiteX_mVc = function(){
 		}else{
 			ACDS="";
 		}
+		
 		parentDiv = $('#' + parentDivId);
 		parentDiv.html('<div id="' + aladinDivId + '" class="alix_aladin_div"></div>');
 
@@ -293,7 +302,7 @@ var AladinLiteX_mVc = function(){
 			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div></b>'
 			    +'<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>'
 			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div>'
-			    +'<div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
+			    +'<div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+XMM+'</b>'
 			    + descriptionXMM()
 			    + configurationXMM()
 			    + hideXMMFlash()
@@ -780,8 +789,8 @@ var AladinLiteX_mVc = function(){
 				defaultFov = 0.9;
 			}
 			if( aladin == null ) {
-				console.log(defaultSurvey)
-				console.log(defaultFov)
+				//console.log(defaultSurvey)
+				//console.log(defaultFov)
 				aladin = A.aladin(parentDiv
 					, {survey: defaultSurvey, fov: defaultFov, showLayersControl: false, showFullscreenControl: false, showFrame: false, showGotoControl: false});
 				parentDiv.append();
@@ -802,20 +811,27 @@ var AladinLiteX_mVc = function(){
 	
 	
 	var ifpopup = false;
-	var popup = function(){
+	/**
+	  popup title : either text or html
+	 */
+	var popup = function(title){
+		if( ! title){
+			title = "ALix Popup"
+		}
 		if(ifpopup == true){
 			$("#aladin-lite-div").closest('.ui-dialog-content').dialog('close'); 
 			ifpopup = false;
 		}else{
 		if(menuDiv.width()<100){
 			$("#aladin-lite-div").dialog({
-				title:'<label class="form-check-label" for="XMM2">Click to Display or Hide Data &nbsp</label><input type="checkbox" id="XMM2" title="Show/hide master sources" class="form-check-input" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'
+				title:'<label class="form-check-label" for="XMM2">'+title+'&nbsp</label><input type="checkbox" id="XMM2" name ="XMM2" title="Show/hide master sources" class="form-check-input" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'
 						
 
 				,height:450,width:900,close: function(event,obj){
 			
 				ifpopup = false;
 			}});
+			  
 		}else{
 			if(contextDiv.height()<100){
 				$("#aladin-lite-div").dialog({title:"AladinLiteX",height:450,width:900,close: function(event,obj){
@@ -830,8 +846,6 @@ var AladinLiteX_mVc = function(){
 		ifpopup = true;
 		}
 	}
-
-
 
 	var refresh = function(){
 		gotoObject(defaultPosition);
@@ -1717,12 +1731,21 @@ var AladinLiteX_mVc = function(){
 	
 	
 	var displayDataXml = function(){		
-		//event.stopPropagation();
+		var xmmColor = document.getElementById("XMM").style.color
 		checkBrowseSaved();
 		storeCurrentState();
 		contextDiv.html("");
 		closeContext();
 		controller.displayDataXml(aladinLiteView);
+		const xmmElement = document.querySelector('.alix_datahelp_selected')
+			if(xmmElement!=null){
+				const color = xmmElement.style.color
+				if(color=="rgb(255, 0, 0)"){
+		  		$('input[name=XMM2]').attr('checked', true);
+				}
+			}else if(xmmElement==null){
+				$('input[name=XMM2]').attr('checked', false);
+			  }	
 	}
 	
 	var XMMFlash = function(){
@@ -1951,7 +1974,7 @@ var AladinLiteX_mVc = function(){
 			  }
 			, function() {
 				SwarmDynamicFilter.runConstraint(aladinLiteView);
-				WaitingPanel.hide("Swarm");
+				WaitingPanel.hide(aladinLiteView.masterResource.affichage.label); // it was Swarm inside
 			//When the XMM sources is updated by changing the position or zoom, recall the filter
 				} /*WaitingPanel.hide()*/
 			);
@@ -2314,7 +2337,7 @@ var AladinLiteX_mVc = function(){
 		if( aladin != null ) {
 			
 			for( var i =0; i<aladin.view.overlays.length ; i++){
-				console.log(aladin.view.overlays.length+"  "+aladin.view.overlays[i].name)
+				//console.log(aladin.view.overlays.length+"  "+aladin.view.overlays[i].name)
 				if( aladin.view.overlays[i].name ==  "Reference Frame"){
 					aladin.view.overlays[i].removeAll();	
 					//break;
