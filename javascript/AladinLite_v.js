@@ -2347,6 +2347,31 @@ var AladinLiteX_mVc = function(){
 			}
 			}
 	} 
+	
+	// function to draw circle in alix
+	var drawCircle = function(raCenter,decCenter,rayon){
+		if(aladin!=null){
+				//var aladin = A.aladin('#aladin-lite-div', {target: 'M 1', fov: 0.2});
+				
+				var overlay = A.graphicOverlay({color: '#ee2345', lineWidth: 3});
+				aladin.addOverlay(overlay);
+				//overlay.addFootprints([A.polygon([[83.64287, 22.01713], [83.59872, 22.01692], [83.59852, 21.97629], [83.64295, 21.97629]]), A.polygon([[83.62807, 22.06330], [83.58397, 22.02280], [83.62792, 22.02258]])]);
+				overlay.add(A.circle(raCenter, decCenter, rayon, {color: 'blue'})); // radius in degrees
+		}
+	
+	}
+	
+	/*var drawPolygones = function(points){
+		if(aladin!=null){
+				//var aladin = A.aladin('#aladin-lite-div', {target: 'M 1', fov: 0.2});
+				
+				var overlay = A.graphicOverlay({color: '#ee2345', lineWidth: 3});
+				aladin.addOverlay(overlay);
+				overlay.addFootprints([A.polygon(points)]);
+				
+		}
+	}*/
+	
 	var cleanPolygon = function(){
 		//console.log(controller);
 		//aladinLiteView.clean();
@@ -2441,6 +2466,8 @@ var AladinLiteX_mVc = function(){
 			cleanPolygon : cleanPolygon,
 			changeMasterResource : changeMasterResource,
 			removeAllLayers : removeAllLayers,
+			drawCircle : drawCircle,
+			//drawPolygons : drowPolygones,
 			
 	};
 	return retour

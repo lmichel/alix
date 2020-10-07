@@ -443,7 +443,7 @@ var masTest = {
 	
 	var getCoords = function(stcRegion){
 		
-		var coords = stcRegion.split(" ");
+		var coords = stcRegion.split(/\s+/);;
 		var removed = false;
 		var j =0;
 		do {
@@ -459,8 +459,7 @@ var masTest = {
 				coords[i] = Number(coords[i]);
 			}	
 		} while ( removed == true);
-			coords.push(coords[0])
-			coords.push(coords[1]);
+			
 		
 			//alert(coords[0]);
 			//coords.push(coords[1]);
@@ -512,7 +511,15 @@ var masTest = {
 	var drawPolygone = function(region,stcRegion){
 		//RegionEditor_mVc.setEditionFrame(arrayTab)
 		var arrayTab = alixapi.getCoords(stcRegion);
-		console.log(arrayTab);
+		
+	  if(arrayTab.length===3){
+		
+		alixapi.showPopup(region.raCenter+" "+region.decCenter);
+		AladinLiteX_mVc.drawCircle(region.raCenter,region.decCenter,region.size,{color: 'blue'});
+		
+	}else{
+		arrayTab.push(arrayTab[0]);
+		arrayTab.push(arrayTab[1]);
 		alixapi.showPopup(alixapi.getCenter(region));
 		//console.log(getSize());
 		defaultView = {
@@ -528,6 +535,7 @@ var masTest = {
   	   defaultView = mixConf(confData.defaultView,defaultView);
   	   AladinLiteX_mVc.setReferenceView(defaultView);
 	}
+}
 	
 	var getXmmId=function(name){
 		var title = document.getElementById("XMM");
@@ -542,6 +550,45 @@ var masTest = {
 	
 	var getMessage ="";
 	//var popupTitle = "Click Display or Hide Data 2";
+	var drawCircle = function(values){
+		var table = values.split(" ");
+		var removed = false;
+		var j =0;
+		do {
+			removed = false
+			for(i=0;i<table.length;i++){
+				if(isNaN(table[i]) || table[i]==0 ){
+					table.splice(i,1);
+					removed = true;
+					break
+				}
+				table[i] = Number(table[i]);
+				
+			}	
+		} while ( removed == true);
+			
+		    
+			//alert(coords[0]);
+			//table.push(table[1]);
+			console.log(table);
+			//alixapi.showPopup(table[0]+" "+table[1]);
+		//console.log(getSize());
+		/*defaultView = {
+    	       // defaultSurvey: "ESAVO/P/XMM/EPIC-RGB",
+     	       
+				region: {
+	        		type:"circle",
+	        		value:table
+ 				}
+  	    };
+		//console.log("<<<<<<<<<<<<<<<<<<< "+defaultView.field.defaultFov);
+		//masTest.masterResource.
+  	   defaultView = mixConf(confData.defaultView,defaultView);
+  	   AladinLiteX_mVc.setReferenceView(defaultView);*/
+			return table;
+		
+		
+	}
 			
 	var retour = {
 	displayTarget : displayTarget,
@@ -569,6 +616,7 @@ var masTest = {
 	getFetchingMessage : getFetchingMessage,
 	getMessage : getMessage,
 	connectToMaster :connectToMaster,
+	drawCircle : drawCircle,
 	//popupTitle : popupTitle
 	
 	

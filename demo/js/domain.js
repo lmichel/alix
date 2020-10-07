@@ -83,6 +83,7 @@ function STCRegion(stcString) {
 	this.raCenter = 0.0;
 	this.decCenter = 0.0;			
 	this.points = [];
+	//var shape = {polygone:"poligon", circle :"circle"};
 
 	this.init();
 }
@@ -98,7 +99,11 @@ STCRegion.prototype = {
 					coords.push(parseFloat(elements[i]));
 				}
 			}
-			if((coords.length %2) ){
+			if( coords.legth == 3) {
+				this.raCenter = coords[0];
+				this.decCenter = coords[1];
+				this.size = 2*coords[2];
+			} else if((coords.length %2) ){
 				Modalinfo.error("STC Region " + this.stcString + " is not valid");
 			} else {
 				/*
