@@ -21,12 +21,12 @@ var u="http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap/sync";
 var param ="PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}";
 	
 	// functon to display current position coordonate	
-	var displayTarget =function(){
+	var demo_displayTarget =function(){
 		AladinLiteX_mVc.displayTarget(function(ra,dec){  alert([ra, dec]);});
 	}
 	
 	// function to change reference of alix view
-	var changeRef = function(){
+	var demo_changeRef = function(){
 		 defaultView = {
 	        defaultSurvey: "CDS/P/DSS2/color",
      	        field: {
@@ -39,7 +39,7 @@ var param ="PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}";
 	
 	// the function to draw in blue figure by the position parse in the region	
 	
-	var changeRefBlue = function(){
+	var demo_changeRefBlue = function(){
 		defaultView = {
     	       // defaultSurvey: "ESAVO/P/XMM/EPIC-RGB",
      	        field: {
@@ -65,7 +65,7 @@ var param ="PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}";
 	
 	
 	//function to display alix in center position
-	var center = function(){
+	var demo_center = function(){
 		AladinLiteX_mVc.returnCenter();
 	}	
 	
@@ -105,7 +105,7 @@ var param ="PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY={$query}";
 	}
 	
 	// function to connect different service and display data of each sevices
-	var setConnectTapService = function (bd,url_base,table,query,position){
+	var demo_setConnectTapService = function (bd,url_base,table,query,position){
 	switch(bd){
 		case "3XMMDR8":
 			url_base = $("#xmm_url").val();
@@ -337,7 +337,6 @@ var masTest = {
 			AladinLiteX_mVc.setRegion("",1);
 		}
 		if(position!=undefined)
-			
 			AladinLiteX_mVc.gotoPositionByName(position);
 			//AladinLiteX_mVc.displayDataXml();
 	};
@@ -345,11 +344,9 @@ var masTest = {
 	var initilizedata = function(url,table,ra_name,dec_name){
 		var requete;
 		a=table;
-		u=url+"sync";
-		    
+		u=url+"sync";    
 		requete ="SELECT TOP 100 * FROM "+table+" WHERE CONTAINS(POINT('ICRS', "+ra_name+", "+dec_name+"), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1";
-			
-		return requete
+	    return requete
 	}
 	
 		/*var showPopupData = function(position,url,tabl,ra_name,dec_name){
@@ -380,9 +377,7 @@ var masTest = {
 	
 
 	var showPopupData = function(params){
-		//alert(params.master);
 		alixapi.removePolygone();
-		
 		if( params.master ){
 			alixapi.connectToMaster(params.master)
 		}
@@ -390,7 +385,7 @@ var masTest = {
 			masTest.masterResource.affichage.label=params.label;
 			drawPolygone(params.region,params.stcRegion)
 		}
-			}
+ }
 				
 	var connectToMaster = function(master){
 		     	 var isGoodTitle=false;
@@ -415,15 +410,8 @@ var masTest = {
 				}
 				alixapi.getMessage=alixapi.getFetchingMessage(master.label);	
 		}					
-									
-			
-				
-			
-				
-				
+								
 	var isCirle = false;
-	
-	
 	var testFigure = function(stRegion){
 		var tableRegion = stRegion.split(" ");
 		for(i=0;i<tableRegion.length;i++){
@@ -459,12 +447,8 @@ var masTest = {
 				coords[i] = Number(coords[i]);
 			}	
 		} while ( removed == true);
-			
-		
-			//alert(coords[0]);
-			//coords.push(coords[1]);
 			return coords;
-		}
+	}
 	
 	
 	var getPoints = function(region){
@@ -473,10 +457,6 @@ var masTest = {
 		}
 		
 	var getCenter = function(region){
-		/*var raCenter = region.raCenter.toFixed(6);
-		raCenter=Number(raCenter);
-		var decCenter = region.decCenter.toFixed(6);
-		decCenter =Number(decCenter);*/
 		 var view = BasicGeometry.getEnclosingView(getPoints(region));
 		var ra = view.center.ra.toFixed(6);
 		var dec = view.center.dec.toFixed(6);
@@ -484,19 +464,15 @@ var masTest = {
 			return ra+" "+dec;
 		}
 		
-	
 		var getSize = function(region){
-			return region.size;
-			
+			return region.size;	
 		}
 		
 		/* a voir pour lundi pour faire un remouve de overlay et retirer le polygone*/
 		
 		var removePolygone = function(){
-			console.log("@@@@@@@@@@@@@@@@@@@@@@ inside remove")
 			AladinLiteX_mVc.removeAllLayers();
 		   	if( AladinLiteX_mVc.aladin != null ) {
-			console.log("@@@@@@@@@@@@@@@@@@@@@@ inside remove")
 			for( var i =0; i<AladinLiteX_mVc.aladin.view.overlays.length ; i++){
 				if( aladin.view.overlays[i].name ==  "Reference Frame" ){
 					aladin.view.overlays[i].removeAll();
@@ -504,36 +480,30 @@ var masTest = {
 				}
 			}
 		}
-		}
+	}
 		
-		 
-	
 	var drawPolygone = function(region,stcRegion){
 		//RegionEditor_mVc.setEditionFrame(arrayTab)
-		var arrayTab = alixapi.getCoords(stcRegion);
-		
+	  var arrayTab = alixapi.getCoords(stcRegion);	
 	  if(arrayTab.length===3){
-		
 		alixapi.showPopup(region.raCenter+" "+region.decCenter);
 		AladinLiteX_mVc.drawCircle(region.raCenter,region.decCenter,region.size,{color: 'blue'});
 		
-	}else{
-		arrayTab.push(arrayTab[0]);
-		arrayTab.push(arrayTab[1]);
-		alixapi.showPopup(alixapi.getCenter(region));
-		//console.log(getSize());
-		defaultView = {
-    	       // defaultSurvey: "ESAVO/P/XMM/EPIC-RGB",
-     	       
-				region: {
-	        		type:"array",
-	        		value:arrayTab
- 				}
-  	    };
-		//console.log("<<<<<<<<<<<<<<<<<<< "+defaultView.field.defaultFov);
-		//masTest.masterResource.
-  	   defaultView = mixConf(confData.defaultView,defaultView);
-  	   AladinLiteX_mVc.setReferenceView(defaultView);
+	  }else{
+		   arrayTab.push(arrayTab[0]);
+			arrayTab.push(arrayTab[1]);
+			alixapi.showPopup(alixapi.getCenter(region));
+			//console.log(getSize());
+			defaultView = {
+	    	       // defaultSurvey: "ESAVO/P/XMM/EPIC-RGB",
+	     	       
+					region: {
+		        		type:"array",
+		        		value:arrayTab
+	 				}
+	  	    };
+	  	   defaultView = mixConf(confData.defaultView,defaultView);
+	  	   AladinLiteX_mVc.setReferenceView(defaultView);
 	}
 }
 	
@@ -550,8 +520,8 @@ var masTest = {
 	
 	var getMessage ="";
 	//var popupTitle = "Click Display or Hide Data 2";
-	var drawCircle = function(values){
-		var table = values.split(" ");
+	var getCircleData = function(values){
+		var table = values.split(/\s+/);
 		var removed = false;
 		var j =0;
 		do {
@@ -563,40 +533,18 @@ var masTest = {
 					break
 				}
 				table[i] = Number(table[i]);
-				
 			}	
 		} while ( removed == true);
-			
-		    
-			//alert(coords[0]);
-			//table.push(table[1]);
-			console.log(table);
-			//alixapi.showPopup(table[0]+" "+table[1]);
-		//console.log(getSize());
-		/*defaultView = {
-    	       // defaultSurvey: "ESAVO/P/XMM/EPIC-RGB",
-     	       
-				region: {
-	        		type:"circle",
-	        		value:table
- 				}
-  	    };
-		//console.log("<<<<<<<<<<<<<<<<<<< "+defaultView.field.defaultFov);
-		//masTest.masterResource.
-  	   defaultView = mixConf(confData.defaultView,defaultView);
-  	   AladinLiteX_mVc.setReferenceView(defaultView);*/
-			return table;
-		
-		
+	return table;	
 	}
 			
 	var retour = {
-	displayTarget : displayTarget,
-	changeRef     : changeRef,
-	changeRefBlue : changeRefBlue,
-	center        : center,
+	displayTarget : demo_displayTarget,
+	changeRef     : demo_changeRef,
+	changeRefBlue : demo_changeRefBlue,
+	center        : demo_center,
 	displayDataTab: displayDataTab,
-	connectTapService:setConnectTapService,
+	connectTapService:demo_setConnectTapService,
 	confData      :confData,	
 	requete       : quer,
 	displayTest   : displayTest,
@@ -616,7 +564,7 @@ var masTest = {
 	getFetchingMessage : getFetchingMessage,
 	getMessage : getMessage,
 	connectToMaster :connectToMaster,
-	drawCircle : drawCircle,
+	getCircleData : getCircleData,
 	//popupTitle : popupTitle
 	
 	
