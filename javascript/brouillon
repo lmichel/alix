@@ -17,10 +17,10 @@ http://simbad.u-strasbg.fr/simbad/sim-tap/sync?forma=votable/td&REQUEST=doQuery&
 	------------------------------simbad-------------------------
 	http://simbad.u-strasbg.fr/simbad/sim-tap/sync?forma=votable/td&PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT TOP 100 * FROM "public".basic WHERE CONTAINS(POINT('ICRS',ra,dec), CIRCLE('ICRS', 193.14282,42.404911, 0.016))=1
 	
+	http://simbad.u-strasbg.fr/simbad/sim-tap/sync?REQUEST=doQuery&PHASE=RUN&FORMAT=votable/td&LANG=ADQL&query=SELECT+TOP+100+*+FROM+%22public%22.basic+WHERE+CONTAINS%28POINT%28%27ICRS%27%2Cra%2Cdec%29%2C+CIRCLE%28%27ICRS%27%2C+193.14282%2C42.404911%2C+0.016%29%29%3D1
 	
 	
-	
-	http://simbad.u-strasbg.fr/simbad/sim-tap/sync?forma=votable/td&PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT+TOP+100+*+FROM+%22public%22.basic+WHERE+CONTAINS%28POINT%28%27ICRS%27%2Cra%2Cdec%29%2C+CIRCLE%28%27ICRS%27%2C+193.14282%2C42.404911%2C+0.016%29%29%3D1
+	http://simbad.u-strasbg.fr/simbad/sim-tap/sync?format=votable/td&PHASE=RUN&REQUEST=doQuery&LANG=ADQL&QUERY=SELECT+TOP+100+*+FROM+%22public%22.basic+WHERE+CONTAINS%28POINT%28%27ICRS%27%2Cra%2Cdec%29%2C+CIRCLE%28%27ICRS%27%2C+193.14282%2C42.404911%2C+0.016%29%29%3D1
 	
 	
 								

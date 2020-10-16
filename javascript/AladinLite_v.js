@@ -44,7 +44,7 @@ var WaitingPanel = function(){
 	var show = function(label){
 		label = document.getElementById("XMM").innerText
 		//alert(label);
-		console.log("show " + label)
+		//console.log("show " + label)
 		$("#fetchingMessage").html("Fetching data from " + label);
 		$("#waiting_interface").css("height","100%");
 		$("#waiting_interface").css("width","100%");
@@ -53,11 +53,11 @@ var WaitingPanel = function(){
 		//return label;
 	}
 	var hide = function(label){
-		console.log("hide " + label)
+		//console.log("hide " + label)
 
 		delete callers[label];
 		for( var c in callers){
-			console.log("hide >>>" + c)
+			//console.log("hide >>>" + c)
 
 			$("#fetchingMessage").html("Fetching data from " + c);
 			return;

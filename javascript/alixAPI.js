@@ -342,9 +342,18 @@ var masTest = {
 	};
 	
 	var initilizedata = function(url,table,ra_name,dec_name){
+		
+		var simbadUrl="http://simbad.u-strasbg.fr/simbad/sim-tap/";
+		var gavoUrl ="http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/";
+		
+		if(url==simbadUrl || url==gavoUrl){
+			u=url+"sync?FORMAT=votable/td&"; 
+		}else{
+			u=url+"sync?"; 
+		}
+		
 		var requete;
-		a=table;
-		u=url+"sync";    
+		a=table;   
 		requete ="SELECT TOP 100 * FROM "+table+" WHERE CONTAINS(POINT('ICRS', "+ra_name+", "+dec_name+"), CIRCLE('ICRS', {$ra}, {$dec}, 0.016))=1";
 	    return requete
 	}
@@ -391,7 +400,7 @@ var masTest = {
 		     	 var isGoodTitle=false;
 				 var initQuery = initilizedata(master.urlPath,master.tablePath,master.raColumn,master.decColumn);
 			     var position=master.raCenter+" "+master.decCenter
-				masTest.masterResource.affichage.location.url_base=u+"?"+param;
+				masTest.masterResource.affichage.location.url_base=u+""+param;
 				masTest.masterResource.affichage.location.url_query=initQuery;
 				masTest.masterResource.affichage.label=master.label;
 				//Cas 1 Div n'existe pas, creer la div et demarrer Alix dedans
