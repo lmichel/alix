@@ -10,7 +10,7 @@
     "circular-json": "^0.5.9",
     "font-awesome": "^4.7.0",
     "global": "^4.3.2",
-    "hawk": "^7.0.10",
+    "hawk": "^9.0.1",
     "highlight.js": "^9.13.1",
     "hoek": "^4.2.1",
     "jquery": "^3.5.0",
