@@ -27,7 +27,14 @@
  * 
  * Author Gerardo Irvin Campos yah
  */ 
-
+/**
+@brief View of the RegionEditor service
+@param {AladinLite_v} aladinLite_V - The aladin lite view taht will handle the result of the selection
+@param {HTML}  parentDivId
+@param {HTML} contextDivId
+@param {function} handler
+@param {Frame} defaultRegion
+ */
 function RegionEditor_mVc(aladinLite_V, parentDivId, contextDivId, handler,/* points,*/ defaultRegion){
 	this.parentDivId = parentDivId;
 	this.drawCanvas = null; // canvas where the polygon is drawn
@@ -64,59 +71,61 @@ RegionEditor_mVc.prototype = {
 			 */
 			var that = this;
 			if(!AladinLiteX_mVc.regionEditorInit){
-			this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
-			this.lineCanvas[0].width =this.parentDiv.width() ;
-			this.lineCanvas[0].height = this.parentDiv.height();
-			this.lineContext = this.lineCanvas[0].getContext('2d');	        
-			this.parentDiv.append(this.lineCanvas);
-			this.lineCanvas.css('z-index', '100');
-			this.lineCanvas.css('position', 'absolute');
-			this.lineCanvas.hide(); 
+				this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
+	
+				this.lineCanvas[0].width =this.parentDiv.width() ;
+				this.lineCanvas[0].height = this.parentDiv.height();
+				this.lineContext = this.lineCanvas[0].getContext('2d');
+				this.parentDiv.append(this.lineCanvas);
+				this.lineCanvas.css('z-index', '100');
+				this.lineCanvas.css('position', 'absolute');
+				this.lineCanvas.hide(); 
 
-			/*
-			 * Canvas pour les traces temporaires
-			 */
-			this.drawCanvas = $("<canvas id='RegionCanvas' class='editor-canvas' ></canvas>");
-			this.drawCanvas[0].width = this.parentDiv.width();
-			this.drawCanvas[0].height = this.parentDiv.height();
-			this.drawContext = this.drawCanvas[0].getContext('2d');
-			this.parentDiv.append(this.drawCanvas);
-			this.drawCanvas.css('z-index', '101');
-			this.drawCanvas.css('position', 'absolute');
-			this.drawCanvas.css('top', '0px');
-			this.drawCanvas.hide(); 
-
-
-			this.controller = new RegionEditor_mvC({/* "points": this.points,*/ "handler": this.clientHandler, "canvas": this.drawCanvas, "canvaso": this.lineCanvas, "aladinView": this.aladinLite_V});
-			/*
-			 * The controller function is wrapped in a function in order to make it working in the context of the controller object
-			 * and not of he HTML widget
-			 */
-			this.drawCanvas[0].addEventListener('mousedown', function(event) {console.log("down"); that.controller.mouseDown(event);}, false);
-			this.drawCanvas[0].addEventListener('mousemove',  function(event) {that.controller.mouseMove(event);}, false);
-			this.drawCanvas[0].addEventListener('mouseup', function(event) {/*console.log("up");*/ that.controller.mouseUp(event);}, false);
-			
-			/*----crear botones con jquery----*/
-			/*var divButtons = $("<div id='RegionButtons' style=' width:"+ this.parentDiv.width() +'px' +" ';' '><div/>").appendTo("#" + this.parentDivId + "_button");        
-			divButtons.css('background', 'gray');//'height:' "+ 200 +'px' +"';'
-			divButtons.css('height', '70px');*/
-			this.contextDiv.append('<p style="color:#1f252b;text-align:center">Region Editor Mode</p>')
-			this.browseBtn = $("<button id='regionEditor_b' class='alix_browse_btn alix_btn'>Browse&nbsp;<i class='glyphicon glyphicon-check'></i></button>");
-			this.contextDiv.append(this.browseBtn);
-			this.browseBtn.css('margin-top','10px');
-			this.browseBtn.css('margin-left','5px');
-			this.browseBtn.css('font-weight',' bold');
-			this.browseBtn.attr('disabled', 'disabled');
-			this.browseBtn.click(function(event) {    
-				if( !that.controller.isPolygonClosed() ){
-					that.controller.CleanPoligon();
-				} else {
-					that.controller.recuperar();  
-				}
-				that.setBrowseMode();
-				browseSaved = false;
-				event.stopPropagation();
-				//that.aladinLite_V.reabledButton();
+				/*
+				 * Canvas for the temporary drawings
+				 */
+				this.drawCanvas = $("<canvas id='RegionCanvas' class='editor-canvas' ></canvas>");
+				this.drawCanvas[0].width = this.parentDiv.width();
+				this.drawCanvas[0].height = this.parentDiv.height();
+				this.drawContext = this.drawCanvas[0].getContext('2d');
+				this.parentDiv.append(this.drawCanvas);
+				this.drawCanvas.css('z-index', '101');
+				this.drawCanvas.css('position', 'absolute');
+				this.drawCanvas.css('top', '0px');
+				this.drawCanvas.hide(); 
+	
+	
+				this.controller = new RegionEditor_mvC({/* "points": this.points,*/ "handler": this.clientHandler, "canvas": this.drawCanvas, "canvaso": this.lineCanvas, "aladinView": this.aladinLite_V});
+				/*
+				 * The controller function is wrapped in a function in order to make it working in the context of the controller object
+				 * and not of he HTML widget
+				 */
+				
+				this.drawCanvas[0].addEventListener('mousedown', function(event) {console.log("down"); that.controller.mouseDown(event);}, false);
+				this.drawCanvas[0].addEventListener('mousemove',  function(event) {that.controller.mouseMove(event);}, false);
+				this.drawCanvas[0].addEventListener('mouseup', function(event) {/*console.log("up");*/ that.controller.mouseUp(event);}, false);
+				
+				// Create buttons with JQuery
+				/*var divButtons = $("<div id='RegionButtons' style=' width:"+ this.parentDiv.width() +'px' +" ';' '><div/>").appendTo("#" + this.parentDivId + "_button");        
+				divButtons.css('background', 'gray');//'height:' "+ 200 +'px' +"';'
+				divButtons.css('height', '70px');*/
+				this.contextDiv.append('<p style="color:#1f252b;text-align:center">Region Editor Mode</p>')
+				this.browseBtn = $("<button id='regionEditor_b' class='alix_browse_btn alix_btn'>Browse&nbsp;<i class='glyphicon glyphicon-check'></i></button>");
+				this.contextDiv.append(this.browseBtn);
+				this.browseBtn.css('margin-top','10px');
+				this.browseBtn.css('margin-left','5px');
+				this.browseBtn.css('font-weight',' bold');
+				this.browseBtn.attr('disabled', 'disabled');
+				this.browseBtn.click(function(event) {
+					if( !that.controller.isPolygonClosed() ){
+						that.controller.CleanPoligon();
+					} else {
+						that.controller.recuperar();  
+					}
+					that.setBrowseMode();
+					browseSaved = false;
+					event.stopPropagation();
+					//that.aladinLite_V.reabledButton();
 
 			});
 			
@@ -129,18 +138,19 @@ RegionEditor_mVc.prototype = {
 				that.setEditMode();
 				that.controller.DeleteOverlay();
 				that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);            
-				that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
+				//that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
+				that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
 				that.controller.almacenar();
 				//that.aladinLite_V.disabledButton();
 				event.stopPropagation();
 			});
 
-			this.effacerBtn = $("<button id='regionEditor_c' class=' alix_clear_btn alix_btn'>Clear&nbsp;<i class='glyphicon glyphicon-trash'></i></button>");
-			this.contextDiv.append(this.effacerBtn);
-			this.effacerBtn.css('margin-top','10px');
-			this.effacerBtn.css('margin-left','5px');
-			this.effacerBtn.css('font-weight',' bold');
-			this.effacerBtn.click(function(event) {        	 
+			this.deleteBtn = $("<button id='regionEditor_c' class=' alix_clear_btn alix_btn'>Clear&nbsp;<i class='glyphicon glyphicon-trash'></i></button>");
+			this.contextDiv.append(this.deleteBtn);
+			this.deleteBtn.css('margin-top','10px');
+			this.deleteBtn.css('margin-left','5px');
+			this.deleteBtn.css('font-weight',' bold');
+			this.deleteBtn.click(function(event) {        	 
 				that.controller.CleanPoligon();
 				event.stopPropagation();
 			});
@@ -152,7 +162,7 @@ RegionEditor_mVc.prototype = {
 			buttonSet.css('margin-left','5px');
 			buttonSet.css('font-weight',' bold');
 			buttonSet.click(function(event) {
-				that.controller.recuperar();  
+				that.controller.recuperar();
 				that.setBrowseMode();
 				that.controller.invokeHandler(true);
 				that.aladinLite_V.reabledButton();
@@ -209,7 +219,7 @@ RegionEditor_mVc.prototype = {
 				} else if (this.editionFrame.type == "soda") {
 					x = this.parseSodaPolygon(this.editionFrame.value);
 				} else {
-					alert("Polygone format " + points.type + " not understood");
+					alert("Polygon format " + points.type + " not understood");
 				}
 				if( x ){
 					var view = BasicGeometry.getEnclosingView(x);
@@ -239,9 +249,10 @@ RegionEditor_mVc.prototype = {
 
 		},
 		/**
+		 * @description
 		 * Initalize the darw with the default parameter. If points contains a region, it is drawn, 
 		 * if it just contain a position, AladinLite is centered on that position
-		 * @param points  object denoting the initial value of the polygone : {type: ... value:} type is format of the 
+		 * @param points  object denoting the initial value of the polygon : {type: ... value:} type is format of the 
 		 * value (saadaql or array) and value is the data string wich will be parsed
 		 */
 		setInitialValue: function (points){
@@ -276,7 +287,7 @@ RegionEditor_mVc.prototype = {
 				} else if (this.points.type == "array2dim") {
 					pts = this.points.value;
 				} else {
-					alert("Polygone format " + this.points.type + " not understood");
+					alert("Polygon format " + this.points.type + " not understood");
 					return;
 				}
 
@@ -294,17 +305,20 @@ RegionEditor_mVc.prototype = {
 //                   }, 500);
 
 		},
+		/**
+		@description ethod that let the user enter browse mode. In this mode, the user do not manipulate the shape.
+		 */
 		setBrowseMode: function() {
 			this.editBtn.removeAttr('disabled');
 			this.browseBtn.attr('disabled', 'disabled');   
-			this.effacerBtn.attr('disabled', 'disabled');                      
+			this.deleteBtn.attr('disabled', 'disabled');                      
 			this.lineCanvas.hide();
 			this.drawCanvas.hide();
 		},
 		setEditMode: function() {
 			this.browseBtn.removeAttr('disabled');
 			this.editBtn.attr('disabled', 'disabled');   
-			this.effacerBtn.removeAttr('disabled');                
+			this.deleteBtn.removeAttr('disabled');                
 			this.lineCanvas.show();
 			this.drawCanvas.show();
 		},
