@@ -482,19 +482,30 @@ RegionEditor_Mvc.prototype = {
 		},
 
 		//function pour diseigner les lignes
+		/**
+		@brief Function to draw lines
+		@param {Array<Number>} The starting noede
+		 */
 		drawHashline: function(startingNode,x,y)
 		{						
 			this.DrawnLine(startingNode,x,y);	   	   					
 		},	
 
-		//function pour effacer un ligne
+		/**
+		@brief Function to delete a line from the polygon
+		@return {void} nothing
+		 */
 		CleanLine: function()
 		{	
 			//this.contexto.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		},
 
-		//function pour savoire si un this.node es un extemite
+		/**
+		@brief Function to know if the current node {this.node} is an endpoint
+		@param {Array<Number>} clickedNode - The node that has been clicked
+		@return {Boolean} true if the current node is an extremety, false otherwise
+		 */
 		isExtremity: function(clickedNode)
 		{
 			if(clickedNode == 0 || clickedNode == (this.node.length -1))
@@ -505,7 +516,12 @@ RegionEditor_Mvc.prototype = {
 
 		},
 
-		//function que permet de fermer un polygon
+		/**
+		@brief Function that check if the user close a polygon
+		@param {Array<Number>} clickedNode - The node clicked by the user
+		@param {Array<Number>} startingNode - The node that started the polygon
+		@return {Boolean} true if the polygon has been closed, false otherwise
+		 */
 		closePolygone: function(clickedNode , startingNode)
 		{		
 			if(clickedNode == startingNode)
@@ -541,7 +557,15 @@ RegionEditor_Mvc.prototype = {
 			return false;
 		},
 
-		//function pour bouger un this.node et ses deux segments de le poligone
+		/**
+		@brief Method to move a node (this.node) and the 2 segments linked to it
+		@param {Array<Number>} clickedNode - The node we want to drag
+		@param {Number} x - The x position we want to se to the node
+		@param {Number} y - The y position we want to set to the node
+		@param {} result - The result of the operation
+		
+		@return {void} nothing
+		 */
 		Drag: function(clickedNode, x,y,result)
 		{
 			var segmentfirst;
@@ -559,7 +583,10 @@ RegionEditor_Mvc.prototype = {
 			this.Redrawn(result);		
 		},
 
-		//function pour garder les valeur de alafin lite et les convertir en valeurs de this.canvas("pixel")
+		/**
+		@brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
+		@return {void} nothing
+		 */
 		almacenar: function()
 		{			
 			//console.log('mesage this.almacenar');
@@ -587,7 +614,10 @@ RegionEditor_Mvc.prototype = {
 
 		},		
 
-		//function pour effacer le poligone de this.aladin lite quand passe a mode edition
+		/**
+		@brief Function to delete polygons from this.aladin lite when one enter the edition mode
+		@return {void} nothing
+		 */
 		DeleteOverlay :  function()
 		{
 			if (this.overlay != null) 
@@ -601,35 +631,46 @@ RegionEditor_Mvc.prototype = {
 			}	        	 
 		},
 
-		//function pour obtenir les valeurs de le polygon et creer le polygon en adalin lite
+		/**
+		@brief Function to obtain values from a polygon and create it in aladin lite
+		@return {void} nothing
+		 */
 		recuperar: function()
 		{
 			/*
 			 * When the position are set from outside, the node remains empty while there is edition action.
 			 *  So if the user want to get back the polygoene without editing it, we have to cancel this method
 			 */
-			if( this.node && this.node.length == 0 && this.skyPositions && this.skyPositions.length > 0 ) {
+			if( this.node && this.node.length == 0 && this.skyPositions && this.skyPositions.length > 0 )
+			{
 				return ;
 			}
 			//console.log('this.node1: ' + this.node.length);
 
 			//console.log('this.node.length: ' + this.node.length);
 			this.skyPositions = [];		 
-			for (var k=0; k<this.node.length; k++) {
+			for (var k=0; k<this.node.length; k++)
+			{
 				//this.skyPositions.push(this.aladin.pix2world(this.node[k][0], this.node[k][1]));
 				this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
 			};
 			//finalthis.node
-			if (this.overlay==null) {
+			if (this.overlay==null)
+			{
 				this.overlay = A.graphicOverlay({color: 'red'});
 
 				this.aladinView.addOverlayer(this.overlay);
-        }
+        	}
 			this.overlay.removeAll();	
 			this.overlay.addFootprints([A.polygon(this.skyPositions)]);
 		},
 
 		//function pour obtenir les valeurs de le polygon et creer le polygon en adalin lite
+		/**
+		@brief Function to obtain values from polygon and then create this polygon in aladin lite
+		@param {Array<Array<Number>>} points - An array of points representing the vertices of our polygon
+		@return {void} nothing
+		 */
 		setPolygon: function(points)
 		{
 			this.skyPositions = [];		 
@@ -644,6 +685,10 @@ RegionEditor_Mvc.prototype = {
 			this.overlay.addFootprints([A.polygon(this.skyPositions)]);//créer la polygon
 			//this.PolygonCenter();
 		},
+		/**
+		@brief Function to set an overlay
+		@param 
+		 */
 		setOverlay: function(points)
 		{
 			if (this.overlay==null) {
@@ -758,7 +803,8 @@ RegionEditor_Mvc.prototype = {
 
 		stokeNode: function(nodeposition)
 		{
-			if(nodeposition != undefined) 
+			if(nodeposition != undefined)
+			{				
 				var stocknode = [];
 				stocknode.push
 				({
@@ -769,6 +815,8 @@ RegionEditor_Mvc.prototype = {
 				});
 
 				return stocknode;
+			}
+			return null;
 			
 		},
 		getSkyPositions: function() {
