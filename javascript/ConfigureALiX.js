@@ -22,26 +22,54 @@ f * @preserve LICENSE
  * IN THE SOFTWARE. 
 **/
 
-var localConf = {
-		parentDivId: "aladin-lite-div",
-		defaultView: {
-			defaultSurvey: "DSS colored",
-			field: {
-				position: "M33",
-				defaultFov: "0.5"
-			},
-			panelState: true
-		},
-		controllers: {
-			historic: { },
-			regionEditor: { },
-			hipsSelector: { }
-		}
+/**
+@brief Handler to handle the seection of a particular shape
+@param {Object} data - The data containing all the needed informations to send back a message to the user.
+It has the following shape :
+<pre><code>
+{
+	isReady: Boolean,             // true if the polygone is closed
+    userAction: userAction,     // handler called after the user have clicked on Accept
+    region : {
+        format: {"array2dim","cone"},    // The only one suported yet [[x, y]....]
+        points: Array<Array<Number>>  // array with structure matching the format
+        size: {x: , y:} // regions size in deg
+	}
 }
+</code></pre>
+ */
+var regionEditorHandler = function(data) {
+	if( data.userAction )
+	{
+		AladinLiteX_mVc.storePolygon(data.region);
+		console.log("hello i'm the current handler");
+		alert(JSON.stringify(data));
+	}
+}
+
+var localConf = {
+	parentDivId: "aladin-lite-div",
+	defaultView: {
+		defaultSurvey: "DSS colored",
+		field: {
+			position: "M33",
+			defaultFov: "0.5"
+		},
+		panelState: true
+	},
+	controllers: {
+		historic: { },
+		regionEditor: { },
+		hipsSelector: { }
+	},
+	regionEditorHandler: regionEditorHandler
+	
+}
+
 var externalConf;
 var mixConf = function(localData,externalData) {   
 	
-	for(var key in externalData){
+	for(let key in externalData){
 		if(typeof(externalData[key])== "object" && localData[key])
 			{
 			externalData[key] = mixConf(localData[key],externalData[key])
@@ -52,8 +80,8 @@ var mixConf = function(localData,externalData) {
 
 var configureALIX = function(externalData){
 	if(externalData){
-	externalConf = externalData;
-	localConf = mixConf(localConf,externalData);
+		externalConf = externalData;
+		localConf = mixConf(localConf,externalConf);
 	}
 	AladinLiteX_mVc.init(localConf);
 } /////!!!Cant't add () ,cause configureALIX is called later by external project, not by himself
