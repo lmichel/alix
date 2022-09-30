@@ -85,6 +85,7 @@ var WaitingPanel = function(){
 }();
 
 var AladinLiteX_mVc = function(){
+	//Reference to the AladinLiteX_mVc instance to be used into the event listeners
 	var that = this;
 	var controllers ;
 	var controller;
@@ -169,12 +170,13 @@ var AladinLiteX_mVc = function(){
 			params.controllers.historic.model = new Historique_Mvc('panel_history', this);
 		}
 		if(params.controllers.regionEditor != undefined || (params.defaultView != undefined && params.defaultView.region != undefined)){
-			params.controllers.regionEditor.view = new RegionEditor_mVc(this
+			params.controllers.regionEditor.view = new RegionEditor_mVc(
+					this
 					, parentDivId
 					,'panel_region'//, contextDivId
-					, function(data){ if( data.userAction ){ AladinLiteX_mVc.storePolygon(data.region) ;alert(JSON.stringify(data));}}
+					, params.regionEditorHandler
 					//, aladinLiteView.points
-					, params.defaultView.defaultRegion); 
+					, params.defaultView.defaultRegion);
 		}
 		if(params.controllers.hipsSelector != undefined){
 			params.controllers.hipsSelector.model = new HipsSelector_Mvc(parentDivId, this);
