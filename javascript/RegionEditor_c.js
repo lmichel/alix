@@ -64,7 +64,7 @@ RegionEditor_mvC.prototype = {
 			  		;
 		},
 		/**
-		 * TODO to be implemented
+		 * @todo to be implemented
 		 */
 		checkPolygon : function(points) {
 			return true;
@@ -317,21 +317,27 @@ RegionEditor_mvC.prototype = {
 			return true;
 		},
 		/**
-		 * Call the client handler when the polygine is close or when the user click on accept
-		 * The data passed to the user handler look like that:
-		    {isReady: true,             // true if the polygone is closed
-		    userAction: userAction,     // handler called after the user have clicked on Accept
-		    region : {
-		        format: "array2dim",    // The only one suported yet [[x, y]....]
-		        points: this.polygonModel.skyPositions  // array with structire matching the format
-		        size: {x: , y:} // regiosn size in deg
-		        }
+		 	@brief Call the client handler when the polygon is close or when the user click on accept
+		 
+		 	@description 
+		 	The data passed to the user handler look like that:
+		 	<pre><code>
+		  	{			
+				isReady: true,             // true if the polygone is closed
+			    userAction: userAction,     // handler called after the user have clicked on Accept
+			    region : {
+			        format: "array2dim",    // The only one suported yet [[x, y]....]
+			        points: this.polygonModel.skyPositions  // array with structure matching the format
+			        size: {x: , y:} // regions size in deg
+				}
+		    }
+		    </code></pre>
+		    @param {Boolean} userAction - Tell the Handler if it is required that he made an action
+		    @return {void}
 		 */
 		invokeHandler : function(userAction){
 			if( this.isPolygonClosed() ){
-				/*
-				 * Compute the region size in degrees
-				 */
+				//Compute the region size in degrees
 				var view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
 				this.clientHandler({isReady: true
 					, userAction: userAction
