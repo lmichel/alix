@@ -26,6 +26,13 @@ f * @preserve LICENSE
 //var t = require('../javascript/AladinLiteView.js');
 //var CircularJSON = import 'circular-json';
 
+/**
+@description Function to convert the right ascension and the declination of a point
+into a sexadecimal string.
+@param {Number} ra - The right ascencion of the point
+@param {Number} dec - The declination of the point
+@return {String} The string combining the right ascension and the declination
+ */
 var getSexadecimalString = function(ra, dec){
 	var strlon = Numbers.toSexagesimal(ra/15, 8, false);
     var strlat = Numbers.toSexagesimal(dec, 7, false);
@@ -38,6 +45,9 @@ var alix_height =  $("#aladin-lite-div").height() ;
 var WaitingPanel = function(){
 	var callers = {};
 
+	/**
+	@description Method to show the AladinLite interface
+	 */
 	var show = function(label){
 		$("#fetchingMessage").html("Fetching data from " + label);
 		$("#waiting_interface").css("height","100%");
@@ -138,7 +148,8 @@ var AladinLiteX_mVc = function(){
 	      }
 	      catalogSelector: {
 	      }
-	  	}
+	  	},
+	  	regionEditorHandler: 
 	   }
 	*/
 	var init = function(params){
@@ -1250,9 +1261,12 @@ var AladinLiteX_mVc = function(){
 	 * utiliser quand clique sur button browse , pour reable bookMark et history
 	 */
 	var reabledButton = function(){
-		document.getElementById("bookMark").disabled=false;
-		document.getElementById("history").disabled=false;
-		document.getElementById("center").disabled=false;
+		if($("#bookMark")[0])
+			$("#bookMark")[0].disabled=false;
+		if($("history")[0])
+			$("#history")[0].disabled=false;
+		if($("#center")[0])
+			$("#center")[0].disabled=false;
 	}
 	
 	/**
