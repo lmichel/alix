@@ -107,6 +107,14 @@
 		,code2:""
 		,description:""
 	  },
+	  {
+  		  name:"demo_shape_handler"
+  		,title:"Polygon handler"
+  		,url:"alixshapehandler.html"
+  		,code1:'//html\n&lt;div id="aladin-lite-div" style="width:415px;height:415px;padding:5px;">&lt;/div>\n//js\nconfigureALIX()'
+  		,code2:'//default configuration\n{"parentDivId":"aladin-lite-div",\n"defaultView":{\n\t"defaultSurvey":"DSS colored",\n\t"field":{\n\t\t"position":"M33",\n\t\t"defaultFov":"0.5"},\n\t"panelState":true},\n\t"controllers":{\n\t\t"historic":{},\n\t\t"regionEditor":{},\n\t\t"hipsSelector":{}\n\t}\n}//alixshapeHandler.js'
+  		,description:"The polygon handle demo is there to improve the current polygon selection mode."
+  	  },
   	 /*{
   		 name:"demo_tapProgressive"
   		,title:" TAP resource unprogressive"

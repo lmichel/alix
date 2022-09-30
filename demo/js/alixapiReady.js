@@ -1,5 +1,5 @@
 /**
-f * @preserve LICENSE
+ * @preserve LICENSE
  * 
  * Copyright (c) 2017 Laurent Michel
  *
@@ -137,7 +137,7 @@ var masTest = {
 		}		
 };
  
- var mixConf = function(localData,externalData) {      
+var mixConf = function(localData,externalData) {      
 for(var key in externalData){
 	if(typeof(externalData[key])== "object" && localData[key])
 		{
@@ -153,7 +153,7 @@ var configureALIX = function(){
 	}
 	AladinLiteX_mVc.init(confData);
 }
- configureALIX(masTest);
+configureALIX(masTest);
 
 
 

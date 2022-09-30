@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<title>AladinLiteX</title>
+		<meta charset="utf-8" />
+	<script type="text/javascript" src="jsimports/jquery-1.9.1.js" charset="utf-8"></script>
+	<!-- <script type="text/javascript" src="jsimports/jquery-ui-1.12.1/jquery-ui.min.js" charset="utf-8"></script> -->
+	<!-- <script type="text/javascript" src="jsimports/jquery.dataTables.js" charset="utf-8"></script> -->
+	<!-- <script type="text/javascript" src="jsimports/jquery.ui.dialog.js" charset="utf-8"></script> -->
+	<!-- <script type="text/javascript" src="jsimports/jquery.layout-latest.js" charset="utf-8"></script> -->
+		
+		<script>var useDebugResources = true; var productionMode=false;</script>
+		<script type="text/javascript" src="javascript/loader.js"></script>
+		<script>
+		$.browser={ msie: ( navigator.appName == 'Microsoft Internet Explorer') ? true : false } 
+     resourceLoader.setCss([  
+     ]);
+     resourceLoader.setScripts([ 
+    	 "demo/js/alixshapeHandler.js"
+       ]);
+     resourceLoader.loadAll();      
+     </script>
+	</head>
+	<body style="height: 100%">
+	<div id = "demo_banner">ALIX Demos(Simple)</div>
+		<div id="aladin-lite-div" style="width:100%;height:100%;padding:5px;"></div>
+	</body>
+</html>
