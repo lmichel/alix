@@ -974,12 +974,12 @@ var AladinLiteX_mVc = function(){
 				contextDiv.animate({height:0},"fast");
 				 historySelected = false;
 				 regionSelected = false;
-		}else {
-			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
-			contextDiv.css("border-width", "0.2px");
-			 historySelected = true;
-			 regionSelected = false;
-		}
+			} else {
+				contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
+				contextDiv.css("border-width", "0.2px");
+				 historySelected = true;
+				 regionSelected = false;
+			}
 		}
 		//event.stopPropagation();
 	}
@@ -998,14 +998,14 @@ var AladinLiteX_mVc = function(){
         displaySelectedHips(aladinLiteView.survey.ID);
         selectHipsDiv.val(aladinLiteView.survey.ID);
         if(aladinLiteView.region != null){
-        if(!regionEditorInit){
-        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
-        	controller.editRegion();
-    			}
-        	var points = {type: null, value: []};
-        	points.type = aladinLiteView.region.format;
-        	points.value = aladinLiteView.region.points;
-        	controller.setInitialValue(points);
+	        if(!regionEditorInit){
+	        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
+	        	controller.editRegion();
+	    	}
+	        	var points = {type: null, value: []};
+	        	points.type = aladinLiteView.region.format;
+	        	points.value = aladinLiteView.region.points;
+	        	controller.setInitialValue(points);
         }
         
         //event.stopPropagation();
