@@ -41,8 +41,7 @@ It has the following shape :
 var regionEditorHandler = function(data) {
 	if( data.userAction )
 	{
-		AladinLiteX_mVc.storePolygon(data.region);
-		console.log("hello i'm the current handler");
+		//AladinLiteX_mVc.storePolygon(data.region);
 		alert(JSON.stringify(data));
 	}
 }
