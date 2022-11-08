@@ -59,6 +59,7 @@ var resourceLoader = function() {
 	   	 ,"RegionEditor_v.js"
 	   	 ,"RegionEditor_m.js"
 	   	 ,"RegionEditor_c.js"
+	   	 ,"RegionPanel_v.js"
 	   	 ,"HipsSelector_m.js"
 	   	 ,"HipsSelector_v.js" 
 	   	 ,"SwarmDynamicFilter.js"
