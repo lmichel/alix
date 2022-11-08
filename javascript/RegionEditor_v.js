@@ -232,6 +232,7 @@ class RegionEditor_mVc {
         /***********************************************************
         ******************** Example button ************************
         ************************************************************/
+        /*
         var exampleBtn = $(
 			`<button id='${this.contextDivId}-regionEditor_a' class=' alix_exa_btn alix_btn alix_region_btns'>
         		Example&nbsp;
@@ -252,6 +253,7 @@ class RegionEditor_mVc {
             browseSaved = true;
             event.stopPropagation();
         });
+        */
         if (!AladinLiteX_mVc.regionEditorInit) {
             this.setInitialValue(this.defaultRegion);
             if (this.editionFrame) {
