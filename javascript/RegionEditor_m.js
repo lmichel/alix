@@ -28,8 +28,8 @@
  * Author Gerardo Irvin Campos yah
  */
 
-function RegionEditor_Mvc(points, handler, canvas, canvaso, aladinView){
-
+function RegionEditor_Mvc(points, handler, canvas, canvaso, aladinView, colorValidated){
+	console.log(colorValidated);
 	this.node = [];	
 	this.canvas = canvas[0];
 	this.canvaso = canvaso[0];
@@ -41,6 +41,7 @@ function RegionEditor_Mvc(points, handler, canvas, canvaso, aladinView){
 	this.skyPositions = null;
 	this.aladinView = aladinView;
 	this.points = points;
+	this.color = colorValidated;
 }
 
 RegionEditor_Mvc.prototype = {
@@ -99,7 +100,7 @@ RegionEditor_Mvc.prototype = {
 			{
 				this.context.beginPath();
 				this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2,true);     	      
-				this.context.fillStyle = "red";
+				this.context.fillStyle = this.color;
 				this.context.fill();
 				this.context.stroke();	 
 				this.context.closePath();	        	    
@@ -534,7 +535,7 @@ RegionEditor_Mvc.prototype = {
 				{
 					this.context.beginPath();
 					this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2,true);     	      
-					this.context.fillStyle = "red";
+					this.context.fillStyle = this.color;
 					this.context.fill();
 					this.context.stroke();	 
 					this.context.closePath();	  		        
@@ -547,7 +548,7 @@ RegionEditor_Mvc.prototype = {
 				{
 					this.context.beginPath();
 					this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2,true);     	      
-					this.context.fillStyle = "red";
+					this.context.fillStyle = this.color;
 					this.context.fill();
 					this.context.stroke();	 
 					this.context.closePath();	  		        
@@ -657,7 +658,7 @@ RegionEditor_Mvc.prototype = {
 			//finalthis.node
 			if (this.overlay==null)
 			{
-				this.overlay = A.graphicOverlay({color: 'red'});
+				this.overlay = A.graphicOverlay({color: this.color});
 
 				this.aladinView.addOverlayer(this.overlay);
         	}
@@ -678,7 +679,7 @@ RegionEditor_Mvc.prototype = {
 				this.skyPositions.push(points[k]);			
 			}
 			if (this.overlay==null) {
-				this.overlay = A.graphicOverlay({color: 'red'});
+				this.overlay = A.graphicOverlay({color: this.color});
 				this.aladinView.addOverlayer(this.overlay);
 			}
 			this.overlay.removeAll();	  
@@ -692,7 +693,7 @@ RegionEditor_Mvc.prototype = {
 		setOverlay: function(points)
 		{
 			if (this.overlay==null) {
-				this.overlay = A.graphicOverlay({color: 'red'});
+				this.overlay = A.graphicOverlay({color: this.color});
 				this.aladinView.addOverlayer(this.overlay);
 			}
 			this.overlay.removeAll();	  
@@ -795,7 +796,7 @@ RegionEditor_Mvc.prototype = {
 		{	
 			this.context.beginPath();
 			this.context.fillRect(x,y,10,10);     	      
-			this.context.fillStyle = "red";
+			this.context.fillStyle = this.color;
 			this.context.fill();
 			this.context.stroke();	 
 			this.context.closePath();
