@@ -25,20 +25,24 @@
 /**
  * Manager of the view of the region editor
  * 
- * Author Gerardo Irvin Campos yah
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
  */ 
 
 class RegionEditor_mVc {
 	/**
 	@brief View of the RegionEditor service
+	@param {string} regionEditorName - The name of the region editor
 	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view taht will handle the result of the selection
-	@param {Element}  parentDivId
+	@param {Element}  aladinLiteDivId
 	@param {Element} contextDivId
 	@param {function} handler
 	@param {Frame} defaultRegion
+	@param {string} color - color of the shape once it was validated
 	 */
-    constructor(aladinLite_V, parentDivId, contextDivId, handler, /* points,*/ defaultRegion) {
-        this.parentDivId = parentDivId;
+    constructor(regionEditorName, aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion, color) {
+		this.regionEditorName = regionEditorName;
+        this.aladinLiteDivId = aladinLiteDivId;
+        this.buttonGrid = null;
         this.drawCanvas = null; // canvas where the polygon is drawn
         this.drawContext = null;
         this.lineCanvas = null; // canvas where the moving lines are drawn
@@ -49,129 +53,207 @@ class RegionEditor_mVc {
         this.contextDivId = contextDivId;
         this.contextDiv = null;
         this.sousContextDiv = null;
-        this.parentDiv = null;
+        this.aladinLiteDiv = null;
         this.aladinLite_V = aladinLite_V;
         //this.defaultRegion = defaultRegion;
         this.editionFrame = defaultRegion;
+        this.color = color;
+        this.init();
     }
     init() {
-        var self = this;
-        if (this.parentDiv == null)
-            this.parentDiv = $('#' + this.parentDivId);
-        if (this.contextDiv == null)
-            this.contextDiv = $('#' + this.contextDivId);
-        //this.contextDiv.append('<div id= "RE_context" style = "display:inline"></div>');
-        /*if( this.sousContextDiv == null ){
-            this.sousContextDiv  = $('#RE_context');
-        }*/
-        //this.parentDiv.css("position", "relative");
+        this.aladinLiteDiv = this.aladinLiteDiv == null ? $(`#${this.aladinLiteDivId}`) : this.aladinLiteDiv;
+        this.contextDiv = this.contextDiv == null ? $(`#${this.contextDivId}`) : this.contextDiv;
         // création du canvas pour éditeur régions
         /*
          * Be cautious: the canvas context must be taken before the canvas is appended to the parent div, otherwise the geometry is wrong.
          */
         var that = this;
-        if (!AladinLiteX_mVc.regionEditorInit) {
-            this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
+        this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
 
-            this.lineCanvas[0].width = this.parentDiv.width();
-            this.lineCanvas[0].height = this.parentDiv.height();
-            this.lineContext = this.lineCanvas[0].getContext('2d');
-            this.parentDiv.append(this.lineCanvas);
-            this.lineCanvas.css('z-index', '100');
-            this.lineCanvas.css('position', 'absolute');
-            this.lineCanvas.hide();
+        this.lineCanvas[0].width = this.aladinLiteDiv.width();
+        this.lineCanvas[0].height = this.aladinLiteDiv.height();
+        this.lineContext = this.lineCanvas[0].getContext('2d');
+        this.aladinLiteDiv.append(this.lineCanvas);
+        this.lineCanvas.css({
+			'z-index': '100',
+			'position': 'absolute'
+		});
+        this.lineCanvas.hide();
 
-            /*
-             * Canvas for the temporary drawings
-             */
-            this.drawCanvas = $("<canvas id='RegionCanvas' class='editor-canvas' ></canvas>");
-            this.drawCanvas[0].width = this.parentDiv.width();
-            this.drawCanvas[0].height = this.parentDiv.height();
-            this.drawContext = this.drawCanvas[0].getContext('2d');
-            this.parentDiv.append(this.drawCanvas);
-            this.drawCanvas.css('z-index', '101');
-            this.drawCanvas.css('position', 'absolute');
-            this.drawCanvas.css('top', '0px');
-            this.drawCanvas.hide();
+        /*
+         * Canvas for the temporary drawings
+         */
+        this.drawCanvas = $("<canvas id='RegionCanvas' class='editor-canvas' ></canvas>");
+        this.drawCanvas[0].width = this.aladinLiteDiv.width();
+        this.drawCanvas[0].height = this.aladinLiteDiv.height();
+        this.drawContext = this.drawCanvas[0].getContext('2d');
+        this.aladinLiteDiv.append(this.drawCanvas);
+        this.drawCanvas.css({
+			'z-index': '101',
+			'position': 'absolute',
+			'top': '0px'
+		});
+        this.drawCanvas.hide();
 
 
-            this.controller = new RegionEditor_mvC({ /* "points": this.points,*/ "handler": this.clientHandler, "canvas": this.drawCanvas, "canvaso": this.lineCanvas, "aladinView": this.aladinLite_V });
-            /*
-             * The controller function is wrapped in a function in order to make it working in the context of the controller object
-             * and not of he HTML widget
-             */
-            this.drawCanvas[0].addEventListener('mousedown', function(event) { console.log("down"); that.controller.mouseDown(event); }, false);
-            this.drawCanvas[0].addEventListener('mousemove', function(event) { that.controller.mouseMove(event); }, false);
-            this.drawCanvas[0].addEventListener('mouseup', function(event) { /*console.log("up");*/ that.controller.mouseUp(event); }, false);
+        this.controller = new RegionEditor_mvC({
+			/* "points": this.points,*/
+			"handler": this.clientHandler,
+			"canvas": this.drawCanvas,
+			"canvaso": this.lineCanvas,
+			"aladinView": this.aladinLite_V,
+			"color": this.color
+		});
+        /*
+         * The controller function is wrapped in a function in order to make it working in the context of the controller object
+         * and not of he HTML widget
+         */
+        this.drawCanvas[0].addEventListener('mousedown', function(event) {
+			console.log("down");
+			that.controller.mouseDown(event);
+		}, false);
+        this.drawCanvas[0].addEventListener('mousemove', function(event) {
+			that.controller.mouseMove(event);
+		}, false);
+        this.drawCanvas[0].addEventListener('mouseup', function(event) {
+			/*console.log("up");*/
+			that.controller.mouseUp(event);
+		}, false);
+		
+		/***********************************************************
+		************* Layout & title creation **********************
+		************************************************************/
+		console.log(this.contextDiv);
+		const divTitle = $(`<h4>${this.regionEditorName}</h4>`);
+		this.buttonGrid = $(`<div class="btn-grid"></div>`);
+		this.contextDiv.append(divTitle,this.buttonGrid);
 
-            // Create buttons with JQuery
-            /*var divButtons = $("<div id='RegionButtons' style=' width:"+ this.parentDiv.width() +'px' +" ';' '><div/>").appendTo("#" + this.parentDivId + "_button");
-            divButtons.css('background', 'gray');//'height:' "+ 200 +'px' +"';'
-            divButtons.css('height', '70px');*/
-            this.contextDiv.append('<p style="color:#1f252b;text-align:center">Region Editor Mode</p>');
-            this.browseBtn = $("<button id='regionEditor_b' class='alix_browse_btn alix_btn'>Browse&nbsp;<i class='glyphicon glyphicon-check'></i></button>");
-            this.contextDiv.append(this.browseBtn);
-            this.browseBtn.css('margin-top', '10px');
-            this.browseBtn.css('margin-left', '5px');
-            this.browseBtn.css('font-weight', ' bold');
-            this.browseBtn.attr('disabled', 'disabled');
-            this.browseBtn.click(function(event) {
-                if (!that.controller.isPolygonClosed()) {
-                    that.controller.CleanPoligon();
-                } else {
-                    that.controller.recuperar();
-                }
-                that.setBrowseMode();
-                browseSaved = false;
-                event.stopPropagation();
-                //that.aladinLite_V.reabledButton();
-            });
-
-            this.editBtn = $("<button id='regionEditor_e' class='alix_edt_btn alix_btn'>Edit&nbsp;<i class='glyphicon glyphicon-pencil'></i></button>");
-            this.contextDiv.append(this.editBtn);
-            this.editBtn.css('margin-top', '10px');
-            this.editBtn.css('margin-left', '5px');
-            this.editBtn.css('font-weight', ' bold');
-            this.editBtn.click(function(event) {
-                that.setEditMode();
-                that.controller.DeleteOverlay();
-                that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
-                //that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
-                that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
-                that.controller.almacenar();
-                //that.aladinLite_V.disabledButton();
-                event.stopPropagation();
-            });
-
-            this.deleteBtn = $("<button id='regionEditor_c' class=' alix_clear_btn alix_btn'>Clear&nbsp;<i class='glyphicon glyphicon-trash'></i></button>");
-            this.contextDiv.append(this.deleteBtn);
-            this.deleteBtn.css('margin-top', '10px');
-            this.deleteBtn.css('margin-left', '5px');
-            this.deleteBtn.css('font-weight', ' bold');
-            this.deleteBtn.click(function(event) {
+        /***********************************************************
+		************* Button creation using JQuery *****************
+		************************************************************/
+		
+		const styleToApply = {
+			'margin-top': '10px',
+			'margin-left': '5px',
+			'font-weight': ' bold',
+		}
+		
+        /***********************************************************
+        ******************** Browse Button *************************
+        ************************************************************/
+        this.browseBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_b' class='alix_browse_btn alix_btn alix_region_btns'>
+				Browse&nbsp;
+				<i class='glyphicon glyphicon-check'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.browseBtn);
+        console.log(this.buttonGrid);
+        this.browseBtn.css(styleToApply);
+        this.browseBtn.attr('disabled', 'disabled');
+        this.browseBtn.click(function(event) {
+            if (!that.controller.isPolygonClosed()) {
                 that.controller.CleanPoligon();
-                event.stopPropagation();
-            });
-            this.setBrowseMode();
-
-            var buttonSet = $("<button id='regionEditor_a' class=' alix_accept_btn alix_btn'>Accept&nbsp;<i class='glyphicon glyphicon-share'></i></button>");
-            this.contextDiv.append(buttonSet);
-            buttonSet.css('margin-top', '10px');
-            buttonSet.css('margin-left', '5px');
-            buttonSet.css('font-weight', ' bold');
-            buttonSet.click(function(event) {
+            } else {
                 that.controller.recuperar();
-                that.setBrowseMode();
-                that.controller.invokeHandler(true);
-                that.aladinLite_V.reabledButton();
-                if ($("#region")[0])
-                    $("#region")[0].disabled = false;
-                browseSaved = true;
-                event.stopPropagation();
-            });
-        }
+            }
+            that.setBrowseMode();
+            browseSaved = false;
+            event.stopPropagation();
+            //that.aladinLite_V.reabledButton();
+        });
+
+
+		/***********************************************************
+        ******************** Edit Button ***************************
+        ************************************************************/
+        this.editBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_e' class='alix_edt_btn alix_btn alix_region_btns'>
+				Edit&nbsp;
+				<i class='glyphicon glyphicon-pencil'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.editBtn);
+        console.log(this.buttonGrid);
+        this.editBtn.css(styleToApply);
+        this.editBtn.click(function(event) {
+            that.setEditMode();
+            that.controller.DeleteOverlay();
+            that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
+            //that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
+            that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
+            that.controller.almacenar();
+            //that.aladinLite_V.disabledButton();
+            event.stopPropagation();
+        });
+        
+        /***********************************************************
+        ******************** Delete Button *************************
+        ************************************************************/
+        this.deleteBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_c' class=' alix_clear_btn alix_btn alix_region_btns'>
+				Clear&nbsp;
+				<i class='glyphicon glyphicon-trash'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.deleteBtn);
+        console.log(this.buttonGrid);
+        this.deleteBtn.css(styleToApply);
+        this.deleteBtn.click(function(event) {
+            that.controller.CleanPoligon();
+            event.stopPropagation();
+        });
+
+		/***********************************************************
+        ******************** Accept Button ****************************
+        ************************************************************/
+        var buttonSet = $(
+			`<button id='${this.contextDivId}-regionEditor_a' class=' alix_accept_btn alix_btn alix_region_btns'>
+        		Accept&nbsp;
+        		<i class='glyphicon glyphicon-share'></i>
+        	</button>`
+        );
+        this.buttonGrid.append(buttonSet);
+        console.log(this.buttonGrid);
+        buttonSet.css(styleToApply);
+
+        buttonSet.on('click', function(event) {
+            that.controller.recuperar();
+            that.setBrowseMode();
+            that.controller.invokeHandler(true);
+            that.aladinLite_V.reabledButton();
+            if ($("#region")[0])
+                $("#region")[0].disabled = false;
+            browseSaved = true;
+            event.stopPropagation();
+        });
+        
+        
+        /***********************************************************
+        ******************** Example button ************************
+        ************************************************************/
+        var exampleBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_a' class=' alix_exa_btn alix_btn alix_region_btns'>
+        		Example&nbsp;
+        		<i class='glyphicon glyphicon-asterisk'></i>
+        	</button>`
+        );
+        this.buttonGrid.append(exampleBtn);
+        console.log(this.buttonGrid);
+        exampleBtn.css(styleToApply);
+
+        exampleBtn.on('click', function(event) {
+            that.controller.recuperar();
+            that.setBrowseMode();
+            that.controller.invokeHandler(true);
+            that.aladinLite_V.reabledButton();
+            if ($("#region")[0])
+                $("#region")[0].disabled = false;
+            browseSaved = true;
+            event.stopPropagation();
+        });
         if (!AladinLiteX_mVc.regionEditorInit) {
-            this.setInitialValue(self.defaultRegion);
+            this.setInitialValue(this.defaultRegion);
             if (this.editionFrame) {
                 this.setEditionFrame(this.editionFrame);
                 this.setEditMode();
