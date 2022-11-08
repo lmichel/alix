@@ -157,14 +157,12 @@ var AladinLiteX_mVc = function(){
 		 * Set ids for sub panels
 		 */
 		parentDivId = params.parentDivId;
-		aladinDivId = params.parentDivId + "-main";
-		menuDivId   = params.parentDivId + "-menu";
-		contextDivId = params.parentDivId + "-context";
-		targetDivId  = params.parentDivId + "-target";
-		selectDivId  = params.parentDivId + "-select";
-		//showAssociated = params.actions.showAssociated;
+		aladinDivId = `${params.parentDivId}-main`;
+		menuDivId   = `${params.parentDivId}-menu`;
+		contextDivId = `${params.parentDivId}-context`;
+		targetDivId  = `${params.parentDivId}-target`;
+		selectDivId  = `${params.parentDivId}-select`;
 		var showAssociated = params.showAssociated;
-		//showPanel = params.actions.showPanel;
 		var showPanel = params.showPanel;
 		
 		if(params.masterResource != undefined){
@@ -181,6 +179,7 @@ var AladinLiteX_mVc = function(){
 			params.controllers.historic.model = new Historique_Mvc('panel_history', this);
 		}
 		if(params.controllers.regionEditor != undefined || (params.defaultView != undefined && params.defaultView.region != undefined)){
+			/****************** @WARNING temporary comment 
 			params.controllers.regionEditor.view = new RegionEditor_mVc(
 					this
 					, parentDivId
@@ -188,6 +187,14 @@ var AladinLiteX_mVc = function(){
 					, params.regionEditorHandler
 					//, aladinLiteView.points
 					, params.defaultView.defaultRegion);
+			*/
+			params.controllers.regionEditor.view = new RegionPanelV(
+				this,
+				parentDivId,
+				'panel_region',
+				params.regionEditorHandler,
+				params.defaultView.defaultRegion
+			)
 		}
 		if(params.controllers.hipsSelector != undefined){
 			params.controllers.hipsSelector.model = new HipsSelector_Mvc(parentDivId, this);
@@ -207,7 +214,7 @@ var AladinLiteX_mVc = function(){
 	var fadeOutAuto = function(){
 		$("#minus").trigger("click");
 		//Once a source is selected, all other sources fade out automatically. 
-		}
+	}
 	  // maximize control
 	var deleteSourceAuto = function(){
 		//When we click the part without source, we deselect the source selected automatically. 
@@ -263,66 +270,216 @@ var AladinLiteX_mVc = function(){
 		VizierCatalogue.SourceDataMove();
 		
 		var newMenu = $('#newMenu')	;
-		var button_locate = '<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>'
-		var button_center = '<button id="button_center" class="alix_btn alix_btn-circle alix_btn-red" title ="back to center" onclick="AladinLiteX_mVc.returnCenter();"><i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i></button>'
-		var button_bookmark = '<button id="button_bookmark" class="alix_btn alix_btn-circle alix_btn-orange" title ="save a bookmark" onclick="AladinLiteX_mVc.bookMark();"><i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i></button>'
-		var button_history  = '<button id="button_history" class="alix_btn alix_btn-circle alix_btn-yellow" title ="history of bookmark" ><i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i></button>'
-		var button_region = '<button id="button_region" class="alix_btn alix_btn-circle alix_btn-green" title ="region editor" onclick="AladinLiteX_mVc.regionEditor();" ><i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i></button>'
-		var button_image = '<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" onclick="AladinLiteX_mVc.showColorMap();" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>'
-		var button_catalog = '<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search a catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>'
+		var button_locate = 
+			`<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" >
+				<i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i>
+			</button>`
+		var button_center = 
+			`<button 
+				id="button_center"
+				class="alix_btn alix_btn-circle alix_btn-red"
+				title ="back to center"
+				onclick="AladinLiteX_mVc.returnCenter();"
+			>
+				<i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i>
+			</button>`
+		var button_bookmark = 
+			`<button 
+				id="button_bookmark" 
+				class="alix_btn alix_btn-circle alix_btn-orange"
+				title ="save a bookmark"
+				onclick="AladinLiteX_mVc.bookMark();"
+			>
+				<i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i>
+			</button>`
+		var button_history  = 
+			`<button 
+				id="button_history"
+				class="alix_btn alix_btn-circle alix_btn-yellow"
+				title ="history of bookmark"
+			>
+				<i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i>
+			</button>`
+		var button_region = 
+			`<button
+				id="button_region"
+				class="alix_btn alix_btn-circle alix_btn-green"
+				title ="region editor"
+				onclick="AladinLiteX_mVc.regionEditor();"
+			>
+				<i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i>
+			</button>`
+		var button_image = 
+		`<button 
+			id="button_image"
+			class="alix_btn alix_btn-circle alix_btn-blue"
+			title ="search an image"
+			onclick="AladinLiteX_mVc.showColorMap();"
+		>
+			<i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i>
+		</button>`
+		var button_catalog = 
+			`<button 
+				id="button_catalog"
+				class="alix_btn alix_btn-circle alix_btn-purple"
+				title ="search a catalog"
+			>
+				<i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i>
+			</button>`
 		
 			//<span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>
 			
 		var panel_locate = 
-			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target" onfocus="this.select()">'
-			+'<select  id ="' + selectDivId + '" class="alix_select">'
-			//+'<option id="select">--select--</option>'
-			+'<option id="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
-			+'</select>'
-			//+'<input id="MyButton" style="margin-left:500px;margin-top:500px" type=button color="red" z-index=2000 display=true>'
-			+'<button id="targetNote" title="Note" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:absolute;left:392px;top:8px;" ><i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i></button></div>'
-			//+'</div>'
-		var panel_history = '<div id="panel_history" class="alix_right_panels">'
-			+'</div>'
-		var panel_region = '<div id="panel_region" class="alix_right_panels">'
-			+'</div>'
-		var panel_image = '<div id="panel_image" class="alix_right_panels">'
-		    +'<p class="alix_titlle_image ">Image'
-		    +'</p>'
-		    +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class=" alix_img_explorer"></input>'
-		    +'<select id="status-select" class ="alix_selector_hips "><option selected="selected">CDS/P/DSS2/color</option></select>'
-		    +'<button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button>'
-			+'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">'
-			+'<b>Color Map : </b>'
-			+'<select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
-			+'<div id="panel_image_detail"></div>'
-			+'</div>'
-		var panel_catalog = '<div id="panel_catalog" class="alix_right_panels">'
-			    +'<div class="alix_catalog_panel" >'
-			    +'<b class="alix_titlle_catalog ">Catalogs</b>' 
-			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div></b>'
-			    +'<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>'
-			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div>'
-			    +'<div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
-			    + descriptionXMM()
-			    + configurationXMM()
-			    + hideXMMFlash()
-			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
-			    +'</div></br>'
-			    +'<div><b id="ACDS" class = "alix_acds" >'+ACDS+'  </b>'
-			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
-			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
-			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<b><span title="Click to activate the source type selector" id="SearchTypeNot"  style="color: rgb(136, 138, 133);">all</span> <input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none; width: 120px;"></b></div>'
-			    +'<div style = ""><b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
-			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
-			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div><br>'
-			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
-			    +'<select id="select_vizier" class="alix_selector_vizier "><option selected="select">--select--</option></select>'
-			    +'<div id="vizier" class="alix_vizier">'
-			    +'<ul id="vizier_list"></ul></div></div>'
-				+'<div id="panel_catalog_detail"></div>'
-			+'</div>'
+			`<div style="z-index:100"><input id="${targetDivId}" placeholder="target" class="alix_target" onfocus="this.select()">
+				<select  id ="${selectDivId}" class="alix_select">
+					<option id="${defaultView.field.position}">${defaultView.field.position}</option>
+				</select>
+				<button id="targetNote" title="Note" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:absolute;left:392px;top:8px;" >
+					<i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i>
+				</button>
+			</div>`
+		var panel_history = '<div id="panel_history" class="alix_right_panels"></div>'
+		var panel_region = '<div id="panel_region" class="alix_right_panels"></div>'
+		var panel_image = 
+			`<div id="panel_image" class="alix_right_panels">
+			    <p class="alix_titlle_image ">
+			    	Image
+			    </p>
+			    <input type="text" id="${maskId}"  placeholder="Survey" size=11 class=" alix_img_explorer"></input>
+			    <select id="status-select" class ="alix_selector_hips ">
+			    	<option selected="selected">
+			    		CDS/P/DSS2/color
+			    	</option>
+			    </select>
+			    <button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">
+			    	Detail
+			    </button>
+				<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">
+					<b>Color Map : </b>
+					<select class="aladin-cmSelection"></select>
+					<button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">
+						Reverse
+					</button>
+				</div>
+				<div id="panel_image_detail"></div>
+			</div>`
+			
+		var panel_catalog = 
+			`<div id="panel_catalog" class="alix_right_panels">
+			    <div class="alix_catalog_panel" >
+			    	<b class="alix_titlle_catalog ">
+			    		Catalogs
+			    	</b>
+			    	<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">
+			    		-
+			    	</div></b>
+			    	<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>
+			    	<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">
+			    		+
+			    	</div>
+			    	<div>
+			    		</br>
+			    		<b  id="XMM" title="Show/hide master sources"
+			    			class="alix_XMM_in_menu alix_datahelp" 
+			    			style="cursor: pointer;" 
+			    			onclick="AladinLiteX_mVc.displayDataXml();"
+			    		>
+			    			${XMM}
+			    		</b>
+					    ${descriptionXMM()}
+					    ${configurationXMM()}
+					    ${hideXMMFlash()}
+			    		<!--XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not-->
+			    	</div>
+			    	</br>
+			    	<div>
+			    		<b id="ACDS" class = "alix_acds" >
+			    			${ACDS}  
+			    		</b>'
+			    		<div style = "">
+			    			<b id="Simbad" 
+				    			title="Show/hide Simbad sources" 
+				    			class="alix_simbad_in_menu alix_datahelp" 
+				    			style="cursor: pointer;" 
+				    			onclick="AladinLiteX_mVc.displaySimbadCatalog();"
+			    			>
+			    			Simbad
+			    		</b>
+			    		<i id="btn-Simbad-configure"
+				    		title="configure" 
+				    		class="glyphicon 
+				    		glyphicon-cog alix_btn-operate-catalog" 
+				    		style="color:#888a85 ;cursor: pointer;" 
+				    		onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"
+			    		>
+			    		</i>
+			    		<i id="btn-Simbad-flash"
+				    		title = "flash" 
+				    		class="glyphicon glyphicon-flash"
+				    		style="color:#888a85 ;cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.SimbadFlash();"
+			    		>
+			    		</i>
+			    		<b>
+			    			<span title="Click to activate the source type selector" 
+				    			id="SearchTypeNot"
+				    			style="color: rgb(136, 138, 133);"
+			    			>
+			    				all
+			    			</span>
+			    			<input type="text"
+				    			id="SearchType"
+				    			class="alix_cataloge_explorer "
+				    			placeholder="Search Type"
+				    			style="display:none; width: 120px;"
+			    			>
+			    		</b>
+			    	</div>
+			    	<div style = "">
+			    		<b id="NED" 
+				    		title="Show/hide Ned sources" 
+				    		class="alix_ned_in_menu  alix_datahelp"
+				    		style="cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.displayNedCatalog();"
+			    		>
+			    			NED
+			    		</b>
+			    		<i id="btn-NED-configure"
+				    		title="configure"
+				    		class="glyphicon glyphicon-cog alix_btn-operate-catalog"
+				    		style="color:#888a85 ;cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"
+			    		>
+			    		</i>
+			    		<i id="btn-NED-flash"
+				    		title = "flash"
+				    		class="glyphicon glyphicon-flash"
+				    		style="color:#888a85 ;cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.NEDFlash();"
+			    		>
+			    		</i>
+		    		</div>
+		    		<br>
+			    	<div>
+			    		<input type="text" 
+				    		id="${catalogeId}"
+				    		placeholder="Find other Catalog"
+				    		size=11
+				    		class=" alix_cataloge_explorer "
+			    		>
+			    		</input>
+			    		<select id="select_vizier" class="alix_selector_vizier ">
+			    			<option selected="select">
+			    				--select--
+			    			</option>
+			    		</select>
+			    		<div id="vizier" class="alix_vizier">
+			    			<ul id="vizier_list">
+			    			</ul>
+			    		</div>
+			    	</div>
+					<div id="panel_catalog_detail"></div>
+				</div>`
 			
 			
 			parentDiv.append(panel_locate); // replace the orignial position block by the updated one
