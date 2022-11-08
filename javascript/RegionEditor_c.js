@@ -36,8 +36,9 @@
 
 class RegionEditor_mvC {
     constructor(params) {
+		this.color = params.color;
 
-        this.polygonModel = new RegionEditor_Mvc(params.points, params.handler, params.canvas, params.canvaso, params.aladinView);
+        this.polygonModel = new RegionEditor_Mvc(params.points, params.handler, params.canvas, params.canvaso, params.aladinView,this.color);
         this.canvas = params.canvas;
         this.clientHandler = params.handler;
         this.startingNode = -1;
