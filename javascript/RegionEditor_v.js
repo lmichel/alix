@@ -287,7 +287,6 @@ class RegionEditor_mVc {
         }
         var x = null;
         if (this.editionFrame) {
-            var pts = [];
             /*
              * Extract region or position from SaadaQL statement
              */
