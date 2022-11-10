@@ -302,21 +302,32 @@ class RegionEditor_mvC {
         }
         </code></pre>
         @param {Boolean} userAction - Tell the Handler if it is required that he made an action
+        @param {object} background - An object sharing the same aspect as `this.data`
         @return {void}
      */
-    invokeHandler(userAction) {
-        if (this.isPolygonClosed()) {
-            //Compute the region size in degrees
-            var view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-            this.clientHandler({
-                isReady: true,
-                userAction: userAction,
-                region: {
-                    format: "array2dim",
-                    points: this.polygonModel.skyPositions,
-                    size: { x: view.size, y: view.size }
-                }
-            });
+    invokeHandler(userAction,background) {
+		if (this.isPolygonClosed()) {
+			//Compute the region size in degrees
+			var view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
+			if (!this.polygonModel.skyPositions.length) {
+				this.data = null;
+			} else {
+				this.data = {
+				    isReady: true,
+				    userAction: userAction,
+				    region: {
+				        format: "array2dim",
+				        points: this.polygonModel.skyPositions,
+				        size: { x: view.size, y: view.size }
+				    }
+				}
+				if (background) {
+					this.data.background = background;					
+				} else if (background in this.data) {
+					delete this.data.background;
+				}
+	            this.clientHandler(this.data);
+			}
         } else {
             alert("Polygon not closed");
         }
