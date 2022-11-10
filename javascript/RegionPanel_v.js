@@ -99,195 +99,53 @@ class RegionPanelV {
 				this.editionFrame,
 				"orange"
 			);
-			console.log(foregroundRegionEditor,backgroundRegionEditor);
+			
+			this.regionEditors.push(this.foregroundRegionEditor,this.backgroundRegionEditor);
+			this.manageButtonActivated();
+			this.controlAcceptation();
         }
     }
-
+    
     /**
-     * @description Operate the drawing removal from outside of the class scope
-     */
-    clean() {
-        //can be called from another button before the editor has been init 
-        if (this.controller) {
-            this.controller.CleanPoligon();
-            this.setEditMode();
-            this.controller.DeleteOverlay();
-            this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
-            this.drawContext.clearRect(0, 0, this.drawCanvas[0].width, this.drawCanvas[0].height);
-            this.controller.almacenar();
-            this.controller.recuperar();
-            this.setBrowseMode();
-        }
-
-    }
-    /**
-     * @description Draws the editable frame in blue and center the view on it
-     * @param {Array<Array<Number>>} points - An array of sky positions
-     * @return {void}
-     */
-    setEditionFrame(points) {
-        if (points) {
-            this.editionFrame = points;
-        }
-        var x = null;
-        if (this.editionFrame) {
-            var pts = [];
-            /*
-             * Extract region or position from SaadaQL statement
-             */
-            if (this.editionFrame.type == "array") {
-                x = this.parseArrayPolygon(this.editionFrame.value);
-            } else if (this.editionFrame.type == "soda") {
-                x = this.parseSodaPolygon(this.editionFrame.value);
-            } else {
-                alert("Polygon format " + points.type + " not understood");
-            }
-            if (x) {
-                var view = BasicGeometry.getEnclosingView(x);
-                this.aladinLite_V.gotoPosition(view.center.ra, view.center.dec);
-                this.aladinLite_V.setZoom(1.2 * view.size);
-                if (this.editionFrameOverlay == null) {
-                    this.editionFrameOverlay = A.graphicOverlay({ color: 'blue', name: "Editable Frame" });
-                    this.aladinLite_V.addOverlayer(this.editionFrameOverlay);
-                }
-                this.editionFrameOverlay.removeAll();
-                this.editionFrameOverlay.addFootprints([A.polygon(x)]);
-                $("#center").val("Ed. Frame").attr("title", "Center the view on the editable frame");
-            } else {
-                this.editionFrame = null;
-                $("#center").val("Center").attr("title", "Center on the current drawing");
-            }
-        }
-        /*
-         * Fix for the errors when we open a new region editor
-         *
-        var that = this;
-           setTimeout(function() {
-               that.aladin.increaseZoom();
-               that.aladin.decreaseZoom();
-               }, 500);
-               */
-    }
-    /**
-     * @description
-     * Initalize the draw with the default parameter. If points contains a region, it is drawn,
-     * if it just contain a position, AladinLite is centered on that position
-     * @param {Array<Array<Number>>} points  object denoting the initial value of the polygon : {type: ... value:} type is format of the
-     * value (saadaql or array) and value is the data string wich will be parsed
-     */
-    setInitialValue(points) {
-        /*
-         * Set the region passed by the client if it exists
-         */
-        this.points = points;
-        //this.controller.CleanPoligon();
-        if (this.points) {
-            var pts = [];
-            /*
-             * Extract region or position from SaadaQL statement
-             */
-            if (this.points.type == "saadaql") {
-                var s = /"(.*)"/.exec(this.points.value);
-                if (s.length != 2) {
-                    Alix_Modalinfo.error(`${this.points.value} does not look like a SaadaQL statment`);
-                    return;
-                } else {
-                    if (this.points.value.startsWith("isInRegion")) {
-                        var ss = s[1].split(/[\s,;]/);
-                        for (var i = 0; i < ss.length; i++) {
-                            pts.push(parseFloat(ss[i]));
-                        }
-                    } else {
-                        var pos = s[1].replace(/:/g, " ");
-                        this.posField.val(pos);
-                        this.aladin.setZoom(0.55);
-                        this.aladin.gotoObject(pos);
-                    }
-                }
-            } else if (this.points.type == "array2dim") {
-                pts = this.points.value;
-            } else {
-                alert("Polygon format " + this.points.type + " not understood");
-                return;
-            }
-
-            this.setBrowseMode();
-            this.controller.DeleteOverlay();
-            this.controller.setPoligon(pts);
-        }
-        /*
-         * Fix for the errors when we open a new region editor
-         */
-        //			var that = this;
-        //	           setTimeout(function() {
-        //                   that.aladin.increaseZoom();
-        //                   that.aladin.decreaseZoom();
-        //                   }, 500);
-    }
-    /**
-    @description Method that let the user enter browse mode. In this mode, the user do not manipulate the shape.
-     */
-    setBrowseMode() {
-        this.editBtn.removeAttr('disabled');
-        this.browseBtn.attr('disabled', 'disabled');
-        this.deleteBtn.attr('disabled', 'disabled');
-        this.lineCanvas.hide();
-        this.drawCanvas.hide();
-    }
-    /**
-    @description Method to let the user enter edition mode. In this mode, the user manipulates the nodes.
-     */
-    setEditMode() {
-        this.browseBtn.removeAttr('disabled');
-        this.editBtn.attr('disabled', 'disabled');
-        this.deleteBtn.removeAttr('disabled');
-        this.lineCanvas.show();
-        this.drawCanvas.show();
-    }
-    /**
-    @description Method to parse a SODA polygon that is represented by a string
-    @example "POLYGON 1.2 1.3 4.5 1.2 4.3 4.3"
-    @param {String} value - string polygon to convert
-    @return {Array<Float32Array>} an array containing all the points parsed
-     */
-    parseSodaPolygon(value) {
-        let s = value.split(/\s+/);
-        let x = null;
-        if (s[0].toUpperCase() != "POLYGON") {
-            alert("Only SODA POLYGON are supported");
-        } else {
-            s.shift();
-            if (!s || (s.length % 2) != 0 || s.length < 6) {
-                alert("Even number of coordinates required (" + s.length + " values read)");
-            } else {
-                x = [];
-                for (let i = 0; i < (s.length / 2); i++) {
-                    x.push([parseFloat(s[2 * i]), parseFloat(s[(2 * i) + 1])]);
-                }
-                x.push(x[0]);
-            }
-        }
-        return x;
-    }
-    /**
-    @description Method to parse a polygon that is represented by a contiguous array
-    @example [1.2, 1.3, 4.5, 1.2, 4.3, 4.3]
-    @param {Float32Array} value - contiguous array representing the polygon to convert
-    @return {Array<Float32Array>} an array containing all the points parsed
-     */
-    parseArrayPolygon(value) {
-        var x = null;
-        if (!value || (value.length % 2) != 0 || value.length < 6) {
-            alert("Even number of coordinates required");
-        } else {
-            x = [];
-            for (var i = 0; i < (value.length / 2); i++) {
-                x.push([value[2 * i], value[(2 * i) + 1]]);
-            }
-            x.push(x[0]);
-        }
-        return x;
-    }
+    @todo
+    */
+    manageButtonActivated() {
+		for (const regionEditor of this.regionEditors) {
+			regionEditor.contextDiv.on(
+				"canvas-shown",(event, editors=this.regionEditors) => {
+					for (const editor of editors) {
+						if (editor !== regionEditor) {
+							editor.muteRegionEditor();
+						}
+					}
+				}
+			);
+			regionEditor.contextDiv.on(
+				"canvas-hidden",(event, editors=this.regionEditors) => {
+					for (const editor of editors) {
+						if (editor !== regionEditor) {
+							editor.unmuteRegionEditor();
+						}
+					}
+				}
+			);
+		}
+	}
+	
+	controlAcceptation() {
+		const foregroundRegionEditor = this.foregroundRegionEditor;
+        const backgroundRegionEditor = this.backgroundRegionEditor;
+        
+		this.foregroundRegionEditor.setBtn.on('click', (event) => {
+            foregroundRegionEditor.controller.invokeHandler(true,backgroundRegionEditor.controller.data);
+			console.log(foregroundRegionEditor.controller.data,backgroundRegionEditor.controller.data);
+            event.stopPropagation();
+        });
+		this.backgroundRegionEditor.setBtn.on('click', (event) => {
+            backgroundRegionEditor.controller.invokeHandler(true);
+            event.stopPropagation();
+        });
+	}
 } 
 var browseSaved = null;
 
