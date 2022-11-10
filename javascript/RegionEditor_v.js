@@ -390,6 +390,7 @@ class RegionEditor_mVc {
         this.deleteBtn.attr('disabled', 'disabled');
         this.lineCanvas.hide();
         this.drawCanvas.hide();
+        this.emitCanvasHideMessage();
     }
     /**
     @description Method to let the user enter edition mode. In this mode, the user manipulates the nodes.
@@ -400,6 +401,7 @@ class RegionEditor_mVc {
         this.deleteBtn.removeAttr('disabled');
         this.lineCanvas.show();
         this.drawCanvas.show();
+        this.emitCanvasShownMessage()
     }
     /**
     @todo
