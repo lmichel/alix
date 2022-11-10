@@ -155,7 +155,7 @@ class RegionEditor_mVc {
             if (!that.controller.isPolygonClosed()) {
                 that.controller.CleanPoligon();
             } else {
-                that.controller.recuperar();
+                that.controller.get();
             }
             that.setBrowseMode();
             browseSaved = false;
@@ -179,7 +179,7 @@ class RegionEditor_mVc {
             that.controller.DeleteOverlay();
             that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
             that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
-            that.controller.almacenar();
+            that.controller.store();
             event.stopPropagation();
         });
         
@@ -212,7 +212,7 @@ class RegionEditor_mVc {
         this.setBtn.css(styleToApply);
 
         this.setBtn.on('click', function(event) {
-            that.controller.recuperar();
+            that.controller.get();
             that.setBrowseMode();
             that.aladinLite_V.reabledButton();
             if ($("#region")[0])
@@ -270,8 +270,8 @@ class RegionEditor_mVc {
             this.controller.DeleteOverlay();
             this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
             this.drawContext.clearRect(0, 0, this.drawCanvas[0].width, this.drawCanvas[0].height);
-            this.controller.almacenar();
-            this.controller.recuperar();
+            this.controller.store();
+            this.controller.get();
             this.setBrowseMode();
         }
 
