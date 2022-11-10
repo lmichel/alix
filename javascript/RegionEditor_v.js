@@ -113,21 +113,18 @@ class RegionEditor_mVc {
          * and not of he HTML widget
          */
         this.drawCanvas[0].addEventListener('mousedown', function(event) {
-			console.log("down");
 			that.controller.mouseDown(event);
 		}, false);
         this.drawCanvas[0].addEventListener('mousemove', function(event) {
 			that.controller.mouseMove(event);
 		}, false);
         this.drawCanvas[0].addEventListener('mouseup', function(event) {
-			/*console.log("up");*/
 			that.controller.mouseUp(event);
 		}, false);
 		
 		/***********************************************************
 		************* Layout & title creation **********************
 		************************************************************/
-		console.log(this.contextDiv);
 		const divTitle = $(`<h4>${this.regionEditorName}</h4>`);
 		this.buttonGrid = $(`<div class="btn-grid"></div>`);
 		this.contextDiv.append(divTitle,this.buttonGrid);
@@ -152,7 +149,6 @@ class RegionEditor_mVc {
 			</button>`
 		);
         this.buttonGrid.append(this.browseBtn);
-        console.log(this.buttonGrid);
         this.browseBtn.css(styleToApply);
         this.browseBtn.attr('disabled', 'disabled');
         this.browseBtn.click(function(event) {
@@ -178,7 +174,6 @@ class RegionEditor_mVc {
 			</button>`
 		);
         this.buttonGrid.append(this.editBtn);
-        console.log(this.buttonGrid);
         this.editBtn.css(styleToApply);
         this.editBtn.click(function(event) {
             that.setEditMode();
@@ -201,7 +196,6 @@ class RegionEditor_mVc {
 			</button>`
 		);
         this.buttonGrid.append(this.deleteBtn);
-        console.log(this.buttonGrid);
         this.deleteBtn.css(styleToApply);
         this.deleteBtn.click(function(event) {
             that.controller.CleanPoligon();
@@ -244,7 +238,6 @@ class RegionEditor_mVc {
         	</button>`
         );
         this.buttonGrid.append(exampleBtn);
-        console.log(this.buttonGrid);
         exampleBtn.css(styleToApply);
 
         exampleBtn.on('click', function(event) {
