@@ -45,10 +45,8 @@ class RegionPanelV {
         this.backgroundHandler = (backgroundHandler == null) ? function() { alert("No background handler registered"); } : backgroundHandler;
         this.contextDivId = contextDivId;
         this.contextDiv = null;
-        this.sousContextDiv = null;
         this.aladinLiteDiv = null;
         this.aladinLite_V = aladinLite_V;
-        //this.defaultRegion = defaultRegion;
         this.editionFrame = defaultRegion;
         
         this.foregroundRegionEditor = null;
