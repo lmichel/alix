@@ -223,29 +223,29 @@ class RegionEditor_mVc {
         
         
         /***********************************************************
-        ******************** Example button ************************
+        ******************** Switch button ************************
         ************************************************************/
-        /*
-        var exampleBtn = $(
-			`<button id='${this.contextDivId}-regionEditor_a' class=' alix_exa_btn alix_btn alix_region_btns'>
-        		Example&nbsp;
-        		<i class='glyphicon glyphicon-asterisk'></i>
+        
+        this.switchModeBtn = $(
+			`<button id='${this.contextDivId}-switchEditor' class='alix_swi_btn alix_btn alix_region_btns'>
+        		Switch&nbsp;
+        		<i class='glyphicon glyphicon-transfer'></i>
         	</button>`
         );
-        this.buttonGrid.append(exampleBtn);
-        exampleBtn.css(styleToApply);
-
-        exampleBtn.on('click', function(event) {
-            that.controller.recuperar();
-            that.setBrowseMode();
-            that.controller.invokeHandler(true);
-            that.aladinLite_V.reabledButton();
-            if ($("#region")[0])
-                $("#region")[0].disabled = false;
-            browseSaved = true;
+        this.buttonGrid.append(this.switchModeBtn);
+        this.switchModeBtn.css(styleToApply);
+        
+        this.switchModeBtn.on('click', (event, regionEditorView=this) => {
+			regionEditorView.setEditMode();
+            regionEditorView.controller.DeleteOverlay();
+            regionEditorView.lineContext.clearRect(0, 0, regionEditorView.lineCanvas[0].width, regionEditorView.lineCanvas[0].height);
+            regionEditorView.drawContext.clearRect(0, 0, regionEditorView.drawCanvas.width, regionEditorView.drawCanvas.height);
+            regionEditorView.controller.store();
             event.stopPropagation();
-        });
-        */
+		});
+        
+                
+        
         if (!AladinLiteX_mVc.regionEditorInit) {
             this.setInitialValue(this.defaultRegion);
             if (this.editionFrame) {
@@ -421,6 +421,7 @@ class RegionEditor_mVc {
 		this.editBtn.attr('disabled', 'disabled');
 		this.deleteBtn.attr('disabled', 'disabled');
 		this.setBtn.attr('disabled', 'disabled');
+		this.switchModeBtn.attr('disabled', 'disabled');
 	}
 	
 	/**
@@ -430,6 +431,7 @@ class RegionEditor_mVc {
 		this.editBtn.removeAttr('disabled');
 		this.deleteBtn.removeAttr('disabled');
 		this.setBtn.removeAttr('disabled');
+		this.switchModeBtn.removeAttr('disabled');
 	}
     /**
     @description Method to parse a SODA polygon that is represented by a string
