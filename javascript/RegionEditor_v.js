@@ -160,7 +160,6 @@ class RegionEditor_mVc {
             that.setBrowseMode();
             browseSaved = false;
             event.stopPropagation();
-            //that.aladinLite_V.reabledButton();
         });
 
 
@@ -179,10 +178,8 @@ class RegionEditor_mVc {
             that.setEditMode();
             that.controller.DeleteOverlay();
             that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
-            //that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
             that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
             that.controller.almacenar();
-            //that.aladinLite_V.disabledButton();
             event.stopPropagation();
         });
         
