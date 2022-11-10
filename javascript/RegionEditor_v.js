@@ -42,22 +42,26 @@ class RegionEditor_mVc {
     constructor(regionEditorName, aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion, color) {
 		this.regionEditorName = regionEditorName;
         this.aladinLiteDivId = aladinLiteDivId;
+        
         this.buttonGrid = null;
+        
         this.drawCanvas = null; // canvas where the polygon is drawn
         this.drawContext = null;
         this.lineCanvas = null; // canvas where the moving lines are drawn
         this.lineContext = null;
+        
         this.controller = null;
         this.points = null; // Initial values
-        this.clientHandler = (handler == null) ? function() { alert("No client handler registered"); } : handler;
+        
         this.contextDivId = contextDivId;
         this.contextDiv = null;
-        this.sousContextDiv = null;
+        
         this.aladinLiteDiv = null;
         this.aladinLite_V = aladinLite_V;
-        //this.defaultRegion = defaultRegion;
         this.editionFrame = defaultRegion;
+        
         this.color = color;
+        this.clientHandler = (handler == null) ? function() { alert("No client handler registered"); } : handler;
         this.init();
     }
     init() {
