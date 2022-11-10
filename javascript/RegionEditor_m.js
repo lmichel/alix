@@ -588,7 +588,7 @@ RegionEditor_Mvc.prototype = {
 		@brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
 		@return {void} nothing
 		 */
-		almacenar: function()
+		store: function()
 		{			
 			//console.log('mesage this.almacenar');
 			//console.log('this.skyPositions: ' + this.skyPositions);
@@ -636,7 +636,7 @@ RegionEditor_Mvc.prototype = {
 		@brief Function to obtain values from a polygon and create it in aladin lite
 		@return {void} nothing
 		 */
-		recuperar: function()
+		get: function()
 		{
 			/*
 			 * When the position are set from outside, the node remains empty while there is edition action.
