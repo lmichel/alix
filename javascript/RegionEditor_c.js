@@ -49,6 +49,8 @@ class RegionEditor_mvC {
         this.drag = null;
         this.result = -1;
         this.stokeNode;
+        
+        this.data = null;
     }
     getStatus() {
         return "startingNode="
