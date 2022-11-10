@@ -402,6 +402,36 @@ class RegionEditor_mVc {
         this.drawCanvas.show();
     }
     /**
+    @todo
+    */
+	emitCanvasShownMessage() {
+		this.contextDiv.trigger("canvas-shown");
+	}
+	/**
+	@todo
+	 */
+	emitCanvasHideMessage() {
+		this.contextDiv.trigger("canvas-hidden");
+	}
+    
+    /**
+    @description Method to let the program mute the RegionEditor when another RegionEditor is used
+     */
+    muteRegionEditor() {
+		this.editBtn.attr('disabled', 'disabled');
+		this.deleteBtn.attr('disabled', 'disabled');
+		this.setBtn.attr('disabled', 'disabled');
+	}
+	
+	/**
+    @description Method to let the program unmute the RegionEditor when another RegionEditor is no longer used
+     */
+	unmuteRegionEditor() {
+		this.editBtn.removeAttr('disabled');
+		this.deleteBtn.removeAttr('disabled');
+		this.setBtn.removeAttr('disabled');
+	}
+    /**
     @description Method to parse a SODA polygon that is represented by a string
     @example "POLYGON 1.2 1.3 4.5 1.2 4.3 4.3"
     @param {String} value - string polygon to convert
