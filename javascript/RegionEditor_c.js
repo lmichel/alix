@@ -79,7 +79,7 @@ class RegionEditor_mvC {
         let x = parseInt(event.pageX) - parseInt(this.canvas.offset().left).toFixed(1);
         let y = parseInt(event.pageY) - parseInt(this.canvas.offset().top).toFixed(1);
 
-        //pregunta si el pologono esta vacio
+        //ask if the polygon is empty
         if (this.polygonModel.isEmpty()) {
             this.polygonModel.addNode(x, y);
         }
@@ -251,11 +251,11 @@ class RegionEditor_mvC {
         }
         this.polygonModel.canvasUpdate();
     }
-    almacenar() {
-        this.polygonModel.almacenar();
+    store() {
+        this.polygonModel.store();
     }
-    recuperar() {
-        this.polygonModel.recuperar();
+    get() {
+        this.polygonModel.get();
     }
     DeleteOverlay() {
         this.polygonModel.DeleteOverlay();
@@ -308,7 +308,7 @@ class RegionEditor_mvC {
     invokeHandler(userAction,background) {
 		if (this.isPolygonClosed()) {
 			//Compute the region size in degrees
-			var view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
+			let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
 			if (!this.polygonModel.skyPositions.length) {
 				this.data = null;
 			} else {
