@@ -202,17 +202,16 @@ class RegionEditor_mVc {
 		/***********************************************************
         ******************** Accept Button ****************************
         ************************************************************/
-        var buttonSet = $(
+        this.setBtn = $(
 			`<button id='${this.contextDivId}-regionEditor_a' class=' alix_accept_btn alix_btn alix_region_btns'>
         		Accept&nbsp;
         		<i class='glyphicon glyphicon-share'></i>
         	</button>`
         );
-        this.buttonGrid.append(buttonSet);
-        console.log(this.buttonGrid);
-        buttonSet.css(styleToApply);
+        this.buttonGrid.append(this.setBtn);
+        this.setBtn.css(styleToApply);
 
-        buttonSet.on('click', function(event) {
+        this.setBtn.on('click', function(event) {
             that.controller.recuperar();
             that.setBrowseMode();
             that.controller.invokeHandler(true);
