@@ -34,19 +34,15 @@ class RegionPanelV {
 	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view that will handle the result of the selection
 	@param {Element}  aladinLiteDivId
 	@param {Element} contextDivId
-	@param {function} handler
+	@param {function} foregroundHandler - Handler of the shape drawn for the foreground
+	@param {function} backgroundHandler - Handler of the shape drawn for the background
 	@param {Frame} defaultRegion
 	 */
-    constructor(aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion) {
+    constructor(aladinLite_V, aladinLiteDivId, contextDivId, foregroundHandler, backgroundHandler, defaultRegion) {
         this.aladinLiteDivId = aladinLiteDivId;
         this.editorContainer = null;
-        this.drawCanvas = null; // canvas where the polygon is drawn
-        this.drawContext = null;
-        this.lineCanvas = null; // canvas where the moving lines are drawn
-        this.lineContext = null;
-        this.controller = null;
-        this.points = null; // Initial values
-        this.clientHandler = (handler == null) ? function() { alert("No client handler registered"); } : handler;
+        this.foregroundHandler = (foregroundHandler == null) ? function() { alert("No foreground handler registered"); } : foregroundHandler;
+        this.backgroundHandler = (backgroundHandler == null) ? function() { alert("No background handler registered"); } : backgroundHandler;
         this.contextDivId = contextDivId;
         this.contextDiv = null;
         this.sousContextDiv = null;
@@ -54,6 +50,11 @@ class RegionPanelV {
         this.aladinLite_V = aladinLite_V;
         //this.defaultRegion = defaultRegion;
         this.editionFrame = defaultRegion;
+        
+        this.foregroundRegionEditor = null;
+        this.backgroundRegionEditor = null;
+        
+        this.regionEditors = []
     }
     init() {
 		this.aladinLiteDiv = this.aladinLiteDiv == null ? $(`#${this.aladinLiteDivId}`) : this.aladinLiteDiv;
@@ -77,12 +78,12 @@ class RegionPanelV {
 			const foregroundRegionEditorId = "foreground-region-editor"
             const foregroundRegionEditorDiv = $(`<div id="${foregroundRegionEditorId}" class="region-editor"></div>`);
             this.editorContainer.append(foregroundRegionEditorDiv);
-			const foregroundRegionEditor = new RegionEditor_mVc(
+			this.foregroundRegionEditor = new RegionEditor_mVc(
 				"Foreground region editor",
 				this.aladinLite_V,
 				this.aladinLiteDivId,
 				foregroundRegionEditorId,
-				this.clientHandler,
+				this.foregroundHandler,
 				this.editionFrame,
 				"red"
 			);
@@ -90,12 +91,12 @@ class RegionPanelV {
 			const backgroundRegionEditorId = "background-region-editor"
             const backgroundRegionEditorDiv = $(`<div id="${backgroundRegionEditorId}" class="region-editor"></div>`);
             this.editorContainer.append(backgroundRegionEditorDiv);
-			const backgroundRegionEditor = new RegionEditor_mVc(
+			this.backgroundRegionEditor = new RegionEditor_mVc(
 				"Background region editor",
 				this.aladinLite_V,
 				this.aladinLiteDivId,
 				backgroundRegionEditorId,
-				this.clientHandler,
+				this.backgroundHandler,
 				this.editionFrame,
 				"orange"
 			);
