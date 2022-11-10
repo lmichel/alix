@@ -395,8 +395,8 @@ class RegionEditor_mVc {
     @description Method to let the user enter edition mode. In this mode, the user manipulates the nodes.
      */
     setEditMode() {
-        this.browseBtn.removeAttr('disabled');
         this.editBtn.attr('disabled', 'disabled');
+        this.browseBtn.removeAttr('disabled');
         this.deleteBtn.removeAttr('disabled');
         this.lineCanvas.show();
         this.drawCanvas.show();
