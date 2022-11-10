@@ -74,12 +74,17 @@ var masTest = {
 				}
 			}
 		},
-		regionEditorHandler: function(data) {
-			if( data.userAction )
-			{
+		scRegionEditorHandler: function(data) {
+			if( data.userAction ) {
 				console.log("hello I'm the new handler");
 				//AladinLiteX_mVc.storePolygon(data.region);
 				alert("hello I'm the new handler\n" + JSON.stringify(data));
+			}
+		},
+		bgRegionEditorHandler: function(data) {
+			if( data.userAction ) {
+				console.log("hello I'm the new handler for background");
+				alert(JSON.stringify(data));
 			}
 		}
 };
