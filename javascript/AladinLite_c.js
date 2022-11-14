@@ -90,9 +90,9 @@ AladinLite_mvC.prototype = {
 				return null;
 		},
 		
-		setPoligon: function(region){
+		setPolygon: function(region){
 			if(this.modules.regionEditorView != undefined)
-				return this.modules.regionEditorView.setPoligon(region);
+				return this.modules.regionEditorView.setPolygon(region);
 			else
 				return null;
 		},

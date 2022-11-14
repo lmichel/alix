@@ -368,7 +368,7 @@ class RegionEditor_mVc {
 
             this.setBrowseMode();
             this.controller.DeleteOverlay();
-            this.controller.setPoligon(pts);
+            this.controller.setPolygon(pts);
         }
         /*
          * Fix for the errors when we open a new region editor
