@@ -778,7 +778,7 @@ class PolygonModel {
 		    //store the node number pushed			
 		    let nodes = this.GetNodelength();
 		    let segment = new Segment(nodes);
-		    let inter = segment.Itersection(this.startingNode, true);
+		    let inter = segment.Itersection(startingNode, true);
 		    if (inter != -1 && inter != undefined) {
 		        this.RemoveNode(this.startingNode, false);
 		        this.addNode(x, y, this.stokeNode, true);
@@ -851,11 +851,11 @@ class PolygonModel {
 						break;
 					}
 					case "horizontal": {
-						this.polygonModel.addNode(x, y, option);
+						this.addNode(x, y, option);
 						break;
 					}
 					case "distancia": {
-						this.polygonModel.addNode(x, y, option);
+						this.addNode(x, y, option);
 						break;
 					}
 					default: {
@@ -866,5 +866,21 @@ class PolygonModel {
         }
         return resultObject;
 	}
-}
+	
+	handleMouseMove(event, canvas, buttondown, startingNode, drag, result, startdrag) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+        let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+        //console.log(`x:${x}, y:${y}`);
+        let movestart = null;
 
+        //Ask if a node was pressed
+        if (buttondown == true && startingNode != -1) {
+            movestart = true;
+            this.drawHashline(startingNode, x, y, result);
+        }
+        else if (startdrag) {
+            this.Drag(drag, x, y, result);	
+        }
+        return movestart;
+	}
+}
