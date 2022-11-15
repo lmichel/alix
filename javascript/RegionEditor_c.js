@@ -43,8 +43,24 @@ class RegionEditor_mvC {
     constructor(params) {
 		this.color = params.color;
 
-        this.polygonModel = new PolygonModel(params.points, params.handler, params.canvas, params.canvaso, params.aladinView,this.color);
-        this.coneModel = new ConeModel(params.points, params.handler, params.canvas, params.canvaso, params.aladinView,this.color);
+        this.polygonModel = new PolygonModel(
+			params.points,
+			params.handler,
+			params.drawCanvas,
+			params.staticCanvas,
+			params.aladinView,
+			this.color
+		);
+
+        this.coneModel = new ConeModel(
+			params.points,
+			params.handler,
+			params.drawCanvas,
+			params.staticCanvas,
+			params.aladinView,
+			this.color
+		);
+
         this.focusedModel = Models.Polygon;
         
         this.canvas = params.canvas;
