@@ -25,7 +25,7 @@
 /**
  * Model processing the draw canvas
  * 
- * Author Gerardo Irvin Campos yah
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
  */
 
 class ConeModel {
