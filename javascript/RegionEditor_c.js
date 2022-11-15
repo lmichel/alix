@@ -27,7 +27,7 @@
  * 
  *  params = {canvas,canvaso, aladin}
  * 
- * Author Gerardo Irvin Campos yah
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
  */
 /**
  * @author michel
