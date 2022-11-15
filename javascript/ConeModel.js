@@ -29,222 +29,210 @@
  */
 
 class ConeModel {
-    constructor(points, handler, canvas, canvaso, aladinView, colorValidated) {
+    constructor(points, handler, drawCanvas, staticCanvas, aladinView, colorValidated) {
         console.log(colorValidated);
-        this.node = [];
-        this.canvas = canvas[0];
-        this.canvaso = canvaso[0];
-        this.context = this.canvas.getContext('2d');
-        this.contexto = this.canvaso.getContext('2d');
-        //this.aladin parameters:
-        //this.aladin = aladin;	
+        this.centerNode = {};
+        this.radius = null;
+        this.drawCanvas = drawCanvas[0];
+        this.staticCanvas = staticCanvas[0];
+        this.context = this.drawCanvas.getContext('2d');
+        this.staticContext = this.staticCanvas.getContext('2d');
         this.overlay = null;
-        this.skyPositions = null;
+        this.skyConeDescriptor = null;
         this.aladinView = aladinView;
-        this.points = points;
         this.color = colorValidated;
+        this.DrawCentralNode(608,232);
+        this.DrawCompletedCircle(400,232,100);
+        this.DrawGuidelineCircle(608,232,100);
+        this.centerNode = {cx: 608, cy: 232};
+        this.radius = 100;
+        this.get();
+    }
+    /**
+    @description Function to draw the central node of the cone on the canvas
+    @param {number} centerX
+    @param {number} centerY
+     */
+    DrawCentralNode(centerX, centerY) {
+        this.context.beginPath();
+        this.context.arc(centerX, centerY, 5, 0, Math.PI * 2, true);
+        this.context.fillStyle = "blue";
+        this.context.fill();
+        this.context.strokeStyle="blue";
+        this.context.stroke();
+        this.context.closePath();
+    }
+    /**
+    @description Function to draw the circle once it was validated by the user
+    @param {number} centerX
+    @param {number} centerY
+    @param {number} radius
+     */
+    DrawCompletedCircle(centerX,centerY,radius) {
+		this.drawCircle(centerX, centerY, radius, "lime");
+	}
+	/**
+	@description Function to draw the circle during the setting
+	@param {number} centerX
+    @param {number} centerY
+    @param {number} radius
+	 */
+    DrawGuidelineCircle(centerX,centerY,radius) {
+		this.drawCircle(centerX, centerY, radius, "gray");
+	}
+	/**
+	@description Function to draw a circle with a focused color
+	@param {number} centerX
+    @param {number} centerY
+    @param {number} radius
+    @param {string} color
+	 */
+    drawCircle(centerX, centerY, radius, color) {
+		this.context.beginPath();
+		this.context.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+		this.context.strokeStyle = color;
+		this.context.stroke();
+		this.context.closePath();
+	}
+	/**
+    @brief Function to obtain values from a cone and create it in aladin lite
+    @return {void}
+     */
+    get() {
+        /*
+         * When the position are set from outside, the node remains empty while there is edition action.
+         *  So if the user want to get back the cone without editing it, we have to cancel this method
+         */
+        if (this.centerNode && Object.keys(this.centerNode).length == 0 && this.skyPositions && this.skyPositions.length > 0)
+            return;
+
+        this.skyConeDescriptor = this.buildSkyConeDescriptor(this.centerNode,this.radius);
+
+        if (this.overlay === null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints(
+			[A.circle(
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1],
+				this.skyConeDescriptor.radius
+			)]
+		);
+    }
+    
+    /**
+    @description Function to build the skyConeDescriptor property
+    @param {{cx: number, cy: number}} centerNode
+    @param {number} radius
+    @returns {{skyNode: Array<number>, radius: number}}
+     */
+    buildSkyConeDescriptor(centerNode, radius) {
+		let skyPositionsCenterNode = this.aladinView.pix2world(centerNode.cx, centerNode.cy);
+		
+		let pointBelongCircle;
+		// If dec > 0 i.e. If one is in the north hemisphere
+		if (skyPositionsCenterNode[1] > 0) {
+			// One takes a radius that point to the south
+			pointBelongCircle = centerNode.cy - radius;
+		} else {
+			// Else, one takes a radius that point to the north
+			pointBelongCircle = centerNode.cy + radius;
+		}
+		
+		let skyPositionPointBelongCircle = this.aladinView.pix2world(centerNode.cx,pointBelongCircle);
+		let skyRadius = skyPositionPointBelongCircle[1] - skyPositionsCenterNode[1];
+
+        let skyConeDescriptor = {
+			skyNode: skyPositionsCenterNode,
+			radius: skyRadius
+		}
+		return skyConeDescriptor;
+	}
+    
+    /**
+    @brief Function to obtain values from polygon and then create this polygon in aladin lite
+    @return {void}
+     */
+    setCone(centerX,centerY,radius) {
+        this.skyConeDescriptor = this.buildSkyConeDescriptor({cx: centerX, cy: centerY},radius);
+        if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints(
+			[A.circle(
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1],
+				this.skyConeDescriptor.radius
+			)]
+		); //Create a circle
+
+    }
+    
+    /**
+    @brief Function to delete polygons from this.aladin lite when one enter the edition mode
+    @return {void} nothing
+     */
+    DeleteOverlay() {
+        if (this.overlay !== null) {
+            this.overlay.addFootprints(
+				A.circle(
+					this.skyConeDescriptor.skyNode[0],
+					this.skyConeDescriptor.skyNode[1],
+					this.skyConeDescriptor.radius
+				)
+			);
+            this.overlay.removeAll();
+            this.overlay.overlays = [];		           
+        }
     }
     /**
     @brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
     @return {void} nothing
      */
     store() {
-        //console.log('mesage this.almacenar');
-        //console.log('this.skyPositions: ' + this.skyPositions);
-        if (this.skyPositions != null) {
-            //console.log('this.skyPositions' + this.skyPositions);
-            //console.log('this.node' + this.node);					
-            this.node = [];
-            this.skyPositions.pop();
+        if (this.skyConeDescriptor !== null) {
+			let skyNode = this.skyConeDescriptor.skyNode;
+			let skyRadius = this.skyConeDescriptor.radius;
+			
+			let convertedNode = this.aladinView.world2pix(
+                skyNode[0],
+                skyNode[1]
+            );
+            
+            let pointBelongCircle = skyNode[0] + skyRadius;
+			let skyPositionPointBelongCircle = this.aladinView.world2pix(pointBelongCircle,skyNode[1]);
+			
+			let convertedRadius = skyPositionPointBelongCircle[0] - convertedNode[0];
+			
+			this.centerNode = {cx: convertedNode[0], cy: convertedNode[1]};
+			this.radius = convertedRadius;
 
-            for (var k = 0; k < this.skyPositions.length; k++) {
-                this.node.push(this.aladinView.world2pix(
-                    this.skyPositions[k][0],
-                    this.skyPositions[k][1]
-                ));
-            }
-
-            this.ArrayToObject(this.node);
-
-            this.Redrawn(this.node);
+            this.Redraw();
         }
 
     }
+    
     /**
-    @brief Function to delete polygons from this.aladin lite when one enter the edition mode
-    @return {void} nothing
+    @description Draw again the lines and the nodes stored
      */
-    DeleteOverlay() {
-        if (this.overlay != null) {
-            //console.log('this.skyPositions: ' + this.skyPositions);
-            //console.log('A: ' + typeof(A));
-            this.overlay.addFootprints(A.polygon(this.skyPositions));
-            this.overlay.removeAll();
-            this.overlay.overlays = [];
-            //console.log('this.overlay' + this.overlay);			           
-        }
-    }
-    /**
-    @brief Function to obtain values from a polygon and create it in aladin lite
-    @return {void} nothing
-     */
-    get() {
-        /*
-         * When the position are set from outside, the node remains empty while there is edition action.
-         *  So if the user want to get back the polygoene without editing it, we have to cancel this method
-         */
-        if (this.node && this.node.length == 0 && this.skyPositions && this.skyPositions.length > 0) {
-            return;
-        }
-        //console.log('this.node1: ' + this.node.length);
-        //console.log('this.node.length: ' + this.node.length);
-        this.skyPositions = [];
-        for (var k = 0; k < this.node.length; k++) {
-            //this.skyPositions.push(this.aladin.pix2world(this.node[k][0], this.node[k][1]));
-            this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
-        };
-        //finalthis.node
-        if (this.overlay == null) {
-            this.overlay = A.graphicOverlay({ color: this.color });
-
-            this.aladinView.addOverlayer(this.overlay);
-        }
-        this.overlay.removeAll();
-        this.overlay.addFootprints([A.polygon(this.skyPositions)]);
-    }
-    //function pour obtenir les valeurs de le polygon et creer le polygon en adalin lite
-    /**
-    @brief Function to obtain values from polygon and then create this polygon in aladin lite
-    @param {Array<Array<Number>>} points - An array of points representing the vertices of our polygon
-    @return {void} nothing
-     */
-    setPolygon(points) {
-        this.skyPositions = [];
-        for (var k = 0; k < points.length; k++) {
-            this.skyPositions.push(points[k]);
-        }
-        if (this.overlay == null) {
-            this.overlay = A.graphicOverlay({ color: this.color });
-            this.aladinView.addOverlayer(this.overlay);
-        }
-        this.overlay.removeAll();
-        this.overlay.addFootprints([A.polygon(this.skyPositions)]); //créer la polygon
-
-        //this.PolygonCenter();
-    }
-    /**
-    @brief Function to set an overlay
-    @param
-     */
-    setOverlay(points) {
-        if (this.overlay == null) {
-            this.overlay = A.graphicOverlay({ color: this.color });
-            this.aladinView.addOverlayer(this.overlay);
-        }
-        this.overlay.removeAll();
-    }
-    //function pour effacer le poligone de this.canvas
-    CleanPoligon() {
+    Redraw() {
         this.CanvasUpdate();
-        this.node = [];
-        this.skyPositions = [];
-        //console.log('this.node delete: ' + this.node.length);		
+        this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+        this.DrawCompletedCircle(this.centerNode.cx,this.centerNode.cy,this.radius);
     }
-    //trouver le polygon en adalin lite si on se trouve en otre part du universe
-    PolygonCenter() {
-        var view = BasicGeometry.getEnclosingView(this.skyPositions);
-        this.aladin.gotoPosition(view.center.ra, view.center.dec);
-        this.aladin.setZoom(1.2 * view.size);
-        // LM patch
-        //			var Height = this.GetHeight(this.skyPositions);		
-        //			var width = this.GetWidth(this.skyPositions);
-        //			if( Height.largeur == 0 || width.largeur == 0 ) {
-        //				return;
-        //			}
-        //			var center = {};
-        //			center.ra = ((Height.ramax +  Height.ramin)/2);
-        //			center.dec =  ((width.decmax + width.decmin)/2);
-        //			this.aladinView.gotoPosition(center.ra, center.dec);
-        //			this.aladinView.setZoom( (width.width + Height.largeur) );
-    }
-    //effacer un this.node de le polygone si se trouve sûr autre this.node
-    RemoveNode(nodevalue, status) {
-        var index = this.node[nodevalue];
 
-        if (this.node.length >= 4) {
-            this.node.splice(nodevalue, 1);
-            if (status) {
-                this.DrawNode(this.node);
-            }
-            else {
-                this.Redrawn(0);
-            }
-
-        }
-    }
-    //function pour obtenir le this.node initial et final du polygon
-    GetXYNode(x, y) {
-        var nodes = {};
-
-        var dx;
-        var dy;
-
-        for (var i in this.node) {
-            //console.log('this.nodenum:  ' + i);
-            //console.log('cx: ' + this.node[i].cx);
-            //console.log('cy: ' + this.node[i].cy);
-            dx = x - this.node[i].cx;
-            dy = y - this.node[i].cy;
-            //var result =Math.sqrt(dx * dx + dy * dy);
-            var result = dx * dx + dy * dy;
-
-            if (result <= 25) {
-                if (nodes.a == undefined) {
-                    nodes.a = i;
-                }
-
-                else {
-                    nodes.b = i;
-                }
-            }
-        }
-
-        return nodes;
-    }
-    //metodo que debuelve el numero de nodos del poligono
-    GetNodelength() {
-        return this.node;
-    }
-    //crear la grafica
-    createGrafic(parametre) {
-        this.DrawGrafic(parametre);
-    }
-    //indicar cuando serrar poligono
-    cuadradoIndicador(x, y) {
-        this.context.beginPath();
-        this.context.fillRect(x, y, 10, 10);
-        this.context.fillStyle = this.color;
-        this.context.fill();
-        this.context.stroke();
-        this.context.closePath();
-    }
-    stokeNode(nodeposition) {
-        if (nodeposition != undefined) {
-            var stocknode = [];
-            stocknode.push({
-                position: nodeposition,
-                cx: this.node[nodeposition].cx,
-                cy: this.node[nodeposition].cy,
-                r: 5
-            });
-
-            return stocknode;
-        }
-        return null;
-
-    }
-    getSkyPositions() {
-        return this.skyPositions;
+    /**
+    @description Clean the draw Canvas
+     */
+    CanvasUpdate() {
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.drawImage(this.drawCanvas, 0, 0);
     }
 }
 
