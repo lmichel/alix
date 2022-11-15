@@ -32,7 +32,7 @@ class RegionEditor_mVc {
 	/**
 	@brief View of the RegionEditor service
 	@param {string} regionEditorName - The name of the region editor
-	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view taht will handle the result of the selection
+	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view that will handle the result of the selection
 	@param {Element}  aladinLiteDivId
 	@param {Element} contextDivId
 	@param {function} handler
@@ -101,10 +101,9 @@ class RegionEditor_mVc {
 
 
         this.controller = new RegionEditor_mvC({
-			/* "points": this.points,*/
 			"handler": this.clientHandler,
-			"canvas": this.drawCanvas,
-			"canvaso": this.lineCanvas,
+			"drawCanvas": this.drawCanvas,
+			"staticCanvas": this.lineCanvas,
 			"aladinView": this.aladinLite_V,
 			"color": this.color
 		});
