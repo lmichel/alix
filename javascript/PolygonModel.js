@@ -118,7 +118,6 @@ class PolygonModel {
             );
         }
 
-        this.node = [];
         this.node = NodeTemp;
     }
     //Fuction pour obtenir le hautor du polygon
@@ -213,7 +212,6 @@ class PolygonModel {
 
         if (width > 180) {
             width = 360 - width;
-            //console.log('width 360');
         }
 
         return { decmax: Decmax, decmin: Decmin, width: width };
@@ -362,8 +360,7 @@ class PolygonModel {
                     addnode.r = 5;
 
                     this.node.splice(startingNode.segmento.segmento, 1, preview, addnode);
-                    var renode = this.node;
-                    this.Redrawn(0);
+                    this.Redraw(0);
 
                 }
             }
@@ -404,8 +401,7 @@ class PolygonModel {
             pointA = parseInt((this.node.length - 1) - 1);
             pointB = 0;
         }
-        else if (clickedNode != 0 && clickedNode != (this.node.length - 1)) {
-            //console.log('otro this.node');
+        else {
             pointA = (parseInt(clickedNode) + 1);
             pointB = (parseInt(clickedNode) - 1);
         }
@@ -416,7 +412,6 @@ class PolygonModel {
         this.contexto.drawImage(this.canvas, 0, 0);
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
-    //function pour diseigner les lignes
     /**
     @brief Function to draw lines
     @param {Array<Number>} The starting noede
@@ -426,7 +421,7 @@ class PolygonModel {
     }
     /**
     @brief Function to delete a line from the polygon
-    @return {void} nothing
+    @return {void}
      */
     CleanLine() {
         //this.contexto.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -485,13 +480,9 @@ class PolygonModel {
     @param {Number} y - The y position we want to set to the node
     @param {} result - The result of the operation
     
-    @return {void} nothing
+    @return {void}
      */
     Drag(clickedNode, x, y, result) {
-        var segmentfirst;
-        var segmentlast;
-        var flag;
-        var resultado = [];
 
         //set new values
         this.node[clickedNode].cx = x;
@@ -554,11 +545,8 @@ class PolygonModel {
         if (this.node && this.node.length == 0 && this.skyPositions && this.skyPositions.length > 0) {
             return;
         }
-        //console.log('this.node1: ' + this.node.length);
-        //console.log('this.node.length: ' + this.node.length);
         this.skyPositions = [];
         for (var k = 0; k < this.node.length; k++) {
-            //this.skyPositions.push(this.aladin.pix2world(this.node[k][0], this.node[k][1]));
             this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
         };
         //finalthis.node
@@ -570,11 +558,10 @@ class PolygonModel {
         this.overlay.removeAll();
         this.overlay.addFootprints([A.polygon(this.skyPositions)]);
     }
-    //function pour obtenir les valeurs de le polygon et creer le polygon en adalin lite
     /**
     @brief Function to obtain values from polygon and then create this polygon in aladin lite
     @param {Array<Array<Number>>} points - An array of points representing the vertices of our polygon
-    @return {void} nothing
+    @return {void}
      */
     setPolygon(points) {
         this.skyPositions = [];
@@ -605,8 +592,7 @@ class PolygonModel {
     CleanPoligon() {
         this.CanvasUpdate();
         this.node = [];
-        this.skyPositions = [];
-        //console.log('this.node delete: ' + this.node.length);		
+        this.skyPositions = [];		
     }
     //trouver le polygon en adalin lite si on se trouve en otre part du universe
     PolygonCenter() {
@@ -648,12 +634,8 @@ class PolygonModel {
         var dy;
 
         for (var i in this.node) {
-            //console.log('this.nodenum:  ' + i);
-            //console.log('cx: ' + this.node[i].cx);
-            //console.log('cy: ' + this.node[i].cy);
             dx = x - this.node[i].cx;
             dy = y - this.node[i].cy;
-            //var result =Math.sqrt(dx * dx + dy * dy);
             var result = dx * dx + dy * dy;
 
             if (result <= 25) {
