@@ -198,6 +198,7 @@ class RegionEditor_mVc {
             that.controller.CleanPoligon();
             event.stopPropagation();
         });
+        this.deleteBtn.attr('disabled', 'disabled');
 
 		/***********************************************************
         ******************** Accept Button ****************************
@@ -419,7 +420,6 @@ class RegionEditor_mVc {
      */
     muteRegionEditor() {
 		this.editBtn.attr('disabled', 'disabled');
-		this.deleteBtn.attr('disabled', 'disabled');
 		this.setBtn.attr('disabled', 'disabled');
 		this.switchModeBtn.attr('disabled', 'disabled');
 	}
@@ -429,7 +429,6 @@ class RegionEditor_mVc {
      */
 	unmuteRegionEditor() {
 		this.editBtn.removeAttr('disabled');
-		this.deleteBtn.removeAttr('disabled');
 		this.setBtn.removeAttr('disabled');
 		this.switchModeBtn.removeAttr('disabled');
 	}
