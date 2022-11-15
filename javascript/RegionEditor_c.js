@@ -71,12 +71,6 @@ class RegionEditor_mvC {
         	 stokeNode=${this.stokeNode}`;
     }
     /**
-     * @todo to be implemented
-     */
-    checkPolygon(points) {
-        return true;
-    }
-    /**
      *
      */
     mouseDown(event) {
