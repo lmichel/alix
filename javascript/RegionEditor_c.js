@@ -63,7 +63,7 @@ class RegionEditor_mvC {
 
         this.focusedModel = Models.Polygon;
         
-        this.canvas = params.canvas;
+        this.canvas = params.drawCanvas;
         this.clientHandler = params.handler;
         this.startingNode = -1;
         this.buttondown = false;
@@ -113,18 +113,18 @@ class RegionEditor_mvC {
      *
      */
     mouseMove(event) {
-        let x = parseInt(event.pageX) - parseInt(this.canvas.offset().left).toFixed(1);
-        let y = parseInt(event.pageY) - parseInt(this.canvas.offset().top).toFixed(1);
-        //console.log("mouse move " + this.getStatus());
-        //Ask if a node was pressed
-        if (this.buttondown == true && this.startingNode != -1) {
-            //console.log ('this.startingNode' + this.startingNode);
-            this.movestart = true;
-            this.polygonModel.drawHashline(this.startingNode, x, y, this.result);
-        }
-        else if (this.startdrag) {
-            this.polygonModel.Drag(this.drag, x, y, this.result);	
-        }
+		if (this.focusedModel === Models.Polygon) {
+			let resultHandler = this.polygonModel.handleMouseMove(
+				event,
+				this.canvas,
+				this.buttondown,
+				this.startingNode,
+				this.drag,
+				this.result,
+				this.startdrag
+			);
+			this.movestart = resultHandler ? resultHandler : this.movestart;
+		}
     }
     mouseUp(event) {
 		if (this.focusedModel === Models.Polygon) {
