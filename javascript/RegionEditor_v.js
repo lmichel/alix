@@ -139,6 +139,26 @@ class RegionEditor_mVc {
 			'font-weight': ' bold',
 		}
 		
+		/***********************************************************
+        ******************** Edit Button ***************************
+        ************************************************************/
+        this.editBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_e' class='alix_edt_btn alix_btn alix_region_btns'>
+				Edit&nbsp;
+				<i class='glyphicon glyphicon-pencil'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.editBtn);
+        this.editBtn.css(styleToApply);
+        this.editBtn.click(function(event) {
+            that.setEditMode();
+            that.controller.DeleteOverlay();
+            that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
+            that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
+            that.controller.store();
+            event.stopPropagation();
+        });
+		
         /***********************************************************
         ******************** Browse Button *************************
         ************************************************************/
@@ -163,25 +183,6 @@ class RegionEditor_mVc {
         });
 
 
-		/***********************************************************
-        ******************** Edit Button ***************************
-        ************************************************************/
-        this.editBtn = $(
-			`<button id='${this.contextDivId}-regionEditor_e' class='alix_edt_btn alix_btn alix_region_btns'>
-				Edit&nbsp;
-				<i class='glyphicon glyphicon-pencil'></i>
-			</button>`
-		);
-        this.buttonGrid.append(this.editBtn);
-        this.editBtn.css(styleToApply);
-        this.editBtn.click(function(event) {
-            that.setEditMode();
-            that.controller.DeleteOverlay();
-            that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
-            that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
-            that.controller.store();
-            event.stopPropagation();
-        });
         
         /***********************************************************
         ******************** Delete Button *************************
