@@ -97,13 +97,19 @@ class PolygonModel {
 
         this.DrawnLine(0, 0, 0, result);
     }
-    //Clean the this.canvas
+    
+    /**
+    @description Clean the draw Canvas
+     */
     CanvasUpdate() {
         this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         this.staticContext.drawImage(this.drawCanvas, 0, 0);
     }
-    //Convert a Array to Object
+    /**
+    @description Convert an Array of Array representing nodes to an array of Object
+    @param {Array<Array<number>>} data An array of nodes represented by arrays
+    */
     ArrayToObject(data) {
 	console.log("data",data);
         var NodeTemp = [];
@@ -186,6 +192,11 @@ class PolygonModel {
         return total;
     }
     //function pour obtenir le hauteur de un polygone
+    /**
+    @description Function get the width (height ?) of a polygon
+    @param {Array<Array<number>>} array - an array of nodes forming a polygon
+    @return {{decmax: number, decmin: number, width: number}}
+     */
     GetWidth(array) {
         var Decmax = null, Decmin = null;
         var temp;
@@ -217,7 +228,12 @@ class PolygonModel {
 
         return { decmax: Decmax, decmin: Decmin, width: width };
     }
-    //function para crear una grafica en el this.canvas
+    
+    //function para crear una grafica en el this.drawCanvas
+    /**
+    @description Function to create a graph on the drawCanvas (this.drawCanvas)
+    @param {Element} canvas1 - The drawCanvas on which one will draw
+     */
     DrawGrafic(canvas1) {
         var canvasgraf = canvas1;
         var ancho = canvasgraf.width;
@@ -290,12 +306,18 @@ class PolygonModel {
         else
             return false;
     }
-    //function que permet de ajouter this.nodes
-    addNode(x, y, startingNode, polygonestatus) {
-        if (polygonestatus) {
-            var newNode = {};
-            var lastnode = {};
-            var position = parseInt(startingNode[0].position);
+    /**
+    @description Function to add node to this.node
+    @param {number} x
+    @param {number} y
+    @param {Array<number>} startingNode
+    @param {boolean} polygonstatus
+     */
+    addNode(x, y, startingNode, polygontatus) {
+        if (polygontatus) {
+            let newNode = {};
+            let lastnode = {};
+            let position = parseInt(startingNode[0].position);
 
             newNode.cx = startingNode[0].cx;
             newNode.cy = startingNode[0].cy;
@@ -367,6 +389,12 @@ class PolygonModel {
         //console.log('this.node add: ' + this.node.length);        
     }
     //function que permet obtener le numero de this.node
+    /**
+    @description Function that let us obtain the index of this.node considering x & y coordinates
+    @param {number} x - x coordinate of the clicked point
+    @param {number} y - y coordinate of the clicked point
+   	@returns {number} The index of the clicked point, -1 otherwise
+     */
     getNode(x, y) {
         var dx = 0;
         var dy = 0;
@@ -385,7 +413,15 @@ class PolygonModel {
         }
         return -1;
     }
-    //function pour obtenir les deux this.nodes qui forme un segment
+
+    /**
+    @description Function to get the 2 nodes that shape the segment
+    @param {number} clickedNode - the position on a segment that has been clicked
+    @returns {{A: number, B:number, N: number}} An object containing the position of:
+    	- the beginning of the sub segment A
+    	- the end of the sub segment B
+    	- the point clicked N
+     */
     getSegment(clickedNode) {
         var pointA = 0, pointB = 0;
 
@@ -405,14 +441,18 @@ class PolygonModel {
         }
         return { A: pointA, B: pointB, N: clickedNode };
     }
-    //function pour effacer le this.canvas
+    /**
+    @description Function to erase the drawCanvas
+     */
     canvasUpdate() {
         this.staticContext.drawImage(this.drawCanvas, 0, 0);
         this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
     }
     /**
     @brief Function to draw lines
-    @param {Array<Number>} The starting noede
+    @param {Array<Number>} startingNode the node from which the path begin
+    @param {number} x the x endpoint coordinate
+    @param {number} y the y endpoint coordinate
      */
     drawHashline(startingNode, x, y) {
         this.DrawnLine(startingNode, x, y);
@@ -474,7 +514,7 @@ class PolygonModel {
     /**
     @brief Method to move a node (this.node) and the 2 segments linked to it
     @param {Array<Number>} clickedNode - The node we want to drag
-    @param {Number} x - The x position we want to se to the node
+    @param {Number} x - The x position we want tot se to the node
     @param {Number} y - The y position we want to set to the node
     @param {} result - The result of the operation
     
@@ -493,7 +533,7 @@ class PolygonModel {
         this.Redraw(result);
     }
     /**
-    @brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
+    @brief function to keep values from aladin lite & then convert them into drawCanvas values (this.drawCanvas("pixel"))
     @return {void} nothing
      */
     store() {
@@ -577,7 +617,7 @@ class PolygonModel {
         //this.PolygonCenter();
     }
     /**
-    @brief Function to set an overlay
+    @description Function to set an overlay
     @param
      */
     setOverlay(points) {
@@ -587,13 +627,17 @@ class PolygonModel {
         }
         this.overlay.removeAll();
     }
-    //function pour effacer le poligone de this.canvas
+    /**
+    @description Function to erase the polygon from drawCanvas 
+     */
     CleanPoligon() {
         this.CanvasUpdate();
         this.node = [];
         this.skyPositions = [];		
     }
-    //trouver le polygon en adalin lite si on se trouve en otre part du universe
+    /**
+    @description Find the polygon in aladin lite if we cannot visualize it on the screen
+    */
     PolygonCenter() {
         var view = BasicGeometry.getEnclosingView(this.skyPositions);
         this.aladin.gotoPosition(view.center.ra, view.center.dec);
@@ -610,6 +654,12 @@ class PolygonModel {
         //			this.aladinView.gotoPosition(center.ra, center.dec);
         //			this.aladinView.setZoom( (width.width + Height.largeur) );
     }
+    /**
+    @description Erase node if it is on another node
+    @param {number} nodevalue
+    @param {boolean} status
+    @returns {void}
+     */
     //effacer un this.node de le polygone si se trouve sûr autre this.node
     RemoveNode(nodevalue, status) {
         var index = this.node[nodevalue];
@@ -625,7 +675,12 @@ class PolygonModel {
 
         }
     }
-    //function pour obtenir le this.node initial et final du polygon
+    /**
+    @description function to obtain the initial & final node of the polygon
+    @param {number} x
+    @param {number} y
+    @returns {{a: Array<number>, b: Array<number>}} The initial node (a) and the final node (b) of the polygon
+     */
     GetXYNode(x, y) {
         let nodes = {};
 
