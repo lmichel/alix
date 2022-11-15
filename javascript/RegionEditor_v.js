@@ -112,11 +112,11 @@ class RegionEditor_mVc {
          * The controller function is wrapped in a function in order to make it working in the context of the controller object
          * and not of he HTML widget
          */
-        this.drawCanvas[0].addEventListener('mousedown', (event, regionEditorView=this) => {
-			regionEditorView.controller.mouseDown(event);
-		}, false);
         this.drawCanvas[0].addEventListener('mousemove', (event,regionEditorView=this) => {
 			regionEditorView.controller.mouseMove(event);
+		}, false);
+        this.drawCanvas[0].addEventListener('mousedown', (event, regionEditorView=this) => {
+			regionEditorView.controller.mouseDown(event);
 		}, false);
         this.drawCanvas[0].addEventListener('mouseup', (event,regionEditorView=this) => {
 			regionEditorView.controller.mouseUp(event);
