@@ -29,15 +29,13 @@
  */
 
 class PolygonModel {
-    constructor(points, handler, canvas, canvaso, aladinView, colorValidated) {
+    constructor(points, handler, drawCanvas, staticCanvas, aladinView, colorValidated) {
         console.log(colorValidated);
         this.node = [];
-        this.canvas = canvas[0];
-        this.canvaso = canvaso[0];
-        this.context = this.canvas.getContext('2d');
-        this.contexto = this.canvaso.getContext('2d');
-        //this.aladin parameters:
-        //this.aladin = aladin;	
+        this.drawCanvas = drawCanvas[0];
+        this.staticCanvas = staticCanvas[0];
+        this.context = this.drawCanvas.getContext('2d');
+        this.staticContext = this.staticCanvas.getContext('2d');
         this.overlay = null;
         this.skyPositions = null;
         this.aladinView = aladinView;
@@ -46,10 +44,12 @@ class PolygonModel {
     }
     DrawNode(data) {
         for (var i in data) {
+			console.log(data);
             this.context.beginPath();
             this.context.arc(data[i].cx, data[i].cy, data[i].r, 0, Math.PI * 2, true);
             this.context.fillStyle = "blue";
             this.context.fill();
+            this.context.strokeStyle="blue"
             this.context.stroke();
             this.context.closePath();
         }
@@ -66,27 +66,25 @@ class PolygonModel {
 
                 this.context.lineTo(this.node[i].cx, this.node[i].cy);
             }
-
-            this.context.closePath();
-            this.context.strokeStyle = 'lime';
-            // this.context.lineWidth = 3;
-            this.context.stroke();
         }
 
         else {
-            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
             this.context.beginPath();
             this.context.lineCap = "round";
             this.context.moveTo(this.node[startingNode].cx, this.node[startingNode].cy);
             this.context.lineTo(x, y);
-            this.context.closePath();
-            this.context.strokeStyle = 'lime';
-            //this.context.lineWidth = 3;
-            this.context.stroke();
         }
+        this.context.closePath();
+        this.context.strokeStyle = 'lime';
+        this.context.stroke();
     }
-    //this.Redrawn line and this.node
-    Redrawn(result) {
+    
+    /**
+    @description Draw again the lines and the nodes stored
+    @param {*} result
+     */
+    Redraw(result) {
         this.CanvasUpdate();
         for (var i in this.node) {
             this.context.beginPath();
@@ -101,18 +99,19 @@ class PolygonModel {
     }
     //Clean the this.canvas
     CanvasUpdate() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.contexto.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.contexto.drawImage(this.canvas, 0, 0);
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.drawImage(this.drawCanvas, 0, 0);
     }
     //Convert a Array to Object
     ArrayToObject(data) {
+	console.log("data",data);
         var NodeTemp = [];
-        for (var i in data) {
+        for (let [cx,cy] of data) {
             NodeTemp.push(
                 {
-                    cx: data[i][0],
-                    cy: data[i][1],
+                    cx: cx,
+                    cy: cy,
                     r: 5
                 }
             );
@@ -121,6 +120,7 @@ class PolygonModel {
         this.node = NodeTemp;
     }
     //Fuction pour obtenir le hautor du polygon
+    /*
     GetHeight(array) {
         var Ramax = null, Ramin = null;
         var finaltemp;
@@ -152,6 +152,7 @@ class PolygonModel {
 
         return { ramax: Ramax, ramin: Ramin, largeur: largeur };
     }
+    */
     //function pour obtenir le numero de segment et construir un segment
     NumeroSegmen() {
         var TotalNodes = this.node.length;
@@ -300,28 +301,25 @@ class PolygonModel {
             newNode.cy = startingNode[0].cy;
             newNode.r = startingNode[0].r;
 
+            lastnode.r = 5;
             if (this.node.length === position) {
                 lastnode.cx = this.node[(this.node.length - 1)].cx;
                 lastnode.cy = this.node[(this.node.length - 1)].cy;
-                lastnode.r = 5;
 
-                //agregar el nodo
+                //add the node
                 this.node.splice((this.node.length - 1), 1, lastnode, newNode);
-            }
-
-            else {
+            } else {
                 lastnode.cx = this.node[startingNode[0].position].cx;
                 lastnode.cy = this.node[startingNode[0].position].cy;
-                lastnode.r = 5;
 
-                //agregar el nodo
+                //add the node
                 this.node.splice(startingNode[0].position, 1, newNode, lastnode);
             }
-            this.Redrawn(0);
+            this.Redraw(0);
         }
 
         else {
-            var flag = typeof (startingNode);
+            let flag = typeof (startingNode);
             if (flag != "object") {
                 if (startingNode == 0 && this.node.length > 1) {
                     this.node.unshift(
@@ -348,8 +346,8 @@ class PolygonModel {
             else {
 
                 if (startingNode != undefined /*&& startingNode.B != undefined*/) {
-                    var addnode = {};
-                    var preview = {};
+                    let addnode = {};
+                    let preview = {};
 
                     preview.cx = startingNode.segmento.xA;
                     preview.cy = startingNode.segmento.yA;
@@ -409,8 +407,8 @@ class PolygonModel {
     }
     //function pour effacer le this.canvas
     canvasUpdate() {
-        this.contexto.drawImage(this.canvas, 0, 0);
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.staticContext.drawImage(this.drawCanvas, 0, 0);
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
     }
     /**
     @brief Function to draw lines
@@ -424,8 +422,8 @@ class PolygonModel {
     @return {void}
      */
     CleanLine() {
-        //this.contexto.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        //this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
     }
     /**
     @brief Function to know if the current node {this.node} is an endpoint
@@ -484,6 +482,7 @@ class PolygonModel {
      */
     Drag(clickedNode, x, y, result) {
 
+
         //set new values
         this.node[clickedNode].cx = x;
         this.node[clickedNode].cy = y;
@@ -491,7 +490,7 @@ class PolygonModel {
         this.node[result.N].cx = x;
         this.node[result.N].cy = y;
 
-        this.Redrawn(result);
+        this.Redraw(result);
     }
     /**
     @brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
@@ -515,7 +514,7 @@ class PolygonModel {
 
             this.ArrayToObject(this.node);
 
-            this.Redrawn(this.node);
+            this.Redraw(this.node);
         }
 
     }
@@ -548,8 +547,8 @@ class PolygonModel {
         this.skyPositions = [];
         for (var k = 0; k < this.node.length; k++) {
             this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
-        };
-        //finalthis.node
+        }
+        console.log(this.skyPositions)
         if (this.overlay == null) {
             this.overlay = A.graphicOverlay({ color: this.color });
 
@@ -621,17 +620,17 @@ class PolygonModel {
                 this.DrawNode(this.node);
             }
             else {
-                this.Redrawn(0);
+                this.Redraw(0);
             }
 
         }
     }
     //function pour obtenir le this.node initial et final du polygon
     GetXYNode(x, y) {
-        var nodes = {};
+        let nodes = {};
 
-        var dx;
-        var dy;
+        let dx;
+        let dy;
 
         for (var i in this.node) {
             dx = x - this.node[i].cx;
@@ -670,7 +669,7 @@ class PolygonModel {
     }
     stokeNode(nodeposition) {
         if (nodeposition != undefined) {
-            var stocknode = [];
+            let stocknode = [];
             stocknode.push({
                 position: nodeposition,
                 cx: this.node[nodeposition].cx,
