@@ -41,6 +41,9 @@ class ConeModel {
         this.skyConeDescriptor = null;
         this.aladinView = aladinView;
         this.color = colorValidated;
+        
+        this.isCursorOnCircle = false;
+        this.isCursorOnCenter = false;
 
 		/**************************************
 		************* Some tests **************
