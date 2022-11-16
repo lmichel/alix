@@ -76,6 +76,17 @@ class RegionEditor_mvC {
         
         this.data = null;
     }
+    /**
+    @description Method to siwtch between the two provided models
+     */
+    switchModel() {
+		this.CleanPoligon();
+		if (this.focusedModel === Models.Polygon) {
+			this.focusedModel = Models.Cone;
+		} else {
+			this.focusedModel = Models.Polygon;
+		}
+	}
     getStatus() {
         return `startingNode=${this.startingNode}
         	 buttondown=${this.buttondown}
