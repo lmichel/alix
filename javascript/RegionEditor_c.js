@@ -264,18 +264,45 @@ class RegionEditor_mvC {
         @return {void}
      */
     invokeHandler(userAction,background) {
-		if (this.isPolygonClosed()) {
-			//Compute the region size in degrees
-			let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-			if (!this.polygonModel.skyPositions.length) {
-				this.data = null;
-			} else {
+		if (this.focusedModel === Models.Polygon) {
+			if (this.isPolygonClosed()) {
+				//Compute the region size in degrees
+				let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
+				if (!this.polygonModel.skyPositions.length) {
+					this.data = null;
+				} else {
+					this.data = {
+					    isReady: true,
+					    userAction: userAction,
+					    region: {
+					        format: "array2dim",
+					        points: this.polygonModel.skyPositions,
+					        size: { x: view.size, y: view.size }
+					    }
+					}
+					if (background) {
+						this.data.background = background;					
+					} else if (background in this.data) {
+						delete this.data.background;
+					}
+		            this.clientHandler(this.data);
+				}
+	        } else {
+	            alert("Polygon not closed");
+	        }
+		} else if (this.focusedModel === Models.Cone) {
+			if (this.coneModel.isConeComplete()) {
+				let view = this.coneModel.getView();
+				console.log(this.coneModel);
+				let coneModel = this.coneModel;
 				this.data = {
 				    isReady: true,
 				    userAction: userAction,
 				    region: {
-				        format: "array2dim",
-				        points: this.polygonModel.skyPositions,
+				        format: "cone",
+				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
+				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
+				        radius: this.coneModel.skyConeDescriptor.radius,
 				        size: { x: view.size, y: view.size }
 				    }
 				}
@@ -284,11 +311,12 @@ class RegionEditor_mvC {
 				} else if (background in this.data) {
 					delete this.data.background;
 				}
-	            this.clientHandler(this.data);
+				this.clientHandler(this.data);
+			} else {
+				this.data = null;
+				alert("Cone is not finished!");
 			}
-        } else {
-            alert("Polygon not closed");
-        }
+		}
     }
     isPolygonClosed() {
         return (this.closed || (this.polygonModel.node == undefined || this.polygonModel.node.length == 0));
