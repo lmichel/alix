@@ -146,6 +146,35 @@ class ConeModel {
 		this.DrawCompletedCircle(this.centerNode.cx,this.centerNode.cy,this.radius);
 	}
 	
+	/**
+	@description Function to update the position of the construction circle
+	@param {number} cursorX The current x coordinate of the cursor
+	@param {number} cursorY The current y coordinate of the cursor
+	@param {number} radius The radius of the circle one are trying to move
+	 */
+	updateCirclePosition(cursorX,cursorY,radius) {
+		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+		this.DrawGuidelineCircle(cursorX,cursorY,radius);
+		this.DrawCentralNode(cursorX,cursorY);
+	}
+	
+	/**
+	@description Function to set the position of the construction circle
+	@param {number} cursorX The current x coordinate of the cursor
+	@param {number} cursorY The current y coordinate of the cursor
+	@param {number} radius The radius of the circle one are trying to move
+	 */
+	setCirclePosition(cursorX,cursorY,radius) {
+		this.centerNode = {
+			cx: cursorX,
+			cy: cursorY
+		}
+		this.radius = radius;
+		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawCompletedCircle(this.centerNode.cx,this.centerNode.cy,this.radius);
+	}
+	
 	isConeComplete() {
 		return this.centerNode !== null
 			&& Object.keys(this.centerNode).length === 2
