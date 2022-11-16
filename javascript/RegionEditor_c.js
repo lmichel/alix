@@ -55,7 +55,6 @@ class RegionEditor_mvC {
 		);
 
         this.coneModel = new ConeModel(
-			params.handler,
 			params.drawCanvas,
 			params.staticCanvas,
 			params.aladinView,
@@ -89,6 +88,11 @@ class RegionEditor_mvC {
 			this.focusedModel = Models.Polygon;
 		}
 	}
+	
+	/**
+	@description Function to get the status of this controller
+	@returns {string} some useful data about the controller
+	 */
     getStatus() {
         return `startingNode=${this.startingNode}
         	 buttondown=${this.buttondown}
@@ -100,7 +104,8 @@ class RegionEditor_mvC {
         	 stokeNode=${this.stokeNode}`;
     }
     /**
-     *
+     @description Method to handle the beginning of a mouse click on the drawing canvas
+     @param {Event} event event containing the position of the cursor
      */
     mouseDown(event) {
 
@@ -125,7 +130,8 @@ class RegionEditor_mvC {
     
     
     /**
-     *
+     @description Method to handle the movement of the mouse on the drawing canvas
+     @param {Event} event event containing the position of the cursor
      */
     mouseMove(event) {
 		if (this.focusedModel === Models.Polygon) {
@@ -143,6 +149,11 @@ class RegionEditor_mvC {
 			this.coneModel.handleMouseMove(event,this.canvas);
 		}
     }
+    
+    /**
+     @description Method to handle the end of a mouse click on the drawing canvas
+     @param {Event} event event containing the position of the cursor
+     */
     mouseUp(event) {
 		if (this.focusedModel === Models.Polygon) {
 			const modelReturn = 
@@ -168,6 +179,9 @@ class RegionEditor_mvC {
 		}
     }
     
+    /**
+    @description Method to store a shape in memory to get it again when one laucnh the drawing canvas again
+     */
     store() {
 		if (this.focusedModel === Models.Polygon) {
 	        this.polygonModel.store();
@@ -175,6 +189,10 @@ class RegionEditor_mvC {
 			this.coneModel.store();
 		}
     }
+    
+    /**
+    @description Function to obtain values from a shape and create it in aladin lite
+     */
     get() {
         if (this.focusedModel === Models.Polygon) {
 	        this.polygonModel.get();
@@ -182,6 +200,9 @@ class RegionEditor_mvC {
 			this.coneModel.get();
 		}
     }
+    /**
+    @description Function to delete an overlay
+     */
     DeleteOverlay() {
         if (this.focusedModel === Models.Polygon) {
 	        this.polygonModel.DeleteOverlay();
@@ -189,26 +210,37 @@ class RegionEditor_mvC {
 			this.coneModel.DeleteOverlay();
 		}
     }
+    /**
+    @description Function to clean the canvas
+     */
     CleanCanvas() {
         if (this.focusedModel === Models.Polygon) {
-	        this.polygonModel.CleanPoligon();
+	        this.polygonModel.CleanPolygon();
         } else if (this.focusedModel === Models.Cone) {
 			this.coneModel.CleanCone();
 		}
         this.closed = false;
     }
-    PolygonCenter() {
+    
+    /**
+    @description Function to center the figure on the screen
+     */
+    ShapeCenter() {
         if (this.focusedModel === Models.Polygon) {
 	        this.polygonModel.PolygonCenter();
         } else if (this.focusedModel === Models.Cone) {
 			this.coneModel.ConeCenter();
 		}
     }
+    
+    /**
+    @description Method to send an alert with all the useful informations
+     */
     show() {
         if (this.focusedModel === Models.Polygon) {
 	        alert(this.polygonModel.getSkyPositions());
         } else if (this.focusedModel === Models.Cone) {
-	
+			alert(this.coneModel.skyConeDescriptor);
 		}
     }
     /**
@@ -224,7 +256,7 @@ class RegionEditor_mvC {
         return true;
     }
     /**
-        @brief Call the client handler when the polygon is close or when the user click on accept
+        @description Call the client handler when the polygon is close or when the user click on accept
      
         @description
         The data passed to the user handler look like that:
@@ -295,6 +327,11 @@ class RegionEditor_mvC {
 			}
 		}
     }
+    
+    /**
+    @description Method to check if a polygon is closed
+    @returns True if the polygon is closed, false else
+     */
     isPolygonClosed() {
         return (this.closed || (this.polygonModel.node == undefined || this.polygonModel.node.length == 0));
     }

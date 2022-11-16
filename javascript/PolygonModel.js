@@ -630,7 +630,7 @@ class PolygonModel {
     /**
     @description Function to erase the polygon from drawCanvas 
      */
-    CleanPoligon() {
+    CleanPolygon() {
         this.CanvasUpdate();
         this.node = [];
         this.skyPositions = [];		

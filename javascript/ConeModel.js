@@ -29,7 +29,7 @@
  */
 
 class ConeModel {
-    constructor(handler, drawCanvas, staticCanvas, aladinView, tolerance, colorValidated) {
+    constructor(drawCanvas, staticCanvas, aladinView, tolerance, colorValidated) {
         console.log(colorValidated);
         this.centerNode = {};
         this.radius = null;
@@ -176,7 +176,10 @@ class ConeModel {
 		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
 		this.DrawCompletedCircle(this.centerNode.cx,this.centerNode.cy,this.radius);
 	}
-	
+	/**
+	@description Method to verify that the cone has a center node set & a radius set
+	@returns {boolean} True if the cone is complete, false in other cases
+	 */
 	isConeComplete() {
 		return this.centerNode !== null
 			&& Object.keys(this.centerNode).length === 2
@@ -220,6 +223,10 @@ class ConeModel {
         this.radius = null;		
     }
     
+    /**
+    @description Function to get an enclosing view from BasicGeometry of the cone
+    @returns {*} An enclosing view of the cone
+     */
     getView() {
 		let skyPositions = [this.skyConeDescriptor];
 		if (this.skyConeDescriptor.skyNode[1] > 0) {
@@ -250,9 +257,9 @@ class ConeModel {
     
     /**
     @description Function to build the skyConeDescriptor property
-    @param {{cx: number, cy: number}} centerNode
-    @param {number} radius
-    @returns {{skyNode: Array<number>, radius: number}}
+    @param {{cx: number, cy: number}} centerNode The central node of the cone
+    @param {number} radius The radius of the cone
+    @returns {{skyNode: Array<number>, radius: number}} A sky cone descriptor object describing the cone
      */
     buildSkyConeDescriptor(centerNode, radius) {
 		let skyPositionsCenterNode = this.aladinView.pix2world(centerNode.cx, centerNode.cy);
@@ -278,8 +285,7 @@ class ConeModel {
 	}
     
     /**
-    @brief Function to obtain values from polygon and then create this polygon in aladin lite
-    @return {void}
+    @description Function to obtain values from cone and then create this cone in aladin lite
      */
     setCone(centerX,centerY,radius) {
         this.skyConeDescriptor = this.buildSkyConeDescriptor({cx: centerX, cy: centerY},radius);
@@ -299,8 +305,7 @@ class ConeModel {
     }
     
     /**
-    @brief Function to delete polygons from this.aladin lite when one enter the edition mode
-    @return {void} nothing
+    @description Function to delete cones from this.aladinlite when one enter the edition mode
      */
     DeleteOverlay() {
         if (this.overlay !== null) {
@@ -326,7 +331,6 @@ class ConeModel {
     
     /**
     @brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
-    @return {void} nothing
      */
     store() {
         if (this.skyConeDescriptor !== null) {
@@ -391,6 +395,11 @@ class ConeModel {
 			return distToCenter;
 	}
     
+    /**
+    @description Method to handle the movement of the mouse
+    @param {Event} event event containing the position of the cursor
+    @param {Element} canvas drawCanvas on which the user will draw
+     */
     handleMouseMove(event,canvas) {
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
@@ -421,6 +430,11 @@ class ConeModel {
 		}
 	}
 	
+	/**
+	@description Method to handle the end of a mouse click on the canvas
+	@param {Event} event event containing the position of the cursor
+    @param {Element} canvas drawCanvas on which the user will draw
+	 */
 	handleMouseUp(event, canvas) {
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
@@ -445,6 +459,11 @@ class ConeModel {
 		this.isCursorOnCircle = false;
 	}
 	
+	/**
+	@description Method to handle the beginning of a mouse click on the canvas
+	@param {Event} event event containing the position of the cursor
+    @param {Element} canvas drawCanvas on which the user will draw
+	 */
 	handleMouseDown(event, canvas) {
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
