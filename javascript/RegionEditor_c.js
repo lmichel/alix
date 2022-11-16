@@ -117,7 +117,7 @@ class RegionEditor_mvC {
 			this.drag = "drag" in modelReturn ? modelReturn.drag : this.drag;
 			this.startingNode = "startingNode" in modelReturn ? modelReturn.startingNode : this.startingNode;
 		} else if (this.focusedModel === Models.Cone) {
-			
+			this.coneModel.handleMouseDown(event,this.canvas);
 		}
     }
     
@@ -138,16 +138,7 @@ class RegionEditor_mvC {
 			);
 			this.movestart = resultHandler ? resultHandler : this.movestart;
 		} else if (this.focusedModel === Models.Cone) {
-			let x = parseInt(event.pageX) - parseInt(this.canvas.offset().left).toFixed(1);
-			let y = parseInt(event.pageY) - parseInt(this.canvas.offset().top).toFixed(1);
-			
-			//Modify size of the circle while the user is moving his/her cursor
-			if ( this.coneModel.centerNode !== null
-				&& Object.keys(this.coneModel.centerNode).length === 2
-				&& this.coneModel.radius === null
-			) {
-				this.coneModel.updateCircleSize(x,y);
-			}
+			this.coneModel.handleMouseMove(event,this.canvas);
 		}
     }
     mouseUp(event) {
@@ -171,19 +162,7 @@ class RegionEditor_mvC {
 			this.movestart = modelReturn.movestart;
 			this.startdrag = modelReturn.startdrag;
 		} else if (this.focusedModel === Models.Cone) {
-			let x = parseInt(event.pageX) - parseInt(this.canvas.offset().left).toFixed(1);
-			let y = parseInt(event.pageY) - parseInt(this.canvas.offset().top).toFixed(1);
-			
-			// Place the point if no other point has been placed
-			if (this.coneModel.centerNode === null || Object.keys(this.coneModel.centerNode).length === 0) {
-				this.coneModel.placeCenter(x,y);
-			} else if (
-				this.coneModel.centerNode !== null
-				&& Object.keys(this.coneModel.centerNode).length === 2
-				&& this.coneModel.radius === null
-			) {
-				this.coneModel.setCircleSize(x,y);
-			}
+			this.coneModel.handleMouseUp(event,this.canvas);
 		}
     }
     
