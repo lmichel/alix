@@ -241,7 +241,7 @@ class RegionEditor_mVc {
             regionEditorView.controller.DeleteOverlay();
             regionEditorView.lineContext.clearRect(0, 0, regionEditorView.lineCanvas[0].width, regionEditorView.lineCanvas[0].height);
             regionEditorView.drawContext.clearRect(0, 0, regionEditorView.drawCanvas.width, regionEditorView.drawCanvas.height);
-            regionEditorView.controller.store();
+            regionEditorView.controller.switchModel();
             event.stopPropagation();
 		});
         
