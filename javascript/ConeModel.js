@@ -373,5 +373,69 @@ class ConeModel {
         this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         this.staticContext.drawImage(this.drawCanvas, 0, 0);
     }
+    
+    handleMouseMove(event,canvas) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+		
+		//Modify size of the circle while the user is moving his/her cursor
+		if ( this.centerNode !== null
+			&& Object.keys(this.centerNode).length === 2
+			&& this.radius === null
+		) {
+			this.updateCircleSize(x,y);
+		// Modify position of the circle if the user is holding the center
+		} else if (this.isCursorOnCenter) {
+			this.updateCirclePosition(x,y,this.radius);
+		// Modify size of the circle if the user is holding the edge of the circle
+		} else if (this.isCursorOnCircle) {
+			this.updateCircleSize(x,y);
+		}
+	}
+	
+	handleMouseUp(event, canvas) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+		
+		// Place the point if no other point has been placed
+		if (this.centerNode === null || Object.keys(this.centerNode).length === 0) {
+			this.placeCenter(x,y);
+		} else if (
+			this.centerNode !== null
+			&& Object.keys(this.centerNode).length === 2
+			&& this.radius === null
+		) {
+			this.setCircleSize(x,y);
+		} else if (this.isCursorOnCircle) {
+			this.setCircleSize(x,y);
+			document.body.style.cursor = "unset";
+		} else if (this.isCursorOnCenter) {
+			this.setCirclePosition(x,y,this.radius);
+			document.body.style.cursor = "unset";
+		}
+		this.isCursorOnCenter = false;
+		this.isCursorOnCircle = false;
+	}
+	
+	handleMouseDown(event, canvas) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+		
+		if (this.isConeComplete()) {
+			let tolerance = 8; // Tolerance in pixels
+			let centerX = this.centerNode.cx;
+			let centerY = this.centerNode.cy;
+			let radius = this.radius;
+			let distToCenter = Math.sqrt(Math.pow(centerX-x,2)+Math.pow(centerY-y,2));
+			
+			if (distToCenter < tolerance) {
+				document.body.style.cursor = "grabbing";
+				this.isCursorOnCenter = true;
+			} else if (Math.abs(distToCenter-radius) < tolerance) {
+				document.body.style.cursor = "grabbing";
+				this.isCursorOnCircle = true;
+			}
+		}
+	}
 }
 
