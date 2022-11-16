@@ -162,26 +162,47 @@ class RegionEditor_mvC {
     
     
     store() {
-        this.polygonModel.store();
+		if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.store();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.store();
+		}
     }
     get() {
-        this.polygonModel.get();
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.get();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.get();
+		}
     }
     DeleteOverlay() {
-        this.polygonModel.DeleteOverlay();
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.DeleteOverlay();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.DeleteOverlay();
+		}
     }
     CleanPoligon() {
-        this.polygonModel.CleanPoligon();
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.CleanPoligon();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.CleanCone();
+		}
         this.closed = false;
     }
     PolygonCenter() {
-        this.polygonModel.PolygonCenter();
-    }
-    CreateGrafic(canvas) {
-        this.polygonModel.createGrafic(this.canvas);
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.PolygonCenter();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.ConeCenter();
+		}
     }
     show() {
-        alert(this.polygonModel.getSkyPositions());
+        if (this.focusedModel === Models.Polygon) {
+	        alert(this.polygonModel.getSkyPositions());
+        } else if (this.focusedModel === Models.Cone) {
+	
+		}
     }
     /**
      * Set the polygon with points. Points is a simple array. It must have at
