@@ -289,6 +289,7 @@ class RegionEditor_mvC {
 				this.clientHandler(this.data);
 			} else {
 				this.data = null;
+				this.coneModel.killStoring();
 				alert("Cone is not finished!");
 			}
 		}

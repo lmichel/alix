@@ -281,6 +281,15 @@ class ConeModel {
             this.overlay.overlays = [];		           
         }
     }
+    
+    /**
+    @description Function to avoid that an unfinished circle stay stored
+     */
+    killStoring() {
+		this.skyConeDescriptor = null;
+		this.overlay = null;
+	}
+    
     /**
     @brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
     @return {void} nothing
