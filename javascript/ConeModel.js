@@ -374,6 +374,21 @@ class ConeModel {
         this.staticContext.drawImage(this.drawCanvas, 0, 0);
     }
     
+    /**
+    @description Method to calculate the distance of the point Point(x,y)
+    from the center of the point this.centerNode.
+    @param {number} x - x coordinate of the point we want to know the distance from center
+    @param {number} y - y coordinate of the point we want to know the distance from center
+    @returns {number} The distance of Point(x,y) from the center of the circle 
+     */
+    computeCenterDistanceTo(x,y) {
+			let centerX = this.centerNode.cx;
+			let centerY = this.centerNode.cy;
+			let distToCenter = Math.sqrt(Math.pow(centerX-x,2)+Math.pow(centerY-y,2));
+			
+			return distToCenter;
+	}
+    
     handleMouseMove(event,canvas) {
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
