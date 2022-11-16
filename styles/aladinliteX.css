@@ -1085,7 +1085,7 @@ position:absolute;
     left: 100px;
 }
 #RegionCanvasTemp{
-     background: rgba(255,255,255,0.6); 
+     background: rgba(255,255,255,0); 
      top:0px;
     /* height:100%;
      width:100%;*/
