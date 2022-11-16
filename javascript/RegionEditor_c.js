@@ -41,6 +41,8 @@ const Models = {
 
 class RegionEditor_mvC {
     constructor(params) {
+	
+		this.tolerance = 8; //Tolerance in pixels
 		this.color = params.color;
 
         this.polygonModel = new PolygonModel(
@@ -53,11 +55,11 @@ class RegionEditor_mvC {
 		);
 
         this.coneModel = new ConeModel(
-			params.points,
 			params.handler,
 			params.drawCanvas,
 			params.staticCanvas,
 			params.aladinView,
+			this.tolerance,
 			this.color
 		);
 
@@ -165,7 +167,6 @@ class RegionEditor_mvC {
 			this.coneModel.handleMouseUp(event,this.canvas);
 		}
     }
-    
     
     store() {
 		if (this.focusedModel === Models.Polygon) {

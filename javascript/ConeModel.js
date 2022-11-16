@@ -29,7 +29,7 @@
  */
 
 class ConeModel {
-    constructor(points, handler, drawCanvas, staticCanvas, aladinView, colorValidated) {
+    constructor(handler, drawCanvas, staticCanvas, aladinView, tolerance, colorValidated) {
         console.log(colorValidated);
         this.centerNode = {};
         this.radius = null;
@@ -44,6 +44,8 @@ class ConeModel {
         
         this.isCursorOnCircle = false;
         this.isCursorOnCenter = false;
+        
+        this.tolerance = tolerance;
 
 		/**************************************
 		************* Some tests **************
@@ -379,7 +381,7 @@ class ConeModel {
     from the center of the point this.centerNode.
     @param {number} x - x coordinate of the point we want to know the distance from center
     @param {number} y - y coordinate of the point we want to know the distance from center
-    @returns {number} The distance of Point(x,y) from the center of the circle 
+    @returns {number} The distance of Point(x,y) to the center of the circle
      */
     computeCenterDistanceTo(x,y) {
 			let centerX = this.centerNode.cx;
@@ -406,13 +408,12 @@ class ConeModel {
 		} else if (this.isCursorOnCircle) {
 			this.updateCircleSize(x,y);
 		} else {
-			let tolerance = 8; // Tolerance in pixels
 			let radius = this.radius;
 			let distToCenter = this.computeCenterDistanceTo(x,y);
 			
-			if (distToCenter < tolerance) {
+			if (distToCenter < this.tolerance) {
 				this.drawCanvas.style.cursor = "pointer";
-			} else if (Math.abs(distToCenter-radius) < tolerance) {
+			} else if (Math.abs(distToCenter-radius) < this.tolerance) {
 				this.drawCanvas.style.cursor = "pointer";
 			} else {
 				this.drawCanvas.style.cursor = "unset";
@@ -449,14 +450,13 @@ class ConeModel {
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
 		
 		if (this.isConeComplete()) {
-			let tolerance = 8; // Tolerance in pixels
 			let radius = this.radius;
 			let distToCenter = this.computeCenterDistanceTo(x,y);
 			
-			if (distToCenter < tolerance) {
+			if (distToCenter < this.tolerance) {
 				this.drawCanvas.style.cursor = "grabbing";
 				this.isCursorOnCenter = true;
-			} else if (Math.abs(distToCenter-radius) < tolerance) {
+			} else if (Math.abs(distToCenter-radius) < this.tolerance) {
 				this.drawCanvas.style.cursor = "grabbing";
 				this.isCursorOnCircle = true;
 			}
