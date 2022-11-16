@@ -408,10 +408,10 @@ class ConeModel {
 			this.setCircleSize(x,y);
 		} else if (this.isCursorOnCircle) {
 			this.setCircleSize(x,y);
-			document.body.style.cursor = "unset";
+			this.drawCanvas.style.cursor = "unset";
 		} else if (this.isCursorOnCenter) {
 			this.setCirclePosition(x,y,this.radius);
-			document.body.style.cursor = "unset";
+			this.drawCanvas.style.cursor = "unset";
 		}
 		this.isCursorOnCenter = false;
 		this.isCursorOnCircle = false;
@@ -429,10 +429,10 @@ class ConeModel {
 			let distToCenter = Math.sqrt(Math.pow(centerX-x,2)+Math.pow(centerY-y,2));
 			
 			if (distToCenter < tolerance) {
-				document.body.style.cursor = "grabbing";
+				this.drawCanvas.style.cursor = "grabbing";
 				this.isCursorOnCenter = true;
 			} else if (Math.abs(distToCenter-radius) < tolerance) {
-				document.body.style.cursor = "grabbing";
+				this.drawCanvas.style.cursor = "grabbing";
 				this.isCursorOnCircle = true;
 			}
 		}
