@@ -195,7 +195,7 @@ class RegionEditor_mVc {
         this.buttonGrid.append(this.deleteBtn);
         this.deleteBtn.css(styleToApply);
         this.deleteBtn.click(function(event) {
-            that.controller.CleanPoligon();
+            that.controller.CleanCanvas();
             event.stopPropagation();
         });
         this.deleteBtn.attr('disabled', 'disabled');

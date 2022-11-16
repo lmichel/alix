@@ -80,7 +80,7 @@ class RegionEditor_mvC {
     @description Method to siwtch between the two provided models
      */
     switchModel() {
-		this.CleanPoligon();
+		this.CleanCanvas();
 		if (this.focusedModel === Models.Polygon) {
 			this.focusedModel = Models.Cone;
 		} else {
@@ -188,7 +188,7 @@ class RegionEditor_mvC {
 			this.coneModel.DeleteOverlay();
 		}
     }
-    CleanPoligon() {
+    CleanCanvas() {
         if (this.focusedModel === Models.Polygon) {
 	        this.polygonModel.CleanPoligon();
         } else if (this.focusedModel === Models.Cone) {
