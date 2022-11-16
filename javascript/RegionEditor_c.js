@@ -246,7 +246,7 @@ class RegionEditor_mvC {
 		if (this.focusedModel === Models.Polygon) {
 			if (this.isPolygonClosed()) {
 				//Compute the region size in degrees
-				let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
+				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
 				if (!this.polygonModel.skyPositions.length) {
 					this.data = null;
 				} else {
@@ -255,8 +255,7 @@ class RegionEditor_mvC {
 					    userAction: userAction,
 					    region: {
 					        format: "array2dim",
-					        points: this.polygonModel.skyPositions,
-					        size: { x: view.size, y: view.size }
+					        points: this.polygonModel.skyPositions
 					    }
 					}
 					if (background) {
@@ -271,9 +270,7 @@ class RegionEditor_mvC {
 	        }
 		} else if (this.focusedModel === Models.Cone) {
 			if (this.coneModel.isConeComplete()) {
-				let view = this.coneModel.getView();
-				console.log(this.coneModel);
-				let coneModel = this.coneModel;
+				//let view = this.coneModel.getView();
 				this.data = {
 				    isReady: true,
 				    userAction: userAction,
@@ -281,8 +278,7 @@ class RegionEditor_mvC {
 				        format: "cone",
 				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
 				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
-				        radius: this.coneModel.skyConeDescriptor.radius,
-				        size: { x: view.size, y: view.size }
+				        radius: this.coneModel.skyConeDescriptor.radius
 				    }
 				}
 				if (background) {
