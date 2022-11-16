@@ -405,6 +405,18 @@ class ConeModel {
 		// Modify size of the circle if the user is holding the edge of the circle
 		} else if (this.isCursorOnCircle) {
 			this.updateCircleSize(x,y);
+		} else {
+			let tolerance = 8; // Tolerance in pixels
+			let radius = this.radius;
+			let distToCenter = this.computeCenterDistanceTo(x,y);
+			
+			if (distToCenter < tolerance) {
+				this.drawCanvas.style.cursor = "pointer";
+			} else if (Math.abs(distToCenter-radius) < tolerance) {
+				this.drawCanvas.style.cursor = "pointer";
+			} else {
+				this.drawCanvas.style.cursor = "unset";
+			}
 		}
 	}
 	
@@ -438,10 +450,8 @@ class ConeModel {
 		
 		if (this.isConeComplete()) {
 			let tolerance = 8; // Tolerance in pixels
-			let centerX = this.centerNode.cx;
-			let centerY = this.centerNode.cy;
 			let radius = this.radius;
-			let distToCenter = Math.sqrt(Math.pow(centerX-x,2)+Math.pow(centerY-y,2));
+			let distToCenter = this.computeCenterDistanceTo(x,y);
 			
 			if (distToCenter < tolerance) {
 				this.drawCanvas.style.cursor = "grabbing";
