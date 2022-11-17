@@ -226,13 +226,14 @@ class RegionEditor_mVc {
         /***********************************************************
         ******************** Switch button ************************
         ************************************************************/
-        
         this.switchModeBtn = $(
 			`<button id='${this.contextDivId}-switchEditor' class='alix_swi_btn alix_btn alix_region_btns'>
         		Switch&nbsp;
         		<i class='glyphicon glyphicon-transfer'></i>
         	</button>`
         );
+        this.switchBtnTooltip = $(`<span class="tooltiptext">Switch to Cone</span>`);
+        this.switchModeBtn.append(this.switchBtnTooltip);
         this.buttonGrid.append(this.switchModeBtn);
         this.switchModeBtn.css(styleToApply);
         
