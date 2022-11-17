@@ -351,6 +351,7 @@
 }
 
 .alix_btn {
+	position: relative;
     display: inline-block;
     padding: 6px 12px;
     margin-bottom: 0;
@@ -371,6 +372,38 @@
     border: 1px solid transparent;
     border-radius: 4px;
 }
+
+/* Tooltip text */
+.alix_btn .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #504b4b;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  top: -5px;
+  left: 105%;
+  position: absolute;
+  z-index: 1;
+}
+
+.alix_btn:hover .tooltiptext {
+  visibility: visible;
+}
+
+.alix_btn .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* To the left of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #504b4b transparent transparent;
+}
+
 .alix_btn.disabled, .alix_btn[disabled], .alix_fieldset[disabled] .alix_btn {
     cursor: not-allowed;
     filter: alpha(opacity=65);
