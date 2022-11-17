@@ -49,7 +49,7 @@ class RegionPanelV {
         this.aladinLite_V = aladinLite_V;
         this.editionFrame = defaultRegion;
         
-        this.foregroundRegionEditor = null;
+        this.sourceRegionEditor = null;
         this.backgroundRegionEditor = null;
         
         this.regionEditors = []
@@ -73,14 +73,14 @@ class RegionPanelV {
 			**************** Region Editor Registration ******************
 			**************************************************************/
 			
-			const foregroundRegionEditorId = "foreground-region-editor"
-            const foregroundRegionEditorDiv = $(`<div id="${foregroundRegionEditorId}" class="region-editor"></div>`);
-            this.editorContainer.append(foregroundRegionEditorDiv);
-			this.foregroundRegionEditor = new RegionEditor_mVc(
-				"Foreground region editor",
+			const sourceRegionEditorId = "source-region-editor"
+            const sourceRegionEditorDiv = $(`<div id="${sourceRegionEditorId}" class="region-editor"></div>`);
+            this.editorContainer.append(sourceRegionEditorDiv);
+			this.sourceRegionEditor = new RegionEditor_mVc(
+				"Source region editor",
 				this.aladinLite_V,
 				this.aladinLiteDivId,
-				foregroundRegionEditorId,
+				sourceRegionEditorId,
 				this.foregroundHandler,
 				this.editionFrame,
 				"red"
@@ -99,7 +99,7 @@ class RegionPanelV {
 				"orange"
 			);
 			
-			this.regionEditors.push(this.foregroundRegionEditor,this.backgroundRegionEditor);
+			this.regionEditors.push(this.sourceRegionEditor,this.backgroundRegionEditor);
 			this.manageButtonActivated();
 			this.controlAcceptation();
         }
@@ -132,12 +132,12 @@ class RegionPanelV {
 	}
 	
 	controlAcceptation() {
-		const foregroundRegionEditor = this.foregroundRegionEditor;
+		const sourceRegionEditor = this.sourceRegionEditor;
         const backgroundRegionEditor = this.backgroundRegionEditor;
         
-		this.foregroundRegionEditor.setBtn.on('click', (event) => {
-            foregroundRegionEditor.controller.invokeHandler(true,backgroundRegionEditor.controller.data);
-			console.log(foregroundRegionEditor.controller.data,backgroundRegionEditor.controller.data);
+		this.sourceRegionEditor.setBtn.on('click', (event) => {
+            sourceRegionEditor.controller.invokeHandler(true,backgroundRegionEditor.controller.data);
+			console.log(sourceRegionEditor.controller.data,backgroundRegionEditor.controller.data);
             event.stopPropagation();
         });
 		this.backgroundRegionEditor.setBtn.on('click', (event) => {
