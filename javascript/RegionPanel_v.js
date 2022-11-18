@@ -34,14 +34,14 @@ class RegionPanelV {
 	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view that will handle the result of the selection
 	@param {Element}  aladinLiteDivId
 	@param {Element} contextDivId
-	@param {function} foregroundHandler - Handler of the shape drawn for the foreground
+	@param {function} sourceHandler - Handler of the shape drawn for the foreground
 	@param {function} backgroundHandler - Handler of the shape drawn for the background
 	@param {Frame} defaultRegion
 	 */
-    constructor(aladinLite_V, aladinLiteDivId, contextDivId, foregroundHandler, backgroundHandler, defaultRegion) {
+    constructor(aladinLite_V, aladinLiteDivId, contextDivId, sourceHandler, backgroundHandler, defaultRegion) {
         this.aladinLiteDivId = aladinLiteDivId;
         this.editorContainer = null;
-        this.foregroundHandler = (foregroundHandler == null) ? function() { alert("No foreground handler registered"); } : foregroundHandler;
+        this.sourceHandler = (sourceHandler == null) ? function() { alert("No foreground handler registered"); } : sourceHandler;
         this.backgroundHandler = (backgroundHandler == null) ? function() { alert("No background handler registered"); } : backgroundHandler;
         this.contextDivId = contextDivId;
         this.contextDiv = null;
@@ -81,7 +81,7 @@ class RegionPanelV {
 				this.aladinLite_V,
 				this.aladinLiteDivId,
 				sourceRegionEditorId,
-				this.foregroundHandler,
+				this.sourceHandler,
 				this.editionFrame,
 				"red"
 			);
