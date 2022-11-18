@@ -129,6 +129,14 @@ class RegionEditor_mVc {
 		const divTitle = $(`<h4>${this.regionEditorName}</h4>`);
 		this.buttonGrid = $(`<div class="btn-grid"></div>`);
 		this.contextDiv.append(divTitle,this.buttonGrid);
+		
+		/***********************************************************
+		************* Initialize the header button *****************
+		************************************************************/
+		let header_title = this.regionEditorName.split(' ')[0].toLowerCase();
+		this.headerButton = $(`<button class="tab-header-btn" id="tab-header-${header_title}">${header_title}</button>`);
+		
+		this.tabHeader.append(this.headerButton);		
 
         /***********************************************************
 		************* Button creation using JQuery *****************
