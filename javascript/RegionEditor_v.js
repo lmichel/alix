@@ -37,11 +37,13 @@ class RegionEditor_mVc {
 	@param {Element} contextDivId
 	@param {function} handler
 	@param {Frame} defaultRegion
+	@param {Element} tabHeader
 	@param {string} color - color of the shape once it was validated
 	 */
-    constructor(regionEditorName, aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion, color) {
+    constructor(regionEditorName, aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion, tabHeader, color) {
 		this.regionEditorName = regionEditorName;
         this.aladinLiteDivId = aladinLiteDivId;
+        this.tabHeader = tabHeader;
         
         this.buttonGrid = null;
         
