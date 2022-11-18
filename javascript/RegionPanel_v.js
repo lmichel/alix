@@ -86,7 +86,7 @@ class RegionPanelV {
 			
 			const sourceRegionEditorId = "source-region-editor"
             const sourceRegionEditorDiv = $(`<div id="${sourceRegionEditorId}" class="region-editor"></div>`);
-            this.editorContainer.append(sourceRegionEditorDiv);
+            this.panelBody.append(sourceRegionEditorDiv);
 			this.sourceRegionEditor = new RegionEditor_mVc(
 				"Source region editor",
 				this.aladinLite_V,
@@ -94,12 +94,15 @@ class RegionPanelV {
 				sourceRegionEditorId,
 				this.sourceHandler,
 				this.editionFrame,
+				this.panelHeaders,
 				"red"
 			);
 			
 			const backgroundRegionEditorId = "background-region-editor"
             const backgroundRegionEditorDiv = $(`<div id="${backgroundRegionEditorId}" class="region-editor"></div>`);
-            this.editorContainer.append(backgroundRegionEditorDiv);
+            backgroundRegionEditorDiv.css({"display": "none"});
+            this.panelBody.append(backgroundRegionEditorDiv);
+            
 			this.backgroundRegionEditor = new RegionEditor_mVc(
 				"Background region editor",
 				this.aladinLite_V,
@@ -107,6 +110,7 @@ class RegionPanelV {
 				backgroundRegionEditorId,
 				this.backgroundHandler,
 				this.editionFrame,
+				this.panelHeaders,
 				"orange"
 			);
 			
