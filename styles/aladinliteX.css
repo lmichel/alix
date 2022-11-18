@@ -375,6 +375,7 @@
 
 /* Tooltip text */
 .alix_btn .tooltiptext {
+  display: none;
   visibility: hidden;
   width: 120px;
   background-color: #504b4b;
@@ -390,6 +391,7 @@
 }
 
 .alix_btn:hover .tooltiptext {
+  display: block;
   visibility: visible;
 }
 
@@ -597,8 +599,9 @@
     line-height:20px;
 }
 
-.alix_selector_catalog{160px
-/*	position:absolute;
+.alix_selector_catalog{
+/*	160px
+	position:absolute;
 	top:260px;
 	left:98px;*/
 	width:95px;
@@ -1020,14 +1023,25 @@ z-index: 10;
 
 .alix_region_btns {
 	align-self: center;
+	display: inline;
 	height:25px;
 	font-size: 1.2rem;
-	display:inline;
 	background-color: #888a85;
 	color : #DFDFDF;
 	border-color: #574E4E;
 	padding: 0px !important;
 	box-shadow:0.5px 0.5px 10px #888a85;
+}
+
+.alix_region_btns>.text {
+	display: inline;
+}
+
+.alix_region_btns>img {
+	display: inline-block;
+	vertical-align: text-top;
+	line-height: 1;
+	height: 14px;
 }
 
 .alix_menu_commit_text_display{
