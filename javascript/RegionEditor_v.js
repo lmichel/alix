@@ -228,12 +228,17 @@ class RegionEditor_mVc {
         ************************************************************/
         this.switchModeBtn = $(
 			`<button id='${this.contextDivId}-switchEditor' class='alix_swi_btn alix_btn alix_region_btns'>
-        		Switch&nbsp;
-        		<i class='glyphicon glyphicon-transfer'></i>
         	</button>`
         );
+        this.switchBtnText = $(`<div class="text">Polygon&nbsp;</div>`);
+        this.switchModeBtn.append(this.switchBtnText);
+        
+        this.switchBtnIcon = $(`<img src="styles/polygon_icon.svg"></img>`);
+        this.switchModeBtn.append(this.switchBtnIcon);
+        
         this.switchBtnTooltip = $(`<span class="tooltiptext">Switch to Cone</span>`);
         this.switchModeBtn.append(this.switchBtnTooltip);
+        
         this.buttonGrid.append(this.switchModeBtn);
         this.switchModeBtn.css(styleToApply);
         
@@ -243,6 +248,16 @@ class RegionEditor_mVc {
             regionEditorView.lineContext.clearRect(0, 0, regionEditorView.lineCanvas[0].width, regionEditorView.lineCanvas[0].height);
             regionEditorView.drawContext.clearRect(0, 0, regionEditorView.drawCanvas.width, regionEditorView.drawCanvas.height);
             regionEditorView.controller.switchModel();
+            
+            if (regionEditorView.controller.focusedModel === Models.Polygon) {
+				this.switchBtnText.html(`Polygon&nbsp;`);
+				this.switchBtnTooltip.text(`Switch to Cone`);
+				this.switchBtnIcon.attr("src","styles/polygon_icon.svg");
+			} else {
+				this.switchBtnText.html(`Cone&nbsp;`);
+				this.switchBtnTooltip.text(`Switch to Polygon`);
+				this.switchBtnIcon.attr("src","styles/circle_icon.svg");
+			}
             event.stopPropagation();
 		});
         
