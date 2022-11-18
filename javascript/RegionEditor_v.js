@@ -286,6 +286,23 @@ class RegionEditor_mVc {
         }
 
     }
+    
+    focusEditor() {
+		this.headerButton.css({
+			"border-bottom": "none",
+			"background-color": "rgba(245, 245, 245,.5)"
+		});
+		this.contextDiv.css({"display": "block"});
+	}
+	
+	hideEditor() {
+		this.headerButton.css({
+			"border-bottom": "#545244 solid 2px",
+			"background-color": "rgba(150,150,150,.5)"
+		});
+		this.contextDiv.css({"display": "none"});
+	}
+    
     /**
      * @description Operate the drawing removal from outside of the class scope
      */
