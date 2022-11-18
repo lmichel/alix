@@ -69,6 +69,17 @@ class RegionPanelV {
             this.contextDiv.append('<div class="editor-container" id="region-editors"></div>');
             this.editorContainer = $('#region-editors.editor-container');
             
+            /************************************************************
+            ************ Panels for the different editors ***************
+            *************************************************************/
+            
+            this.panelsDisplayer = $(`<div class="panel-tabs-container"></div>`);
+            this.panelHeaders = $(`<div class="panel-header"></div>`);
+            this.panelBody = $(`<div class="panel-body"></div>`);
+            
+            this.panelsDisplayer.append(this.panelHeaders,this.panelBody);
+            this.editorContainer.append(this.panelsDisplayer);
+            
 			/*************************************************************
 			**************** Region Editor Registration ******************
 			**************************************************************/
