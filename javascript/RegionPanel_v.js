@@ -114,11 +114,34 @@ class RegionPanelV {
 				"orange"
 			);
 			
+			
 			this.regionEditors.push(this.sourceRegionEditor,this.backgroundRegionEditor);
+			this.focusRegionEditor(this.sourceRegionEditor);
+			this.initHeaderTabBtnListeners();
 			this.manageButtonActivated();
 			this.controlAcceptation();
         }
     }
+    
+    initHeaderTabBtnListeners() {
+		for (const regionEditor of this.regionEditors) {
+			regionEditor.headerButton.on("click", (event,regionPanelInstance=this) => {
+				regionPanelInstance.focusRegionEditor(regionEditor);
+			});
+		}
+	}
+    
+    /**
+    @param {RegionEditor_mVc} regionEditor
+     */
+    focusRegionEditor(focusedRegionEditor) {
+		focusedRegionEditor.focusEditor();
+		for (const regionEditor of this.regionEditors) {
+			if (regionEditor !== focusedRegionEditor) {
+				regionEditor.hideEditor();
+			}
+		}
+	}
     
     /**
     @todo
