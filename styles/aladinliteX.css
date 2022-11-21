@@ -1072,11 +1072,26 @@ z-index: 10;
 	display: inline;
 }
 
-.alix_region_btns>img {
+.button-img {
+	width: 1.5rem;
 	display: inline-block;
 	vertical-align: text-top;
 	line-height: 1;
 	height: 14px;
+}
+
+.button-img.circle {
+	aspect-ratio: 1/1;
+	background: url("../images/circle_icon.svg");
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.button-img.polygon {
+	aspect-ratio: 1/1;
+	background: url("../images/polygon_icon.svg");
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 
 .alix_menu_commit_text_display{
