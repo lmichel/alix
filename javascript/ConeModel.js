@@ -30,9 +30,8 @@
 
 class ConeModel {
     constructor(drawCanvas, staticCanvas, aladinView, tolerance, colorValidated) {
-        console.log(colorValidated);
         this.centerNode = {};
-        this.radius = null;
+        this.radiusNode = {};
         this.drawCanvas = drawCanvas[0];
         this.staticCanvas = staticCanvas[0];
         this.context = this.drawCanvas.getContext('2d');
@@ -140,12 +139,18 @@ class ConeModel {
 	@param {number} cursorY The current y coordinate of the cursor
 	 */
 	setCircleSize(cursorX,cursorY) {
-		let radiusSquared = Math.pow(cursorX-this.centerNode.cx,2) + Math.pow(cursorY-this.centerNode.cy,2);
-		this.radius = Math.sqrt(radiusSquared); 
+		this.radiusNode = {
+			cx: cursorX,
+			cy: cursorY
+		}
 		
 		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
 		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
-		this.DrawCompletedCircle(this.centerNode.cx,this.centerNode.cy,this.radius);
+		this.DrawCompletedCircle(
+			this.centerNode.cx,
+			this.centerNode.cy,
+			this.computeRadius(this.centerNode,this.radiusNode)
+		);
 	}
 	
 	/**
@@ -166,15 +171,29 @@ class ConeModel {
 	@param {number} cursorY The current y coordinate of the cursor
 	@param {number} radius The radius of the circle one are trying to move
 	 */
-	setCirclePosition(cursorX,cursorY,radius) {
+	setCirclePosition(cursorX,cursorY) {
+		let variationVector = {
+			vx: cursorX-this.centerNode.cx,
+			vy: cursorY-this.centerNode.cy
+		};
+		
+		this.radiusNode = {
+			cx: this.radiusNode.cx+variationVector.vx,
+			cy: this.radiusNode.cy+variationVector.vy
+		}
+		
 		this.centerNode = {
 			cx: cursorX,
 			cy: cursorY
 		}
-		this.radius = radius;
+		
 		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
 		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
-		this.DrawCompletedCircle(this.centerNode.cx,this.centerNode.cy,this.radius);
+		this.DrawCompletedCircle(
+			this.centerNode.cx,
+			this.centerNode.cy,
+			this.computeRadius(this.centerNode,this.radiusNode)
+		);
 	}
 	/**
 	@description Method to verify that the cone has a center node set & a radius set
@@ -183,7 +202,8 @@ class ConeModel {
 	isConeComplete() {
 		return this.centerNode !== null
 			&& Object.keys(this.centerNode).length === 2
-			&& this.radius !== null
+			&& this.radiusNode !== null
+			&& Object.keys(this.radiusNode).length === 2
 	}
 	
 	/**
@@ -195,10 +215,10 @@ class ConeModel {
          * When the position are set from outside, the node remains empty while there is edition action.
          *  So if the user want to get back the cone without editing it, we have to cancel this method
          */
-        if (this.centerNode && Object.keys(this.centerNode).length == 0 && this.skyPositions && this.skyPositions.length > 0)
+        if (this.centerNode && Object.keys(this.centerNode).length == 0 && this.skyConeDescriptor && this.skyConeDescriptor.length > 0)
             return;
 
-        this.skyConeDescriptor = this.buildSkyConeDescriptor(this.centerNode,this.radius);
+        this.skyConeDescriptor = this.buildSkyConeDescriptor(this.centerNode,this.radiusNode);
 
         if (this.overlay === null) {
             this.overlay = A.graphicOverlay({ color: this.color });
@@ -220,13 +240,13 @@ class ConeModel {
     CleanCone() {
         this.CanvasUpdate();
         this.centerNode = {};
-        this.radius = null;		
+        this.radiusNode = {};	
     }
-    
+    /*
     /**
     @description Function to get an enclosing view from BasicGeometry of the cone
     @returns {*} An enclosing view of the cone
-     */
+
     getView() {
 		let skyPositions = [this.skyConeDescriptor];
 		if (this.skyConeDescriptor.skyNode[1] > 0) {
@@ -245,6 +265,7 @@ class ConeModel {
         
         return BasicGeometry.getEnclosingView(skyPositions);
 	}
+	*/
     /**
     @description Find the cone in aladin lite if we cannot visualize it on the screen
     */
@@ -258,14 +279,16 @@ class ConeModel {
     /**
     @description Function to build the skyConeDescriptor property
     @param {{cx: number, cy: number}} centerNode The central node of the cone
-    @param {number} radius The radius of the cone
+    @param {{cx: number, cy: number}} radiusNode A node on the cone
     @returns {{skyNode: Array<number>, radius: number}} A sky cone descriptor object describing the cone
      */
-    buildSkyConeDescriptor(centerNode, radius) {
+    buildSkyConeDescriptor(centerNode, radiusNode) {
+		console.log("Before pix2world: ", centerNode, radiusNode);
 		let skyPositionsCenterNode = this.aladinView.pix2world(centerNode.cx, centerNode.cy);
-		
-		let pointBelongCircle;
+		let skyPositionsRadiusNode = this.aladinView.pix2world(radiusNode.cx, radiusNode.cy);
+		//let pointBelongCircle;
 		// If dec > 0 i.e. If one is in the north hemisphere
+		/*
 		if (skyPositionsCenterNode[1] > 0) {
 			// One takes a radius that point to the south
 			pointBelongCircle = centerNode.cy - radius;
@@ -273,22 +296,26 @@ class ConeModel {
 			// Else, one takes a radius that point to the north
 			pointBelongCircle = centerNode.cy + radius;
 		}
+		*/
 		
-		let skyPositionPointBelongCircle = this.aladinView.pix2world(centerNode.cx,pointBelongCircle);
-		let skyRadius = skyPositionPointBelongCircle[1] - skyPositionsCenterNode[1];
+		//let skyPositionPointBelongCircle = this.aladinView.pix2world(centerNode.cx,pointBelongCircle);
+		//let skyRadius = skyPositionPointBelongCircle[1] - skyPositionsCenterNode[1];
+		let skyRadius = BasicGeometry.distanceBetweenNodes(skyPositionsRadiusNode,skyPositionsCenterNode);
 
         let skyConeDescriptor = {
 			skyNode: skyPositionsCenterNode,
+			skyRadiusNode: skyPositionsRadiusNode,
 			radius: skyRadius
 		}
+		
 		return skyConeDescriptor;
 	}
     
     /**
     @description Function to obtain values from cone and then create this cone in aladin lite
      */
-    setCone(centerX,centerY,radius) {
-        this.skyConeDescriptor = this.buildSkyConeDescriptor({cx: centerX, cy: centerY},radius);
+    setCone(centerX,centerY,radiusX,radiusY) {
+        this.skyConeDescriptor = this.buildSkyConeDescriptor({cx: centerX, cy: centerY},{cx: radiusX, cy: radiusY});
         if (this.overlay == null) {
             this.overlay = A.graphicOverlay({ color: this.color });
             this.aladinView.addOverlayer(this.overlay);
@@ -330,37 +357,50 @@ class ConeModel {
 	}
     
     /**
-    @brief function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
+    @description function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
      */
     store() {
         if (this.skyConeDescriptor !== null) {
 			let skyNode = this.skyConeDescriptor.skyNode;
-			let skyRadius = this.skyConeDescriptor.radius;
+			let skyRadiusNode = this.skyConeDescriptor.skyRadiusNode;
 			
-			let convertedNode = this.aladinView.world2pix(
+			let convertedCenterNode = this.aladinView.world2pix(
                 skyNode[0],
                 skyNode[1]
             );
-            let pointBelongCircle;
-            if (skyNode[1] > 0) {
-				// One takes a radius that point to the south
-				pointBelongCircle = skyNode[1] - skyRadius;
-			} else {
-				// Else, one takes a radius that point to the north
-				pointBelongCircle = skyNode[1] + skyRadius;
+            let convertedRadiusNode = this.aladinView.world2pix(
+				skyRadiusNode[0],
+				skyRadiusNode[1]
+			);
+			console.log("After world2pix: ",convertedCenterNode,convertedRadiusNode);
+			if (
+				convertedCenterNode[0] - this.centerNode.cx > 1 ||
+				convertedCenterNode[1] - this.centerNode.cy > 1 ||
+				convertedRadiusNode[0] - this.radiusNode.cx > 1 ||
+				convertedRadiusNode[1] - this.radiusNode.cy > 1
+			) {				
+				this.centerNode = {cx: convertedCenterNode[0], cy: convertedCenterNode[1]};
+				this.radiusNode = {cx: convertedRadiusNode[0], cy:convertedRadiusNode[1]};
 			}
-            
-			let skyPositionPointBelongCircle = this.aladinView.world2pix(skyNode[0],pointBelongCircle);
-			
-			let convertedRadius = skyPositionPointBelongCircle[1] - convertedNode[1];
-			
-			this.centerNode = {cx: convertedNode[0], cy: convertedNode[1]};
-			this.radius = convertedRadius;
-
+			console.log("Call redraw");
             this.Redraw();
         }
 
     }
+    
+    /**
+    @description Method to compute a circle radius in pixels given the 
+    center and a point that belong to the circle
+    @param {{cx: number, cy: number}} centerNode The central node of the circle
+    @param {{cx: number, cy: number}} radiusNode A node on the circle
+    @return {number} the radius of the circle
+     */
+    computeRadius(centerNode,radiusNode) {
+		return Math.sqrt(
+			Math.pow(centerNode.cx-radiusNode.cx,2) +
+			Math.pow(centerNode.cy-radiusNode.cy,2)
+		)
+	}
     
     /**
     @description Draw again the lines and the nodes stored
@@ -368,7 +408,11 @@ class ConeModel {
     Redraw() {
         this.CanvasUpdate();
         this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
-        this.DrawCompletedCircle(this.centerNode.cx,this.centerNode.cy,this.radius);
+        this.DrawCompletedCircle(
+			this.centerNode.cx,
+			this.centerNode.cy,
+			this.computeRadius(this.centerNode,this.radiusNode)
+		);
     }
 
     /**
@@ -407,17 +451,18 @@ class ConeModel {
 		//Modify size of the circle while the user is moving his/her cursor
 		if ( this.centerNode !== null
 			&& Object.keys(this.centerNode).length === 2
-			&& this.radius === null
+			&& (this.radiusNode === null
+			|| Object.keys(this.radiusNode).length === 0)
 		) {
 			this.updateCircleSize(x,y);
 		// Modify position of the circle if the user is holding the center
 		} else if (this.isCursorOnCenter) {
-			this.updateCirclePosition(x,y,this.radius);
+			this.updateCirclePosition(x,y,this.computeRadius(this.centerNode,this.radiusNode));
 		// Modify size of the circle if the user is holding the edge of the circle
 		} else if (this.isCursorOnCircle) {
 			this.updateCircleSize(x,y);
 		} else {
-			let radius = this.radius;
+			let radius = this.computeRadius(this.centerNode,this.radiusNode);
 			let distToCenter = this.computeCenterDistanceTo(x,y);
 			
 			if (distToCenter < this.tolerance) {
@@ -445,14 +490,17 @@ class ConeModel {
 		} else if (
 			this.centerNode !== null
 			&& Object.keys(this.centerNode).length === 2
-			&& this.radius === null
+			&& (
+				this.radiusNode === null
+				|| Object.keys(this.radiusNode).length === 0
+			)
 		) {
 			this.setCircleSize(x,y);
 		} else if (this.isCursorOnCircle) {
 			this.setCircleSize(x,y);
 			this.drawCanvas.style.cursor = "unset";
 		} else if (this.isCursorOnCenter) {
-			this.setCirclePosition(x,y,this.radius);
+			this.setCirclePosition(x,y);
 			this.drawCanvas.style.cursor = "unset";
 		}
 		this.isCursorOnCenter = false;
@@ -469,7 +517,7 @@ class ConeModel {
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
 		
 		if (this.isConeComplete()) {
-			let radius = this.radius;
+			let radius = this.computeRadius(this.centerNode,this.radiusNode);
 			let distToCenter = this.computeCenterDistanceTo(x,y);
 			
 			if (distToCenter < this.tolerance) {
