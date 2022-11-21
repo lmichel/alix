@@ -32,8 +32,10 @@
 
 var BasicGeometry = function () {
     /**
-     * Nodes are 2 arrays with 2 elements
-     * Returns a distance ranging from 0 to 180deg
+     * @description Returns a distance ranging from 0 to 180deg
+     * @param {Array<number,number>} node1 Nodes are arrays with 2 elements
+     * @param {Array<number,number>} node2 Nodes are arrays with 2 elements
+     * @returns {number} The distance between node1 & node2
      */
     function distanceBetweenNodes(node1, node2){
     	var coo1 = new Coo(node1[0], node1[1]);
@@ -41,9 +43,9 @@ var BasicGeometry = function () {
     	return coo1.distance(coo2)
     }
     /**
-     * Return the geometric definition of the view enclosing the skyPositions polygon
-     * skyPositions: Array of points: [[ra,dec], ...]
-     * return : {center: {ra: .., dec: ..}, size: ..} size is in deg
+     * @description Return the geometric definition of the view enclosing the skyPositions polygon
+     * @param {Array<Array<number,number>>} skyPositions Array of points: [[ra,dec], ...]
+     * @returns {{center: {ra: number, dec: number}, size: number}} size is in deg
      */
     function getEnclosingView(skyPositions) {
 		var maxSize=0;
