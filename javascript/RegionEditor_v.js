@@ -243,7 +243,7 @@ class RegionEditor_mVc {
         this.switchBtnText = $(`<div class="text">Polygon&nbsp;</div>`);
         this.switchModeBtn.append(this.switchBtnText);
         
-        this.switchBtnIcon = $(`<img src="styles/polygon_icon.svg"></img>`);
+        this.switchBtnIcon = $(`<img src="xcatweb/images/polygon_icon.svg"></img>`);
         this.switchModeBtn.append(this.switchBtnIcon);
         
         this.switchBtnTooltip = $(`<span class="tooltiptext">Switch to Cone</span>`);
@@ -262,11 +262,11 @@ class RegionEditor_mVc {
             if (regionEditorView.controller.focusedModel === Models.Polygon) {
 				this.switchBtnText.html(`Polygon&nbsp;`);
 				this.switchBtnTooltip.text(`Switch to Cone`);
-				this.switchBtnIcon.attr("src","styles/polygon_icon.svg");
+				this.switchBtnIcon.attr("src","xcatweb/images/polygon_icon.svg");
 			} else {
 				this.switchBtnText.html(`Cone&nbsp;`);
 				this.switchBtnTooltip.text(`Switch to Polygon`);
-				this.switchBtnIcon.attr("src","styles/circle_icon.svg");
+				this.switchBtnIcon.attr("src","xcatweb/images/circle_icon.svg");
 			}
             event.stopPropagation();
 		});
