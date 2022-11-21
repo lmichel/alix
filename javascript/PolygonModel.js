@@ -741,7 +741,7 @@ class PolygonModel {
         return this.skyPositions;
     }
     
-    handleMouseUpPolygon(event, buttondown, canvas, startingNode, closed, movestart, startdrag) {
+    handleMouseUpPolygon(event, buttondown, canvas, startingNode, closed, movestart, startdrag, storeNode) {
     	let clickedNode = -1;
 		let finalnode;
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
@@ -817,7 +817,7 @@ class PolygonModel {
 		    let inter = segment.Itersection(startingNode, true);
 		    if (inter != -1 && inter != undefined) {
 		        this.RemoveNode(this.startingNode, false);
-		        this.addNode(x, y, this.stokeNode, true);
+		        this.addNode(x, y, storeNode, true);
 		    }
 		}
 		this.canvasUpdate();

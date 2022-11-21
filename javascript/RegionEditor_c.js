@@ -165,7 +165,8 @@ class RegionEditor_mvC {
 					this.startingNode,
 					this.closed,
 					this.movestart,
-					this.startdrag
+					this.startdrag,
+					this.stokeNode
 				);
 			
 			this.buttondown = modelReturn.buttondown;
