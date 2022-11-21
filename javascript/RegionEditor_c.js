@@ -27,19 +27,44 @@
  * 
  *  params = {canvas,canvaso, aladin}
  * 
- * Author Gerardo Irvin Campos yah
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
  */
 /**
  * @author michel
  *
  */
+ 
+const Models = {
+	Polygon: Symbol("polygon"),
+	Cone: Symbol("cone")
+}
 
 class RegionEditor_mvC {
     constructor(params) {
+	
+		this.tolerance = 8; //Tolerance in pixels
 		this.color = params.color;
 
-        this.polygonModel = new RegionEditor_Mvc(params.points, params.handler, params.canvas, params.canvaso, params.aladinView,this.color);
-        this.canvas = params.canvas;
+        this.polygonModel = new PolygonModel(
+			params.points,
+			params.handler,
+			params.drawCanvas,
+			params.staticCanvas,
+			params.aladinView,
+			this.color
+		);
+
+        this.coneModel = new ConeModel(
+			params.drawCanvas,
+			params.staticCanvas,
+			params.aladinView,
+			this.tolerance,
+			this.color
+		);
+
+        this.focusedModel = Models.Polygon;
+        
+        this.canvas = params.drawCanvas;
         this.clientHandler = params.handler;
         this.startingNode = -1;
         this.buttondown = false;
@@ -52,241 +77,186 @@ class RegionEditor_mvC {
         
         this.data = null;
     }
-    getStatus() {
-        return "startingNode="
-            + this.startingNode + " buttondown="
-            + this.buttondown + " closed="
-            + this.closed + " movestart="
-            + this.movestart + " startdrag="
-            + this.startdrag + " drag="
-            + this.drag + " result="
-            + this.result + " stokeNode="
-            + this.stokeNode;
-    }
     /**
-     * @todo to be implemented
+    @description Method to siwtch between the two provided models
      */
-    checkPolygon(points) {
-        return true;
+    switchModel() {
+		this.CleanCanvas();
+		if (this.focusedModel === Models.Polygon) {
+			this.focusedModel = Models.Cone;
+		} else {
+			this.focusedModel = Models.Polygon;
+		}
+	}
+	
+	/**
+	@description Function to get the status of this controller
+	@returns {string} some useful data about the controller
+	 */
+    getStatus() {
+        return `startingNode=${this.startingNode}
+        	 buttondown=${this.buttondown}
+        	 closed=${this.closed}
+        	 movestart=${this.movestart}
+        	 startdrag=${this.startdrag}
+        	 drag=${this.drag}
+        	 result=${this.result}
+        	 stokeNode=${this.stokeNode}`;
     }
     /**
-     *
+     @description Method to handle the beginning of a mouse click on the drawing canvas
+     @param {Event} event event containing the position of the cursor
      */
     mouseDown(event) {
 
-        let clickedNode = -1;
-        let clickedSegment = -1;
-        let x = parseInt(event.pageX) - parseInt(this.canvas.offset().left).toFixed(1);
-        let y = parseInt(event.pageY) - parseInt(this.canvas.offset().top).toFixed(1);
-
-        //pregunta si el pologono esta vacio
-        if (this.polygonModel.isEmpty()) {
-            this.polygonModel.addNode(x, y);
-        }
-
-
-
-        //obtener segmento
-        //comenzar el this.drag del nodo		
-        else if (this.closed == true && (clickedNode = this.polygonModel.getNode(x, y)) != -1) {
-            this.result = this.polygonModel.getSegment(clickedNode);
-            this.stokeNode = this.polygonModel.stokeNode(clickedNode);
-            this.startdrag = true;
-            this.drag = clickedNode;
-            this.startingNode = clickedNode;
-            this.canvas.css('cursor', 'move');
-        }
-
-        //pregunta si el espacio presionado es un nodo 
-        else if ((clickedNode = this.polygonModel.getNode(x, y)) != -1) {
-            //pregunta si es una extremidad
-            if (this.polygonModel.isExtremity(clickedNode) /*poligono abierto*/) {
-                //pregunta estas abierto
-                if (this.closed == true) {
-                    this.startingNode = -1;
-                    this.buttondown = false;
-                }
-
-                else {
-                    this.startingNode = clickedNode;
-                    this.buttondown = true;
-                    this.closed = false;
-                }
-            }
-        }
-
-        //saber si estoy sobre un segmento
-        if (this.closed && clickedNode == -1) {
-            var node = this.polygonModel.GetNodelength();
-
-            var Segmentos = new Segment(node);
-            var option = Segmentos.IsCursorOn(x, y);
-
-            if (option != undefined) {
-                if (option.flag == "vertical") {
-                    //console.log("option: " + option.flag);
-                    this.polygonModel.addNode(x, y, option);
-                }
-                else if (option.flag == "horizontal") {
-                    //console.log("option: " + option.flag);
-                    this.polygonModel.addNode(x, y, option);
-                }
-                else if (option.flag == "distancia") {
-                    //console.log("option: " + option.flag);
-                    this.polygonModel.addNode(x, y, option);
-                }
-            }
-
-        }
-
+		if (this.focusedModel === Models.Polygon) {
+	        const modelReturn = 
+	        	this.polygonModel.
+	        	handleMouseDownPolygon(event, this.closed, this.canvas);
+			
+	        this.closed = modelReturn.closed;
+			this.canvas = modelReturn.canvas;
+			
+	        this.buttondown = "buttondown" in modelReturn ? modelReturn.buttondown : this.buttondown;
+	        this.result = "result" in modelReturn ? modelReturn.result : this.result;
+			this.stokeNode = "storeNode" in modelReturn ? modelReturn.storeNode : this.stokeNode;
+			this.startdrag = "startdrag" in modelReturn ? modelReturn.startdrag : this.startdrag;
+			this.drag = "drag" in modelReturn ? modelReturn.drag : this.drag;
+			this.startingNode = "startingNode" in modelReturn ? modelReturn.startingNode : this.startingNode;
+		} else if (this.focusedModel === Models.Cone) {
+			this.coneModel.handleMouseDown(event,this.canvas);
+		}
     }
+    
+    
     /**
-     *
+     @description Method to handle the movement of the mouse on the drawing canvas
+     @param {Event} event event containing the position of the cursor
      */
     mouseMove(event) {
-        var x = parseInt(event.pageX) - parseInt(this.canvas.offset().left).toFixed(1);
-        var y = parseInt(event.pageY) - parseInt(this.canvas.offset().top).toFixed(1);
-        //console.log("mouse move " + this.getStatus());
-        //pregunta si el nodo fue presionado y si es un nodo
-        if (this.buttondown == true && this.startingNode != -1) {
-            //console.log ('this.startingNode' + this.startingNode);
-            this.movestart = true;
-            this.polygonModel.drawHashline(this.startingNode, x, y, this.result);
-        }
-        else if (this.startdrag) {
-            this.polygonModel.Drag(this.drag, x, y, this.result);
-
-            //console.log('this.startdrag move');		
-        }
-
-        //			var h2x = document.getElementById("idcoor");
-        //			h2x.innerHTML = 'X coords: '+x+', Y coords: '+y;
+		if (this.focusedModel === Models.Polygon) {
+			let resultHandler = this.polygonModel.handleMouseMove(
+				event,
+				this.canvas,
+				this.buttondown,
+				this.startingNode,
+				this.drag,
+				this.result,
+				this.startdrag
+			);
+			this.movestart = resultHandler ? resultHandler : this.movestart;
+		} else if (this.focusedModel === Models.Cone) {
+			this.coneModel.handleMouseMove(event,this.canvas);
+		}
     }
+    
+    /**
+     @description Method to handle the end of a mouse click on the drawing canvas
+     @param {Event} event event containing the position of the cursor
+     */
     mouseUp(event) {
-        var clickedNode = -1;
-        var finalnode;
-        var x = parseInt(event.pageX) - parseInt(this.canvas.offset().left).toFixed(1);
-        var y = parseInt(event.pageY) - parseInt(this.canvas.offset().top).toFixed(1);
-        //pregunta nodo es presionado y es si es un nodo
-        if (this.buttondown == true && (clickedNode = this.polygonModel.getNode(x, y)) != -1) {
-            //pregunta si es un extremo
-            if (this.polygonModel.isExtremity(clickedNode) == false) {
-                this.polygonModel.CleanLine();
-                this.buttondown = false;
-            }
-
-            //console.log('clickedNode: ' + clickedNode + ' this.startingNode: ' +  this.startingNode);
-            if (this.polygonModel.closePolygone(clickedNode, this.startingNode) == true) {
-                //console.log('this.closed polygon');					
-                this.buttondown = false;
-                this.closed = true;
-                //this.invokeHandler(false); if add this the length of skyPosition[] will be null
-                //console.log('clickedNode: ' + clickedNode + ' this.startingNode: ' +  this.startingNode);							
-            }
-        }
-
-        if (this.closed == true && (finalnode = this.polygonModel.GetXYNode(x, y)) != null) {
-            if (finalnode.a != undefined && finalnode.b != undefined) {
-                //console.log('finalnode a: ' + finalnode.a + ' finalnode b: ' + finalnode.b);
-                if (this.startingNode == finalnode.a)
-                    this.polygonModel.RemoveNode(finalnode.a, false);
-                else if (this.startingNode == finalnode.b)
-                    this.polygonModel.RemoveNode(finalnode.b, false);
-            }
-        }
-
-        if (this.buttondown == true && this.movestart == true) {
-            if (clickedNode == this.startingNode && (clickedNode = this.polygonModel.getNode(x, y) != -1))
-            //if((clickedNode = this.polygonModel.getNode(x,y)) != -1)
-            {
-                this.buttondown = false;
-                this.movestart = false;
-                this.polygonModel.CleanLine();
-            }
-
-            else {
-                this.polygonModel.addNode(x, y, this.startingNode);
-                this.buttondown = false;
-                this.movestart = false;
-
-                var nodos = this.polygonModel.GetNodelength();
-                var Segmentos = new Segment(nodos);
-                var temp;
-
-                var inter = Segmentos.Itersection(this.startingNode, false);
-
-                if (inter != -1 && inter != undefined) {
-                    //poligono abierto = true
-                    if (this.startingNode != 0)
-                        this.polygonModel.RemoveNode(inter.nB, true);
-
-                    else
-                        this.polygonModel.RemoveNode(inter.nA, true);
-
-                    this.polygonModel.CleanLine();
-                }
-            }
-
-        }
-        else if (this.buttondown == true && this.movestart == false) {
-            this.buttondown = false;
-            this.movestart = false;
-        }
-
-        if (this.startdrag == true) {
-            //console.log('this.startdrag fin');
-            this.startdrag = false;
-            this.canvas.css('cursor', 'default');
-
-            //stoke le numero de noeud appuyer
-            //this.startingNode;			
-            var nodos = this.polygonModel.GetNodelength();
-            var Segmentos = new Segment(nodos);
-            var inter = Segmentos.Itersection(this.startingNode, true);
-            if (inter != -1 && inter != undefined) {
-                this.polygonModel.RemoveNode(this.startingNode, false);
-                this.polygonModel.addNode(x, y, this.stokeNode, true);
-                //console.log(inter.length);
-            }
-        }
-        this.polygonModel.canvasUpdate();
+		if (this.focusedModel === Models.Polygon) {
+			const modelReturn = 
+				this.polygonModel.
+				handleMouseUpPolygon(
+					event,
+					this.buttondown,
+					this.canvas,
+					this.startingNode,
+					this.closed,
+					this.movestart,
+					this.startdrag
+				);
+			
+			this.buttondown = modelReturn.buttondown;
+			this.canvas = modelReturn.canvas;
+			this.startingNode = modelReturn.startingNode;
+			this.closed = modelReturn.closed;
+			this.movestart = modelReturn.movestart;
+			this.startdrag = modelReturn.startdrag;
+		} else if (this.focusedModel === Models.Cone) {
+			this.coneModel.handleMouseUp(event,this.canvas);
+		}
     }
-    almacenar() {
-        this.polygonModel.almacenar();
+    
+    /**
+    @description Method to store a shape in memory to get it again when one laucnh the drawing canvas again
+     */
+    store() {
+		if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.store();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.store();
+		}
     }
-    recuperar() {
-        this.polygonModel.recuperar();
-    }
-    DeleteOverlay() {
-        this.polygonModel.DeleteOverlay();
-    }
-    CleanPoligon() {
-        this.polygonModel.CleanPoligon();
-        this.closed = false;
-    }
-    PolygonCenter() {
-        this.polygonModel.PolygonCenter();
-    }
-    CreateGrafic(canvas) {
-        this.polygonModel.createGrafic(this.canvas);
-    }
-    show() {
-        alert(this.polygonModel.getSkyPositions());
+    
+    /**
+    @description Function to obtain values from a shape and create it in aladin lite
+     */
+    get() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.get();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.get();
+		}
     }
     /**
-     * Set the polygone with points. Points is a simple array. It must have at
-     * least 6 values (3pts) and an even number of points
-     * @param points  [a,b,c,.....]
-     * @returns {Boolean} true if the polygone is OK
+    @description Function to delete an overlay
      */
-    setPoligon(points) {
+    DeleteOverlay() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.DeleteOverlay();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.DeleteOverlay();
+		}
+    }
+    /**
+    @description Function to clean the canvas
+     */
+    CleanCanvas() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.CleanPolygon();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.CleanCone();
+		}
+        this.closed = false;
+    }
+    
+    /**
+    @description Function to center the figure on the screen
+     */
+    ShapeCenter() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.PolygonCenter();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.ConeCenter();
+		}
+    }
+    
+    /**
+    @description Method to send an alert with all the useful informations
+     */
+    show() {
+        if (this.focusedModel === Models.Polygon) {
+	        alert(this.polygonModel.getSkyPositions());
+        } else if (this.focusedModel === Models.Cone) {
+			alert(this.coneModel.skyConeDescriptor);
+		}
+    }
+    /**
+     * Set the polygon with points. Points is a simple array. It must have at
+     * least 6 values (3pts) and an even number of points
+     * @param {Array} points  [a,b,c,.....]
+     * @returns {Boolean} true if the polygon is OK
+     */
+    setPolygon(points) {
         this.polygonModel.setPolygon(points);
         this.closed = true;
         this.invokeHandler(false);
         return true;
     }
     /**
-        @brief Call the client handler when the polygon is close or when the user click on accept
+        @description Call the client handler when the polygon is close or when the user click on accept
      
         @description
         The data passed to the user handler look like that:
@@ -306,19 +276,42 @@ class RegionEditor_mvC {
         @return {void}
      */
     invokeHandler(userAction,background) {
-		if (this.isPolygonClosed()) {
-			//Compute the region size in degrees
-			var view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-			if (!this.polygonModel.skyPositions.length) {
-				this.data = null;
-			} else {
+		if (this.focusedModel === Models.Polygon) {
+			if (this.isPolygonClosed()) {
+				//Compute the region size in degrees
+				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
+				if (!this.polygonModel.skyPositions.length) {
+					this.data = null;
+				} else {
+					this.data = {
+					    isReady: true,
+					    userAction: userAction,
+					    region: {
+					        format: "array2dim",
+					        points: this.polygonModel.skyPositions
+					    }
+					}
+					if (background) {
+						this.data.background = background;					
+					} else if (background in this.data) {
+						delete this.data.background;
+					}
+		            this.clientHandler(this.data);
+				}
+	        } else {
+	            alert("Polygon not closed");
+	        }
+		} else if (this.focusedModel === Models.Cone) {
+			if (this.coneModel.isConeComplete()) {
+				//let view = this.coneModel.getView();
 				this.data = {
 				    isReady: true,
 				    userAction: userAction,
 				    region: {
-				        format: "array2dim",
-				        points: this.polygonModel.skyPositions,
-				        size: { x: view.size, y: view.size }
+				        format: "cone",
+				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
+				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
+				        radius: this.coneModel.skyConeDescriptor.radius
 				    }
 				}
 				if (background) {
@@ -326,12 +319,19 @@ class RegionEditor_mvC {
 				} else if (background in this.data) {
 					delete this.data.background;
 				}
-	            this.clientHandler(this.data);
+				this.clientHandler(this.data);
+			} else {
+				this.data = null;
+				this.coneModel.killStoring();
+				alert("Cone is not finished!");
 			}
-        } else {
-            alert("Polygon not closed");
-        }
+		}
     }
+    
+    /**
+    @description Method to check if a polygon is closed
+    @returns True if the polygon is closed, false else
+     */
     isPolygonClosed() {
         return (this.closed || (this.polygonModel.node == undefined || this.polygonModel.node.length == 0));
     }

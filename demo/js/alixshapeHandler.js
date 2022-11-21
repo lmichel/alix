@@ -84,7 +84,7 @@ var masTest = {
 		bgRegionEditorHandler: function(data) {
 			if( data.userAction ) {
 				console.log("hello I'm the new handler for background");
-				alert(JSON.stringify(data));
+				//alert(JSON.stringify(data));
 			}
 		}
 };

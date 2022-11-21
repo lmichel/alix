@@ -351,6 +351,7 @@
 }
 
 .alix_btn {
+	position: relative;
     display: inline-block;
     padding: 6px 12px;
     margin-bottom: 0;
@@ -371,6 +372,40 @@
     border: 1px solid transparent;
     border-radius: 4px;
 }
+
+/* Tooltip text */
+.alix_btn .tooltiptext {
+  display: none;
+  visibility: hidden;
+  width: 120px;
+  background-color: #504b4b;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  top: -5px;
+  left: 105%;
+  position: absolute;
+  z-index: 1;
+}
+
+.alix_btn:hover .tooltiptext {
+  display: block;
+  visibility: visible;
+}
+
+.alix_btn .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  right: 100%; /* To the left of the tooltip */
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #504b4b transparent transparent;
+}
+
 .alix_btn.disabled, .alix_btn[disabled], .alix_fieldset[disabled] .alix_btn {
     cursor: not-allowed;
     filter: alpha(opacity=65);
@@ -564,8 +599,9 @@
     line-height:20px;
 }
 
-.alix_selector_catalog{160px
-/*	position:absolute;
+.alix_selector_catalog{
+/*	160px
+	position:absolute;
 	top:260px;
 	left:98px;*/
 	width:95px;
@@ -955,13 +991,48 @@ z-index: 10;
 #region-editors.editor-container {
 	width: 100%;
 	display: flex;
-	row-gap: 10px;
 	flex-direction: column;
 	align-items: center;
 }
 
-.region-editor {
+.panel-tabs-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.panel-header {
 	width: 80%;
+	display: inline-flex;
+	align-items: stretch;
+}
+
+.panel-header>.tab-header-btn {
+	background-color: rgba(245, 245, 245,.5);
+	flex: 5;
+	border: #545244 solid 2px;
+	/* border-bottom: none; */
+	border-top-left-radius: 0.7rem;
+	border-top-right-radius: 0.7rem;
+}
+
+.panel-body {
+	background-color: rgba(245, 245, 245,.5);
+	border: #545244 solid 2px;
+	border-top: none;
+	border-bottom-left-radius: 1rem;
+	border-bottom-right-radius: 1rem;
+	width: 80%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	row-gap: 10px;
+	
+}
+
+.region-editor {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 }
@@ -987,14 +1058,25 @@ z-index: 10;
 
 .alix_region_btns {
 	align-self: center;
+	display: inline;
 	height:25px;
 	font-size: 1.2rem;
-	display:inline;
 	background-color: #888a85;
 	color : #DFDFDF;
 	border-color: #574E4E;
 	padding: 0px !important;
 	box-shadow:0.5px 0.5px 10px #888a85;
+}
+
+.alix_region_btns>.text {
+	display: inline;
+}
+
+.alix_region_btns>img {
+	display: inline-block;
+	vertical-align: text-top;
+	line-height: 1;
+	height: 14px;
 }
 
 .alix_menu_commit_text_display{
@@ -1085,7 +1167,7 @@ position:absolute;
     left: 100px;
 }
 #RegionCanvasTemp{
-     background: rgba(255,255,255,0.6); 
+     background: rgba(255,255,255,0); 
      top:0px;
     /* height:100%;
      width:100%;*/

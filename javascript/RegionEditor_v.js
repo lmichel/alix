@@ -32,16 +32,18 @@ class RegionEditor_mVc {
 	/**
 	@brief View of the RegionEditor service
 	@param {string} regionEditorName - The name of the region editor
-	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view taht will handle the result of the selection
+	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view that will handle the result of the selection
 	@param {Element}  aladinLiteDivId
 	@param {Element} contextDivId
 	@param {function} handler
 	@param {Frame} defaultRegion
+	@param {Element} tabHeader
 	@param {string} color - color of the shape once it was validated
 	 */
-    constructor(regionEditorName, aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion, color) {
+    constructor(regionEditorName, aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion, tabHeader, color) {
 		this.regionEditorName = regionEditorName;
         this.aladinLiteDivId = aladinLiteDivId;
+        this.tabHeader = tabHeader;
         
         this.buttonGrid = null;
         
@@ -101,10 +103,9 @@ class RegionEditor_mVc {
 
 
         this.controller = new RegionEditor_mvC({
-			/* "points": this.points,*/
 			"handler": this.clientHandler,
-			"canvas": this.drawCanvas,
-			"canvaso": this.lineCanvas,
+			"drawCanvas": this.drawCanvas,
+			"staticCanvas": this.lineCanvas,
 			"aladinView": this.aladinLite_V,
 			"color": this.color
 		});
@@ -112,14 +113,14 @@ class RegionEditor_mVc {
          * The controller function is wrapped in a function in order to make it working in the context of the controller object
          * and not of he HTML widget
          */
-        this.drawCanvas[0].addEventListener('mousedown', function(event) {
-			that.controller.mouseDown(event);
+        this.drawCanvas[0].addEventListener('mousemove', (event,regionEditorView=this) => {
+			regionEditorView.controller.mouseMove(event);
 		}, false);
-        this.drawCanvas[0].addEventListener('mousemove', function(event) {
-			that.controller.mouseMove(event);
+        this.drawCanvas[0].addEventListener('mousedown', (event, regionEditorView=this) => {
+			regionEditorView.controller.mouseDown(event);
 		}, false);
-        this.drawCanvas[0].addEventListener('mouseup', function(event) {
-			that.controller.mouseUp(event);
+        this.drawCanvas[0].addEventListener('mouseup', (event,regionEditorView=this) => {
+			regionEditorView.controller.mouseUp(event);
 		}, false);
 		
 		/***********************************************************
@@ -128,6 +129,14 @@ class RegionEditor_mVc {
 		const divTitle = $(`<h4>${this.regionEditorName}</h4>`);
 		this.buttonGrid = $(`<div class="btn-grid"></div>`);
 		this.contextDiv.append(divTitle,this.buttonGrid);
+		
+		/***********************************************************
+		************* Initialize the header button *****************
+		************************************************************/
+		let header_title = this.regionEditorName.split(' ')[0].toLowerCase();
+		this.headerButton = $(`<button class="tab-header-btn" id="tab-header-${header_title}">${header_title}</button>`);
+		
+		this.tabHeader.append(this.headerButton);		
 
         /***********************************************************
 		************* Button creation using JQuery *****************
@@ -138,6 +147,26 @@ class RegionEditor_mVc {
 			'margin-left': '5px',
 			'font-weight': ' bold',
 		}
+		
+		/***********************************************************
+        ******************** Edit Button ***************************
+        ************************************************************/
+        this.editBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_e' class='alix_edt_btn alix_btn alix_region_btns'>
+				Edit&nbsp;
+				<i class='glyphicon glyphicon-pencil'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.editBtn);
+        this.editBtn.css(styleToApply);
+        this.editBtn.click(function(event) {
+            that.setEditMode();
+            that.controller.DeleteOverlay();
+            that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
+            that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
+            that.controller.store();
+            event.stopPropagation();
+        });
 		
         /***********************************************************
         ******************** Browse Button *************************
@@ -155,7 +184,7 @@ class RegionEditor_mVc {
             if (!that.controller.isPolygonClosed()) {
                 that.controller.CleanPoligon();
             } else {
-                that.controller.recuperar();
+                that.controller.get();
             }
             that.setBrowseMode();
             browseSaved = false;
@@ -163,25 +192,6 @@ class RegionEditor_mVc {
         });
 
 
-		/***********************************************************
-        ******************** Edit Button ***************************
-        ************************************************************/
-        this.editBtn = $(
-			`<button id='${this.contextDivId}-regionEditor_e' class='alix_edt_btn alix_btn alix_region_btns'>
-				Edit&nbsp;
-				<i class='glyphicon glyphicon-pencil'></i>
-			</button>`
-		);
-        this.buttonGrid.append(this.editBtn);
-        this.editBtn.css(styleToApply);
-        this.editBtn.click(function(event) {
-            that.setEditMode();
-            that.controller.DeleteOverlay();
-            that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
-            that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
-            that.controller.almacenar();
-            event.stopPropagation();
-        });
         
         /***********************************************************
         ******************** Delete Button *************************
@@ -195,9 +205,10 @@ class RegionEditor_mVc {
         this.buttonGrid.append(this.deleteBtn);
         this.deleteBtn.css(styleToApply);
         this.deleteBtn.click(function(event) {
-            that.controller.CleanPoligon();
+            that.controller.CleanCanvas();
             event.stopPropagation();
         });
+        this.deleteBtn.attr('disabled', 'disabled');
 
 		/***********************************************************
         ******************** Accept Button ****************************
@@ -212,7 +223,7 @@ class RegionEditor_mVc {
         this.setBtn.css(styleToApply);
 
         this.setBtn.on('click', function(event) {
-            that.controller.recuperar();
+            that.controller.get();
             that.setBrowseMode();
             that.aladinLite_V.reabledButton();
             if ($("#region")[0])
@@ -223,29 +234,45 @@ class RegionEditor_mVc {
         
         
         /***********************************************************
-        ******************** Example button ************************
+        ******************** Switch button ************************
         ************************************************************/
-        /*
-        var exampleBtn = $(
-			`<button id='${this.contextDivId}-regionEditor_a' class=' alix_exa_btn alix_btn alix_region_btns'>
-        		Example&nbsp;
-        		<i class='glyphicon glyphicon-asterisk'></i>
+        this.switchModeBtn = $(
+			`<button id='${this.contextDivId}-switchEditor' class='alix_swi_btn alix_btn alix_region_btns'>
         	</button>`
         );
-        this.buttonGrid.append(exampleBtn);
-        exampleBtn.css(styleToApply);
-
-        exampleBtn.on('click', function(event) {
-            that.controller.recuperar();
-            that.setBrowseMode();
-            that.controller.invokeHandler(true);
-            that.aladinLite_V.reabledButton();
-            if ($("#region")[0])
-                $("#region")[0].disabled = false;
-            browseSaved = true;
+        this.switchBtnText = $(`<div class="text">Polygon&nbsp;</div>`);
+        this.switchModeBtn.append(this.switchBtnText);
+        
+        this.switchBtnIcon = $(`<img src="styles/polygon_icon.svg"></img>`);
+        this.switchModeBtn.append(this.switchBtnIcon);
+        
+        this.switchBtnTooltip = $(`<span class="tooltiptext">Switch to Cone</span>`);
+        this.switchModeBtn.append(this.switchBtnTooltip);
+        
+        this.buttonGrid.append(this.switchModeBtn);
+        this.switchModeBtn.css(styleToApply);
+        
+        this.switchModeBtn.on('click', (event, regionEditorView=this) => {
+			regionEditorView.setEditMode();
+            regionEditorView.controller.DeleteOverlay();
+            regionEditorView.lineContext.clearRect(0, 0, regionEditorView.lineCanvas[0].width, regionEditorView.lineCanvas[0].height);
+            regionEditorView.drawContext.clearRect(0, 0, regionEditorView.drawCanvas.width, regionEditorView.drawCanvas.height);
+            regionEditorView.controller.switchModel();
+            
+            if (regionEditorView.controller.focusedModel === Models.Polygon) {
+				this.switchBtnText.html(`Polygon&nbsp;`);
+				this.switchBtnTooltip.text(`Switch to Cone`);
+				this.switchBtnIcon.attr("src","styles/polygon_icon.svg");
+			} else {
+				this.switchBtnText.html(`Cone&nbsp;`);
+				this.switchBtnTooltip.text(`Switch to Polygon`);
+				this.switchBtnIcon.attr("src","styles/circle_icon.svg");
+			}
             event.stopPropagation();
-        });
-        */
+		});
+        
+                
+        
         if (!AladinLiteX_mVc.regionEditorInit) {
             this.setInitialValue(this.defaultRegion);
             if (this.editionFrame) {
@@ -259,6 +286,23 @@ class RegionEditor_mVc {
         }
 
     }
+    
+    focusEditor() {
+		this.headerButton.css({
+			"border-bottom": "none",
+			"background-color": "rgba(245, 245, 245,.5)"
+		});
+		this.contextDiv.css({"display": "block"});
+	}
+	
+	hideEditor() {
+		this.headerButton.css({
+			"border-bottom": "#545244 solid 2px",
+			"background-color": "rgba(150,150,150,.5)"
+		});
+		this.contextDiv.css({"display": "none"});
+	}
+    
     /**
      * @description Operate the drawing removal from outside of the class scope
      */
@@ -270,8 +314,8 @@ class RegionEditor_mVc {
             this.controller.DeleteOverlay();
             this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
             this.drawContext.clearRect(0, 0, this.drawCanvas[0].width, this.drawCanvas[0].height);
-            this.controller.almacenar();
-            this.controller.recuperar();
+            this.controller.store();
+            this.controller.get();
             this.setBrowseMode();
         }
 
@@ -287,7 +331,6 @@ class RegionEditor_mVc {
         }
         var x = null;
         if (this.editionFrame) {
-            var pts = [];
             /*
              * Extract region or position from SaadaQL statement
              */
@@ -369,7 +412,7 @@ class RegionEditor_mVc {
 
             this.setBrowseMode();
             this.controller.DeleteOverlay();
-            this.controller.setPoligon(pts);
+            this.controller.setPolygon(pts);
         }
         /*
          * Fix for the errors when we open a new region editor
@@ -420,8 +463,8 @@ class RegionEditor_mVc {
      */
     muteRegionEditor() {
 		this.editBtn.attr('disabled', 'disabled');
-		this.deleteBtn.attr('disabled', 'disabled');
 		this.setBtn.attr('disabled', 'disabled');
+		this.switchModeBtn.attr('disabled', 'disabled');
 	}
 	
 	/**
@@ -429,8 +472,8 @@ class RegionEditor_mVc {
      */
 	unmuteRegionEditor() {
 		this.editBtn.removeAttr('disabled');
-		this.deleteBtn.removeAttr('disabled');
 		this.setBtn.removeAttr('disabled');
+		this.switchModeBtn.removeAttr('disabled');
 	}
     /**
     @description Method to parse a SODA polygon that is represented by a string
