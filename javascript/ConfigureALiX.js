@@ -38,13 +38,7 @@ It has the following shape :
 }
 </code></pre>
  */
-var regionEditorHandler = function(data) {
-	if( data.userAction )
-	{
-		//AladinLiteX_mVc.storePolygon(data.region);
-		alert(JSON.stringify(data));
-	}
-}
+var regionEditorHandlers = [];
 
 var localConf = {
 	parentDivId: "aladin-lite-div",
@@ -61,7 +55,7 @@ var localConf = {
 		regionEditor: { },
 		hipsSelector: { }
 	},
-	regionEditorHandler: regionEditorHandler
+	regionEditorHandlers: regionEditorHandlers
 	
 }
 
