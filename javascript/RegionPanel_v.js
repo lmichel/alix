@@ -34,15 +34,13 @@ class RegionPanelV {
 	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view that will handle the result of the selection
 	@param {Element}  aladinLiteDivId
 	@param {Element} contextDivId
-	@param {function} sourceHandler - Handler of the shape drawn for the foreground
-	@param {function} backgroundHandler - Handler of the shape drawn for the background
+	@param {Array<{name: string, divId: string, color: string, isSource: boolean, handler: function}>} regionEditorHandlers - Handlers of the shapes drawn
 	@param {Frame} defaultRegion
 	 */
-    constructor(aladinLite_V, aladinLiteDivId, contextDivId, sourceHandler, backgroundHandler, defaultRegion) {
+    constructor(aladinLite_V, aladinLiteDivId, contextDivId, regionEditorHandlers, defaultRegion) {
         this.aladinLiteDivId = aladinLiteDivId;
         this.editorContainer = null;
-        this.sourceHandler = (sourceHandler == null) ? function() { alert("No foreground handler registered"); } : sourceHandler;
-        this.backgroundHandler = (backgroundHandler == null) ? function() { alert("No background handler registered"); } : backgroundHandler;
+        this.editorDescriptors = regionEditorHandlers;
         this.contextDivId = contextDivId;
         this.contextDiv = null;
         this.aladinLiteDiv = null;
@@ -50,7 +48,7 @@ class RegionPanelV {
         this.editionFrame = defaultRegion;
         
         this.sourceRegionEditor = null;
-        this.backgroundRegionEditor = null;
+        this.backgroundRegionEditors = [];
         
         this.regionEditors = []
     }
@@ -58,7 +56,7 @@ class RegionPanelV {
 		this.aladinLiteDiv = this.aladinLiteDiv == null ? $(`#${this.aladinLiteDivId}`) : this.aladinLiteDiv;
         this.contextDiv = this.contextDiv == null ? $(`#${this.contextDivId}`) : this.contextDiv;
         
-        if (!AladinLiteX_mVc.regionEditorInit) {
+        if (!AladinLiteX_mVc.regionEditorInit && this.editorDescriptors.length !== 0) {
             
             /***********************************************************
             ******** Header & container Region Editors creation ********
@@ -83,39 +81,30 @@ class RegionPanelV {
 			/*************************************************************
 			**************** Region Editor Registration ******************
 			**************************************************************/
+			console.log(this.editorDescriptors);
+			for (let regionEditor of this.editorDescriptors) {
+	            const editorDiv = $(`<div id="${regionEditor.divId}" class="region-editor"></div>`);
+	            this.panelBody.append(editorDiv);
+	            
+	            const newEditor = new RegionEditor_mVc(
+					regionEditor.name,
+					this.aladinLite_V,
+					this.aladinLiteDivId,
+					regionEditor.divId,
+					regionEditor.handler,
+					this.editionFrame,
+					this.panelHeaders,
+					regionEditor.color
+				)
+				if (regionEditor.isSource) {
+					this.sourceRegionEditor = newEditor;
+				} else {
+					editorDiv.css({"display": "none"});
+					this.backgroundRegionEditors.push(newEditor);
+				}
+				this.regionEditors.push(newEditor);				
+			}
 			
-			const sourceRegionEditorId = "source-region-editor"
-            const sourceRegionEditorDiv = $(`<div id="${sourceRegionEditorId}" class="region-editor"></div>`);
-            this.panelBody.append(sourceRegionEditorDiv);
-			this.sourceRegionEditor = new RegionEditor_mVc(
-				"Source region editor",
-				this.aladinLite_V,
-				this.aladinLiteDivId,
-				sourceRegionEditorId,
-				this.sourceHandler,
-				this.editionFrame,
-				this.panelHeaders,
-				"red"
-			);
-			
-			const backgroundRegionEditorId = "background-region-editor"
-            const backgroundRegionEditorDiv = $(`<div id="${backgroundRegionEditorId}" class="region-editor"></div>`);
-            backgroundRegionEditorDiv.css({"display": "none"});
-            this.panelBody.append(backgroundRegionEditorDiv);
-            
-			this.backgroundRegionEditor = new RegionEditor_mVc(
-				"Background region editor",
-				this.aladinLite_V,
-				this.aladinLiteDivId,
-				backgroundRegionEditorId,
-				this.backgroundHandler,
-				this.editionFrame,
-				this.panelHeaders,
-				"orange"
-			);
-			
-			
-			this.regionEditors.push(this.sourceRegionEditor,this.backgroundRegionEditor);
 			this.focusRegionEditor(this.sourceRegionEditor);
 			this.initHeaderTabBtnListeners();
 			this.manageButtonActivated();
@@ -171,17 +160,25 @@ class RegionPanelV {
 	
 	controlAcceptation() {
 		const sourceRegionEditor = this.sourceRegionEditor;
-        const backgroundRegionEditor = this.backgroundRegionEditor;
+        const backgroundRegionEditors = this.backgroundRegionEditors;
         
 		this.sourceRegionEditor.setBtn.on('click', (event) => {
-            sourceRegionEditor.controller.invokeHandler(true,backgroundRegionEditor.controller.data);
-			console.log(sourceRegionEditor.controller.data,backgroundRegionEditor.controller.data);
+			let data_array = [];
+			for (const regionEditor of backgroundRegionEditors) {
+				if (regionEditor.controller.data) {
+					data_array.push(regionEditor.controller.data);
+				}
+			}
+            sourceRegionEditor.controller.invokeHandler(true,data_array);
+			console.log(sourceRegionEditor.controller.data,data_array);
             event.stopPropagation();
         });
-		this.backgroundRegionEditor.setBtn.on('click', (event) => {
-            backgroundRegionEditor.controller.invokeHandler(true);
-            event.stopPropagation();
-        });
+        for (const regionEditor of this.backgroundRegionEditors) {	
+			regionEditor.setBtn.on('click', (event) => {
+	            regionEditor.controller.invokeHandler(true);
+	            event.stopPropagation();
+	        });
+		}
 	}
 } 
 var browseSaved = null;
