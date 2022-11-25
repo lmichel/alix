@@ -289,6 +289,7 @@ class RegionEditor_mvC {
 					    userAction: userAction,
 					    region: {
 					        format: "array2dim",
+					        color: this.color,
 					        points: this.polygonModel.skyPositions
 					    }
 					}
@@ -310,6 +311,7 @@ class RegionEditor_mvC {
 				    userAction: userAction,
 				    region: {
 				        format: "cone",
+				        color: this.color,
 				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
 				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
 				        radius: this.coneModel.skyConeDescriptor.radius
