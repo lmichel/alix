@@ -64,6 +64,9 @@ class RegionEditor_mVc {
         
         this.color = color;
         this.clientHandler = (handler == null) ? function() { alert("No client handler registered"); } : handler;
+        
+        this.isEditMode = false;
+        
         this.init();
     }
     init() {
@@ -223,8 +226,11 @@ class RegionEditor_mVc {
         this.setBtn.css(styleToApply);
 
         this.setBtn.on('click', function(event) {
-            that.setBrowseMode();
+			if(!that.isEditMode) {			
+				that.controller.store();
+			}
             that.controller.get();
+            that.setBrowseMode();
             that.aladinLite_V.reabledButton();
             if ($("#region")[0])
                 $("#region")[0].disabled = false;
@@ -429,6 +435,7 @@ class RegionEditor_mVc {
     @description Method that let the user enter browse mode. In this mode, the user do not manipulate the shape.
      */
     setBrowseMode() {
+		this.isEditMode = false;
         this.editBtn.removeAttr('disabled');
         this.browseBtn.attr('disabled', 'disabled');
         this.deleteBtn.attr('disabled', 'disabled');
@@ -440,6 +447,7 @@ class RegionEditor_mVc {
     @description Method to let the user enter edition mode. In this mode, the user manipulates the nodes.
      */
     setEditMode() {
+		this.isEditMode = true;
         this.editBtn.attr('disabled', 'disabled');
         this.browseBtn.removeAttr('disabled');
         this.deleteBtn.removeAttr('disabled');
