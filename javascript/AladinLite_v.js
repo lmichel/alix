@@ -1107,7 +1107,7 @@ var AladinLiteX_mVc = function(){
 	}
     var checkBrowseSaved = function(){
     	if(browseSaved == false){
-			var a = confirm("Do you want to save your polygon?") ;
+			var a = confirm("Do you want to save your shape?") ;
 			if(a == true){
 				$("#regionEditor_a").trigger("click");
 			}else{
