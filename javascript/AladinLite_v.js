@@ -192,8 +192,7 @@ var AladinLiteX_mVc = function(){
 				this,
 				parentDivId,
 				'panel_region',
-				params.scRegionEditorHandler,
-				params.bgRegionEditorHandler,
+				params.regionEditorHandlers,
 				params.defaultView.defaultRegion
 			)
 		}
