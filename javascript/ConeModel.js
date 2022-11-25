@@ -217,8 +217,9 @@ class ConeModel {
          */
         if (this.centerNode && Object.keys(this.centerNode).length == 0 && this.skyConeDescriptor && this.skyConeDescriptor.length > 0)
             return;
-
+            
         this.skyConeDescriptor = this.buildSkyConeDescriptor(this.centerNode,this.radiusNode);
+        //this.testSuccessiveConversion(this.centerNode.cx,this.centerNode.cy, 20);
 
         if (this.overlay === null) {
             this.overlay = A.graphicOverlay({ color: this.color });
@@ -234,6 +235,25 @@ class ConeModel {
 			)]
 		);
     }
+    
+    /**
+    @description Small function to simulate the shift of the polygon
+     */
+    testSuccessiveConversion(pixX,pixY, iterations) {
+		let pixObject = {cx: pixX, cy: pixY};
+		let skyObject = {};
+		console.log("============== TESTS BEGINS ==============");
+		for (let  i = 0; i < iterations; ++i) {
+			console.log("pixObject : ",pixObject);
+			let skyToConvert = this.aladinView.pix2world(pixObject.cx, pixObject.cy);
+			skyObject = {cx: skyToConvert[0], cy: skyToConvert[1]};
+			
+			console.log("skyObject : ", skyObject);
+			let pixToConvert = this.aladinView.world2pix(skyObject.cx, skyObject.cy);
+			pixObject = {cx: pixToConvert[0], cy: pixToConvert[1]};
+		}
+		console.log("================ END TESTS ================");
+	}
     /**
     @description Function to erase the polygon from drawCanvas 
      */
@@ -373,15 +393,19 @@ class ConeModel {
 				skyRadiusNode[1]
 			);
 			console.log("After world2pix: ",convertedCenterNode,convertedRadiusNode);
-			if (
-				convertedCenterNode[0] - this.centerNode.cx > 1 ||
-				convertedCenterNode[1] - this.centerNode.cy > 1 ||
-				convertedRadiusNode[0] - this.radiusNode.cx > 1 ||
-				convertedRadiusNode[1] - this.radiusNode.cy > 1
-			) {				
-				this.centerNode = {cx: convertedCenterNode[0], cy: convertedCenterNode[1]};
-				this.radiusNode = {cx: convertedRadiusNode[0], cy:convertedRadiusNode[1]};
-			}
+						
+			/** 
+			@tofix
+			/!\ Adding +1 to the coordinates is an awful solution but it is the simplest
+				one that we can implement for now.
+				AladinLite make a floor operation to convert the world coordinate into 
+				integer/pixel coordinates. It should at least use a round function
+				to avoid the continuous shift.
+				The best solution would be to have a world2float function in aladin instead.
+				In this case we could avoid these shifts and keep a constant value.
+			*/
+			this.centerNode = {cx: convertedCenterNode[0]+1, cy: convertedCenterNode[1]+1};
+			this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
 			console.log("Call redraw");
             this.Redraw();
         }
