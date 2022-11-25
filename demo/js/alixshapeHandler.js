@@ -74,19 +74,33 @@ var masTest = {
 				}
 			}
 		},
-		scRegionEditorHandler: function(data) {
-			if( data.userAction ) {
-				console.log("hello I'm the new handler");
-				//AladinLiteX_mVc.storePolygon(data.region);
-				alert("hello I'm the new handler\n" + JSON.stringify(data));
+		regionEditorHandlers: [
+			{
+				name: "Source Region Editor",
+				divId: "source-region-editor",
+				color: "red",
+				isSource:true,
+				handler: function(data) {
+					if( data.userAction ) {
+						console.log("hello I'm the new handler");
+						//AladinLiteX_mVc.storePolygon(data.region);
+						alert("hello I'm the new handler\n" + JSON.stringify(data));
+					}
+				},
+			},
+			{
+				name: "Background Region Editor",
+				divId: "background-region-editor",
+				color: "orange",
+				isSource:false,
+				handler: function(data) {
+					if( data.userAction ) {
+						console.log("hello I'm the new handler for background");
+						//alert(JSON.stringify(data));
+					}
+				},
 			}
-		},
-		bgRegionEditorHandler: function(data) {
-			if( data.userAction ) {
-				console.log("hello I'm the new handler for background");
-				//alert(JSON.stringify(data));
-			}
-		}
+		]
 };
 
 configureALIX(masTest);
