@@ -150,6 +150,7 @@ class RegionPanelV {
 				"canvas-hidden",(event, editors=this.regionEditors) => {
 					for (const editor of editors) {
 						if (editor !== regionEditor) {
+							console.log(editor,"unmuted");
 							editor.unmuteRegionEditor();
 						}
 					}

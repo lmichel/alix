@@ -185,7 +185,7 @@ class RegionEditor_mVc {
         this.browseBtn.attr('disabled', 'disabled');
         this.browseBtn.click(function(event) {
             if (!that.controller.isPolygonClosed()) {
-                that.controller.CleanPoligon();
+                that.controller.CleanCanvas();
             } else {
                 that.controller.get();
             }
@@ -304,11 +304,18 @@ class RegionEditor_mVc {
 	}
 	
 	hideEditor() {
+        this.setBrowseMode();
 		this.headerButton.css({
 			"border-bottom": "#545244 solid 2px",
 			"background-color": "rgba(150,150,150,.5)"
 		});
 		this.contextDiv.css({"display": "none"});
+		if (!this.controller.isPolygonClosed()) {
+            this.controller.CleanCanvas();
+        } else {
+            this.controller.get();
+        }
+        this.emitCanvasHideMessage();
 	}
     
     /**
@@ -317,7 +324,7 @@ class RegionEditor_mVc {
     clean() {
         //can be called from another button before the editor has been init 
         if (this.controller) {
-            this.controller.CleanPoligon();
+            this.controller.CleanCanvas();
             this.setEditMode();
             this.controller.DeleteOverlay();
             this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
@@ -387,7 +394,7 @@ class RegionEditor_mVc {
          * Set the region passed by the client if it exists
          */
         this.points = points;
-        //this.controller.CleanPoligon();
+        //this.controller.CleanCanvas();
         if (this.points) {
             var pts = [];
             /*
@@ -453,7 +460,7 @@ class RegionEditor_mVc {
         this.deleteBtn.removeAttr('disabled');
         this.lineCanvas.show();
         this.drawCanvas.show();
-        this.emitCanvasShownMessage()
+        this.emitCanvasShownMessage();
     }
     /**
     @todo
