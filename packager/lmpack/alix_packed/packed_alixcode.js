@@ -1,178 +1,3 @@
-/**
- * @preserve LICENSE
- * 
- * Copyright (c) 2017 Laurent Michel
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
- * IN THE SOFTWARE. 
-**/
-/*View.prototype.addOverlay = function(overlay) {
-        this.overlays=[];
-        this.allOverlayLayers=[];
-        overlay.name = this.makeUniqLayerName(overlay.name);
-        this.overlays.push(overlay);
-        this.allOverlayLayers.push(overlay);
-        overlay.setView(this);
-    };*/
-cds.Catalog.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
-    if (show) {
-      this.show();
-    }
-    else {
-      this.hide();
-    }
-    var self = this;
-    if (stepNb<totalNbSteps) {
-      setTimeout(function() {self._doMakeFlash(stepNb+1, totalNbSteps, !show, timeDelay);}, timeDelay);
-    }
-};
-
-cds.Catalog.prototype.makeFlash = function() {
-    this._doMakeFlash(1, 2*5, false, 200);
-};
-
-// function called when a source is clicked. Called by the View object
-cds.Source.prototype.actionClicked = function() {
-    if (this.catalog && this.catalog.onClick) {
-    	AladinLiteX_mVc.setLastSelectedPosition(this.catalog.name,this.ra, this.dec)
-        var view = this.catalog.view;
-        if (this.catalog.onClick=='showTable') {
-            view.aladin.measurementTable.showMeasurement(this);
-            this.select();
-        }
-        else if (this.catalog.onClick=='showPopup') {
-            view.popup.setTitle('<br><br>');
-            var m = '<div class="aladin-marker-measurement">';
-            m += '<table>';
-            for (var key in this.data) {
-                m += '<tr><td>' + key + '</td><td>' + this.data[key] + '</td></tr>';
-            }
-            m += '</table>';
-            m += '</div>';
-            view.popup.setText(m);
-            view.popup.setSource(this);
-            view.popup.show();
-        }
-        else if (typeof this.catalog.onClick === 'function' ) {
-            this.catalog.onClick(this);
-            view.lastClickedObject = this;
-            this.select();
-
-        }
-    }
-};
-
-//The sources selected will be unselected when the empty part of aladin clicked.But the sources selected keep selected when we check one of the related sources,
-MeasurementTable.prototype.hide = function() {
-    this.divEl.hide();
-    $("#SourceDiv").css("display","none");
-    AladinLiteX_mVc.deleteSourceAuto();
-    AladinLiteX_mVc.deleteLastSelectedPosition();
-    $("#ACDS").css("color","#888a85");
-};
-//To clean the target when we click the empty part of aladin
-cds.Source.prototype.actionOtherObjectClicked = function() {
-    if (this.catalog && this.catalog.onClick) {
-        this.deselect();
-        $("#SourceDiv").css("display","none");
-        AladinLiteX_mVc.cleanCatalog("Target");
-        AladinLiteX_mVc.deleteLastSelectedPosition();
-        $("#ACDS").css("color","#888a85");
-	}
-};
-
-
-ProgressiveCat.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
-    if (show) {
-      this.show();
-    }
-    else {
-      this.hide();
-    }
-    var self = this;
-    if (stepNb<totalNbSteps) {
-      setTimeout(function() {self._doMakeFlash(stepNb+1, totalNbSteps, !show, timeDelay);}, timeDelay);
-    }
-};
-
-ProgressiveCat.prototype.makeFlash = function() {
-    this._doMakeFlash(1, 2*5, false, 200);
-};
-/**
- * Limit he number of sources at 999
- */
-URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
-    if (target && (typeof target  === "object")) {
-        if ('ra' in target && 'dec' in target) {
-            var coo = new Coo(target.ra, target.dec, 7);
-            target = coo.format('s');
-        }
-    }
-    return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
-};
-
-/*Aladin.prototype.increaseZoom = function(step) {
-    if (!step) {
-        step = 5;
-    }
-	this.view.setZoomLevel(this.view.zoomLevel+step);
-	
-};
-
-Aladin.prototype.decreaseZoom = function(step) {
-    if (!step) {
-        step = 5;
-    }
-	this.view.setZoomLevel(this.view.zoomLevel-step);
-	SimbadCatalog.displayCatalogFiltered();
-};*/
-
-var Location = (function() {
-    // constructor
-    Location = function(locationDiv) {
-    		this.$div = $(locationDiv);
-    	};
-	
-	Location.prototype.update = function(lon, lat, cooFrame, isViewCenterPosition) {
-        isViewCenterPosition = (isViewCenterPosition && isViewCenterPosition===true) || false;
-		var coo = new Coo(lon, lat, 7);
-		var updateDiv = $("#aladin-lite-div-target")
-		if (cooFrame==CooFrameEnum.J2000) {
-            this.$div.html(coo.format('s/'));
-            updateDiv.val(coo.format('s/'));
-        }
-		else if (cooFrame==CooFrameEnum.J2000d) {
-            this.$div.html(coo.format('d/'));
-            updateDiv.val(coo.format('d/'));
-        }
-        else {
-            this.$div.html(coo.format('d/'));
-            updateDiv.val(coo.format('d/'));
-        }
-        this.$div.toggleClass('aladin-reticleColor', isViewCenterPosition);
-        updateDiv.toggleClass('aladin-reticleColor', isViewCenterPosition);
-	};
-	
-	return Location;
-})();
-	
-
-;console.log('=============== >  AladinUpdate.js ');
 //take out from jsStuff
 
 let Alix_Modalinfo = function(){
@@ -2435,8 +2260,10 @@ function Segment(polygoneNodes /*canvas*/)
 
 var BasicGeometry = function () {
     /**
-     * Nodes are 2 arrays with 2 elements
-     * Returns a distance ranging from 0 to 180deg
+     * @description Returns a distance ranging from 0 to 180deg
+     * @param {Array<number,number>} node1 Nodes are arrays with 2 elements
+     * @param {Array<number,number>} node2 Nodes are arrays with 2 elements
+     * @returns {number} The distance between node1 & node2
      */
     function distanceBetweenNodes(node1, node2){
     	var coo1 = new Coo(node1[0], node1[1]);
@@ -2444,9 +2271,9 @@ var BasicGeometry = function () {
     	return coo1.distance(coo2)
     }
     /**
-     * Return the geometric definition of the view enclosing the skyPositions polygon
-     * skyPositions: Array of points: [[ra,dec], ...]
-     * return : {center: {ra: .., dec: ..}, size: ..} size is in deg
+     * @description Return the geometric definition of the view enclosing the skyPositions polygon
+     * @param {Array<Array<number,number>>} skyPositions Array of points: [[ra,dec], ...]
+     * @returns {{center: {ra: number, dec: number}, size: number}} size is in deg
      */
     function getEnclosingView(skyPositions) {
 		var maxSize=0;
@@ -3231,6 +3058,13 @@ f * @preserve LICENSE
 //var t = require('../javascript/AladinLiteView.js');
 //var CircularJSON = import 'circular-json';
 
+/**
+@description Function to convert the right ascension and the declination of a point
+into a sexadecimal string.
+@param {Number} ra - The right ascencion of the point
+@param {Number} dec - The declination of the point
+@return {String} The string combining the right ascension and the declination
+ */
 var getSexadecimalString = function(ra, dec){
 	var strlon = Numbers.toSexagesimal(ra/15, 8, false);
     var strlat = Numbers.toSexagesimal(dec, 7, false);
@@ -3243,6 +3077,9 @@ var alix_height =  $("#aladin-lite-div").height() ;
 var WaitingPanel = function(){
 	var callers = {};
 
+	/**
+	@description Method to show the AladinLite interface
+	 */
 	var show = function(label){
 		$("#fetchingMessage").html("Fetching data from " + label);
 		$("#waiting_interface").css("height","100%");
@@ -3290,6 +3127,7 @@ var WaitingPanel = function(){
 }();
 
 var AladinLiteX_mVc = function(){
+	//Reference to the AladinLiteX_mVc instance to be used into the event listeners
 	var that = this;
 	var controllers ;
 	var controller;
@@ -3342,7 +3180,8 @@ var AladinLiteX_mVc = function(){
 	      }
 	      catalogSelector: {
 	      }
-	  	}
+	  	},
+	  	regionEditorHandler: 
 	   }
 	*/
 	var init = function(params){
@@ -3350,14 +3189,12 @@ var AladinLiteX_mVc = function(){
 		 * Set ids for sub panels
 		 */
 		parentDivId = params.parentDivId;
-		aladinDivId = params.parentDivId + "-main";
-		menuDivId   = params.parentDivId + "-menu";
-		contextDivId = params.parentDivId + "-context";
-		targetDivId  = params.parentDivId + "-target";
-		selectDivId  = params.parentDivId + "-select";
-		//showAssociated = params.actions.showAssociated;
+		aladinDivId = `${params.parentDivId}-main`;
+		menuDivId   = `${params.parentDivId}-menu`;
+		contextDivId = `${params.parentDivId}-context`;
+		targetDivId  = `${params.parentDivId}-target`;
+		selectDivId  = `${params.parentDivId}-select`;
 		var showAssociated = params.showAssociated;
-		//showPanel = params.actions.showPanel;
 		var showPanel = params.showPanel;
 		
 		if(params.masterResource != undefined){
@@ -3374,12 +3211,22 @@ var AladinLiteX_mVc = function(){
 			params.controllers.historic.model = new Historique_Mvc('panel_history', this);
 		}
 		if(params.controllers.regionEditor != undefined || (params.defaultView != undefined && params.defaultView.region != undefined)){
-			params.controllers.regionEditor.view = new RegionEditor_mVc(this
+			/****************** @WARNING temporary comment 
+			params.controllers.regionEditor.view = new RegionEditor_mVc(
+					this
 					, parentDivId
 					,'panel_region'//, contextDivId
-					, function(data){ if( data.userAction ){ AladinLiteX_mVc.storePolygon(data.region) ;alert(JSON.stringify(data));}}
+					, params.regionEditorHandler
 					//, aladinLiteView.points
-					, params.defaultView.defaultRegion); 
+					, params.defaultView.defaultRegion);
+			*/
+			params.controllers.regionEditor.view = new RegionPanelV(
+				this,
+				parentDivId,
+				'panel_region',
+				params.regionEditorHandlers,
+				params.defaultView.defaultRegion
+			)
 		}
 		if(params.controllers.hipsSelector != undefined){
 			params.controllers.hipsSelector.model = new HipsSelector_Mvc(parentDivId, this);
@@ -3399,7 +3246,7 @@ var AladinLiteX_mVc = function(){
 	var fadeOutAuto = function(){
 		$("#minus").trigger("click");
 		//Once a source is selected, all other sources fade out automatically. 
-		}
+	}
 	  // maximize control
 	var deleteSourceAuto = function(){
 		//When we click the part without source, we deselect the source selected automatically. 
@@ -3455,66 +3302,216 @@ var AladinLiteX_mVc = function(){
 		VizierCatalogue.SourceDataMove();
 		
 		var newMenu = $('#newMenu')	;
-		var button_locate = '<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" ><i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i></button>'
-		var button_center = '<button id="button_center" class="alix_btn alix_btn-circle alix_btn-red" title ="back to center" onclick="AladinLiteX_mVc.returnCenter();"><i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i></button>'
-		var button_bookmark = '<button id="button_bookmark" class="alix_btn alix_btn-circle alix_btn-orange" title ="save a bookmark" onclick="AladinLiteX_mVc.bookMark();"><i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i></button>'
-		var button_history  = '<button id="button_history" class="alix_btn alix_btn-circle alix_btn-yellow" title ="history of bookmark" ><i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i></button>'
-		var button_region = '<button id="button_region" class="alix_btn alix_btn-circle alix_btn-green" title ="region editor" onclick="AladinLiteX_mVc.regionEditor();" ><i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i></button>'
-		var button_image = '<button id="button_image" class="alix_btn alix_btn-circle alix_btn-blue" title ="search an image" onclick="AladinLiteX_mVc.showColorMap();" ><i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i></button>'
-		var button_catalog = '<button id="button_catalog" class="alix_btn alix_btn-circle alix_btn-purple" title ="search a catalog" ><i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i></button>'
+		var button_locate = 
+			`<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" >
+				<i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i>
+			</button>`
+		var button_center = 
+			`<button 
+				id="button_center"
+				class="alix_btn alix_btn-circle alix_btn-red"
+				title ="back to center"
+				onclick="AladinLiteX_mVc.returnCenter();"
+			>
+				<i id="" class="glyphicon glyphicon-screenshot " style="font-size:18px;"></i>
+			</button>`
+		var button_bookmark = 
+			`<button 
+				id="button_bookmark" 
+				class="alix_btn alix_btn-circle alix_btn-orange"
+				title ="save a bookmark"
+				onclick="AladinLiteX_mVc.bookMark();"
+			>
+				<i id="" class="glyphicon glyphicon-heart " style="font-size:18px;"></i>
+			</button>`
+		var button_history  = 
+			`<button 
+				id="button_history"
+				class="alix_btn alix_btn-circle alix_btn-yellow"
+				title ="history of bookmark"
+			>
+				<i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i>
+			</button>`
+		var button_region = 
+			`<button
+				id="button_region"
+				class="alix_btn alix_btn-circle alix_btn-green"
+				title ="region editor"
+				onclick="AladinLiteX_mVc.regionEditor();"
+			>
+				<i id="" class="glyphicon glyphicon-edit" style="font-size:18px;"></i>
+			</button>`
+		var button_image = 
+		`<button 
+			id="button_image"
+			class="alix_btn alix_btn-circle alix_btn-blue"
+			title ="search an image"
+			onclick="AladinLiteX_mVc.showColorMap();"
+		>
+			<i id="" class="glyphicon glyphicon-picture" style="font-size:18px;"></i>
+		</button>`
+		var button_catalog = 
+			`<button 
+				id="button_catalog"
+				class="alix_btn alix_btn-circle alix_btn-purple"
+				title ="search a catalog"
+			>
+				<i id="" class="glyphicon glyphicon-list " style="font-size:18px;"></i>
+			</button>`
 		
 			//<span id="search" title="search" class="alix_search glyphicon glyphicon-search" onclick="AladinLiteX_mVc.searchPosition();"></span>
 			
 		var panel_locate = 
-			'<div style="z-index:100"><input id="' + targetDivId + '" placeholder="target" class="alix_target" onfocus="this.select()">'
-			+'<select  id ="' + selectDivId + '" class="alix_select">'
-			//+'<option id="select">--select--</option>'
-			+'<option id="'+defaultView.field.position+'">'+defaultView.field.position+'</option>'
-			+'</select>'
-			//+'<input id="MyButton" style="margin-left:500px;margin-top:500px" type=button color="red" z-index=2000 display=true>'
-			+'<button id="targetNote" title="Note" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:absolute;left:392px;top:8px;" ><i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i></button></div>'
-			//+'</div>'
-		var panel_history = '<div id="panel_history" class="alix_right_panels">'
-			+'</div>'
-		var panel_region = '<div id="panel_region" class="alix_right_panels">'
-			+'</div>'
-		var panel_image = '<div id="panel_image" class="alix_right_panels">'
-		    +'<p class="alix_titlle_image ">Image'
-		    +'</p>'
-		    +'<input type="text" id="'+ maskId + '"  placeholder="Survey" size=11 class=" alix_img_explorer"></input>'
-		    +'<select id="status-select" class ="alix_selector_hips "><option selected="selected">CDS/P/DSS2/color</option></select>'
-		    +'<button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">Detail</button>'
-			+'<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">'
-			+'<b>Color Map : </b>'
-			+'<select class="aladin-cmSelection"></select><button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">Reverse</button></div>'
-			+'<div id="panel_image_detail"></div>'
-			+'</div>'
-		var panel_catalog = '<div id="panel_catalog" class="alix_right_panels">'
-			    +'<div class="alix_catalog_panel" >'
-			    +'<b class="alix_titlle_catalog ">Catalogs</b>' 
-			    +'<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">-</div></b>'
-			    +'<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>'
-			    +'<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">+</div>'
-			    +'<div></br><b id="XMM" title="Show/hide master sources" class="alix_XMM_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayDataXml();">'+ XMM +'</b>'
-			    + descriptionXMM()
-			    + configurationXMM()
-			    + hideXMMFlash()
-			    //XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not. 
-			    +'</div></br>'
-			    +'<div><b id="ACDS" class = "alix_acds" >'+ACDS+'  </b>'
-			    +'<div style = ""><b id="Simbad" title="Show/hide Simbad sources" class="alix_simbad_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displaySimbadCatalog();">Simbad</b>'
-			    +'<i id="btn-Simbad-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"></i>'
-			    +'<i id="btn-Simbad-flash" title = "flash" class="  glyphicon glyphicon-flash"style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.SimbadFlash();"></i>'
-			    +'<b><span title="Click to activate the source type selector" id="SearchTypeNot"  style="color: rgb(136, 138, 133);">all</span> <input type="text" id="SearchType" class=" alix_cataloge_explorer " placeholder="Search Type" style="display:none; width: 120px;"></b></div>'
-			    +'<div style = ""><b id="NED" title="Show/hide Ned sources" class="alix_ned_in_menu  alix_datahelp" style="cursor: pointer;" onclick="AladinLiteX_mVc.displayNedCatalog();">NED</b>'
-			    +'<i id="btn-NED-configure" title="configure" class="glyphicon glyphicon-cog alix_btn-operate-catalog" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"></i>'
-			    +'<i id="btn-NED-flash" title = "flash" class="  glyphicon glyphicon-flash" style="color:#888a85 ;cursor: pointer;" onclick="AladinLiteX_mVc.NEDFlash();"></i></div><br>'
-			    +'<div><input type="text" id="'+ catalogeId + '"  placeholder="Find other Catalog" size=11 class=" alix_cataloge_explorer "></input>'
-			    +'<select id="select_vizier" class="alix_selector_vizier "><option selected="select">--select--</option></select>'
-			    +'<div id="vizier" class="alix_vizier">'
-			    +'<ul id="vizier_list"></ul></div></div>'
-				+'<div id="panel_catalog_detail"></div>'
-			+'</div>'
+			`<div style="z-index:100"><input id="${targetDivId}" placeholder="target" class="alix_target" onfocus="this.select()">
+				<select  id ="${selectDivId}" class="alix_select">
+					<option id="${defaultView.field.position}">${defaultView.field.position}</option>
+				</select>
+				<button id="targetNote" title="Note" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:absolute;left:392px;top:8px;" >
+					<i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i>
+				</button>
+			</div>`
+		var panel_history = '<div id="panel_history" class="alix_right_panels"></div>'
+		var panel_region = '<div id="panel_region" class="alix_right_panels"></div>'
+		var panel_image = 
+			`<div id="panel_image" class="alix_right_panels">
+			    <p class="alix_titlle_image ">
+			    	Image
+			    </p>
+			    <input type="text" id="${maskId}"  placeholder="Survey" size=11 class=" alix_img_explorer"></input>
+			    <select id="status-select" class ="alix_selector_hips ">
+			    	<option selected="selected">
+			    		CDS/P/DSS2/color
+			    	</option>
+			    </select>
+			    <button id="detail"  type="detail" class=" alix_button_detail" onclick="AladinLiteX_mVc.showDetailByID();">
+			    	Detail
+			    </button>
+				<div id = "color_map_box" class="alix_colorMapBox" style = "z-index: 20;position: absolute; width: auto; height: 50px; color: black;">
+					<b>Color Map : </b>
+					<select class="aladin-cmSelection"></select>
+					<button class="aladin-btn aladin-btn-small aladin-reverseCm" type="button">
+						Reverse
+					</button>
+				</div>
+				<div id="panel_image_detail"></div>
+			</div>`
+			
+		var panel_catalog = 
+			`<div id="panel_catalog" class="alix_right_panels">
+			    <div class="alix_catalog_panel" >
+			    	<b class="alix_titlle_catalog ">
+			    		Catalogs
+			    	</b>
+			    	<div id="minus" style="cursor: pointer;" class="alix_minus  " title = "Fade out">
+			    		-
+			    	</div></b>
+			    	<i id="fade" title = "fade" class=" glyphicon glyphicon-lamp"></i>
+			    	<div id="plus" style="cursor: pointer;" class=" alix_plus  " title = "Fade in">
+			    		+
+			    	</div>
+			    	<div>
+			    		</br>
+			    		<b  id="XMM" title="Show/hide master sources"
+			    			class="alix_XMM_in_menu alix_datahelp" 
+			    			style="cursor: pointer;" 
+			    			onclick="AladinLiteX_mVc.displayDataXml();"
+			    		>
+			    			${XMM}
+			    		</b>
+					    ${descriptionXMM()}
+					    ${configurationXMM()}
+					    ${hideXMMFlash()}
+			    		<!--XMM sources can be configured in the configuration which decide if the buttons of '3XMM catalog' exists or not-->
+			    	</div>
+			    	</br>
+			    	<div>
+			    		<b id="ACDS" class = "alix_acds" >
+			    			${ACDS}  
+			    		</b>'
+			    		<div style = "">
+			    			<b id="Simbad" 
+				    			title="Show/hide Simbad sources" 
+				    			class="alix_simbad_in_menu alix_datahelp" 
+				    			style="cursor: pointer;" 
+				    			onclick="AladinLiteX_mVc.displaySimbadCatalog();"
+			    			>
+			    			Simbad
+			    		</b>
+			    		<i id="btn-Simbad-configure"
+				    		title="configure" 
+				    		class="glyphicon 
+				    		glyphicon-cog alix_btn-operate-catalog" 
+				    		style="color:#888a85 ;cursor: pointer;" 
+				    		onclick="AladinLiteX_mVc.configureCatalog(\'Simbad\',this.style.color)"
+			    		>
+			    		</i>
+			    		<i id="btn-Simbad-flash"
+				    		title = "flash" 
+				    		class="glyphicon glyphicon-flash"
+				    		style="color:#888a85 ;cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.SimbadFlash();"
+			    		>
+			    		</i>
+			    		<b>
+			    			<span title="Click to activate the source type selector" 
+				    			id="SearchTypeNot"
+				    			style="color: rgb(136, 138, 133);"
+			    			>
+			    				all
+			    			</span>
+			    			<input type="text"
+				    			id="SearchType"
+				    			class="alix_cataloge_explorer "
+				    			placeholder="Search Type"
+				    			style="display:none; width: 120px;"
+			    			>
+			    		</b>
+			    	</div>
+			    	<div style = "">
+			    		<b id="NED" 
+				    		title="Show/hide Ned sources" 
+				    		class="alix_ned_in_menu  alix_datahelp"
+				    		style="cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.displayNedCatalog();"
+			    		>
+			    			NED
+			    		</b>
+			    		<i id="btn-NED-configure"
+				    		title="configure"
+				    		class="glyphicon glyphicon-cog alix_btn-operate-catalog"
+				    		style="color:#888a85 ;cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.configureCatalog(\'NED\',this.style.color)"
+			    		>
+			    		</i>
+			    		<i id="btn-NED-flash"
+				    		title = "flash"
+				    		class="glyphicon glyphicon-flash"
+				    		style="color:#888a85 ;cursor: pointer;"
+				    		onclick="AladinLiteX_mVc.NEDFlash();"
+			    		>
+			    		</i>
+		    		</div>
+		    		<br>
+			    	<div>
+			    		<input type="text" 
+				    		id="${catalogeId}"
+				    		placeholder="Find other Catalog"
+				    		size=11
+				    		class=" alix_cataloge_explorer "
+			    		>
+			    		</input>
+			    		<select id="select_vizier" class="alix_selector_vizier ">
+			    			<option selected="select">
+			    				--select--
+			    			</option>
+			    		</select>
+			    		<div id="vizier" class="alix_vizier">
+			    			<ul id="vizier_list">
+			    			</ul>
+			    		</div>
+			    	</div>
+					<div id="panel_catalog_detail"></div>
+				</div>`
 			
 			
 			parentDiv.append(panel_locate); // replace the orignial position block by the updated one
@@ -3855,7 +3852,7 @@ var AladinLiteX_mVc = function(){
 	var setDefaultSurveyForPosition = function(ra, dec){
 		var fil =  aladin.getFov();
 
-		var baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+		var baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 			+ ra + "&DEC=" + dec 
 		+ "&SR=" + fil[0] 
 		+ "&fmt=json&get=record&casesensitive=false";
@@ -4142,7 +4139,7 @@ var AladinLiteX_mVc = function(){
 	}
     var checkBrowseSaved = function(){
     	if(browseSaved == false){
-			var a = confirm("Do you want to save your polygon?") ;
+			var a = confirm("Do you want to save your shape?") ;
 			if(a == true){
 				$("#regionEditor_a").trigger("click");
 			}else{
@@ -4166,12 +4163,12 @@ var AladinLiteX_mVc = function(){
 				contextDiv.animate({height:0},"fast");
 				 historySelected = false;
 				 regionSelected = false;
-		}else {
-			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
-			contextDiv.css("border-width", "0.2px");
-			 historySelected = true;
-			 regionSelected = false;
-		}
+			} else {
+				contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
+				contextDiv.css("border-width", "0.2px");
+				 historySelected = true;
+				 regionSelected = false;
+			}
 		}
 		//event.stopPropagation();
 	}
@@ -4190,14 +4187,14 @@ var AladinLiteX_mVc = function(){
         displaySelectedHips(aladinLiteView.survey.ID);
         selectHipsDiv.val(aladinLiteView.survey.ID);
         if(aladinLiteView.region != null){
-        if(!regionEditorInit){
-        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
-        	controller.editRegion();
-    			}
-        	var points = {type: null, value: []};
-        	points.type = aladinLiteView.region.format;
-        	points.value = aladinLiteView.region.points;
-        	controller.setInitialValue(points);
+	        if(!regionEditorInit){
+	        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
+	        	controller.editRegion();
+	    	}
+	        	var points = {type: null, value: []};
+	        	points.type = aladinLiteView.region.format;
+	        	points.value = aladinLiteView.region.points;
+	        	controller.setInitialValue(points);
         }
         
         //event.stopPropagation();
@@ -4453,9 +4450,12 @@ var AladinLiteX_mVc = function(){
 	 * utiliser quand clique sur button browse , pour reable bookMark et history
 	 */
 	var reabledButton = function(){
-		document.getElementById("bookMark").disabled=false;
-		document.getElementById("history").disabled=false;
-		document.getElementById("center").disabled=false;
+		if($("#bookMark")[0])
+			$("#bookMark")[0].disabled=false;
+		if($("history")[0])
+			$("#history")[0].disabled=false;
+		if($("#center")[0])
+			$("#center")[0].disabled=false;
 	}
 	
 	/**
@@ -5687,9 +5687,9 @@ AladinLite_mvC.prototype = {
 				return null;
 		},
 		
-		setPoligon: function(region){
+		setPolygon: function(region){
 			if(this.modules.regionEditorView != undefined)
-				return this.modules.regionEditorView.setPoligon(region);
+				return this.modules.regionEditorView.setPolygon(region);
 			else
 				return null;
 		},
@@ -6132,324 +6132,512 @@ Historique_mVc.prototype = {
 /**
  * Manager of the view of the region editor
  * 
- * Author Gerardo Irvin Campos yah
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
  */ 
 
-function RegionEditor_mVc(aladinLite_V, parentDivId, contextDivId, handler,/* points,*/ defaultRegion){
-	this.parentDivId = parentDivId;
-	this.drawCanvas = null; // canvas where the polygon is drawn
-	this.drawContext = null;
-	this.lineCanvas = null; // canvas where the moving lines are drawn
-	this.lineContext = null;
-	this.controller = null;
-	this.points = null // Initial values
-	this.clientHandler = (handler == null) ? function(){alert("No client handler registered");}: handler;
-	this.contextDivId = contextDivId;
-	this.contextDiv  = null;
-	this.sousContextDiv = null;
-	this.parentDiv  = null;
-	this.aladinLite_V = aladinLite_V;
-	//this.defaultRegion = defaultRegion;
-	this.editionFrame = defaultRegion;
+class RegionEditor_mVc {
+	/**
+	@brief View of the RegionEditor service
+	@param {string} regionEditorName - The name of the region editor
+	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view that will handle the result of the selection
+	@param {Element}  aladinLiteDivId
+	@param {Element} contextDivId
+	@param {function} handler
+	@param {Frame} defaultRegion
+	@param {Element} tabHeader
+	@param {string} color - color of the shape once it was validated
+	 */
+    constructor(regionEditorName, aladinLite_V, aladinLiteDivId, contextDivId, handler, /* points,*/ defaultRegion, tabHeader, color) {
+		this.regionEditorName = regionEditorName;
+        this.aladinLiteDivId = aladinLiteDivId;
+        this.tabHeader = tabHeader;
+        
+        this.buttonGrid = null;
+        
+        this.drawCanvas = null; // canvas where the polygon is drawn
+        this.drawContext = null;
+        this.lineCanvas = null; // canvas where the moving lines are drawn
+        this.lineContext = null;
+        
+        this.controller = null;
+        this.points = null; // Initial values
+        
+        this.contextDivId = contextDivId;
+        this.contextDiv = null;
+        
+        this.aladinLiteDiv = null;
+        this.aladinLite_V = aladinLite_V;
+        this.editionFrame = defaultRegion;
+        
+        this.color = color;
+        this.clientHandler = (handler == null) ? function() { alert("No client handler registered"); } : handler;
+        
+        this.isEditMode = false;
+        
+        this.init();
+    }
+    init() {
+        this.aladinLiteDiv = this.aladinLiteDiv == null ? $(`#${this.aladinLiteDivId}`) : this.aladinLiteDiv;
+        this.contextDiv = this.contextDiv == null ? $(`#${this.contextDivId}`) : this.contextDiv;
+        // création du canvas pour éditeur régions
+        /*
+         * Be cautious: the canvas context must be taken before the canvas is appended to the parent div, otherwise the geometry is wrong.
+         */
+        var that = this;
+        this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
+
+        this.lineCanvas[0].width = this.aladinLiteDiv.width();
+        this.lineCanvas[0].height = this.aladinLiteDiv.height();
+        this.lineContext = this.lineCanvas[0].getContext('2d');
+        this.aladinLiteDiv.append(this.lineCanvas);
+        this.lineCanvas.css({
+			'z-index': '100',
+			'position': 'absolute'
+		});
+        this.lineCanvas.hide();
+
+        /*
+         * Canvas for the temporary drawings
+         */
+        this.drawCanvas = $("<canvas id='RegionCanvas' class='editor-canvas' ></canvas>");
+        this.drawCanvas[0].width = this.aladinLiteDiv.width();
+        this.drawCanvas[0].height = this.aladinLiteDiv.height();
+        this.drawContext = this.drawCanvas[0].getContext('2d');
+        this.aladinLiteDiv.append(this.drawCanvas);
+        this.drawCanvas.css({
+			'z-index': '101',
+			'position': 'absolute',
+			'top': '0px'
+		});
+        this.drawCanvas.hide();
+
+
+        this.controller = new RegionEditor_mvC({
+			"handler": this.clientHandler,
+			"drawCanvas": this.drawCanvas,
+			"staticCanvas": this.lineCanvas,
+			"aladinView": this.aladinLite_V,
+			"color": this.color
+		});
+        /*
+         * The controller function is wrapped in a function in order to make it working in the context of the controller object
+         * and not of he HTML widget
+         */
+        this.drawCanvas[0].addEventListener('mousemove', (event,regionEditorView=this) => {
+			regionEditorView.controller.mouseMove(event);
+		}, false);
+        this.drawCanvas[0].addEventListener('mousedown', (event, regionEditorView=this) => {
+			regionEditorView.controller.mouseDown(event);
+		}, false);
+        this.drawCanvas[0].addEventListener('mouseup', (event,regionEditorView=this) => {
+			regionEditorView.controller.mouseUp(event);
+		}, false);
+		
+		/***********************************************************
+		************* Layout & title creation **********************
+		************************************************************/
+		const divTitle = $(`<h4>${this.regionEditorName}</h4>`);
+		this.buttonGrid = $(`<div class="btn-grid"></div>`);
+		this.contextDiv.append(divTitle,this.buttonGrid);
+		
+		/***********************************************************
+		************* Initialize the header button *****************
+		************************************************************/
+		let header_title = this.regionEditorName.split(' ')[0].toLowerCase();
+		this.headerButton = $(`<button class="tab-header-btn" id="tab-header-${header_title}">${header_title}</button>`);
+		
+		this.tabHeader.append(this.headerButton);		
+
+        /***********************************************************
+		************* Button creation using JQuery *****************
+		************************************************************/
+		
+		const styleToApply = {
+			'margin-top': '10px',
+			'margin-left': '5px',
+			'font-weight': ' bold',
+		}
+		
+		/***********************************************************
+        ******************** Edit Button ***************************
+        ************************************************************/
+        this.editBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_e' class='alix_edt_btn alix_btn alix_region_btns'>
+				Edit&nbsp;
+				<i class='glyphicon glyphicon-pencil'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.editBtn);
+        this.editBtn.css(styleToApply);
+        this.editBtn.click(function(event) {
+            that.setEditMode();
+            that.controller.DeleteOverlay();
+            that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);
+            that.drawContext.clearRect(0, 0, that.drawCanvas.width, that.drawCanvas.height);
+            that.controller.store();
+            event.stopPropagation();
+        });
+		
+        /***********************************************************
+        ******************** Browse Button *************************
+        ************************************************************/
+        this.browseBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_b' class='alix_browse_btn alix_btn alix_region_btns'>
+				Browse&nbsp;
+				<i class='glyphicon glyphicon-check'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.browseBtn);
+        this.browseBtn.css(styleToApply);
+        this.browseBtn.attr('disabled', 'disabled');
+        this.browseBtn.click(function(event) {
+            if (!that.controller.isPolygonClosed()) {
+                that.controller.CleanPoligon();
+            } else {
+                that.controller.get();
+            }
+            that.setBrowseMode();
+            browseSaved = false;
+            event.stopPropagation();
+        });
+
+
+        
+        /***********************************************************
+        ******************** Delete Button *************************
+        ************************************************************/
+        this.deleteBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_c' class=' alix_clear_btn alix_btn alix_region_btns'>
+				Clear&nbsp;
+				<i class='glyphicon glyphicon-trash'></i>
+			</button>`
+		);
+        this.buttonGrid.append(this.deleteBtn);
+        this.deleteBtn.css(styleToApply);
+        this.deleteBtn.click(function(event) {
+            that.controller.CleanCanvas();
+            event.stopPropagation();
+        });
+        this.deleteBtn.attr('disabled', 'disabled');
+
+		/***********************************************************
+        ******************** Accept Button ****************************
+        ************************************************************/
+        this.setBtn = $(
+			`<button id='${this.contextDivId}-regionEditor_a' class=' alix_accept_btn alix_btn alix_region_btns'>
+        		Accept&nbsp;
+        		<i class='glyphicon glyphicon-share'></i>
+        	</button>`
+        );
+        this.buttonGrid.append(this.setBtn);
+        this.setBtn.css(styleToApply);
+
+        this.setBtn.on('click', function(event) {
+			if(!that.isEditMode) {			
+				that.controller.store();
+			}
+            that.controller.get();
+            that.setBrowseMode();
+            that.aladinLite_V.reabledButton();
+            if ($("#region")[0])
+                $("#region")[0].disabled = false;
+            browseSaved = true;
+            event.stopPropagation();
+        });
+        
+        
+        /***********************************************************
+        ******************** Switch button ************************
+        ************************************************************/
+        this.switchModeBtn = $(
+			`<button id='${this.contextDivId}-switchEditor' class='alix_swi_btn alix_btn alix_region_btns'>
+        	</button>`
+        );
+        this.switchBtnText = $(`<div class="text">Polygon&nbsp;</div>`);
+        this.switchModeBtn.append(this.switchBtnText);
+        
+        this.switchBtnIcon = $(`<div class="button-img polygon"></div>`);
+        this.switchModeBtn.append(this.switchBtnIcon);
+        
+        this.switchBtnTooltip = $(`<span class="tooltiptext">Switch to Cone</span>`);
+        this.switchModeBtn.append(this.switchBtnTooltip);
+        
+        this.buttonGrid.append(this.switchModeBtn);
+        this.switchModeBtn.css(styleToApply);
+        
+        this.switchModeBtn.on('click', (event, regionEditorView=this) => {
+			regionEditorView.setEditMode();
+            regionEditorView.controller.DeleteOverlay();
+            regionEditorView.lineContext.clearRect(0, 0, regionEditorView.lineCanvas[0].width, regionEditorView.lineCanvas[0].height);
+            regionEditorView.drawContext.clearRect(0, 0, regionEditorView.drawCanvas.width, regionEditorView.drawCanvas.height);
+            regionEditorView.controller.switchModel();
+            
+            if (regionEditorView.controller.focusedModel === Models.Polygon) {
+				this.switchBtnText.html(`Polygon&nbsp;`);
+				this.switchBtnTooltip.text(`Switch to Cone`);
+				this.switchBtnIcon.removeClass("circle");
+				this.switchBtnIcon.addClass("polygon");
+			} else {
+				this.switchBtnText.html(`Cone&nbsp;`);
+				this.switchBtnTooltip.text(`Switch to Polygon`);
+				this.switchBtnIcon.removeClass("polygon");
+				this.switchBtnIcon.addClass("circle");
+			}
+            event.stopPropagation();
+		});
+        
+                
+        
+        if (!AladinLiteX_mVc.regionEditorInit) {
+            this.setInitialValue(this.defaultRegion);
+            if (this.editionFrame) {
+                this.setEditionFrame(this.editionFrame);
+                this.setEditMode();
+            }
+            AladinLiteX_mVc.regionEditorInit = true;
+            /**!!! To note the region editor has been initialized.
+             * Avoid it being initialized the second time,
+             *which make us can't edit the old polygon when we leave the regioneditor for a while .*/
+        }
+
+    }
+    
+    focusEditor() {
+		this.headerButton.css({
+			"border-bottom": "none",
+			"background-color": "rgba(245, 245, 245,.5)"
+		});
+		this.contextDiv.css({"display": "block"});
+	}
+	
+	hideEditor() {
+		this.headerButton.css({
+			"border-bottom": "#545244 solid 2px",
+			"background-color": "rgba(150,150,150,.5)"
+		});
+		this.contextDiv.css({"display": "none"});
+	}
+    
+    /**
+     * @description Operate the drawing removal from outside of the class scope
+     */
+    clean() {
+        //can be called from another button before the editor has been init 
+        if (this.controller) {
+            this.controller.CleanPoligon();
+            this.setEditMode();
+            this.controller.DeleteOverlay();
+            this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
+            this.drawContext.clearRect(0, 0, this.drawCanvas[0].width, this.drawCanvas[0].height);
+            this.controller.store();
+            this.controller.get();
+            this.setBrowseMode();
+        }
+
+    }
+    /**
+     * @description Draws the editable frame in blue and center the view on it
+     * @param {Array<Array<Number>>} points - An array of sky positions
+     * @return {void}
+     */
+    setEditionFrame(points) {
+        if (points) {
+            this.editionFrame = points;
+        }
+        var x = null;
+        if (this.editionFrame) {
+            /*
+             * Extract region or position from SaadaQL statement
+             */
+            if (this.editionFrame.type == "array") {
+                x = this.parseArrayPolygon(this.editionFrame.value);
+            } else if (this.editionFrame.type == "soda") {
+                x = this.parseSodaPolygon(this.editionFrame.value);
+            } else {
+                alert("Polygon format " + points.type + " not understood");
+            }
+            if (x) {
+                var view = BasicGeometry.getEnclosingView(x);
+                this.aladinLite_V.gotoPosition(view.center.ra, view.center.dec);
+                this.aladinLite_V.setZoom(1.2 * view.size);
+                if (this.editionFrameOverlay == null) {
+                    this.editionFrameOverlay = A.graphicOverlay({ color: 'blue', name: "Editable Frame" });
+                    this.aladinLite_V.addOverlayer(this.editionFrameOverlay);
+                }
+                this.editionFrameOverlay.removeAll();
+                this.editionFrameOverlay.addFootprints([A.polygon(x)]);
+                $("#center").val("Ed. Frame").attr("title", "Center the view on the editable frame");
+            } else {
+                this.editionFrame = null;
+                $("#center").val("Center").attr("title", "Center on the current drawing");
+            }
+        }
+        /*
+         * Fix for the errors when we open a new region editor
+         *
+        var that = this;
+           setTimeout(function() {
+               that.aladin.increaseZoom();
+               that.aladin.decreaseZoom();
+               }, 500);
+               */
+    }
+    /**
+     * @description
+     * Initalize the draw with the default parameter. If points contains a region, it is drawn,
+     * if it just contain a position, AladinLite is centered on that position
+     * @param {Array<Array<Number>>} points  object denoting the initial value of the polygon : {type: ... value:} type is format of the
+     * value (saadaql or array) and value is the data string wich will be parsed
+     */
+    setInitialValue(points) {
+        /*
+         * Set the region passed by the client if it exists
+         */
+        this.points = points;
+        //this.controller.CleanPoligon();
+        if (this.points) {
+            var pts = [];
+            /*
+             * Extract region or position from SaadaQL statement
+             */
+            if (this.points.type == "saadaql") {
+                var s = /"(.*)"/.exec(this.points.value);
+                if (s.length != 2) {
+                    Alix_Modalinfo.error(this.points.value + " does not look like a SaadaQL statment");
+                    return;
+                } else {
+                    if (this.points.value.startsWith("isInRegion")) {
+                        var ss = s[1].split(/[\s,;]/);
+                        for (var i = 0; i < ss.length; i++) {
+                            pts.push(parseFloat(ss[i]));
+                        }
+                    } else {
+                        var pos = s[1].replace(/:/g, " ");
+                        this.posField.val(pos);
+                        this.aladin.setZoom(0.55);
+                        this.aladin.gotoObject(pos);
+                    }
+                }
+            } else if (this.points.type == "array2dim") {
+                pts = this.points.value;
+            } else {
+                alert("Polygon format " + this.points.type + " not understood");
+                return;
+            }
+
+            this.setBrowseMode();
+            this.controller.DeleteOverlay();
+            this.controller.setPolygon(pts);
+        }
+        /*
+         * Fix for the errors when we open a new region editor
+         */
+        //			var that = this;
+        //	           setTimeout(function() {
+        //                   that.aladin.increaseZoom();
+        //                   that.aladin.decreaseZoom();
+        //                   }, 500);
+    }
+    /**
+    @description Method that let the user enter browse mode. In this mode, the user do not manipulate the shape.
+     */
+    setBrowseMode() {
+		this.isEditMode = false;
+        this.editBtn.removeAttr('disabled');
+        this.browseBtn.attr('disabled', 'disabled');
+        this.deleteBtn.attr('disabled', 'disabled');
+        this.lineCanvas.hide();
+        this.drawCanvas.hide();
+        this.emitCanvasHideMessage();
+    }
+    /**
+    @description Method to let the user enter edition mode. In this mode, the user manipulates the nodes.
+     */
+    setEditMode() {
+		this.isEditMode = true;
+        this.editBtn.attr('disabled', 'disabled');
+        this.browseBtn.removeAttr('disabled');
+        this.deleteBtn.removeAttr('disabled');
+        this.lineCanvas.show();
+        this.drawCanvas.show();
+        this.emitCanvasShownMessage()
+    }
+    /**
+    @todo
+    */
+	emitCanvasShownMessage() {
+		this.contextDiv.trigger("canvas-shown");
+	}
+	/**
+	@todo
+	 */
+	emitCanvasHideMessage() {
+		this.contextDiv.trigger("canvas-hidden");
+	}
+    
+    /**
+    @description Method to let the program mute the RegionEditor when another RegionEditor is used
+     */
+    muteRegionEditor() {
+		this.editBtn.attr('disabled', 'disabled');
+		this.setBtn.attr('disabled', 'disabled');
+		this.switchModeBtn.attr('disabled', 'disabled');
+	}
+	
+	/**
+    @description Method to let the program unmute the RegionEditor when another RegionEditor is no longer used
+     */
+	unmuteRegionEditor() {
+		this.editBtn.removeAttr('disabled');
+		this.setBtn.removeAttr('disabled');
+		this.switchModeBtn.removeAttr('disabled');
+	}
+    /**
+    @description Method to parse a SODA polygon that is represented by a string
+    @example "POLYGON 1.2 1.3 4.5 1.2 4.3 4.3"
+    @param {String} value - string polygon to convert
+    @return {Array<Float32Array>} an array containing all the points parsed
+     */
+    parseSodaPolygon(value) {
+        let s = value.split(/\s+/);
+        let x = null;
+        if (s[0].toUpperCase() != "POLYGON") {
+            alert("Only SODA POLYGON are supported");
+        } else {
+            s.shift();
+            if (!s || (s.length % 2) != 0 || s.length < 6) {
+                alert("Even number of coordinates required (" + s.length + " values read)");
+            } else {
+                x = [];
+                for (let i = 0; i < (s.length / 2); i++) {
+                    x.push([parseFloat(s[2 * i]), parseFloat(s[(2 * i) + 1])]);
+                }
+                x.push(x[0]);
+            }
+        }
+        return x;
+    }
+    /**
+    @description Method to parse a polygon that is represented by a contiguous array
+    @example [1.2, 1.3, 4.5, 1.2, 4.3, 4.3]
+    @param {Float32Array} value - contiguous array representing the polygon to convert
+    @return {Array<Float32Array>} an array containing all the points parsed
+     */
+    parseArrayPolygon(value) {
+        var x = null;
+        if (!value || (value.length % 2) != 0 || value.length < 6) {
+            alert("Even number of coordinates required");
+        } else {
+            x = [];
+            for (var i = 0; i < (value.length / 2); i++) {
+                x.push([value[2 * i], value[(2 * i) + 1]]);
+            }
+            x.push(x[0]);
+        }
+        return x;
+    }
 } 
 var browseSaved = null;
-RegionEditor_mVc.prototype = {
-		init: function (){	
-			var self = this;
-			if( this.parentDiv == null )
-				this.parentDiv = $('#' + this.parentDivId);
-		 	if( this.contextDiv == null )
-				this.contextDiv  = $('#' + this.contextDivId);	
-			//this.contextDiv.append('<div id= "RE_context" style = "display:inline"></div>');
-			/*if( this.sousContextDiv == null ){
-				this.sousContextDiv  = $('#RE_context');
-			}*/
-			//this.parentDiv.css("position", "relative");
-			// création du canvas pour éditeur régions
-			/*
-			 * Be cautious: the canvas context must be taken before the canvas is appended to the parent div, otherwise the geometry is wrong. 
-			 */
-			var that = this;
-			if(!AladinLiteX_mVc.regionEditorInit){
-			this.lineCanvas = $("<canvas id='RegionCanvasTemp' class='editor-canvas'></canvas>");
-			this.lineCanvas[0].width =this.parentDiv.width() ;
-			this.lineCanvas[0].height = this.parentDiv.height();
-			this.lineContext = this.lineCanvas[0].getContext('2d');	        
-			this.parentDiv.append(this.lineCanvas);
-			this.lineCanvas.css('z-index', '100');
-			this.lineCanvas.css('position', 'absolute');
-			this.lineCanvas.hide(); 
-
-			/*
-			 * Canvas pour les traces temporaires
-			 */
-			this.drawCanvas = $("<canvas id='RegionCanvas' class='editor-canvas' ></canvas>");
-			this.drawCanvas[0].width = this.parentDiv.width();
-			this.drawCanvas[0].height = this.parentDiv.height();
-			this.drawContext = this.drawCanvas[0].getContext('2d');
-			this.parentDiv.append(this.drawCanvas);
-			this.drawCanvas.css('z-index', '101');
-			this.drawCanvas.css('position', 'absolute');
-			this.drawCanvas.css('top', '0px');
-			this.drawCanvas.hide(); 
-
-
-			this.controller = new RegionEditor_mvC({/* "points": this.points,*/ "handler": this.clientHandler, "canvas": this.drawCanvas, "canvaso": this.lineCanvas, "aladinView": this.aladinLite_V});
-			/*
-			 * The controller function is wrapped in a function in order to make it working in the context of the controller object
-			 * and not of he HTML widget
-			 */
-			this.drawCanvas[0].addEventListener('mousedown', function(event) {console.log("down"); that.controller.mouseDown(event);}, false);
-			this.drawCanvas[0].addEventListener('mousemove',  function(event) {that.controller.mouseMove(event);}, false);
-			this.drawCanvas[0].addEventListener('mouseup', function(event) {/*console.log("up");*/ that.controller.mouseUp(event);}, false);
-			
-			/*----crear botones con jquery----*/
-			/*var divButtons = $("<div id='RegionButtons' style=' width:"+ this.parentDiv.width() +'px' +" ';' '><div/>").appendTo("#" + this.parentDivId + "_button");        
-			divButtons.css('background', 'gray');//'height:' "+ 200 +'px' +"';'
-			divButtons.css('height', '70px');*/
-			this.contextDiv.append('<p style="color:#1f252b;text-align:center">Region Editor Mode</p>')
-			this.browseBtn = $("<button id='regionEditor_b' class='alix_browse_btn alix_btn'>Browse&nbsp;<i class='glyphicon glyphicon-check'></i></button>");
-			this.contextDiv.append(this.browseBtn);
-			this.browseBtn.css('margin-top','10px');
-			this.browseBtn.css('margin-left','5px');
-			this.browseBtn.css('font-weight',' bold');
-			this.browseBtn.attr('disabled', 'disabled');
-			this.browseBtn.click(function(event) {    
-				if( !that.controller.isPolygonClosed() ){
-					that.controller.CleanPoligon();
-				} else {
-					that.controller.recuperar();  
-				}
-				that.setBrowseMode();
-				browseSaved = false;
-				event.stopPropagation();
-				//that.aladinLite_V.reabledButton();
-
-			});
-			
-			this.editBtn = $("<button id='regionEditor_e' class='alix_edt_btn alix_btn'>Edit&nbsp;<i class='glyphicon glyphicon-pencil'></i></button>");
-			this.contextDiv.append(this.editBtn);
-			this.editBtn.css('margin-top','10px');
-			this.editBtn.css('margin-left','5px');
-			this.editBtn.css('font-weight',' bold');
-			this.editBtn.click(function(event) { 
-				that.setEditMode();
-				that.controller.DeleteOverlay();
-				that.lineContext.clearRect(0, 0, that.lineCanvas[0].width, that.lineCanvas[0].height);            
-				that.drawContext.clearRect(0, 0, that.drawCanvas[0].width, that.drawCanvas[0].height);
-				that.controller.almacenar();
-				//that.aladinLite_V.disabledButton();
-				event.stopPropagation();
-			});
-
-			this.effacerBtn = $("<button id='regionEditor_c' class=' alix_clear_btn alix_btn'>Clear&nbsp;<i class='glyphicon glyphicon-trash'></i></button>");
-			this.contextDiv.append(this.effacerBtn);
-			this.effacerBtn.css('margin-top','10px');
-			this.effacerBtn.css('margin-left','5px');
-			this.effacerBtn.css('font-weight',' bold');
-			this.effacerBtn.click(function(event) {        	 
-				that.controller.CleanPoligon();
-				event.stopPropagation();
-			});
-			this.setBrowseMode();
-
-			var buttonSet = $("<button id='regionEditor_a' class=' alix_accept_btn alix_btn'>Accept&nbsp;<i class='glyphicon glyphicon-share'></i></button>");
-			this.contextDiv.append(buttonSet);
-			buttonSet.css('margin-top','10px');
-			buttonSet.css('margin-left','5px');
-			buttonSet.css('font-weight',' bold');
-			buttonSet.click(function(event) {
-				that.controller.recuperar();  
-				that.setBrowseMode();
-				that.controller.invokeHandler(true);
-				that.aladinLite_V.reabledButton();
-				document.getElementById("region").disabled=false;
-				browseSaved = true;
-				event.stopPropagation();
-			});
-			}
-			if(!AladinLiteX_mVc.regionEditorInit){
-			this.setInitialValue(self.defaultRegion);
-			if( this.editionFrame ){
-				this.setEditionFrame(this.editionFrame);
-				this.setEditMode();
-			}
-			AladinLiteX_mVc.regionEditorInit = true;
-			/**!!! To note the region editor has been initialized. 
-			 * Avoid it being initialized the second time, 
-			 *which make us can't edit the old polygon when we leave the regioneditor for a while .*/
-			}
-
-		},
-		/**
-		 * Operate the drawing removal from outside 
-		 */
-		clean: function() {
-			//can be called from another button before the editor has been init 
-			if( this.controller ) {
-				this.controller.CleanPoligon();				
-				this.setEditMode();
-				this.controller.DeleteOverlay()
-				this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);            
-				this.drawContext.clearRect(0, 0, this.drawCanvas[0].width, this.drawCanvas[0].height);
-				this.controller.almacenar();	       
-				this.controller.recuperar();   
-				this.setBrowseMode();
-			}
-
-		},
-		/**
-		 * Draws the editable frame in blue and center the view on it 
-		 */
-		setEditionFrame: function(points){
-			if( points){
-				this.editionFrame = points;
-			}
-			var x = null;
-			if( this.editionFrame ){
-				var pts = [];
-				/*
-				 * Extract region or position from SaadaQL statement
-				 */
-				if (this.editionFrame.type == "array") {
-					x = this.parseArrayPolygon(this.editionFrame.value);
-				} else if (this.editionFrame.type == "soda") {
-					x = this.parseSodaPolygon(this.editionFrame.value);
-				} else {
-					alert("Polygone format " + points.type + " not understood");
-				}
-				if( x ){
-					var view = BasicGeometry.getEnclosingView(x);
-					this.aladinLite_V.gotoPosition(view.center.ra, view.center.dec);
-					this.aladinLite_V.setZoom( 1.2*view.size );
-					if( this.editionFrameOverlay == null ) {
-						this.editionFrameOverlay = A.graphicOverlay({color: 'blue', name: "Editable Frame"});
-						this.aladinLite_V.addOverlayer(this.editionFrameOverlay);
-					}
-					this.editionFrameOverlay.removeAll();	
-					this.editionFrameOverlay.addFootprints([A.polygon(x)]);
-					$("#center").val("Ed. Frame").attr("title", "Center the view on the editable frame");
-				} else {
-					this.editionFrame = null;
-					$("#center").val("Center").attr("title", "Center on the current drawing");
-				}
-			}
-			/*
-			 * Fix for the errors when we open a new region editor
-			 *
-			var that = this;
-	           setTimeout(function() {
-                   that.aladin.increaseZoom();
-                   that.aladin.decreaseZoom();
-                   }, 500);
-                   */
-
-		},
-		/**
-		 * Initalize the darw with the default parameter. If points contains a region, it is drawn, 
-		 * if it just contain a position, AladinLite is centered on that position
-		 * @param points  object denoting the initial value of the polygone : {type: ... value:} type is format of the 
-		 * value (saadaql or array) and value is the data string wich will be parsed
-		 */
-		setInitialValue: function (points){
-			/*
-			 * Set the region passed by the client if it exists
-			 */
-			this.points = points;
-			//this.controller.CleanPoligon();
-			if( this.points ){
-				var pts = [];
-				/*
-				 * Extract region or position from SaadaQL statement
-				 */
-				if( this.points.type == "saadaql") {
-					var s = /"(.*)"/.exec(this.points.value);
-					if( s.length != 2 ) {
-						Alix_Modalinfo.error(this.points.value + " does not look like a SaadaQL statment");
-						return;
-					} else {
-						if( this.points.value.startsWith("isInRegion")) {
-							var ss = s[1].split(/[\s,;]/);
-							for( var i=0 ; i<ss.length ; i++ ) {
-								pts.push(parseFloat(ss[i]));
-							}
-						} else {
-							var pos = s[1].replace(/:/g , " ");
-							this.posField.val(pos);
-							this.aladin.setZoom(0.55);
-							this.aladin.gotoObject(pos);
-						}
-					}
-				} else if (this.points.type == "array2dim") {
-					pts = this.points.value;
-				} else {
-					alert("Polygone format " + this.points.type + " not understood");
-					return;
-				}
-
-				this.setBrowseMode();
-				this.controller.DeleteOverlay()
-				this.controller.setPoligon(pts);
-			}
-			/*
-			 * Fix for the errors when we open a new region editor
-			 */
-//			var that = this;
-//	           setTimeout(function() {
-//                   that.aladin.increaseZoom();
-//                   that.aladin.decreaseZoom();
-//                   }, 500);
-
-		},
-		setBrowseMode: function() {
-			this.editBtn.removeAttr('disabled');
-			this.browseBtn.attr('disabled', 'disabled');   
-			this.effacerBtn.attr('disabled', 'disabled');                      
-			this.lineCanvas.hide();
-			this.drawCanvas.hide();
-		},
-		setEditMode: function() {
-			this.browseBtn.removeAttr('disabled');
-			this.editBtn.attr('disabled', 'disabled');   
-			this.effacerBtn.removeAttr('disabled');                
-			this.lineCanvas.show();
-			this.drawCanvas.show();
-		},
-		parseSodaPolygon: function (value){
-		    var s = value.split(/\s+/);
-			var x = null;
-		    if( s[0].toUpperCase() != "POLYGON"){
-				alert("Only SODA POLYGON are supported");
-		    } else {
-		    	s.shift();
-				if( !s || (s.length%2) != 0 || s.length < 6 ) {
-					alert("Even number of coordinates required (" + s.length + " values read)");
-				} else {
-					x = [];
-					for(var i=0 ; i<(s.length/2) ; i++){
-						x[x.length] = [parseFloat(s[2*i]), parseFloat(s[(2*i)+1])];
-					}
-					x.push(x[0]);
-				}
-		    }
-		    return x;
-		},
-		parseArrayPolygon: function (value){
-			var x = null;
-			if( !value || (value.length%2) != 0 || value.length < 6 ) {
-				alert("Even number of coordinates required");
-			} else {
-				x = [];
-				for(var i=0 ; i<(value.length/2) ; i++){
-					x[x.length] = [value[2*i], value[(2*i)+1]];
-				}
-				x.push(x[0]);
-			}
-		    return x;
-		}
-
-
-}
 
 ;console.log('=============== >  RegionEditor_v.js ');
 /**
@@ -6479,757 +6667,1460 @@ RegionEditor_mVc.prototype = {
 /**
  * Model processing the draw canvas
  * 
- * Author Gerardo Irvin Campos yah
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
  */
 
-function RegionEditor_Mvc(points, handler, canvas, canvaso, aladinView){
-
-	this.node = [];	
-	this.canvas = canvas[0];
-	this.canvaso = canvaso[0];
-	this.context = this.canvas.getContext('2d');
-	this.contexto = this.canvaso.getContext('2d');
-	//this.aladin parameters:
-	//this.aladin = aladin;	
-	this.overlay = null;
-	this.skyPositions = null;
-	this.aladinView = aladinView;
-	this.points = points;
-}
-
-RegionEditor_Mvc.prototype = {
-
-		DrawNode: function (data){
-			for(var i in data)
-			{
-				this.context.beginPath();
-				this.context.arc(data[i].cx, data[i].cy, data[i].r, 0, Math.PI * 2,true);     	      
-				this.context.fillStyle = "blue";
-				this.context.fill();
-				this.context.stroke();	 
-				this.context.closePath();	  
-			} 	     
-		},
-
-		//Drawn Line
-		DrawnLine: function (startingNode,x,y,result) {
-			if(result != null)
-			{					
-				this.context.beginPath();
-				this.context.lineCap="round";
-
-				for(var i in this.node)
-				{
-					if(this.node[result.N] == i)
-						this.context.moveTo(this.node[result.N].cx,this.node[result.N].cy);
-
-					this.context.lineTo(this.node[i].cx,this.node[i].cy);				
-				}					
-
-				this.context.closePath(); 
-				this.context.strokeStyle = 'lime';
-				// this.context.lineWidth = 3;
-				this.context.stroke();	
-			}
-			else
-			{
-				this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);		
-				this.context.beginPath();
-				this.context.lineCap="round";
-				this.context.moveTo(this.node[startingNode].cx,this.node[startingNode].cy);		
-				this.context.lineTo(x,y);
-				this.context.closePath(); 
-				this.context.strokeStyle = 'lime';
-				//this.context.lineWidth = 3;
-				this.context.stroke();
-			}
-		},
-
-		//this.Redrawn line and this.node
-		Redrawn : function (result)
-		{				
-			this.CanvasUpdate();
-			for(var i in this.node)
-			{
-				this.context.beginPath();
-				this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2,true);     	      
-				this.context.fillStyle = "red";
-				this.context.fill();
-				this.context.stroke();	 
-				this.context.closePath();	        	    
-			} 		
-
-			this.DrawnLine(0,0,0,result);
-		},	
-
-		//Clean the this.canvas
-		CanvasUpdate : function ()
-		{
-			this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.contexto.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.contexto.drawImage(this.canvas, 0, 0);
-		},
-
-		//Convert a Array to Object
-		ArrayToObject: function (data)
-		{
-			var NodeTemp = [];
-			for( var i in data)
-			{
-				NodeTemp.push
-				(
-						{
-							cx: data[i][0],
-							cy: data[i][1],
-							r:5
-						}
-				);
-			}
-
-			this.node=[];
-			this.node = NodeTemp;
-		},
-
-		//Fuction pour obtenir le hautor du polygon
-		GetHeight: function (array)
-		{		
-			var Ramax = null, Ramin = null;
-			var finaltemp;
-			var largeur;
-
-			for( var i in array)
-			{
-				temp = array[i][0];        	
-
-				if(Ramax == null)
-				{
-					Ramax = temp;
-				}
-				else if(temp >= Ramax)
-				{
-					Ramax = temp;
-				}
-
-				if(Ramin == null)
-				{
-					Ramin = temp;
-				}
-				else if(temp <= Ramin )
-				{
-					Ramin = temp;
-				}
-			}
-
-			largeur = (Ramax -Ramin);
-
-			if(largeur > 180)
-			{
-				largeur = 360 - largeur;
-			}
-
-			return { ramax: Ramax, ramin: Ramin , largeur: largeur  };
-		},
-
-		//function pour obtenir le numero de segment et construir un segment
-		NumeroSegmen : function ()
-		{	
-			var TotalNodes = this.node.length;		
-			var segmentoini, segmentofin;	
-			var total = [];
-
-			for(var j=0; j<this.node.length; j++)
-			{
-				if(segmentoini == undefined)
-					segmentoini = j;
-				else if(segmentofin == undefined){
-					segmentofin = j; 
-				}
-
-				if(segmentoini != undefined && segmentofin != undefined)
-				{
-					total.push
-					({
-						A: segmentoini,
-						B: segmentofin
-					});
-
-					segmentoini = segmentofin;
-					segmentofin = undefined;
-				}
-			}
-
-			total.push
-			({
-				A: (this.node.length  - 1),
-				B: 0
-			});
-
-			//console.log('total: ' + total.length);
-			return total;
-		},
-
-		//function pour obtenir le hauteur de un polygone
-		GetWidth: function (array)
-		{		
-			var Decmax = null, Decmin = null;	
-			var temp;
-			var width;
-
-			for( var i in array)
-			{
-				temp = (array[i][1]);        	
-
-				if(Decmax == null)
-				{
-					Decmax = temp;
-				}
-				else if(temp >= Decmax)
-				{
-					Decmax = temp;
-				}
-
-				if(Decmin == null)
-				{
-					Decmin = temp;
-				}
-				else if(temp <= Decmin )
-				{
-					Decmin = temp;
-				}
-			}
-
-			width = (Decmax - Decmin);
-
-			if(width > 180)
-			{
-				width = 360 - width;
-				//console.log('width 360');
-			}
-
-			return { decmax: Decmax, decmin: Decmin , width: width  };
-		},
-
-		//function para crear una grafica en el this.canvas
-		DrawGrafic: function (canvas1)
-		{
-			var canvasgraf =  canvas1;
-			var ancho = canvasgraf.width;
-			var alto = canvasgraf.height;
-
-			var contextGrafic = canvasgraf.getContext('2d');
-			var contador = 20;
-			var contador2 = 20;
-
-			//console.log("ancho: " + ancho);
-			//console.log("alto: " + alto);
-
-			for(var i =0; i < alto ; i++)
-			{
-
-				this.contextGrafic.beginPath();
-
-				if(i === 0)
-				{
-					this.contextGrafic.moveTo( i + 20 , 10);
-					this.contextGrafic.lineTo( i + 20, alto);
-					this.contextGrafic.fillStyle="black";
-					this.contextGrafic.font = "bold 8px sans-serif";
-					this.contextGrafic.fillText("0",i + 15 , 20);
-				}
-				else 
-				{
-					this.contextGrafic.moveTo( i + contador , 20);
-					this.contextGrafic.lineTo( i + contador , alto);
-					this.contextGrafic.fillStyle="black";
-					this.contextGrafic.font = "bold 8px sans-serif";
-					this.contextGrafic.fillText(i,(i+contador)-3 , 20);
-				}
-
-				this.contextGrafic.closePath(); 
-				this.contextGrafic.strokeStyle = 'yellow';
-				//this.context.lineWidth = 3;
-				this.contextGrafic.stroke();	
-
-				contador = parseInt( contador + 20);
-
-			}
-
-			for(var i =0; i < ancho ; i++)
-			{
-
-				this.contextGrafic.beginPath();
-				this.contextGrafic.lineCap="round";
-
-				if(i === 0)
-				{
-					this.contextGrafic.moveTo( 12 , i + 20 );
-					this.contextGrafic.lineTo( ancho , i + 20);	
-				}
-				else 
-				{
-					this.contextGrafic.moveTo( 12  , 0 + contador2);
-					this.contextGrafic.lineTo( ancho , 0 + contador2);
-					this.contextGrafic.font = "bold 8px sans-serif";		     
-					this.contextGrafic.fillStyle="black";
-					this.contextGrafic.fillText(i, 3, (0+ contador2)+3);
-				}
-
-				this.contextGrafic.closePath(); 
-				this.contextGrafic.strokeStyle = 'brown';
-				//this.context.lineWidth = 3;
-				this.contextGrafic.stroke();	
-				contador2 = parseInt( contador2 + 20);	    	       
-			}  
-		},
-
-		isEmpty: function()
-		{
-			if(this.node.length == 0)
-				return true;		
-			else
-				return false;
-		},
-
-		//function que permet de ajouter this.nodes
-		addNode: function(x, y,startingNode,polygonestatus)
-		{					
-			if(polygonestatus)
-			{
-				var newNode = {};
-				var lastnode = {};
-				var position = parseInt(startingNode[0].position);
-
-				newNode.cx = startingNode[0].cx;
-				newNode.cy = startingNode[0].cy;
-				newNode.r = startingNode[0].r;
-
-				if(this.node.length === position)
-				{				
-					lastnode.cx = this.node[(this.node.length -1)].cx;
-					lastnode.cy = this.node[(this.node.length -1)].cy;
-					lastnode.r = 5;
-
-					//agregar el nodo
-					this.node.splice((this.node.length -1), 1 , lastnode,newNode);				
-				}
-				else
-				{
-					lastnode.cx = this.node[startingNode[0].position].cx;
-					lastnode.cy = this.node[startingNode[0].position].cy;
-					lastnode.r = 5;
-
-					//agregar el nodo
-					this.node.splice(startingNode[0].position, 1 ,newNode, lastnode);
-				}														
-				this.Redrawn(0);
-			}
-			else
-			{
-				var flag = typeof(startingNode);
-				if(flag != "object")
-				{
-					if(startingNode == 0 && this.node.length > 1)
-					{		
-						this.node.unshift
-						(
-								{
-									cx: x,
-									cy: y,
-									r: 5	                            
-								}
-						);
-					}
-					else
-					{
-						this.node.push
-						(
-								{
-									cx: x,
-									cy: y,
-									r: 5            
-								}
-						);
-					}
-					this.DrawNode(this.node);
-				}	
-				else
-				{
-
-					if(startingNode != undefined /*&& startingNode.B != undefined*/)
-					{					
-						var addnode ={};
-						var preview ={};					
-
-						preview.cx = startingNode.segmento.xA;
-						preview.cy = startingNode.segmento.yA;
-						preview.r = 5;
-
-						addnode.cx = x;
-						addnode.cy = y;
-						addnode.r = 5;
-
-						this.node.splice(startingNode.segmento.segmento, 1 , preview , addnode);
-						var renode =  this.node;
-						this.Redrawn(0);
-
-					}
-				}			          		         
-			}
-
-			//console.log('this.node add: ' + this.node.length);        
-		},
-
-		//function que permet obtener le numero de this.node
-		getNode: function(x,y)
-		{
-			var dx=0 ;
-			var dy=0 ;
-			var result = 0;
-
-			for(var i in this.node)
-			{	             
-				dx = x - this.node[i].cx;
-				dy = y - this.node[i].cy;  
-				//var result =Math.sqrt(dx * dx + dy * dy);
-				var result = dx * dx + dy * dy;
-
-				if(result <= 25)
-				{	    
-					//console.log('i: ' + i);
-					return i;	
-				}
-			}
-			return -1;
-		},
-
-		//function pour obtenir les deux this.nodes qui forme un segment
-		getSegment: function(clickedNode)
-		{		
-			var pointA=0 ,pointB=0;
-
-			if(clickedNode == 0)
-			{		
-				//console.log('nodo 0');
-				pointA = (parseInt(clickedNode) +1);
-				pointB = (this.node.length -1);
-			}
-			else if(clickedNode == (this.node.length -1))
-			{			
-				//console.log('nodo final:' + (this.node.length -1));
-				pointA = parseInt((this.node.length -1) -1);
-				pointB = 0;			
-			}
-			else if(clickedNode != 0 && clickedNode != (this.node.length -1))
-			{	
-				//console.log('otro this.node');
-				pointA = (parseInt(clickedNode)+1);
-				pointB = (parseInt(clickedNode)-1);			
-			}
-			return {A :pointA, B:pointB, N:clickedNode};
-		},
-
-		//function pour effacer le this.canvas
-		canvasUpdate: function()
-		{		
-			this.contexto.drawImage(this.canvas, 0, 0);
-			this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);		
-		},
-
-		//function pour diseigner les lignes
-		drawHashline: function(startingNode,x,y)
-		{						
-			this.DrawnLine(startingNode,x,y);	   	   					
-		},	
-
-		//function pour effacer un ligne
-		CleanLine: function()
-		{	
-			//this.contexto.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		},
-
-		//function pour savoire si un this.node es un extemite
-		isExtremity: function(clickedNode)
-		{
-			if(clickedNode == 0 || clickedNode == (this.node.length -1))
-			{		
-				return true;								
-			}				
-			return false;
-
-		},
-
-		//function que permet de fermer un polygon
-		closePolygone: function(clickedNode , startingNode)
-		{		
-			if(clickedNode == startingNode)
-			{
-				return false;	
-			}
-			else if(clickedNode == 0 && startingNode == (this.node.length -1))
-			{		
-				for(var i in this.node)
-				{
-					this.context.beginPath();
-					this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2,true);     	      
-					this.context.fillStyle = "red";
-					this.context.fill();
-					this.context.stroke();	 
-					this.context.closePath();	  		        
-				}  
-				return true;
-			}
-			else if(clickedNode == (this.node.length -1) && startingNode == 0 )
-			{			
-				for(var i in this.node)
-				{
-					this.context.beginPath();
-					this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2,true);     	      
-					this.context.fillStyle = "red";
-					this.context.fill();
-					this.context.stroke();	 
-					this.context.closePath();	  		        
-				} 
-				return true;
-			}			
-			return false;
-		},
-
-		//function pour bouger un this.node et ses deux segments de le poligone
-		Drag: function(clickedNode, x,y,result)
-		{
-			var segmentfirst;
-			var segmentlast;
-			var flag;
-			var resultado = [];								
-
-			//set new values
-			this.node[clickedNode].cx = x;
-			this.node[clickedNode].cy = y;	
-
-			this.node[result.N].cx = x;
-			this.node[result.N].cy = y;					
-
-			this.Redrawn(result);		
-		},
-
-		//function pour garder les valeur de alafin lite et les convertir en valeurs de this.canvas("pixel")
-		almacenar: function()
-		{			
-			//console.log('mesage this.almacenar');
-			//console.log('this.skyPositions: ' + this.skyPositions);
-			if(this.skyPositions != null)
-			{
-				//console.log('this.skyPositions' + this.skyPositions);
-				//console.log('this.node' + this.node);					
-				this.node = [];
-				this.skyPositions.pop();
-
-				for (var k=0; k<this.skyPositions.length; k++) 
-				{
-					this.node.push(this.aladinView.world2pix
-							(
-									this.skyPositions[k][0], 
-									this.skyPositions[k][1]								
-							));								
-				}	
-
-				this.ArrayToObject(this.node);
-
-				this.Redrawn(this.node);	
-			}
-
-		},		
-
-		//function pour effacer le poligone de this.aladin lite quand passe a mode edition
-		DeleteOverlay :  function()
-		{
-			if (this.overlay != null) 
-			{			 	      
-				//console.log('this.skyPositions: ' + this.skyPositions);
-				//console.log('A: ' + typeof(A));
-				this.overlay.addFootprints(A.polygon(this.skyPositions));
-				this.overlay.removeAll();
-				this.overlay.overlays = [];
-				//console.log('this.overlay' + this.overlay);			           
-			}	        	 
-		},
-
-		//function pour obtenir les valeurs de le polygon et creer le polygon en adalin lite
-		recuperar: function()
-		{
-			/*
-			 * When the position are set from outside, the node remains empty while there is edition action.
-			 *  So if the user want to get back the polygoene without editing it, we have to cancel this method
-			 */
-			if( this.node && this.node.length == 0 && this.skyPositions && this.skyPositions.length > 0 ) {
-				return ;
-			}
-			//console.log('this.node1: ' + this.node.length);
-
-			//console.log('this.node.length: ' + this.node.length);
-			this.skyPositions = [];		 
-			for (var k=0; k<this.node.length; k++) {
-				//this.skyPositions.push(this.aladin.pix2world(this.node[k][0], this.node[k][1]));
-				this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
-			};
-			//finalthis.node
-			if (this.overlay==null) {
-				this.overlay = A.graphicOverlay({color: 'red'});
-
-				this.aladinView.addOverlayer(this.overlay);
+class PolygonModel {
+    constructor(points, handler, drawCanvas, staticCanvas, aladinView, colorValidated) {
+        console.log(colorValidated);
+        this.node = [];
+        this.drawCanvas = drawCanvas[0];
+        this.staticCanvas = staticCanvas[0];
+        this.context = this.drawCanvas.getContext('2d');
+        this.staticContext = this.staticCanvas.getContext('2d');
+        this.overlay = null;
+        this.skyPositions = null;
+        this.aladinView = aladinView;
+        this.points = points;
+        this.color = colorValidated;
+    }
+    DrawNode(data) {
+        for (var i in data) {
+			console.log(data);
+            this.context.beginPath();
+            this.context.arc(data[i].cx, data[i].cy, data[i].r, 0, Math.PI * 2, true);
+            this.context.fillStyle = "blue";
+            this.context.fill();
+            this.context.strokeStyle="blue"
+            this.context.stroke();
+            this.context.closePath();
         }
-			this.overlay.removeAll();	
-			this.overlay.addFootprints([A.polygon(this.skyPositions)]);
-		},
+    }
+    //Drawn Line
+    DrawnLine(startingNode, x, y, result) {
+        if (result != null) {
+            this.context.beginPath();
+            this.context.lineCap = "round";
 
-		//function pour obtenir les valeurs de le polygon et creer le polygon en adalin lite
-		setPolygon: function(points)
-		{
-			this.skyPositions = [];		 
-			for( var k=0 ; k<points.length ; k++){
-				this.skyPositions.push(points[k]);			
-			}
-			if (this.overlay==null) {
-				this.overlay = A.graphicOverlay({color: 'red'});
-				this.aladinView.addOverlayer(this.overlay);
-			}
-			this.overlay.removeAll();	  
-			this.overlay.addFootprints([A.polygon(this.skyPositions)]);//créer la polygon
-			//this.PolygonCenter();
-		},
-		setOverlay: function(points)
-		{
-			if (this.overlay==null) {
-				this.overlay = A.graphicOverlay({color: 'red'});
-				this.aladinView.addOverlayer(this.overlay);
-			}
-			this.overlay.removeAll();	  
-		},
-		//function pour effacer le poligone de this.canvas
-		CleanPoligon: function()
-		{
-			this.CanvasUpdate();
-			this.node = [];
-			this.skyPositions= [];
-			//console.log('this.node delete: ' + this.node.length);		
-		},
+            for (var i in this.node) {
+                if (this.node[result.N] == i)
+                    this.context.moveTo(this.node[result.N].cx, this.node[result.N].cy);
 
-		//trouver le polygon en adalin lite si on se trouve en otre part du universe
-		PolygonCenter: function()
-		{	
-			var view = BasicGeometry.getEnclosingView(this.skyPositions);
-			this.aladin.gotoPosition(view.center.ra, view.center.dec);
-			this.aladin.setZoom( 1.2*view.size );
-// LM patch
-//			var Height = this.GetHeight(this.skyPositions);		
-//			var width = this.GetWidth(this.skyPositions);
-//			if( Height.largeur == 0 || width.largeur == 0 ) {
-//				return;
-//			}
-//			var center = {};
-//			center.ra = ((Height.ramax +  Height.ramin)/2);
-//			center.dec =  ((width.decmax + width.decmin)/2);
-//			this.aladinView.gotoPosition(center.ra, center.dec);
-//			this.aladinView.setZoom( (width.width + Height.largeur) );
-		},
+                this.context.lineTo(this.node[i].cx, this.node[i].cy);
+            }
+        }
 
-		//effacer un this.node de le polygone si se trouve sûr autre this.node
-		RemoveNode: function(nodevalue,status)
-		{
-			var index = this.node[nodevalue];
+        else {
+            this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+            this.context.beginPath();
+            this.context.lineCap = "round";
+            this.context.moveTo(this.node[startingNode].cx, this.node[startingNode].cy);
+            this.context.lineTo(x, y);
+        }
+        this.context.closePath();
+        this.context.strokeStyle = 'lime';
+        this.context.stroke();
+    }
+    
+    /**
+    @description Draw again the lines and the nodes stored
+    @param {*} result
+     */
+    Redraw(result) {
+        this.CanvasUpdate();
+        for (var i in this.node) {
+            this.context.beginPath();
+            this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2, true);
+            this.context.fillStyle = this.color;
+            this.context.fill();
+            this.context.stroke();
+            this.context.closePath();
+        }
 
-			if(this.node.length >= 4)
-			{			
-				this.node.splice(nodevalue,1);
-				if(status)
-				{
-					this.DrawNode(this.node);
-				}else
-				{
-					this.Redrawn(0);
-				}
+        this.DrawnLine(0, 0, 0, result);
+    }
+    
+    /**
+    @description Clean the draw Canvas
+     */
+    CanvasUpdate() {
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.drawImage(this.drawCanvas, 0, 0);
+    }
+    /**
+    @description Convert an Array of Array representing nodes to an array of Object
+    @param {Array<Array<number>>} data An array of nodes represented by arrays
+    */
+    ArrayToObject(data) {
+	console.log("data",data);
+        var NodeTemp = [];
+        for (let [cx,cy] of data) {
+            NodeTemp.push(
+                {
+                    cx: cx,
+                    cy: cy,
+                    r: 5
+                }
+            );
+        }
 
-			}
-		},
+        this.node = NodeTemp;
+    }
+    //Fuction pour obtenir le hautor du polygon
+    /*
+    GetHeight(array) {
+        var Ramax = null, Ramin = null;
+        var finaltemp;
+        var largeur;
 
-		//function pour obtenir le this.node initial et final du polygon
-		GetXYNode: function(x,y)
-		{
-			var nodes={};        
+        for (var i in array) {
+            temp = array[i][0];
 
-			var dx;
-			var dy;
-			
-			for(var i in this.node)
-			{	         
-				//console.log('this.nodenum:  ' + i);
-				//console.log('cx: ' + this.node[i].cx);
-				//console.log('cy: ' + this.node[i].cy);
-				dx = x - this.node[i].cx;
-				dy = y - this.node[i].cy;  
-				//var result =Math.sqrt(dx * dx + dy * dy);
-				var result = dx * dx + dy * dy;
+            if (Ramax == null) {
+                Ramax = temp;
+            }
+            else if (temp >= Ramax) {
+                Ramax = temp;
+            }
 
-				if(result <= 25)
-				{	                	
-					if(nodes.a == undefined)
-					{
-						nodes.a = i;
-					}
-					else 
-					{
-						nodes.b = i;
-					}            		            		
-				}                      
-			}
+            if (Ramin == null) {
+                Ramin = temp;
+            }
+            else if (temp <= Ramin) {
+                Ramin = temp;
+            }
+        }
 
-			return nodes;
-		},
+        largeur = (Ramax - Ramin);
 
-		//metodo que debuelve el numero de nodos del poligono
-		GetNodelength: function()
-		{
-			return this.node;
-		},
+        if (largeur > 180) {
+            largeur = 360 - largeur;
+        }
 
-		//crear la grafica
-		createGrafic: function(parametre)
-		{
-			this.DrawGrafic(parametre);
-		},
+        return { ramax: Ramax, ramin: Ramin, largeur: largeur };
+    }
+    */
+    //function pour obtenir le numero de segment et construir un segment
+    NumeroSegmen() {
+        var TotalNodes = this.node.length;
+        var segmentoini, segmentofin;
+        var total = [];
 
-		//indicar cuando serrar poligono
-		cuadradoIndicador: function(x,y)
-		{	
-			this.context.beginPath();
-			this.context.fillRect(x,y,10,10);     	      
-			this.context.fillStyle = "red";
-			this.context.fill();
-			this.context.stroke();	 
-			this.context.closePath();
-		},
+        for (var j = 0; j < this.node.length; j++) {
+            if (segmentoini == undefined)
+                segmentoini = j;
+            else if (segmentofin == undefined) {
+                segmentofin = j;
+            }
 
-		stokeNode: function(nodeposition)
-		{
-			if(nodeposition != undefined) 
-				var stocknode = [];
-				stocknode.push
-				({
-					position: nodeposition,
-					cx:this.node[nodeposition].cx,
-					cy:this.node[nodeposition].cy,
-					r:5
-				});
+            if (segmentoini != undefined && segmentofin != undefined) {
+                total.push({
+                    A: segmentoini,
+                    B: segmentofin
+                });
 
-				return stocknode;
-			
-		},
-		getSkyPositions: function() {
-			return this.skyPositions;
+                segmentoini = segmentofin;
+                segmentofin = undefined;
+            }
+        }
+
+        total.push({
+            A: (this.node.length - 1),
+            B: 0
+        });
+
+        //console.log('total: ' + total.length);
+        return total;
+    }
+    //function pour obtenir le hauteur de un polygone
+    /**
+    @description Function get the width (height ?) of a polygon
+    @param {Array<Array<number>>} array - an array of nodes forming a polygon
+    @return {{decmax: number, decmin: number, width: number}}
+     */
+    GetWidth(array) {
+        var Decmax = null, Decmin = null;
+        var temp;
+        var width;
+
+        for (var i in array) {
+            temp = (array[i][1]);
+
+            if (Decmax == null) {
+                Decmax = temp;
+            }
+            else if (temp >= Decmax) {
+                Decmax = temp;
+            }
+
+            if (Decmin == null) {
+                Decmin = temp;
+            }
+            else if (temp <= Decmin) {
+                Decmin = temp;
+            }
+        }
+
+        width = (Decmax - Decmin);
+
+        if (width > 180) {
+            width = 360 - width;
+        }
+
+        return { decmax: Decmax, decmin: Decmin, width: width };
+    }
+    
+    //function para crear una grafica en el this.drawCanvas
+    /**
+    @description Function to create a graph on the drawCanvas (this.drawCanvas)
+    @param {Element} canvas1 - The drawCanvas on which one will draw
+     */
+    DrawGrafic(canvas1) {
+        var canvasgraf = canvas1;
+        var ancho = canvasgraf.width;
+        var alto = canvasgraf.height;
+
+        var contextGrafic = canvasgraf.getContext('2d');
+        var contador = 20;
+        var contador2 = 20;
+
+        //console.log("ancho: " + ancho);
+        //console.log("alto: " + alto);
+        for (var i = 0; i < alto; i++) {
+
+            this.contextGrafic.beginPath();
+
+            if (i === 0) {
+                this.contextGrafic.moveTo(i + 20, 10);
+                this.contextGrafic.lineTo(i + 20, alto);
+                this.contextGrafic.fillStyle = "black";
+                this.contextGrafic.font = "bold 8px sans-serif";
+                this.contextGrafic.fillText("0", i + 15, 20);
+            }
+
+            else {
+                this.contextGrafic.moveTo(i + contador, 20);
+                this.contextGrafic.lineTo(i + contador, alto);
+                this.contextGrafic.fillStyle = "black";
+                this.contextGrafic.font = "bold 8px sans-serif";
+                this.contextGrafic.fillText(i, (i + contador) - 3, 20);
+            }
+
+            this.contextGrafic.closePath();
+            this.contextGrafic.strokeStyle = 'yellow';
+            //this.context.lineWidth = 3;
+            this.contextGrafic.stroke();
+
+            contador = parseInt(contador + 20);
+
+        }
+
+        for (var i = 0; i < ancho; i++) {
+
+            this.contextGrafic.beginPath();
+            this.contextGrafic.lineCap = "round";
+
+            if (i === 0) {
+                this.contextGrafic.moveTo(12, i + 20);
+                this.contextGrafic.lineTo(ancho, i + 20);
+            }
+
+            else {
+                this.contextGrafic.moveTo(12, 0 + contador2);
+                this.contextGrafic.lineTo(ancho, 0 + contador2);
+                this.contextGrafic.font = "bold 8px sans-serif";
+                this.contextGrafic.fillStyle = "black";
+                this.contextGrafic.fillText(i, 3, (0 + contador2) + 3);
+            }
+
+            this.contextGrafic.closePath();
+            this.contextGrafic.strokeStyle = 'brown';
+            //this.context.lineWidth = 3;
+            this.contextGrafic.stroke();
+            contador2 = parseInt(contador2 + 20);
+        }
+    }
+    isEmpty() {
+        if (this.node.length == 0)
+            return true;
+
+        else
+            return false;
+    }
+    /**
+    @description Function to add node to this.node
+    @param {number} x
+    @param {number} y
+    @param {Array<number>} startingNode
+    @param {boolean} polygonstatus
+     */
+    addNode(x, y, startingNode, polygontatus) {
+        if (polygontatus) {
+            let newNode = {};
+            let lastnode = {};
+            let position = parseInt(startingNode[0].position);
+
+            newNode.cx = startingNode[0].cx;
+            newNode.cy = startingNode[0].cy;
+            newNode.r = startingNode[0].r;
+
+            lastnode.r = 5;
+            if (this.node.length === position) {
+                lastnode.cx = this.node[(this.node.length - 1)].cx;
+                lastnode.cy = this.node[(this.node.length - 1)].cy;
+
+                //add the node
+                this.node.splice((this.node.length - 1), 1, lastnode, newNode);
+            } else {
+                lastnode.cx = this.node[startingNode[0].position].cx;
+                lastnode.cy = this.node[startingNode[0].position].cy;
+
+                //add the node
+                this.node.splice(startingNode[0].position, 1, newNode, lastnode);
+            }
+            this.Redraw(0);
+        }
+
+        else {
+            let flag = typeof (startingNode);
+            if (flag != "object") {
+                if (startingNode == 0 && this.node.length > 1) {
+                    this.node.unshift(
+                        {
+                            cx: x,
+                            cy: y,
+                            r: 5
+                        }
+                    );
+                }
+
+                else {
+                    this.node.push(
+                        {
+                            cx: x,
+                            cy: y,
+                            r: 5
+                        }
+                    );
+                }
+                this.DrawNode(this.node);
+            }
+
+            else {
+
+                if (startingNode != undefined /*&& startingNode.B != undefined*/) {
+                    let addnode = {};
+                    let preview = {};
+
+                    preview.cx = startingNode.segmento.xA;
+                    preview.cy = startingNode.segmento.yA;
+                    preview.r = 5;
+
+                    addnode.cx = x;
+                    addnode.cy = y;
+                    addnode.r = 5;
+
+                    this.node.splice(startingNode.segmento.segmento, 1, preview, addnode);
+                    this.Redraw(0);
+
+                }
+            }
+        }
+
+        //console.log('this.node add: ' + this.node.length);        
+    }
+    //function que permet obtener le numero de this.node
+    /**
+    @description Function that let us obtain the index of this.node considering x & y coordinates
+    @param {number} x - x coordinate of the clicked point
+    @param {number} y - y coordinate of the clicked point
+   	@returns {number} The index of the clicked point, -1 otherwise
+     */
+    getNode(x, y) {
+        var dx = 0;
+        var dy = 0;
+        var result = 0;
+
+        for (var i in this.node) {
+            dx = x - this.node[i].cx;
+            dy = y - this.node[i].cy;
+            //var result =Math.sqrt(dx * dx + dy * dy);
+            var result = dx * dx + dy * dy;
+
+            if (result <= 25) {
+                //console.log('i: ' + i);
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+    @description Function to get the 2 nodes that shape the segment
+    @param {number} clickedNode - the position on a segment that has been clicked
+    @returns {{A: number, B:number, N: number}} An object containing the position of:
+    	- the beginning of the sub segment A
+    	- the end of the sub segment B
+    	- the point clicked N
+     */
+    getSegment(clickedNode) {
+        var pointA = 0, pointB = 0;
+
+        if (clickedNode == 0) {
+            //console.log('nodo 0');
+            pointA = (parseInt(clickedNode) + 1);
+            pointB = (this.node.length - 1);
+        }
+        else if (clickedNode == (this.node.length - 1)) {
+            //console.log('nodo final:' + (this.node.length -1));
+            pointA = parseInt((this.node.length - 1) - 1);
+            pointB = 0;
+        }
+        else {
+            pointA = (parseInt(clickedNode) + 1);
+            pointB = (parseInt(clickedNode) - 1);
+        }
+        return { A: pointA, B: pointB, N: clickedNode };
+    }
+    /**
+    @description Function to erase the drawCanvas
+     */
+    canvasUpdate() {
+        this.staticContext.drawImage(this.drawCanvas, 0, 0);
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+    }
+    /**
+    @brief Function to draw lines
+    @param {Array<Number>} startingNode the node from which the path begin
+    @param {number} x the x endpoint coordinate
+    @param {number} y the y endpoint coordinate
+     */
+    drawHashline(startingNode, x, y) {
+        this.DrawnLine(startingNode, x, y);
+    }
+    /**
+    @brief Function to delete a line from the polygon
+    @return {void}
+     */
+    CleanLine() {
+        //this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+    }
+    /**
+    @brief Function to know if the current node {this.node} is an endpoint
+    @param {Array<Number>} clickedNode - The node that has been clicked
+    @return {Boolean} true if the current node is an extremety, false otherwise
+     */
+    isExtremity(clickedNode) {
+        if (clickedNode == 0 || clickedNode == (this.node.length - 1)) {
+            return true;
+        }
+        return false;
+
+    }
+    /**
+    @brief Function that check if the user close a polygon
+    @param {Array<Number>} clickedNode - The node clicked by the user
+    @param {Array<Number>} startingNode - The node that started the polygon
+    @return {Boolean} true if the polygon has been closed, false otherwise
+     */
+    closePolygone(clickedNode, startingNode) {
+        if (clickedNode == startingNode) {
+            return false;
+        }
+        else if (clickedNode == 0 && startingNode == (this.node.length - 1)) {
+            for (var i in this.node) {
+                this.context.beginPath();
+                this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2, true);
+                this.context.fillStyle = this.color;
+                this.context.fill();
+                this.context.stroke();
+                this.context.closePath();
+            }
+            return true;
+        }
+        else if (clickedNode == (this.node.length - 1) && startingNode == 0) {
+            for (var i in this.node) {
+                this.context.beginPath();
+                this.context.arc(this.node[i].cx, this.node[i].cy, this.node[i].r, 0, Math.PI * 2, true);
+                this.context.fillStyle = this.color;
+                this.context.fill();
+                this.context.stroke();
+                this.context.closePath();
+            }
+            return true;
+        }
+        return false;
+    }
+    /**
+    @brief Method to move a node (this.node) and the 2 segments linked to it
+    @param {Array<Number>} clickedNode - The node we want to drag
+    @param {Number} x - The x position we want tot se to the node
+    @param {Number} y - The y position we want to set to the node
+    @param {} result - The result of the operation
+    
+    @return {void}
+     */
+    Drag(clickedNode, x, y, result) {
+
+
+        //set new values
+        this.node[clickedNode].cx = x;
+        this.node[clickedNode].cy = y;
+
+        this.node[result.N].cx = x;
+        this.node[result.N].cy = y;
+
+        this.Redraw(result);
+    }
+    /**
+    @brief function to keep values from aladin lite & then convert them into drawCanvas values (this.drawCanvas("pixel"))
+    @return {void} nothing
+     */
+    store() {
+        //console.log('mesage this.almacenar');
+        //console.log('this.skyPositions: ' + this.skyPositions);
+        if (this.skyPositions != null) {
+            //console.log('this.skyPositions' + this.skyPositions);
+            //console.log('this.node' + this.node);					
+            this.node = [];
+            this.skyPositions.pop();
+
+            for (var k = 0; k < this.skyPositions.length; k++) {
+                this.node.push(this.aladinView.world2pix(
+                    this.skyPositions[k][0],
+                    this.skyPositions[k][1]
+                ));
+            }
+
+            this.ArrayToObject(this.node);
+
+            this.Redraw(this.node);
+        }
+
+    }
+    /**
+    @brief Function to delete polygons from this.aladin lite when one enter the edition mode
+    @return {void} nothing
+     */
+    DeleteOverlay() {
+        if (this.overlay != null) {
+            //console.log('this.skyPositions: ' + this.skyPositions);
+            //console.log('A: ' + typeof(A));
+            this.overlay.addFootprints(A.polygon(this.skyPositions));
+            this.overlay.removeAll();
+            this.overlay.overlays = [];
+            //console.log('this.overlay' + this.overlay);			           
+        }
+    }
+    /**
+    @brief Function to obtain values from a polygon and create it in aladin lite
+    @return {void} nothing
+     */
+    get() {
+        /*
+         * When the position are set from outside, the node remains empty while there is edition action.
+         *  So if the user want to get back the polygoene without editing it, we have to cancel this method
+         */
+        if (this.node && this.node.length == 0 && this.skyPositions && this.skyPositions.length > 0) {
+            return;
+        }
+        this.skyPositions = [];
+        for (var k = 0; k < this.node.length; k++) {
+            this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
+        }
+        console.log(this.skyPositions)
+        if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints([A.polygon(this.skyPositions)]);
+    }
+    /**
+    @brief Function to obtain values from polygon and then create this polygon in aladin lite
+    @param {Array<Array<Number>>} points - An array of points representing the vertices of our polygon
+    @return {void}
+     */
+    setPolygon(points) {
+        this.skyPositions = [];
+        for (var k = 0; k < points.length; k++) {
+            this.skyPositions.push(points[k]);
+        }
+        if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints([A.polygon(this.skyPositions)]); //créer la polygon
+
+        //this.PolygonCenter();
+    }
+    /**
+    @description Function to set an overlay
+    @param
+     */
+    setOverlay(points) {
+        if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+    }
+    /**
+    @description Function to erase the polygon from drawCanvas 
+     */
+    CleanPolygon() {
+        this.CanvasUpdate();
+        this.node = [];
+        this.skyPositions = [];		
+    }
+    /**
+    @description Find the polygon in aladin lite if we cannot visualize it on the screen
+    */
+    PolygonCenter() {
+        var view = BasicGeometry.getEnclosingView(this.skyPositions);
+        this.aladin.gotoPosition(view.center.ra, view.center.dec);
+        this.aladin.setZoom(1.2 * view.size);
+        // LM patch
+        //			var Height = this.GetHeight(this.skyPositions);		
+        //			var width = this.GetWidth(this.skyPositions);
+        //			if( Height.largeur == 0 || width.largeur == 0 ) {
+        //				return;
+        //			}
+        //			var center = {};
+        //			center.ra = ((Height.ramax +  Height.ramin)/2);
+        //			center.dec =  ((width.decmax + width.decmin)/2);
+        //			this.aladinView.gotoPosition(center.ra, center.dec);
+        //			this.aladinView.setZoom( (width.width + Height.largeur) );
+    }
+    /**
+    @description Erase node if it is on another node
+    @param {number} nodevalue
+    @param {boolean} status
+    @returns {void}
+     */
+    //effacer un this.node de le polygone si se trouve sûr autre this.node
+    RemoveNode(nodevalue, status) {
+        var index = this.node[nodevalue];
+
+        if (this.node.length >= 4) {
+            this.node.splice(nodevalue, 1);
+            if (status) {
+                this.DrawNode(this.node);
+            }
+            else {
+                this.Redraw(0);
+            }
+
+        }
+    }
+    /**
+    @description function to obtain the initial & final node of the polygon
+    @param {number} x
+    @param {number} y
+    @returns {{a: Array<number>, b: Array<number>}} The initial node (a) and the final node (b) of the polygon
+     */
+    GetXYNode(x, y) {
+        let nodes = {};
+
+        let dx;
+        let dy;
+
+        for (var i in this.node) {
+            dx = x - this.node[i].cx;
+            dy = y - this.node[i].cy;
+            var result = dx * dx + dy * dy;
+
+            if (result <= 25) {
+                if (nodes.a == undefined) {
+                    nodes.a = i;
+                }
+
+                else {
+                    nodes.b = i;
+                }
+            }
+        }
+
+        return nodes;
+    }
+    //metodo que debuelve el numero de nodos del poligono
+    GetNodelength() {
+        return this.node;
+    }
+    //crear la grafica
+    createGrafic(parametre) {
+        this.DrawGrafic(parametre);
+    }
+    //indicar cuando serrar poligono
+    cuadradoIndicador(x, y) {
+        this.context.beginPath();
+        this.context.fillRect(x, y, 10, 10);
+        this.context.fillStyle = this.color;
+        this.context.fill();
+        this.context.stroke();
+        this.context.closePath();
+    }
+    stokeNode(nodeposition) {
+        if (nodeposition != undefined) {
+            let stocknode = [];
+            stocknode.push({
+                position: nodeposition,
+                cx: this.node[nodeposition].cx,
+                cy: this.node[nodeposition].cy,
+                r: 5
+            });
+
+            return stocknode;
+        }
+        return null;
+
+    }
+    getSkyPositions() {
+        return this.skyPositions;
+    }
+    
+    handleMouseUpPolygon(event, buttondown, canvas, startingNode, closed, movestart, startdrag, storeNode) {
+    	let clickedNode = -1;
+		let finalnode;
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+		//Ask if the element pressed is a node
+		if (buttondown == true && (clickedNode = this.getNode(x, y)) != -1) {
+		    //Ask is the node is a polygon's endpoint
+		    if (this.isExtremity(clickedNode) == false) {
+		        this.CleanLine();
+		        buttondown = false;
+		    }
+		
+		    if (this.closePolygone(clickedNode, startingNode) == true) {					
+		        buttondown = false;
+		        closed = true;
+		        //this.invokeHandler(false); if one add this then the length of skyPosition[] will be null						
+		    }
 		}
+		
+		if (closed == true && (finalnode = this.GetXYNode(x, y)) != null) {
+		    if (finalnode.a != undefined && finalnode.b != undefined) {
+		        if (startingNode == finalnode.a)
+		            this.RemoveNode(finalnode.a, false);
+		        else if (startingNode == finalnode.b)
+		            this.RemoveNode(finalnode.b, false);
+		    }
+		}
+		
+		if (buttondown == true && movestart == true) {
+		    if (clickedNode == startingNode && (clickedNode = this.getNode(x, y) != -1))
+		    {
+		        buttondown = false;
+		        movestart = false;
+		        this.CleanLine();
+		    }
+		
+		    else {
+		        this.addNode(x, y, startingNode);
+		        buttondown = false;
+		        movestart = false;
+		
+		        let nodes = this.GetNodelength();
+		        let segment = new Segment(nodes);
+		
+		        let inter = segment.Itersection(this.startingNode, false);
+		
+		        if (inter != -1 && inter != undefined) {
+		            //poligono abierto = true
+		            if (startingNode != 0)
+		                this.RemoveNode(inter.nB, true);
+		
+		            else
+		                this.RemoveNode(inter.nA, true);
+		
+		            this.CleanLine();
+		        }
+		    }
+		
+		}
+		else if (buttondown == true && movestart == false) {
+		    buttondown = false;
+		    movestart = false;
+		}
+		
+		if (startdrag == true) {
+		    //console.log('this.startdrag fin');
+		    startdrag = false;
+		    canvas.css('cursor', 'default');
+		
+		    //store the node number pushed			
+		    let nodes = this.GetNodelength();
+		    let segment = new Segment(nodes);
+		    let inter = segment.Itersection(startingNode, true);
+		    if (inter != -1 && inter != undefined) {
+		        this.RemoveNode(this.startingNode, false);
+		        this.addNode(x, y, storeNode, true);
+		    }
+		}
+		this.canvasUpdate();
+		
+		return {
+			buttondown: buttondown,
+			canvas: canvas,
+			startingNode: startingNode,
+			closed: closed,
+			movestart: movestart,
+			startdrag: startdrag
+		}
+	}
+	
+	handleMouseDownPolygon(event, closed, canvas) {
+		let clickedNode = -1;
+        let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+        let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+        
+        const resultObject = {
+			closed: closed,
+			canvas: canvas
+		};        
+
+        //ask if the polygon is empty
+        if (this.isEmpty()) {
+            this.addNode(x, y);
+        }
+        //Get segment
+        //start the this.drag of the node	
+        else if (resultObject.closed == true && (clickedNode = this.getNode(x, y)) != -1) {
+            resultObject.result = this.getSegment(clickedNode);
+            resultObject.storeNode = this.stokeNode(clickedNode);
+            resultObject.startdrag = true;
+            resultObject.drag = clickedNode;
+            resultObject.startingNode = clickedNode;
+            resultObject.canvas.css('cursor', 'move');
+        }
+        //ask if the focused space is a node 
+        else if ((clickedNode = this.getNode(x, y)) != -1) {
+            //Ask if the node is an end point of the polygon
+            if (this.isExtremity(clickedNode) /*opened polygon*/) {
+                //Ask if the polygon is open
+                if (closed == true) {
+                    resultObject.startingNode = -1;
+                    resultObject.buttondown = false;
+                }
+
+                else {
+                    resultObject.startingNode = clickedNode;
+                    resultObject.buttondown = true;
+                    resultObject.closed = false;
+                }
+            }
+        }
+        //Ask if the point is on a segment
+        if (resultObject.closed && clickedNode == -1) {
+            let nodes = this.GetNodelength();
+
+            let segment = new Segment(nodes);
+            let option = segment.IsCursorOn(x, y);
+
+            if (option != undefined) {
+				switch(option.flag) {
+					case "vertical": {
+						this.addNode(x, y, option);
+						break;
+					}
+					case "horizontal": {
+						this.addNode(x, y, option);
+						break;
+					}
+					case "distancia": {
+						this.addNode(x, y, option);
+						break;
+					}
+					default: {
+						console.error(`Flag ${option.flag} not recognized!`);
+					}
+				}
+            }
+        }
+        return resultObject;
+	}
+	
+	handleMouseMove(event, canvas, buttondown, startingNode, drag, result, startdrag) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+        let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+        //console.log(`x:${x}, y:${y}`);
+        let movestart = null;
+
+        //Ask if a node was pressed
+        if (buttondown == true && startingNode != -1) {
+            movestart = true;
+            this.drawHashline(startingNode, x, y, result);
+        }
+        else if (startdrag) {
+            this.Drag(drag, x, y, result);	
+        }
+        return movestart;
+	}
 }
-;console.log('=============== >  RegionEditor_m.js ');
+;console.log('=============== >  PolygonModel.js ');
+/**
+ * @preserve LICENSE
+ * 
+ * Copyright (c) 2017 Laurent Michel
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+ * IN THE SOFTWARE. 
+**/
+
+/**
+ * Model processing the draw canvas
+ * 
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
+ */
+
+class ConeModel {
+    constructor(drawCanvas, staticCanvas, aladinView, tolerance, colorValidated) {
+        this.centerNode = {};
+        this.radiusNode = {};
+        this.drawCanvas = drawCanvas[0];
+        this.staticCanvas = staticCanvas[0];
+        this.context = this.drawCanvas.getContext('2d');
+        this.staticContext = this.staticCanvas.getContext('2d');
+        this.overlay = null;
+        this.skyConeDescriptor = null;
+        this.aladinView = aladinView;
+        this.color = colorValidated;
+        
+        this.isCursorOnCircle = false;
+        this.isCursorOnCenter = false;
+        
+        this.tolerance = tolerance;
+
+		/**************************************
+		************* Some tests **************
+		***************************************/
+		
+		/*
+        this.centerNode = {cx: 608, cy: 232};
+        this.radius = 100;
+        this.get();
+        */
+    }
+    /**
+    @description Function to draw the central node of the cone on the canvas
+    @param {number} centerX
+    @param {number} centerY
+     */
+    DrawCentralNode(centerX, centerY) {
+        this.context.beginPath();
+        this.context.arc(centerX, centerY, 5, 0, Math.PI * 2, true);
+        this.context.fillStyle = "blue";
+        this.context.fill();
+        this.context.strokeStyle="blue";
+        this.context.stroke();
+        this.context.closePath();
+    }
+    /**
+    @description Function to draw the circle once it was validated by the user
+    @param {number} centerX
+    @param {number} centerY
+    @param {number} radius
+     */
+    DrawCompletedCircle(centerX,centerY,radius) {
+		this.drawCircle(centerX, centerY, radius, "lime");
+	}
+	/**
+	@description Function to draw the circle during the setting
+	@param {number} centerX
+    @param {number} centerY
+    @param {number} radius
+	 */
+    DrawGuidelineCircle(centerX,centerY,radius) {
+		this.drawCircle(centerX, centerY, radius, "gray");
+	}
+	/**
+	@description Function to draw a circle with a focused color
+	@param {number} centerX
+    @param {number} centerY
+    @param {number} radius
+    @param {string} color
+	 */
+    drawCircle(centerX, centerY, radius, color) {
+		if (radius < 0) {
+			radius = Math.abs(radius);
+			console.error("The radius is negative!");
+		}
+		this.context.beginPath();
+		this.context.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+		this.context.strokeStyle = color;
+		this.context.stroke();
+		this.context.closePath();
+	}
+	
+	/**
+	@description Function to place the center of the circle
+	@param {number} centerX The x coordinate of the center placed on the canvas
+	@param {number} centerY The y coordinate of the center placed on the canvas
+	 */
+	placeCenter(centerX,centerY) {
+		this.centerNode = {
+			cx: centerX,
+			cy: centerY
+		}
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+	}
+	
+	/**
+	@description Function to update the size of the construction circle
+	@param {number} cursorX The current x coordinate of the cursor
+	@param {number} cursorY The current y coordinate of the cursor
+	 */
+	updateCircleSize(cursorX,cursorY) {
+		let radiusSquared = Math.pow(cursorX-this.centerNode.cx,2) + Math.pow(cursorY-this.centerNode.cy,2);
+		
+		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawGuidelineCircle(this.centerNode.cx,this.centerNode.cy,Math.sqrt(radiusSquared));
+	}
+	
+	/**
+	@description Function to set the size of the circle
+	@param {number} cursorX The current x coordinate of the cursor
+	@param {number} cursorY The current y coordinate of the cursor
+	 */
+	setCircleSize(cursorX,cursorY) {
+		this.radiusNode = {
+			cx: cursorX,
+			cy: cursorY
+		}
+		
+		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawCompletedCircle(
+			this.centerNode.cx,
+			this.centerNode.cy,
+			this.computeRadius(this.centerNode,this.radiusNode)
+		);
+	}
+	
+	/**
+	@description Function to update the position of the construction circle
+	@param {number} cursorX The current x coordinate of the cursor
+	@param {number} cursorY The current y coordinate of the cursor
+	@param {number} radius The radius of the circle one are trying to move
+	 */
+	updateCirclePosition(cursorX,cursorY,radius) {
+		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+		this.DrawGuidelineCircle(cursorX,cursorY,radius);
+		this.DrawCentralNode(cursorX,cursorY);
+	}
+	
+	/**
+	@description Function to set the position of the construction circle
+	@param {number} cursorX The current x coordinate of the cursor
+	@param {number} cursorY The current y coordinate of the cursor
+	@param {number} radius The radius of the circle one are trying to move
+	 */
+	setCirclePosition(cursorX,cursorY) {
+		let variationVector = {
+			vx: cursorX-this.centerNode.cx,
+			vy: cursorY-this.centerNode.cy
+		};
+		
+		this.radiusNode = {
+			cx: this.radiusNode.cx+variationVector.vx,
+			cy: this.radiusNode.cy+variationVector.vy
+		}
+		
+		this.centerNode = {
+			cx: cursorX,
+			cy: cursorY
+		}
+		
+		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawCompletedCircle(
+			this.centerNode.cx,
+			this.centerNode.cy,
+			this.computeRadius(this.centerNode,this.radiusNode)
+		);
+	}
+	/**
+	@description Method to verify that the cone has a center node set & a radius set
+	@returns {boolean} True if the cone is complete, false in other cases
+	 */
+	isConeComplete() {
+		return this.centerNode !== null
+			&& Object.keys(this.centerNode).length === 2
+			&& this.radiusNode !== null
+			&& Object.keys(this.radiusNode).length === 2
+	}
+	
+	/**
+    @brief Function to obtain values from a cone and create it in aladin lite
+    @return {void}
+     */
+    get() {
+        /*
+         * When the position are set from outside, the node remains empty while there is edition action.
+         *  So if the user want to get back the cone without editing it, we have to cancel this method
+         */
+        if (this.centerNode && Object.keys(this.centerNode).length == 0 && this.skyConeDescriptor && this.skyConeDescriptor.length > 0)
+            return;
+            
+        this.skyConeDescriptor = this.buildSkyConeDescriptor(this.centerNode,this.radiusNode);
+        //this.testSuccessiveConversion(this.centerNode.cx,this.centerNode.cy, 20);
+
+        if (this.overlay === null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints(
+			[A.circle(
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1],
+				this.skyConeDescriptor.radius
+			)]
+		);
+    }
+    
+    /**
+    @description Small function to simulate the shift of the polygon
+     */
+    testSuccessiveConversion(pixX,pixY, iterations) {
+		let pixObject = {cx: pixX, cy: pixY};
+		let skyObject = {};
+		console.log("============== TESTS BEGINS ==============");
+		for (let  i = 0; i < iterations; ++i) {
+			console.log("pixObject : ",pixObject);
+			let skyToConvert = this.aladinView.pix2world(pixObject.cx, pixObject.cy);
+			skyObject = {cx: skyToConvert[0], cy: skyToConvert[1]};
+			
+			console.log("skyObject : ", skyObject);
+			let pixToConvert = this.aladinView.world2pix(skyObject.cx, skyObject.cy);
+			pixObject = {cx: pixToConvert[0], cy: pixToConvert[1]};
+		}
+		console.log("================ END TESTS ================");
+	}
+    /**
+    @description Function to erase the polygon from drawCanvas 
+     */
+    CleanCone() {
+        this.CanvasUpdate();
+        this.centerNode = {};
+        this.radiusNode = {};	
+    }
+    /*
+    /**
+    @description Function to get an enclosing view from BasicGeometry of the cone
+    @returns {*} An enclosing view of the cone
+
+    getView() {
+		let skyPositions = [this.skyConeDescriptor];
+		if (this.skyConeDescriptor.skyNode[1] > 0) {
+			// One takes a radius that point to the south
+			skyPositions.push([
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1] - this.radius
+			]);
+		} else {
+			// Else, one takes a radius that point to the north
+			skyPositions.push([
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1] + this.radius
+			]);
+		}
+        
+        return BasicGeometry.getEnclosingView(skyPositions);
+	}
+	*/
+    /**
+    @description Find the cone in aladin lite if we cannot visualize it on the screen
+    */
+    ConeCenter() {
+		let view  = this.getView();
+		
+        this.aladin.gotoPosition(view.center.ra, view.center.dec);
+        this.aladin.setZoom(1.2 * view.size);
+    }
+    
+    /**
+    @description Function to build the skyConeDescriptor property
+    @param {{cx: number, cy: number}} centerNode The central node of the cone
+    @param {{cx: number, cy: number}} radiusNode A node on the cone
+    @returns {{skyNode: Array<number>, radius: number}} A sky cone descriptor object describing the cone
+     */
+    buildSkyConeDescriptor(centerNode, radiusNode) {
+		console.log("Before pix2world: ", centerNode, radiusNode);
+		let skyPositionsCenterNode = this.aladinView.pix2world(centerNode.cx, centerNode.cy);
+		let skyPositionsRadiusNode = this.aladinView.pix2world(radiusNode.cx, radiusNode.cy);
+		//let pointBelongCircle;
+		// If dec > 0 i.e. If one is in the north hemisphere
+		/*
+		if (skyPositionsCenterNode[1] > 0) {
+			// One takes a radius that point to the south
+			pointBelongCircle = centerNode.cy - radius;
+		} else {
+			// Else, one takes a radius that point to the north
+			pointBelongCircle = centerNode.cy + radius;
+		}
+		*/
+		
+		//let skyPositionPointBelongCircle = this.aladinView.pix2world(centerNode.cx,pointBelongCircle);
+		//let skyRadius = skyPositionPointBelongCircle[1] - skyPositionsCenterNode[1];
+		let skyRadius = BasicGeometry.distanceBetweenNodes(skyPositionsRadiusNode,skyPositionsCenterNode);
+
+        let skyConeDescriptor = {
+			skyNode: skyPositionsCenterNode,
+			skyRadiusNode: skyPositionsRadiusNode,
+			radius: skyRadius
+		}
+		
+		return skyConeDescriptor;
+	}
+    
+    /**
+    @description Function to obtain values from cone and then create this cone in aladin lite
+     */
+    setCone(centerX,centerY,radiusX,radiusY) {
+        this.skyConeDescriptor = this.buildSkyConeDescriptor({cx: centerX, cy: centerY},{cx: radiusX, cy: radiusY});
+        if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints(
+			[A.circle(
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1],
+				this.skyConeDescriptor.radius
+			)]
+		); //Create a circle
+
+    }
+    
+    /**
+    @description Function to delete cones from this.aladinlite when one enter the edition mode
+     */
+    DeleteOverlay() {
+        if (this.overlay !== null) {
+            this.overlay.addFootprints(
+				A.circle(
+					this.skyConeDescriptor.skyNode[0],
+					this.skyConeDescriptor.skyNode[1],
+					this.skyConeDescriptor.radius
+				)
+			);
+            this.overlay.removeAll();
+            this.overlay.overlays = [];		           
+        }
+    }
+    
+    /**
+    @description Function to avoid that an unfinished circle stay stored
+     */
+    killStoring() {
+		this.skyConeDescriptor = null;
+		this.overlay = null;
+	}
+    
+    /**
+    @description function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
+     */
+    store() {
+        if (this.skyConeDescriptor !== null) {
+			let skyNode = this.skyConeDescriptor.skyNode;
+			let skyRadiusNode = this.skyConeDescriptor.skyRadiusNode;
+			
+			let convertedCenterNode = this.aladinView.world2pix(
+                skyNode[0],
+                skyNode[1]
+            );
+            let convertedRadiusNode = this.aladinView.world2pix(
+				skyRadiusNode[0],
+				skyRadiusNode[1]
+			);
+			console.log("After world2pix: ",convertedCenterNode,convertedRadiusNode);
+						
+			/** 
+			@tofix
+			/!\ Adding +1 to the coordinates is an awful solution but it is the simplest
+				one that we can implement for now.
+				AladinLite make a floor operation to convert the world coordinate into 
+				integer/pixel coordinates. It should at least use a round function
+				to avoid the continuous shift.
+				The best solution would be to have a world2float function in aladin instead.
+				In this case we could avoid these shifts and keep a constant value.
+			*/
+			this.centerNode = {cx: convertedCenterNode[0]+1, cy: convertedCenterNode[1]+1};
+			this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
+			console.log("Call redraw");
+            this.Redraw();
+        }
+
+    }
+    
+    /**
+    @description Method to compute a circle radius in pixels given the 
+    center and a point that belong to the circle
+    @param {{cx: number, cy: number}} centerNode The central node of the circle
+    @param {{cx: number, cy: number}} radiusNode A node on the circle
+    @return {number} the radius of the circle
+     */
+    computeRadius(centerNode,radiusNode) {
+		return Math.sqrt(
+			Math.pow(centerNode.cx-radiusNode.cx,2) +
+			Math.pow(centerNode.cy-radiusNode.cy,2)
+		)
+	}
+    
+    /**
+    @description Draw again the lines and the nodes stored
+     */
+    Redraw() {
+        this.CanvasUpdate();
+        this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+        this.DrawCompletedCircle(
+			this.centerNode.cx,
+			this.centerNode.cy,
+			this.computeRadius(this.centerNode,this.radiusNode)
+		);
+    }
+
+    /**
+    @description Clean the draw Canvas
+     */
+    CanvasUpdate() {
+        this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        this.staticContext.drawImage(this.drawCanvas, 0, 0);
+    }
+    
+    /**
+    @description Method to calculate the distance of the point Point(x,y)
+    from the center of the point this.centerNode.
+    @param {number} x - x coordinate of the point we want to know the distance from center
+    @param {number} y - y coordinate of the point we want to know the distance from center
+    @returns {number} The distance of Point(x,y) to the center of the circle
+     */
+    computeCenterDistanceTo(x,y) {
+			let centerX = this.centerNode.cx;
+			let centerY = this.centerNode.cy;
+			let distToCenter = Math.sqrt(Math.pow(centerX-x,2)+Math.pow(centerY-y,2));
+			
+			return distToCenter;
+	}
+    
+    /**
+    @description Method to handle the movement of the mouse
+    @param {Event} event event containing the position of the cursor
+    @param {Element} canvas drawCanvas on which the user will draw
+     */
+    handleMouseMove(event,canvas) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+		
+		//Modify size of the circle while the user is moving his/her cursor
+		if ( this.centerNode !== null
+			&& Object.keys(this.centerNode).length === 2
+			&& (this.radiusNode === null
+			|| Object.keys(this.radiusNode).length === 0)
+		) {
+			this.updateCircleSize(x,y);
+		// Modify position of the circle if the user is holding the center
+		} else if (this.isCursorOnCenter) {
+			this.updateCirclePosition(x,y,this.computeRadius(this.centerNode,this.radiusNode));
+		// Modify size of the circle if the user is holding the edge of the circle
+		} else if (this.isCursorOnCircle) {
+			this.updateCircleSize(x,y);
+		} else {
+			let radius = this.computeRadius(this.centerNode,this.radiusNode);
+			let distToCenter = this.computeCenterDistanceTo(x,y);
+			
+			if (distToCenter < this.tolerance) {
+				this.drawCanvas.style.cursor = "pointer";
+			} else if (Math.abs(distToCenter-radius) < this.tolerance) {
+				this.drawCanvas.style.cursor = "pointer";
+			} else {
+				this.drawCanvas.style.cursor = "unset";
+			}
+		}
+	}
+	
+	/**
+	@description Method to handle the end of a mouse click on the canvas
+	@param {Event} event event containing the position of the cursor
+    @param {Element} canvas drawCanvas on which the user will draw
+	 */
+	handleMouseUp(event, canvas) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+		
+		// Place the point if no other point has been placed
+		if (this.centerNode === null || Object.keys(this.centerNode).length === 0) {
+			this.placeCenter(x,y);
+		} else if (
+			this.centerNode !== null
+			&& Object.keys(this.centerNode).length === 2
+			&& (
+				this.radiusNode === null
+				|| Object.keys(this.radiusNode).length === 0
+			)
+		) {
+			this.setCircleSize(x,y);
+		} else if (this.isCursorOnCircle) {
+			this.setCircleSize(x,y);
+			this.drawCanvas.style.cursor = "unset";
+		} else if (this.isCursorOnCenter) {
+			this.setCirclePosition(x,y);
+			this.drawCanvas.style.cursor = "unset";
+		}
+		this.isCursorOnCenter = false;
+		this.isCursorOnCircle = false;
+	}
+	
+	/**
+	@description Method to handle the beginning of a mouse click on the canvas
+	@param {Event} event event containing the position of the cursor
+    @param {Element} canvas drawCanvas on which the user will draw
+	 */
+	handleMouseDown(event, canvas) {
+		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
+		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
+		
+		if (this.isConeComplete()) {
+			let radius = this.computeRadius(this.centerNode,this.radiusNode);
+			let distToCenter = this.computeCenterDistanceTo(x,y);
+			
+			if (distToCenter < this.tolerance) {
+				this.drawCanvas.style.cursor = "grabbing";
+				this.isCursorOnCenter = true;
+			} else if (Math.abs(distToCenter-radius) < this.tolerance) {
+				this.drawCanvas.style.cursor = "grabbing";
+				this.isCursorOnCircle = true;
+			}
+		}
+	}
+}
+
+;console.log('=============== >  ConeModel.js ');
 /**
  * @preserve LICENSE
  * 
@@ -7259,327 +8150,506 @@ RegionEditor_Mvc.prototype = {
  * 
  *  params = {canvas,canvaso, aladin}
  * 
- * Author Gerardo Irvin Campos yah
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
  */
 /**
  * @author michel
  *
  */
-
-function  RegionEditor_mvC(params){
-
-	this.polygonModel =  new RegionEditor_Mvc(params.points, params.handler, params.canvas, params.canvaso, params.aladinView);
-	this.canvas = params.canvas; 	
-	this.clientHandler = params.handler;
-	this.startingNode= -1; 
-	this.buttondown = false; 
-	this.closed = false;	
-	this.movestart = false;
-	this.startdrag = false;
-	this.drag = null;
-	this.result = -1;
-	this.stokeNode;
-	var that = this;
+ 
+const Models = {
+	Polygon: Symbol("polygon"),
+	Cone: Symbol("cone")
 }
 
-RegionEditor_mvC.prototype = {
-		getStatus: function() {
-			 return "startingNode=" 
-			        +this.startingNode + " buttondown=" 
-			  		+ this.buttondown+ " closed=" 
-			  		+ this.closed+ " movestart=" 
-			  		+ this.movestart + " startdrag=" 
-			  		+ this.startdrag + " drag=" 
-			  		+ this.drag  + " result=" 
-			  		+ this.result + " stokeNode=" 
-			  		+ this.stokeNode
-			  		;
-		},
-		/**
-		 * TODO to be implemented
-		 */
-		checkPolygon : function(points) {
-			return true;
-		},
-		/**
-		 * 
-		 */
-		mouseDown : function(event) {
-			
-			var clickedNode = -1;
-			var clickedSegment = -1;
-			var x = parseInt(event.pageX) - parseInt( this.canvas.offset().left).toFixed(1);
-			var y = parseInt(event.pageY) - parseInt( this.canvas.offset().top).toFixed(1);
-					
-			//pregunta si el pologono esta vacio
-			if( this.polygonModel.isEmpty()) 
-			{
-				this.polygonModel.addNode(x,y);			 
-			}
-			//obtener segmento
-			
-			//comenzar el this.drag del nodo		
-			else if(this.closed == true && (clickedNode = this.polygonModel.getNode(x,y)) != -1)
-			{
-				this.result = this.polygonModel.getSegment(clickedNode);
-				this.stokeNode = this.polygonModel.stokeNode(clickedNode);
-				this.startdrag = true;		
-				this.drag = clickedNode;
-				this.startingNode = clickedNode;		
-				this.canvas.css('cursor','move');
-			}
-			//pregunta si el espacio presionado es un nodo 
-			else if((clickedNode = this.polygonModel.getNode(x,y)) != -1 )
-			{
-				//pregunta si es una extremidad
-				if(this.polygonModel.isExtremity(clickedNode) /*poligono abierto*/) 
-				{			
-					//pregunta estas abierto
-					if(this.closed == true)
-					{
-						this.startingNode = -1;
-						this.buttondown = false;	
-					}
-					else
-					{
-						this.startingNode = clickedNode;
-						this.buttondown = true;					
-						this.closed = false;
-					}
-				}							
-			} 		
-			
-			//saber si estoy sobre un segmento
-			if(this.closed && clickedNode == -1)
-			{						
-				var node = this.polygonModel.GetNodelength();	
-						
-				var Segmentos = new Segment(node);	
-				var option = Segmentos.IsCursorOn(x,y);
-				
-				if(option != undefined)
-				{
-					if(option.flag == "vertical")
-					{
-						//console.log("option: " + option.flag);
-						this.polygonModel.addNode(x, y, option);
-					}
-					else if(option.flag == "horizontal")
-					{
-						//console.log("option: " + option.flag);
-						this.polygonModel.addNode(x, y, option);
-					}
-					else if(option.flag == "distancia")
-					{
-						//console.log("option: " + option.flag);
-						this.polygonModel.addNode(x, y, option);
-					}
-				}						
-			
-			}
-			
-		},
-		/**
-		 * 
-		 */
-		mouseMove : function(event) {
-			var x = parseInt(event.pageX) - parseInt( this.canvas.offset().left).toFixed(1);
-			var y = parseInt(event.pageY) - parseInt( this.canvas.offset().top).toFixed(1);
-			//console.log("mouse move " + this.getStatus());
-			//pregunta si el nodo fue presionado y si es un nodo
-			if(this.buttondown == true  && this.startingNode != -1 )
-			{
-				//console.log ('this.startingNode' + this.startingNode);
-				this.movestart = true;
-				this.polygonModel.drawHashline(this.startingNode,x,y,this.result);		
-			}		
-			else if(this.startdrag)
-			{
-				this.polygonModel.Drag(this.drag, x, y , this.result);
-				
-				//console.log('this.startdrag move');		
-			}
-			
-//			var h2x = document.getElementById("idcoor");
-//			h2x.innerHTML = 'X coords: '+x+', Y coords: '+y;
-		},
-		
-		mouseUp: function(event) {
-			var clickedNode = -1;
-			var finalnode;
-			var x = parseInt(event.pageX) - parseInt( this.canvas.offset().left).toFixed(1);
-			var y = parseInt(event.pageY) - parseInt( this.canvas.offset().top).toFixed(1);		
-		//pregunta nodo es presionado y es si es un nodo
-			if(this.buttondown == true && (clickedNode = this.polygonModel.getNode(x,y)) != -1 )
-			{		
-				//pregunta si es un extremo
-				if( this.polygonModel.isExtremity(clickedNode) == false) 
-				{				
-					this.polygonModel.CleanLine();				
-					this.buttondown = false;
-				}	
-				
-				//console.log('clickedNode: ' + clickedNode + ' this.startingNode: ' +  this.startingNode);
-				if(this.polygonModel.closePolygone(clickedNode , this.startingNode) == true)
-				{
-					//console.log('this.closed polygon');					
-					this.buttondown = false;	
-					this.closed = true;
-					//this.invokeHandler(false); if add this the length of skyPosition[] will be null
-				
-					//console.log('clickedNode: ' + clickedNode + ' this.startingNode: ' +  this.startingNode);							
-				}
-			} 
-			
-			if(this.closed == true && (finalnode = this.polygonModel.GetXYNode(x, y) ) != null)			
-			{
-				if(finalnode.a != undefined && finalnode.b != undefined)
-				{
-					//console.log('finalnode a: ' + finalnode.a + ' finalnode b: ' + finalnode.b);
-					
-					if(this.startingNode ==  finalnode.a)
-						this.polygonModel.RemoveNode(finalnode.a,false);
-					else if(this.startingNode ==  finalnode.b)
-						this.polygonModel.RemoveNode(finalnode.b,false);
-				}			
-			}
-					
-			if(this.buttondown == true && this.movestart == true)
-			{		
-				if( clickedNode == this.startingNode && (clickedNode = this.polygonModel.getNode(x,y) != -1) )
-				//if((clickedNode = this.polygonModel.getNode(x,y)) != -1)
-				{											
-					this.buttondown = false;		
-					this.movestart = false;	
-					this.polygonModel.CleanLine();							
-				}				
-				else
-				{						
-						this.polygonModel.addNode(x,y,this.startingNode);
-						this.buttondown = false;		
-						this.movestart = false;	
-						
-						var nodos = this.polygonModel.GetNodelength();					
-						var Segmentos = new Segment(nodos);	
-						var temp;
-						
-						var inter = Segmentos.Itersection(this.startingNode,false);
-						
-						if(inter != -1 && inter != undefined)
-						{			
-							//poligono abierto = true
-							if(this.startingNode != 0)
-								this.polygonModel.RemoveNode(inter.nB,true);
-							else
-								this.polygonModel.RemoveNode(inter.nA,true);
-							
-							this.polygonModel.CleanLine();
-						}												
-				}			
-				
-			}
-			else if(this.buttondown == true && this.movestart == false)
-			{			
-				this.buttondown = false;		
-				this.movestart = false;	
-			}
-			
-			if(this.startdrag == true)
-			{
-				//console.log('this.startdrag fin');
-				this.startdrag = false;
-				this.canvas.css('cursor','default');
-				
-				//stoke le numero de noeud appuyer
-				//this.startingNode;			
-				
-				var nodos = this.polygonModel.GetNodelength();					
-				var Segmentos = new Segment(nodos);	
-				var inter = Segmentos.Itersection(this.startingNode,true);			
-				if(inter != -1 && inter != undefined)
-				{						
-					this.polygonModel.RemoveNode(this.startingNode, false);
-					this.polygonModel.addNode(x, y, this.stokeNode,true);
-					//console.log(inter.length);
-				}
-			}
-			this.polygonModel.canvasUpdate();
-		},
-		
-		almacenar : function()
-		{
-			this.polygonModel.almacenar();
-		},
-		
-		recuperar : function()
-		{
-			this.polygonModel.recuperar();
-		},
-		
-		DeleteOverlay : function() {
-			this.polygonModel.DeleteOverlay();
-		},
-		
-		CleanPoligon : function(){
-			this.polygonModel.CleanPoligon();
-			this.closed = false;
-		},
-		
-		PolygonCenter : function(){
-			this.polygonModel.PolygonCenter();
-		},
+class RegionEditor_mvC {
+    constructor(params) {
 	
-		CreateGrafic : function(canvas){
-			this.polygonModel.createGrafic(this.canvas);
-		},
-		
-		show : function() {
-			alert(this.polygonModel.getSkyPositions());
-		},
-		/**
-		 * Set the polygone with points. Points is a simple array. It must have at 
-		 * least 6 values (3pts) and an even number of points
-		 * @param points  [a,b,c,.....]
-		 * @returns {Boolean} true if the polygone is OK
-		 */
-		setPoligon : function(points) {
-			this.polygonModel.setPolygon(points);
-			this.closed = true;
-			this.invokeHandler(false);
-			return true;
-		},
-		/**
-		 * Call the client handler when the polygine is close or when the user click on accept
-		 * The data passed to the user handler look like that:
-		    {isReady: true,             // true if the polygone is closed
-		    userAction: userAction,     // handler called after the user have clicked on Accept
-		    region : {
-		        format: "array2dim",    // The only one suported yet [[x, y]....]
-		        points: this.polygonModel.skyPositions  // array with structire matching the format
-		        size: {x: , y:} // regiosn size in deg
-		        }
-		 */
-		invokeHandler : function(userAction){
-			if( this.isPolygonClosed() ){
-				/*
-				 * Compute the region size in degrees
-				 */
-				var view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-				this.clientHandler({isReady: true
-					, userAction: userAction
-					, region : {format: "array2dim"
-						       , points: this.polygonModel.skyPositions
-							   , size: {x: view.size, y: view.size}}});
-			} else {
-				alert("Polygon not closed");
-			}
-		},
-		
-		isPolygonClosed: function() {
-			return ( this.closed || ( this.polygonModel.node == undefined || this.polygonModel.node.length == 0) );
+		this.tolerance = 8; //Tolerance in pixels
+		this.color = params.color;
+
+        this.polygonModel = new PolygonModel(
+			params.points,
+			params.handler,
+			params.drawCanvas,
+			params.staticCanvas,
+			params.aladinView,
+			this.color
+		);
+
+        this.coneModel = new ConeModel(
+			params.drawCanvas,
+			params.staticCanvas,
+			params.aladinView,
+			this.tolerance,
+			this.color
+		);
+
+        this.focusedModel = Models.Polygon;
+        
+        this.canvas = params.drawCanvas;
+        this.clientHandler = params.handler;
+        this.startingNode = -1;
+        this.buttondown = false;
+        this.closed = false;
+        this.movestart = false;
+        this.startdrag = false;
+        this.drag = null;
+        this.result = -1;
+        this.stokeNode;
+        
+        this.data = null;
+    }
+    /**
+    @description Method to siwtch between the two provided models
+     */
+    switchModel() {
+		this.CleanCanvas();
+		if (this.focusedModel === Models.Polygon) {
+			this.focusedModel = Models.Cone;
+		} else {
+			this.focusedModel = Models.Polygon;
 		}
+	}
+	
+	/**
+	@description Function to get the status of this controller
+	@returns {string} some useful data about the controller
+	 */
+    getStatus() {
+        return `startingNode=${this.startingNode}
+        	 buttondown=${this.buttondown}
+        	 closed=${this.closed}
+        	 movestart=${this.movestart}
+        	 startdrag=${this.startdrag}
+        	 drag=${this.drag}
+        	 result=${this.result}
+        	 stokeNode=${this.stokeNode}`;
+    }
+    /**
+     @description Method to handle the beginning of a mouse click on the drawing canvas
+     @param {Event} event event containing the position of the cursor
+     */
+    mouseDown(event) {
+
+		if (this.focusedModel === Models.Polygon) {
+	        const modelReturn = 
+	        	this.polygonModel.
+	        	handleMouseDownPolygon(event, this.closed, this.canvas);
+			
+	        this.closed = modelReturn.closed;
+			this.canvas = modelReturn.canvas;
+			
+	        this.buttondown = "buttondown" in modelReturn ? modelReturn.buttondown : this.buttondown;
+	        this.result = "result" in modelReturn ? modelReturn.result : this.result;
+			this.stokeNode = "storeNode" in modelReturn ? modelReturn.storeNode : this.stokeNode;
+			this.startdrag = "startdrag" in modelReturn ? modelReturn.startdrag : this.startdrag;
+			this.drag = "drag" in modelReturn ? modelReturn.drag : this.drag;
+			this.startingNode = "startingNode" in modelReturn ? modelReturn.startingNode : this.startingNode;
+		} else if (this.focusedModel === Models.Cone) {
+			this.coneModel.handleMouseDown(event,this.canvas);
+		}
+    }
+    
+    
+    /**
+     @description Method to handle the movement of the mouse on the drawing canvas
+     @param {Event} event event containing the position of the cursor
+     */
+    mouseMove(event) {
+		if (this.focusedModel === Models.Polygon) {
+			let resultHandler = this.polygonModel.handleMouseMove(
+				event,
+				this.canvas,
+				this.buttondown,
+				this.startingNode,
+				this.drag,
+				this.result,
+				this.startdrag
+			);
+			this.movestart = resultHandler ? resultHandler : this.movestart;
+		} else if (this.focusedModel === Models.Cone) {
+			this.coneModel.handleMouseMove(event,this.canvas);
+		}
+    }
+    
+    /**
+     @description Method to handle the end of a mouse click on the drawing canvas
+     @param {Event} event event containing the position of the cursor
+     */
+    mouseUp(event) {
+		if (this.focusedModel === Models.Polygon) {
+			const modelReturn = 
+				this.polygonModel.
+				handleMouseUpPolygon(
+					event,
+					this.buttondown,
+					this.canvas,
+					this.startingNode,
+					this.closed,
+					this.movestart,
+					this.startdrag,
+					this.stokeNode
+				);
+			
+			this.buttondown = modelReturn.buttondown;
+			this.canvas = modelReturn.canvas;
+			this.startingNode = modelReturn.startingNode;
+			this.closed = modelReturn.closed;
+			this.movestart = modelReturn.movestart;
+			this.startdrag = modelReturn.startdrag;
+		} else if (this.focusedModel === Models.Cone) {
+			this.coneModel.handleMouseUp(event,this.canvas);
+		}
+    }
+    
+    /**
+    @description Method to store a shape in memory to get it again when one laucnh the drawing canvas again
+     */
+    store() {
+		if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.store();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.store();
+		}
+    }
+    
+    /**
+    @description Function to obtain values from a shape and create it in aladin lite
+     */
+    get() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.get();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.get();
+		}
+    }
+    /**
+    @description Function to delete an overlay
+     */
+    DeleteOverlay() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.DeleteOverlay();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.DeleteOverlay();
+		}
+    }
+    /**
+    @description Function to clean the canvas
+     */
+    CleanCanvas() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.CleanPolygon();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.CleanCone();
+		}
+        this.closed = false;
+    }
+    
+    /**
+    @description Function to center the figure on the screen
+     */
+    ShapeCenter() {
+        if (this.focusedModel === Models.Polygon) {
+	        this.polygonModel.PolygonCenter();
+        } else if (this.focusedModel === Models.Cone) {
+			this.coneModel.ConeCenter();
+		}
+    }
+    
+    /**
+    @description Method to send an alert with all the useful informations
+     */
+    show() {
+        if (this.focusedModel === Models.Polygon) {
+	        alert(this.polygonModel.getSkyPositions());
+        } else if (this.focusedModel === Models.Cone) {
+			alert(this.coneModel.skyConeDescriptor);
+		}
+    }
+    /**
+     * Set the polygon with points. Points is a simple array. It must have at
+     * least 6 values (3pts) and an even number of points
+     * @param {Array} points  [a,b,c,.....]
+     * @returns {Boolean} true if the polygon is OK
+     */
+    setPolygon(points) {
+        this.polygonModel.setPolygon(points);
+        this.closed = true;
+        this.invokeHandler(false);
+        return true;
+    }
+    /**
+        @description Call the client handler when the polygon is close or when the user click on accept
+     
+        @description
+        The data passed to the user handler look like that:
+        <pre><code>
+        {
+            isReady: true,             // true if the polygone is closed
+            userAction: userAction,     // handler called after the user have clicked on Accept
+            region : {
+                format: "array2dim",    // The only one suported yet [[x, y]....]
+                points: this.polygonModel.skyPositions  // array with structure matching the format
+                size: {x: , y:} // regions size in deg
+            }
+        }
+        </code></pre>
+        @param {Boolean} userAction - Tell the Handler if it is required that he made an action
+        @param {object} background - An object sharing the same aspect as `this.data`
+        @return {void}
+     */
+    invokeHandler(userAction,background) {
+		if (this.focusedModel === Models.Polygon) {
+			if (this.isPolygonClosed()) {
+				//Compute the region size in degrees
+				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
+				if (!this.polygonModel.skyPositions.length) {
+					this.data = null;
+				} else {
+					this.data = {
+					    isReady: true,
+					    userAction: userAction,
+					    region: {
+					        format: "array2dim",
+					        color: this.color,
+					        points: this.polygonModel.skyPositions
+					    }
+					}
+					if (background) {
+						this.data.background = background;					
+					} else if (background in this.data) {
+						delete this.data.background;
+					}
+		            this.clientHandler(this.data);
+				}
+	        } else {
+	            alert("Polygon not closed");
+	        }
+		} else if (this.focusedModel === Models.Cone) {
+			if (this.coneModel.isConeComplete()) {
+				//let view = this.coneModel.getView();
+				this.data = {
+				    isReady: true,
+				    userAction: userAction,
+				    region: {
+				        format: "cone",
+				        color: this.color,
+				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
+				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
+				        radius: this.coneModel.skyConeDescriptor.radius
+				    }
+				}
+				if (background) {
+					this.data.background = background;					
+				} else if (background in this.data) {
+					delete this.data.background;
+				}
+				this.clientHandler(this.data);
+			} else {
+				this.data = null;
+				this.coneModel.killStoring();
+				alert("Cone is not finished!");
+			}
+		}
+    }
+    
+    /**
+    @description Method to check if a polygon is closed
+    @returns True if the polygon is closed, false else
+     */
+    isPolygonClosed() {
+        return (this.closed || (this.polygonModel.node == undefined || this.polygonModel.node.length == 0));
+    }
 }
+
 ;console.log('=============== >  RegionEditor_c.js ');
+/**
+ * @preserve LICENSE
+ * 
+ * Copyright (c) 2017 Laurent Michel
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+ * IN THE SOFTWARE. 
+**/
+
+/**
+ * Manager of the view of the region editor
+ * 
+ * Author Gerardo Irvin Campos yah, Alexandre Viala
+ */ 
+
+class RegionPanelV {
+	/**
+	@brief View of the RegionEditor service
+	@param {AladinLiteX_mVc} aladinLite_V - The aladin lite view that will handle the result of the selection
+	@param {Element}  aladinLiteDivId
+	@param {Element} contextDivId
+	@param {Array<{name: string, divId: string, color: string, isSource: boolean, handler: function}>} regionEditorHandlers - Handlers of the shapes drawn
+	@param {Frame} defaultRegion
+	 */
+    constructor(aladinLite_V, aladinLiteDivId, contextDivId, regionEditorHandlers, defaultRegion) {
+        this.aladinLiteDivId = aladinLiteDivId;
+        this.editorContainer = null;
+        this.editorDescriptors = regionEditorHandlers;
+        this.contextDivId = contextDivId;
+        this.contextDiv = null;
+        this.aladinLiteDiv = null;
+        this.aladinLite_V = aladinLite_V;
+        this.editionFrame = defaultRegion;
+        
+        this.sourceRegionEditor = null;
+        this.backgroundRegionEditors = [];
+        
+        this.regionEditors = []
+    }
+    init() {
+		this.aladinLiteDiv = this.aladinLiteDiv == null ? $(`#${this.aladinLiteDivId}`) : this.aladinLiteDiv;
+        this.contextDiv = this.contextDiv == null ? $(`#${this.contextDivId}`) : this.contextDiv;
+        
+        if (!AladinLiteX_mVc.regionEditorInit && this.editorDescriptors.length !== 0) {
+            
+            /***********************************************************
+            ******** Header & container Region Editors creation ********
+            ************************************************************/
+
+            this.contextDiv.append('<h3 class="widget-title">Region Editor Mode</h3>');
+            
+            this.contextDiv.append('<div class="editor-container" id="region-editors"></div>');
+            this.editorContainer = $('#region-editors.editor-container');
+            
+            /************************************************************
+            ************ Panels for the different editors ***************
+            *************************************************************/
+            
+            this.panelsDisplayer = $(`<div class="panel-tabs-container"></div>`);
+            this.panelHeaders = $(`<div class="panel-header"></div>`);
+            this.panelBody = $(`<div class="panel-body"></div>`);
+            
+            this.panelsDisplayer.append(this.panelHeaders,this.panelBody);
+            this.editorContainer.append(this.panelsDisplayer);
+            
+			/*************************************************************
+			**************** Region Editor Registration ******************
+			**************************************************************/
+			console.log(this.editorDescriptors);
+			for (let regionEditor of this.editorDescriptors) {
+	            const editorDiv = $(`<div id="${regionEditor.divId}" class="region-editor"></div>`);
+	            this.panelBody.append(editorDiv);
+	            
+	            const newEditor = new RegionEditor_mVc(
+					regionEditor.name,
+					this.aladinLite_V,
+					this.aladinLiteDivId,
+					regionEditor.divId,
+					regionEditor.handler,
+					this.editionFrame,
+					this.panelHeaders,
+					regionEditor.color
+				)
+				if (regionEditor.isSource) {
+					this.sourceRegionEditor = newEditor;
+				} else {
+					editorDiv.css({"display": "none"});
+					this.backgroundRegionEditors.push(newEditor);
+				}
+				this.regionEditors.push(newEditor);				
+			}
+			
+			this.focusRegionEditor(this.sourceRegionEditor);
+			this.initHeaderTabBtnListeners();
+			this.manageButtonActivated();
+			this.controlAcceptation();
+        }
+    }
+    
+    initHeaderTabBtnListeners() {
+		for (const regionEditor of this.regionEditors) {
+			regionEditor.headerButton.on("click", (event,regionPanelInstance=this) => {
+				regionPanelInstance.focusRegionEditor(regionEditor);
+			});
+		}
+	}
+    
+    /**
+    @param {RegionEditor_mVc} regionEditor
+     */
+    focusRegionEditor(focusedRegionEditor) {
+		focusedRegionEditor.focusEditor();
+		for (const regionEditor of this.regionEditors) {
+			if (regionEditor !== focusedRegionEditor) {
+				regionEditor.hideEditor();
+			}
+		}
+	}
+    
+    /**
+    @todo
+    */
+    manageButtonActivated() {
+		for (const regionEditor of this.regionEditors) {
+			regionEditor.contextDiv.on(
+				"canvas-shown",(event, editors=this.regionEditors) => {
+					for (const editor of editors) {
+						if (editor !== regionEditor) {
+							editor.muteRegionEditor();
+						}
+					}
+				}
+			);
+			regionEditor.contextDiv.on(
+				"canvas-hidden",(event, editors=this.regionEditors) => {
+					for (const editor of editors) {
+						if (editor !== regionEditor) {
+							editor.unmuteRegionEditor();
+						}
+					}
+				}
+			);
+		}
+	}
+	
+	controlAcceptation() {
+		const sourceRegionEditor = this.sourceRegionEditor;
+        const backgroundRegionEditors = this.backgroundRegionEditors;
+        
+		this.sourceRegionEditor.setBtn.on('click', (event) => {
+			let data_array = [];
+			for (const regionEditor of backgroundRegionEditors) {
+				if (regionEditor.controller.data) {
+					data_array.push(regionEditor.controller.data);
+				}
+			}
+            sourceRegionEditor.controller.invokeHandler(true,data_array);
+			console.log(sourceRegionEditor.controller.data,data_array);
+            event.stopPropagation();
+        });
+        for (const regionEditor of this.backgroundRegionEditors) {	
+			regionEditor.setBtn.on('click', (event) => {
+	            regionEditor.controller.invokeHandler(true);
+	            event.stopPropagation();
+	        });
+		}
+	}
+} 
+var browseSaved = null;
+
+;console.log('=============== >  RegionPanel_v.js ');
 /**
  * @preserve LICENSE
  * 
@@ -7636,7 +8706,7 @@ HipsSelector_Mvc.prototype = {
 			/**
 			 * créer le lien url pour acces au serveur
 			 */
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false";
 			
@@ -7689,7 +8759,7 @@ HipsSelector_Mvc.prototype = {
 		},
 		buildHipsTab: function(aladinLiteView){
 			var that = this;
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false";
 			that.productType = "image";
@@ -7734,7 +8804,7 @@ HipsSelector_Mvc.prototype = {
 		searchCataloge: function(mask,aladinLiteView){
 			var that = this;
 
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false&MAXREC=100";
 
@@ -7760,7 +8830,7 @@ HipsSelector_Mvc.prototype = {
 		buildCataTab : function(aladinLiteView){
 			var that = this;
 
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false&MAXREC=200";
 
@@ -8679,26 +9749,47 @@ f * @preserve LICENSE
  * IN THE SOFTWARE. 
 **/
 
-var localConf = {
-		parentDivId: "aladin-lite-div",
-		defaultView: {
-			defaultSurvey: "DSS colored",
-			field: {
-				position: "M33",
-				defaultFov: "0.5"
-			},
-			panelState: true
-		},
-		controllers: {
-			historic: { },
-			regionEditor: { },
-			hipsSelector: { }
-		}
+/**
+@brief Handler to handle the seection of a particular shape
+@param {Object} data - The data containing all the needed informations to send back a message to the user.
+It has the following shape :
+<pre><code>
+{
+	isReady: Boolean,             // true if the polygone is closed
+    userAction: userAction,     // handler called after the user have clicked on Accept
+    region : {
+        format: {"array2dim","cone"},    // The only one suported yet [[x, y]....]
+        points: Array<Array<Number>>  // array with structure matching the format
+        size: {x: , y:} // regions size in deg
+	}
 }
+</code></pre>
+ */
+var regionEditorHandlers = [];
+
+var localConf = {
+	parentDivId: "aladin-lite-div",
+	defaultView: {
+		defaultSurvey: "DSS colored",
+		field: {
+			position: "M33",
+			defaultFov: "0.5"
+		},
+		panelState: true
+	},
+	controllers: {
+		historic: { },
+		regionEditor: { },
+		hipsSelector: { }
+	},
+	regionEditorHandlers: regionEditorHandlers
+	
+}
+
 var externalConf;
 var mixConf = function(localData,externalData) {   
 	
-	for(var key in externalData){
+	for(let key in externalData){
 		if(typeof(externalData[key])== "object" && localData[key])
 			{
 			externalData[key] = mixConf(localData[key],externalData[key])
@@ -8709,8 +9800,8 @@ var mixConf = function(localData,externalData) {
 
 var configureALIX = function(externalData){
 	if(externalData){
-	externalConf = externalData;
-	localConf = mixConf(localConf,externalData);
+		externalConf = externalData;
+		localConf = mixConf(localConf,externalConf);
 	}
 	AladinLiteX_mVc.init(localConf);
 } /////!!!Cant't add () ,cause configureALIX is called later by external project, not by himself

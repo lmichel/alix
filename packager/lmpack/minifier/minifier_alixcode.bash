@@ -23,7 +23,6 @@ packedJSmin=$outputDir/packed_alixcode_min.js       # name of the file containin
 #    There are actually 3 files *_m/v/c.js 
 #
 js_array=(
-		 "AladinUpdate.js" 
 		 "Alix_Modalinfo.js"
 		 "Alix_Out.js"
 		 "Alix_PageLocation.js"
@@ -41,8 +40,10 @@ js_array=(
 	   	 "Historique_m.js"
 	   	 "Historique_v.js"	
 	   	 "RegionEditor_v.js"
-	   	 "RegionEditor_m.js"
+	   	 "PolygonModel.js"
+	   	 "ConeModel.js"
 	   	 "RegionEditor_c.js"
+	   	 "RegionPanel_v.js"
 	   	 "HipsSelector_m.js"
 	   	 "HipsSelector_v.js" 
 	   	 "SwarmDynamicFilter.js"
@@ -53,7 +54,7 @@ js_array=(
 	   	 "Alix_CustomDataTable.js"
 	   	 "Alix_ModalResult.js"
 	   	 "TapCatalog.js"
-          )   
+)   
           
 ##########################
 # Script Functions
