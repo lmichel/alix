@@ -820,7 +820,7 @@ var AladinLiteX_mVc = function(){
 	var setDefaultSurveyForPosition = function(ra, dec){
 		var fil =  aladin.getFov();
 
-		var baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+		var baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 			+ ra + "&DEC=" + dec 
 		+ "&SR=" + fil[0] 
 		+ "&fmt=json&get=record&casesensitive=false";

@@ -528,7 +528,7 @@ var AladinLiteX_mVc = function(){
 		var lieu = aladin.getRaDec();
 		var fil =  aladin.getFov();
 
-		var baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+		var baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 			+ '23' + "&DEC=" + '33' 
 		+ "&SR=" + fil[0] 
 		+ "&fmt=json&get=record&casesensitive=false";

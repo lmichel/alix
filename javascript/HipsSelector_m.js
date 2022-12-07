@@ -54,7 +54,7 @@ HipsSelector_Mvc.prototype = {
 			/**
 			 * créer le lien url pour acces au serveur
 			 */
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false";
 			
@@ -107,7 +107,7 @@ HipsSelector_Mvc.prototype = {
 		},
 		buildHipsTab: function(aladinLiteView){
 			var that = this;
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false";
 			that.productType = "image";
@@ -152,7 +152,7 @@ HipsSelector_Mvc.prototype = {
 		searchCataloge: function(mask,aladinLiteView){
 			var that = this;
 
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false&MAXREC=100";
 
@@ -178,7 +178,7 @@ HipsSelector_Mvc.prototype = {
 		buildCataTab : function(aladinLiteView){
 			var that = this;
 
-			this.baseUrl ="http://alasky.unistra.fr/MocServer/query?RA=" 
+			this.baseUrl ="https://alasky.unistra.fr/MocServer/query?RA=" 
 				+ aladinLiteView.ra + "&DEC=" + aladinLiteView.dec 
 				+ "&SR=" + aladinLiteView.fov + "&fmt=json&get=record&casesensitive=false&MAXREC=200";
 
