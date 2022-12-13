@@ -176,7 +176,7 @@ class RegionEditor_mVc {
         ************************************************************/
         this.browseBtn = $(
 			`<button id='${this.contextDivId}-regionEditor_b' class='alix_browse_btn alix_btn alix_region_btns'>
-				Browse&nbsp;
+				Pan&nbsp;
 				<i class='glyphicon glyphicon-check'></i>
 			</button>`
 		);
@@ -209,7 +209,10 @@ class RegionEditor_mVc {
         this.deleteBtn.css(styleToApply);
         this.deleteBtn.click(function(event) {
             that.controller.CleanCanvas();
+            that.setBrowseMode();
+            browseSaved = false;
             event.stopPropagation();
+            
         });
         this.deleteBtn.attr('disabled', 'disabled');
 
