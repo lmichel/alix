@@ -380,7 +380,7 @@ class ConeModel {
     @description function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
      */
     store() {
-        if (this.skyConeDescriptor !== null) {
+        if (this.skyConeDescriptor !== null && this.skyConeDescriptor.skyNode !== null && !isNaN(this.skyConeDescriptor.skyRadiusNode[0])) {
 			let skyNode = this.skyConeDescriptor.skyNode;
 			let skyRadiusNode = this.skyConeDescriptor.skyRadiusNode;
 			
@@ -408,7 +408,9 @@ class ConeModel {
 			this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
 			console.log("Call redraw");
             this.Redraw();
-        }
+        } else {
+			this.CleanCone();
+		}
 
     }
     
