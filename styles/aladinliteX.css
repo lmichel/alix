@@ -350,6 +350,19 @@
     border-bottom-left-radius: 4px;
 }
 
+.editor-mode-shower {
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+	border-radius: 0.8rem;
+	background: rgba(81, 67, 67,0.5);
+	border: solid black 0.2rem;
+	color: red;
+	font-size: 2rem;
+	font-weight: bold;
+	padding: 0.5rem;
+}
+
 .alix_btn {
 	position: relative;
     display: inline-block;
