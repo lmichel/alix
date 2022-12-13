@@ -54,6 +54,7 @@ js_array=(
 	   	 "Alix_CustomDataTable.js"
 	   	 "Alix_ModalResult.js"
 	   	 "TapCatalog.js"
+	   	 "AladinUpdate.js"
 )   
           
 ##########################

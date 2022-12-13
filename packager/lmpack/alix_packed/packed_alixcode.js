@@ -6283,7 +6283,7 @@ class RegionEditor_mVc {
         ************************************************************/
         this.browseBtn = $(
 			`<button id='${this.contextDivId}-regionEditor_b' class='alix_browse_btn alix_btn alix_region_btns'>
-				Browse&nbsp;
+				Pan&nbsp;
 				<i class='glyphicon glyphicon-check'></i>
 			</button>`
 		);
@@ -6292,7 +6292,7 @@ class RegionEditor_mVc {
         this.browseBtn.attr('disabled', 'disabled');
         this.browseBtn.click(function(event) {
             if (!that.controller.isPolygonClosed()) {
-                that.controller.CleanPoligon();
+                that.controller.CleanCanvas();
             } else {
                 that.controller.get();
             }
@@ -6316,7 +6316,10 @@ class RegionEditor_mVc {
         this.deleteBtn.css(styleToApply);
         this.deleteBtn.click(function(event) {
             that.controller.CleanCanvas();
+            that.setBrowseMode();
+            browseSaved = false;
             event.stopPropagation();
+            
         });
         this.deleteBtn.attr('disabled', 'disabled');
 
@@ -6411,11 +6414,18 @@ class RegionEditor_mVc {
 	}
 	
 	hideEditor() {
+        this.setBrowseMode();
 		this.headerButton.css({
 			"border-bottom": "#545244 solid 2px",
 			"background-color": "rgba(150,150,150,.5)"
 		});
 		this.contextDiv.css({"display": "none"});
+		if (!this.controller.isPolygonClosed()) {
+            this.controller.CleanCanvas();
+        } else {
+            this.controller.get();
+        }
+        this.emitCanvasHideMessage();
 	}
     
     /**
@@ -6424,7 +6434,7 @@ class RegionEditor_mVc {
     clean() {
         //can be called from another button before the editor has been init 
         if (this.controller) {
-            this.controller.CleanPoligon();
+            this.controller.CleanCanvas();
             this.setEditMode();
             this.controller.DeleteOverlay();
             this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
@@ -6494,7 +6504,7 @@ class RegionEditor_mVc {
          * Set the region passed by the client if it exists
          */
         this.points = points;
-        //this.controller.CleanPoligon();
+        //this.controller.CleanCanvas();
         if (this.points) {
             var pts = [];
             /*
@@ -6560,7 +6570,7 @@ class RegionEditor_mVc {
         this.deleteBtn.removeAttr('disabled');
         this.lineCanvas.show();
         this.drawCanvas.show();
-        this.emitCanvasShownMessage()
+        this.emitCanvasShownMessage();
     }
     /**
     @todo
@@ -6691,7 +6701,7 @@ class PolygonModel {
             this.context.arc(data[i].cx, data[i].cy, data[i].r, 0, Math.PI * 2, true);
             this.context.fillStyle = "blue";
             this.context.fill();
-            this.context.strokeStyle="blue"
+            this.context.strokeStyle="black"
             this.context.stroke();
             this.context.closePath();
         }
@@ -7631,7 +7641,7 @@ class ConeModel {
         this.context.arc(centerX, centerY, 5, 0, Math.PI * 2, true);
         this.context.fillStyle = "blue";
         this.context.fill();
-        this.context.strokeStyle="blue";
+        this.context.strokeStyle="black";
         this.context.stroke();
         this.context.closePath();
     }
@@ -7651,7 +7661,7 @@ class ConeModel {
     @param {number} radius
 	 */
     DrawGuidelineCircle(centerX,centerY,radius) {
-		this.drawCircle(centerX, centerY, radius, "gray");
+		this.drawCircle(centerX, centerY, radius, "black");
 	}
 	/**
 	@description Function to draw a circle with a focused color
@@ -7945,7 +7955,7 @@ class ConeModel {
     @description function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
      */
     store() {
-        if (this.skyConeDescriptor !== null) {
+        if (this.skyConeDescriptor !== null && this.skyConeDescriptor.skyNode !== null && !isNaN(this.skyConeDescriptor.skyRadiusNode[0])) {
 			let skyNode = this.skyConeDescriptor.skyNode;
 			let skyRadiusNode = this.skyConeDescriptor.skyRadiusNode;
 			
@@ -7973,7 +7983,9 @@ class ConeModel {
 			this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
 			console.log("Call redraw");
             this.Redraw();
-        }
+        } else {
+			this.CleanCone();
+		}
 
     }
     
@@ -8534,6 +8546,13 @@ class RegionPanelV {
             this.editorContainer = $('#region-editors.editor-container');
             
             /************************************************************
+            ******* Label to show in which mode the user is *************
+            *************************************************************/
+            
+            this.modeDisplayer = $(`<div class="editor-mode-shower">Browse Mode</div>`);
+            this.aladinLiteDiv.append(this.modeDisplayer);
+            
+            /************************************************************
             ************ Panels for the different editors ***************
             *************************************************************/
             
@@ -8597,6 +8616,15 @@ class RegionPanelV {
 			}
 		}
 	}
+	
+	/**
+	@description Method to clean all the shapes on the region editors
+	 */
+	clean() {
+		for (let regionEditor of this.regionEditors) {
+			regionEditor.clean();
+		}
+	}
     
     /**
     @todo
@@ -8604,8 +8632,9 @@ class RegionPanelV {
     manageButtonActivated() {
 		for (const regionEditor of this.regionEditors) {
 			regionEditor.contextDiv.on(
-				"canvas-shown",(event, editors=this.regionEditors) => {
-					for (const editor of editors) {
+				"canvas-shown",(event, regionPanel=this) => {
+					regionPanel.modeDisplayer.html(`Edition Mode`);
+					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
 							editor.muteRegionEditor();
 						}
@@ -8613,9 +8642,11 @@ class RegionPanelV {
 				}
 			);
 			regionEditor.contextDiv.on(
-				"canvas-hidden",(event, editors=this.regionEditors) => {
-					for (const editor of editors) {
+				"canvas-hidden",(event, regionPanel=this) => {
+					regionPanel.modeDisplayer.html(`Browse Mode`);
+					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
+							console.log(editor,"unmuted");
 							editor.unmuteRegionEditor();
 						}
 					}
@@ -11349,3 +11380,178 @@ var TapCatalog = function(){
 	return retour;
 	
 }();;console.log('=============== >  TapCatalog.js ');
+/**
+ * @preserve LICENSE
+ * 
+ * Copyright (c) 2017 Laurent Michel
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+ * PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS 
+ * IN THE SOFTWARE. 
+**/
+/*View.prototype.addOverlay = function(overlay) {
+        this.overlays=[];
+        this.allOverlayLayers=[];
+        overlay.name = this.makeUniqLayerName(overlay.name);
+        this.overlays.push(overlay);
+        this.allOverlayLayers.push(overlay);
+        overlay.setView(this);
+    };*/
+cds.Catalog.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
+    if (show) {
+      this.show();
+    }
+    else {
+      this.hide();
+    }
+    var self = this;
+    if (stepNb<totalNbSteps) {
+      setTimeout(function() {self._doMakeFlash(stepNb+1, totalNbSteps, !show, timeDelay);}, timeDelay);
+    }
+};
+
+cds.Catalog.prototype.makeFlash = function() {
+    this._doMakeFlash(1, 2*5, false, 200);
+};
+
+// function called when a source is clicked. Called by the View object
+cds.Source.prototype.actionClicked = function() {
+    if (this.catalog && this.catalog.onClick) {
+    	AladinLiteX_mVc.setLastSelectedPosition(this.catalog.name,this.ra, this.dec)
+        var view = this.catalog.view;
+        if (this.catalog.onClick=='showTable') {
+            view.aladin.measurementTable.showMeasurement(this);
+            this.select();
+        }
+        else if (this.catalog.onClick=='showPopup') {
+            view.popup.setTitle('<br><br>');
+            var m = '<div class="aladin-marker-measurement">';
+            m += '<table>';
+            for (var key in this.data) {
+                m += '<tr><td>' + key + '</td><td>' + this.data[key] + '</td></tr>';
+            }
+            m += '</table>';
+            m += '</div>';
+            view.popup.setText(m);
+            view.popup.setSource(this);
+            view.popup.show();
+        }
+        else if (typeof this.catalog.onClick === 'function' ) {
+            this.catalog.onClick(this);
+            view.lastClickedObject = this;
+            this.select();
+
+        }
+    }
+};
+
+//The sources selected will be unselected when the empty part of aladin clicked.But the sources selected keep selected when we check one of the related sources,
+MeasurementTable.prototype.hide = function() {
+    this.divEl.hide();
+    $("#SourceDiv").css("display","none");
+    AladinLiteX_mVc.deleteSourceAuto();
+    AladinLiteX_mVc.deleteLastSelectedPosition();
+    $("#ACDS").css("color","#888a85");
+};
+//To clean the target when we click the empty part of aladin
+cds.Source.prototype.actionOtherObjectClicked = function() {
+    if (this.catalog && this.catalog.onClick) {
+        this.deselect();
+        $("#SourceDiv").css("display","none");
+        AladinLiteX_mVc.cleanCatalog("Target");
+        AladinLiteX_mVc.deleteLastSelectedPosition();
+        $("#ACDS").css("color","#888a85");
+	}
+};
+
+
+ProgressiveCat.prototype._doMakeFlash = function(stepNb, totalNbSteps, show, timeDelay) {
+    if (show) {
+      this.show();
+    }
+    else {
+      this.hide();
+    }
+    var self = this;
+    if (stepNb<totalNbSteps) {
+      setTimeout(function() {self._doMakeFlash(stepNb+1, totalNbSteps, !show, timeDelay);}, timeDelay);
+    }
+};
+
+ProgressiveCat.prototype.makeFlash = function() {
+    this._doMakeFlash(1, 2*5, false, 200);
+};
+/**
+ * Limit he number of sources at 999
+ */
+URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
+    if (target && (typeof target  === "object")) {
+        if ('ra' in target && 'dec' in target) {
+            var coo = new Coo(target.ra, target.dec, 7);
+            target = coo.format('s');
+        }
+    }
+    return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
+};
+
+/*Aladin.prototype.increaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel+step);
+	
+};
+
+Aladin.prototype.decreaseZoom = function(step) {
+    if (!step) {
+        step = 5;
+    }
+	this.view.setZoomLevel(this.view.zoomLevel-step);
+	SimbadCatalog.displayCatalogFiltered();
+};*/
+
+var Location = (function() {
+    // constructor
+    Location = function(locationDiv) {
+    		this.$div = $(locationDiv);
+    	};
+	
+	Location.prototype.update = function(lon, lat, cooFrame, isViewCenterPosition) {
+        isViewCenterPosition = (isViewCenterPosition && isViewCenterPosition===true) || false;
+		var coo = new Coo(lon, lat, 7);
+		var updateDiv = $("#aladin-lite-div-target")
+		if (cooFrame==CooFrameEnum.J2000) {
+            this.$div.html(coo.format('s/'));
+            updateDiv.val(coo.format('s/'));
+        }
+		else if (cooFrame==CooFrameEnum.J2000d) {
+            this.$div.html(coo.format('d/'));
+            updateDiv.val(coo.format('d/'));
+        }
+        else {
+            this.$div.html(coo.format('d/'));
+            updateDiv.val(coo.format('d/'));
+        }
+        this.$div.toggleClass('aladin-reticleColor', isViewCenterPosition);
+        updateDiv.toggleClass('aladin-reticleColor', isViewCenterPosition);
+	};
+	
+	return Location;
+})();
+	
+
+;console.log('=============== >  AladinUpdate.js ');
