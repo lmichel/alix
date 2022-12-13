@@ -68,6 +68,13 @@ class RegionPanelV {
             this.editorContainer = $('#region-editors.editor-container');
             
             /************************************************************
+            ******* Label to show in which mode the user is *************
+            *************************************************************/
+            
+            this.modeDisplayer = $(`<div class="editor-mode-shower">Browse Mode</div>`);
+            this.aladinLiteDiv.append(this.modeDisplayer);
+            
+            /************************************************************
             ************ Panels for the different editors ***************
             *************************************************************/
             
@@ -147,8 +154,9 @@ class RegionPanelV {
     manageButtonActivated() {
 		for (const regionEditor of this.regionEditors) {
 			regionEditor.contextDiv.on(
-				"canvas-shown",(event, editors=this.regionEditors) => {
-					for (const editor of editors) {
+				"canvas-shown",(event, regionPanel=this) => {
+					regionPanel.modeDisplayer.html(`Edition Mode`);
+					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
 							editor.muteRegionEditor();
 						}
@@ -156,8 +164,9 @@ class RegionPanelV {
 				}
 			);
 			regionEditor.contextDiv.on(
-				"canvas-hidden",(event, editors=this.regionEditors) => {
-					for (const editor of editors) {
+				"canvas-hidden",(event, regionPanel=this) => {
+					regionPanel.modeDisplayer.html(`Browse Mode`);
+					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
 							console.log(editor,"unmuted");
 							editor.unmuteRegionEditor();
