@@ -131,6 +131,15 @@ class RegionPanelV {
 			}
 		}
 	}
+	
+	/**
+	@description Method to clean all the shapes on the region editors
+	 */
+	clean() {
+		for (let regionEditor of this.regionEditors) {
+			regionEditor.clean();
+		}
+	}
     
     /**
     @todo
