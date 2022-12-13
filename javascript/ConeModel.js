@@ -66,7 +66,7 @@ class ConeModel {
         this.context.arc(centerX, centerY, 5, 0, Math.PI * 2, true);
         this.context.fillStyle = "blue";
         this.context.fill();
-        this.context.strokeStyle="blue";
+        this.context.strokeStyle="black";
         this.context.stroke();
         this.context.closePath();
     }
@@ -86,7 +86,7 @@ class ConeModel {
     @param {number} radius
 	 */
     DrawGuidelineCircle(centerX,centerY,radius) {
-		this.drawCircle(centerX, centerY, radius, "gray");
+		this.drawCircle(centerX, centerY, radius, "black");
 	}
 	/**
 	@description Function to draw a circle with a focused color

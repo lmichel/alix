@@ -49,7 +49,7 @@ class PolygonModel {
             this.context.arc(data[i].cx, data[i].cy, data[i].r, 0, Math.PI * 2, true);
             this.context.fillStyle = "blue";
             this.context.fill();
-            this.context.strokeStyle="blue"
+            this.context.strokeStyle="black"
             this.context.stroke();
             this.context.closePath();
         }
