@@ -86,29 +86,71 @@ AladinLiteView.prototype = {
 		 * création de la vue de liste, si region existe, la liste affiche le logo R
 		 */
 	getHTMLTitle: function() {
-		return '<div  title="replay the stored view" id="' + this.id + '" style="height:auto; overflow: auto; width: 600px; height: 55px;"><img id="' + this.id + '_snapShot_img" src="' 
-			+ this.img
-			//+ '" onclick="AladinLiteX_mVc.restoreViewByIdTest(&quot;' + this.id + '&quot;);" '
-			+ '" onclick="AladinLiteX_mVc.restoreViewById(&quot;' + this.id + '&quot;);" '
-			+ 'style= "height: 18px;width: 18px;">&nbsp;&nbsp;&nbsp;</img>'
-			+'<a title="download the snapshot" href="'+this.img+'" download ="ALIX snapshot ' + this.id + '"><i class="glyphicon glyphicon-download-alt" style="vertical-align: top;color:black" ></i>   </a>'
-			+'<i id="' + this.id + '_link"  style="vertical-align: top;font-weight:800;">'  //stoker le id dans la div
-			+ this.name 
-			+ ' | '
-			+ this.survey.ID
-			+ '</i>&nbsp;'
-			+ this.regionIcon()
-			+ '&nbsp;'
-			+ this.targetIcon()
-			+ '<button id="' + this.id + '_menu" type="edit list" title="menu" class="alix_btn alix_btn-color-his alix_btn-edit"><i class="glyphicon glyphicon-record" style="font-size:19px;position:relative;top:-4px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_close_img" title="delete" class="alix_btn alix_btn-color-his alix_btn-in-edit" ' 
-			+ 'onclick="AladinLiteX_mVc.deleteHistory(&quot;' + this.id + '&quot;);"><i class="glyphicon glyphicon-remove-sign" style="font-size:15px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_commit" title="remark" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:relative;left:-35px;" ><i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_show_description" title="description" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:relative;left:-57px;"><i class="glyphicon glyphicon-info-sign" style="font-size:15px;"></i></button>'
-			+ '<textarea id="' + this.id +'_menu_commit_text" class="alix_text-commit" style="display:none;"></textarea>'
-			+ '<button id="' + this.id +'_menu_commit_text_confirm" class="alix_btn alix_btn-text-ok alix_btn-color-ok" style="display:none;"><i class="glyphicon glyphicon-ok" style="font-size:11px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_commit_text_delete" class="alix_btn alix_btn-text-remove alix_btn-color-remove" style="display:none;"><i class="glyphicon glyphicon-remove" style="font-size:11px;"></i></button>'
-			+ '<div id="' + this.id +'_menu_commit_text_display" class="alix_menu_commit_text_display" style="">'+ this.displayComment() +'</div></div>';
+		return `
+			<div title="replay the stored view"
+				id="${this.id}"
+				class="bookmark-element"
+			>
+				<img id="${this.id}_snapShot_img" 
+					src="${this.img}"
+					onclick="AladinLiteX_mVc.restoreViewById(&quot;${this.id}&quot;);"
+					class="snapshot-picture"
+				>
+				</img>
+				<a title="download the snapshot" href="${this.img}"	download ="ALIX snapshot ${this.id}">
+					<i class="glyphicon glyphicon-download-alt" style="vertical-align: top;color:black" ></i>
+				</a>
+				<!-- store the id in the div -->
+				<i id="${this.id}_link"  style="vertical-align: top;font-weight:800;">
+					${this.name} | ${this.survey.ID}
+				</i>
+				${this.regionIcon()}${this.targetIcon()}
+				<div class="alix-bookmark-edit-menu">
+					<button id="${this.id}_menu" 
+						type="edit list"
+						title="menu"
+						class="alix_btn alix_btn-color-his alix_btn-edit"
+					>
+						<i class="glyphicon glyphicon-record" style="font-size:19px;position:relative;top:-4px;"></i>
+					</button>
+					<button id="${this.id}_menu_close_img"
+						title="delete"
+						class="alix_btn alix_btn-color-his alix_btn-in-edit"
+						onclick="AladinLiteX_mVc.deleteHistory(&quot;${this.id}&quot;);"
+					>
+						<i class="glyphicon glyphicon-remove-sign" style="font-size:15px;"></i>
+					</button>
+					<button id="${this.id}_menu_commit" 
+						title="remark"
+						class="alix_btn alix_btn-color-his alix_btn-in-edit"
+					>
+						<i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i>
+					</button>
+					<button id="${this.id}_menu_show_description"
+						title="description"
+						class="alix_btn alix_btn-color-his alix_btn-in-edit"
+					>
+						<i class="glyphicon glyphicon-info-sign" style="font-size:15px;"></i>
+					</button>
+					<div class="add-commit-text" id="${this.id}-menu-commit-menu" style="display: none;">
+						<textarea id="${this.id}_menu_commit_text" class="alix_text-commit"></textarea>
+						<button id="${this.id}_menu_commit_text_confirm"
+							class="alix_btn alix_btn-text-ok alix_btn-color-ok"
+						>
+							<i class="glyphicon glyphicon-ok" style="font-size:11px;"></i>
+						</button>
+						<button id="${this.id}_menu_commit_text_delete"
+							class="alix_btn alix_btn-text-remove alix_btn-color-remove"
+						>
+							<i class="glyphicon glyphicon-remove" style="font-size:11px;"></i>
+						</button>
+					</div>
+				</div>
+				<div id="${this.id}_menu_commit_text_display" class="alix_menu_commit_text_display" style="">
+					${this.displayComment()}
+				</div>
+			</div>
+		`
 	},
 	
 	regionIcon: function(){
@@ -148,14 +190,19 @@ AladinLiteView.prototype = {
 		/*
 		 * operation on image
 		 */
+		 
 		$("#" + this.id+ "_snapShot_img").mouseover(function(event){
+			/*
 			$("#" + this.id).css("width", "100px");
 			$("#" + this.id).css("height", "100px");
+			*/
 			$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
 		});
 		$("#"+this.id+ "_snapShot_img").mouseout(function(event){
+			/*
 			$("#" + this.id).css("width", "18px");
 			$("#" + this.id).css("height", "18px");
+			*/
 			if(statue == true){
 				$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
 			}else{
@@ -181,7 +228,6 @@ AladinLiteView.prototype = {
 				$("#"+ this.id+ "_show_description").css("transform","translate3d(27px,0px,0px)");
 				$("#"+ this.id+ "_show_description").css("transition-duration","300ms");
 				
-				$("#" + $(this).attr('id').replace("_menu", "")).css("height", "55px");
 				statue = true;
 			}else{
 				$("#"+ this.id+ "_close_img").css("transition-timing-function","ease-out");
@@ -195,7 +241,6 @@ AladinLiteView.prototype = {
 				$("#"+ this.id+ "_show_description").css("transition-timing-function","ease-out");
 				$("#"+ this.id+ "_show_description").css("transform","translate3d(0px,0px,0px)");
 				$("#"+ this.id+ "_show_description").css("transition-duration","200ms");
-				$("#" + $(this).attr('id').replace("_menu", "")).css("height", "auto");
 				statue = false;
 			}
 		});
@@ -211,34 +256,26 @@ AladinLiteView.prototype = {
 			$("#"+hide+"_commit_delete").css("display", "none");
 		});*/
 		
-		$("#"+this.id+ "_menu_commit").click(function(event){
-			$("#"+this.id+"_text").val(self.comment);
-			$("#"+this.id+"_text").css("display", "inline");
-			$("#"+this.id+"_text_confirm").css("display", "inline");
-			
-			$("#"+this.id+"_text_delete").css("display", "inline");
-			//$("#"+this.id+"_text").html(self.comment);
-		});
 		
-		$("#"+this.id+ "_menu_commit_text").click(function(event){
-			$("#"+this.id+"_confirm").css("display", "inline");
-			$("#"+this.id+"_delete").css("display", "inline");
+		/****************************************************************
+		******************* Manage the edit commits button **************
+		****************************************************************/
+		$("#"+this.id+ "_menu_commit").click(function(event){
+			$(`#${self.id}_text`).val(self.comment);
+			$(`#${self.id}-menu-commit-menu`).toggle();
 		});
 		$("#"+this.id+ "_menu_commit_text_delete").click(function(event){
-			$(this).css("display", "none");
-			$("#"+$(this).attr('id').replace("_delete","_confirm")).css("display", "none");
-			$("#"+$(this).attr('id').replace("_delete","")).css("display", "none");
+			$(`#${self.id}-menu-commit-menu`).toggle();
 			
 		});
 		$("#"+this.id+ "_menu_commit_text_confirm").click(function(event){
-			$(this).css("display", "none");
-			$("#"+$(this).attr('id').replace("_confirm","_delete")).css("display", "none");
-			$("#"+$(this).attr('id').replace("_confirm","")).css("display", "none");
+			$(`#${self.id}-menu-commit-menu`).toggle();
 			self.comment = $("#"+$(this).attr('id').replace("_confirm","")).val();
 			$("#"+$(this).attr('id').replace("_confirm","_display")).html(self.comment);
 			//when the message is confirmed, restore the aladinview locally
 			restoreLocal(self);
 		});
+		
 	},
 	
 	clean: function() {
