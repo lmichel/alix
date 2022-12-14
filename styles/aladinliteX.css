@@ -302,6 +302,58 @@
     border: 1px solid #ccc;
 }
 
+/* Circular menu for the bookmark */
+
+.bookmark-element {
+	overflow: visible;
+	width: 500px;
+	display: inline-flex;
+	align-items:center;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	column-gap: 1rem;
+	row-gap: .5rem;
+}
+
+.alix-bookmark-edit-menu {
+	position: relative;
+	overflow: visible;
+	height: 50%;
+}
+
+.alix-bookmark-edit-menu>.alix_btn {
+	position: absolute;
+	left: 2px;
+	top: 0px;
+}
+
+.alix-bookmark-edit-menu .alix_btn.alix_btn-edit {
+	position: relative;
+	left: unset;
+	top: unset;
+}
+
+.add-commit-text {
+	position: absolute;
+	top: 0;
+	right: 320px;
+	display: inline-flex;
+	gap: 1rem;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.snapshot-picture {
+	transition: height 0.2s, width 0.2s;
+	height: 24px;
+	width: 24px;
+}
+
+.snapshot-picture:hover {
+	height: 100px;
+	width: 100px;
+}
+
 .alix_search{
 	z-index: 100;
 	width:30px;
