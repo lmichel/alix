@@ -1269,7 +1269,7 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	/**
-	 * stoker le 'aladinLiteView' courant
+	 * Store the current 'aladinLiteView' object
 	 */
 	var storeCurrentState = function(){
 		var radec = aladin.getRaDec();
