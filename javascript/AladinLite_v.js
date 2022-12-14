@@ -297,8 +297,9 @@ var AladinLiteX_mVc = function(){
 				id="button_history"
 				class="alix_btn alix_btn-circle alix_btn-yellow"
 				title ="history of bookmark"
+				onclick="AladinLiteX_mVc.getHistory()"
 			>
-				<i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i>
+				<i id="" class="glyphicon glyphicon-book " style="font-size:18px;"></i>
 			</button>`
 		var button_region = 
 			`<button
