@@ -286,7 +286,7 @@ AladinLiteView.prototype = {
 		this.region = null;
 		this.id = null;
 		this.img = null;
-		this.catalogTab = null;	
+		this.catalogTab = null;
 		this.XMM = false;
 	}
 }

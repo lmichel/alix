@@ -131,6 +131,7 @@ var AladinLiteX_mVc = function(){
 	var lastSelectedSourcePosition={name:null,ra:null,dec:null};//save the coordonnes of the last selected source
 	var isSourceSelected=false;//Juge whether there is a source being selected
 	var isMove=false;
+	var parameters = null;
 	/**
 	 * var params = {
 	    parentDivId: "aladin-lite-div",
@@ -156,6 +157,7 @@ var AladinLiteX_mVc = function(){
 		/*
 		 * Set ids for sub panels
 		 */
+		parameters = params;
 		parentDivId = params.parentDivId;
 		aladinDivId = `${params.parentDivId}-main`;
 		menuDivId   = `${params.parentDivId}-menu`;
@@ -218,7 +220,7 @@ var AladinLiteX_mVc = function(){
 	  // maximize control
 	var deleteSourceAuto = function(){
 		//When we click the part without source, we deselect the source selected automatically. 
-		if(aladinLiteView.masterResource != undefined&&aladinLiteView.masterResource.actions.showAssociated.handlerDeleteSource == true){
+		if(aladinLiteView.masterResource != undefined && aladinLiteView.masterResource.actions.showAssociated.handlerDeleteSource == true){
 		//The function can be configured chosen or not in the configuration.
 			cleanCatalog("oid");
 			for(var i=0;i<5;i++){
@@ -226,7 +228,7 @@ var AladinLiteX_mVc = function(){
 		    }
 		    closeContext();
 		}
-		if(aladinLiteView.masterResource != undefined&&aladinLiteView.masterResource.actions.externalProcessing.handlerDeselect){
+		if(aladinLiteView.masterResource != undefined && aladinLiteView.masterResource.actions.externalProcessing.handlerDeselect){
 			aladinLiteView.masterResource.actions.externalProcessing.handlerDeselect();
 			   // $(".CatalogMerged").css("display","none");
 		}
@@ -616,7 +618,7 @@ var AladinLiteX_mVc = function(){
 		targetDiv.bind("keypress", function(event) {
 		    if(event.which == 13) {
 		    	if(aladinLiteView.region != null){
-					controller.cleanPolygon();
+					controller.cleanShape();
 				}
 		    	aladinLiteView.clean();
 		    	deselectSource();
@@ -1078,7 +1080,7 @@ var AladinLiteX_mVc = function(){
 		}
 		//gotoObject(defaultPosition);
 		//aladin.gotoPosition(aladinLiteView.ra,aladinLiteView.dec);
-		controller.cleanPolygon();
+		controller.cleanShape();
         //event.stopPropagation();
 	}
 	var historySelected = false;
@@ -1113,7 +1115,7 @@ var AladinLiteX_mVc = function(){
 				$("#regionEditor_a").trigger("click");
 			}else{
 				browseSaved = null;
-				controller.cleanPolygon();
+				controller.cleanShape();
 			}
 		}
     }
@@ -1125,18 +1127,18 @@ var AladinLiteX_mVc = function(){
 		if(contextDiv.height() < 10 /*&& $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green  alix_button_history alix_unselected"*/){
 			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
 			contextDiv.css("border-width", "0.2px");
-			 historySelected = true;
-			 regionSelected = false;
+			historySelected = true;
+			regionSelected = false;
 		}else if(contextDiv.height() > 10 ){
 			if(historySelected){
 				contextDiv.animate({height:0},"fast");
-				 historySelected = false;
-				 regionSelected = false;
+				historySelected = false;
+				regionSelected = false;
 			} else {
 				contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
 				contextDiv.css("border-width", "0.2px");
-				 historySelected = true;
-				 regionSelected = false;
+				historySelected = true;
+				regionSelected = false;
 			}
 		}
 		//event.stopPropagation();
@@ -1146,8 +1148,8 @@ var AladinLiteX_mVc = function(){
 	 * revenir dans la situation de l'historic
 	 */
 	var restoreView = function(storedView) {
-		if(aladinLiteView.region != null){
-			controller.cleanPolygon();
+		if(aladinLiteView != null){
+			controller.cleanShape();
 		}
 		aladinLiteView = jQuery.extend(true, {}, storedView);
 		targetDiv.val(aladinLiteView.name);
@@ -1155,15 +1157,17 @@ var AladinLiteX_mVc = function(){
         aladin.setFoV(aladinLiteView.fov);
         displaySelectedHips(aladinLiteView.survey.ID);
         selectHipsDiv.val(aladinLiteView.survey.ID);
+        console.log(aladinLiteView.region);
         if(aladinLiteView.region != null){
 	        if(!regionEditorInit){
 	        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
 	        	controller.editRegion();
 	    	}
-	        	var points = {type: null, value: []};
-	        	points.type = aladinLiteView.region.format;
-	        	points.value = aladinLiteView.region.points;
-	        	controller.setInitialValue(points);
+	        	//var points = {type: null, value: []};
+	        	//points.type = aladinLiteView.region.format;
+	        	//points.value = aladinLiteView.region.points;
+	        	controller.restore(aladinLiteView.region);
+	        	
         }
         
         //event.stopPropagation();
@@ -1273,6 +1277,8 @@ var AladinLiteX_mVc = function(){
 	 */
 	var storeCurrentState = function(){
 		var radec = aladin.getRaDec();
+		aladinLiteView.region = parameters.controllers.regionEditor.view.storeData();
+		
 		
 		aladinLiteView.name = targetDiv.val();
 		aladinLiteView.ra = radec[0];
@@ -1845,7 +1851,7 @@ var AladinLiteX_mVc = function(){
 			position = targetDiv.val();
 		}
 		if(aladinLiteView.region != null){
-			controller.cleanPolygon();
+			controller.cleanShape();
 		}
 		aladinLiteView.clean();
 		gotoObject(position);
@@ -2465,10 +2471,10 @@ var AladinLiteX_mVc = function(){
 		}
 	}
 	
-	var cleanPolygon = function(){
+	var cleanShape = function(){
 		//console.log(controller);
 		//aladinLiteView.clean();
-		this.controller.cleanPolygon();
+		this.controller.cleanShape();
 	}
 	//in order to display de query from taphandle
 	var changeMasterResource = function(masterResource){
@@ -2551,7 +2557,7 @@ var AladinLiteX_mVc = function(){
 			gotoObject : gotoObject,
 			gotoPositionByName : gotoPositionByName,
 			setRegion : setRegion,
-			cleanPolygon : cleanPolygon,
+			cleanShape : cleanShape,
 			changeMasterResource : changeMasterResource
 	};
 	return retour

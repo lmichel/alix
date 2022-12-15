@@ -39,20 +39,18 @@ Historique_mVc.prototype = {
 				this.contextDiv  = $('#' + this.contextDivId);
 			}
 			//take the data in localstorage and show the list of marked history  
-			var html = '<b class="alix_titlle_image" style=" margin-left: 15px;">Bookmarks:</b><div style="height:230px;overflow:auto;"><ul id = "history_ul" style="padding-left:18px;">';
-			for(var key in localStorage){
-					
-			}
+			var html = `
+				<b class="alix_titlle_image" style=" margin-left: 15px;">Bookmarks:</b>
+				<div style="height:230px;overflow:auto;"><ul id = "history_ul" style="padding-left:18px;">`;
 			deleteAllObjs();
-			for (var k=0 ; k<localStorage.length; k++) {
-				var key = localStorage.key(k);
+			let k=0;
+			for (let key in localStorage) {
 				//the unique key is the time and date when the bookmark is saved
-				if(key.startsWith('alix:')){		
-					var ItemStr = localStorage.getItem(key);
-					var Item = JSON.parse(ItemStr);
+				if(key.startsWith('alix:bookmark')){
+					let Item = JSON.parse(localStorage.getItem(key));
 					Item.id = k;
 					//Create the new aladinliteview according to the bookmark to have the functions in the prototype 
-					var ItemFinal = setAladinLiteView(Item,key);
+					let ItemFinal = setAladinLiteView(Item,key);
 					if(ItemFinal.survey!= undefined){
 						//localStorage.setItem(key,Item);
 						//var obs_title = Item.survey.obs_title;
@@ -70,6 +68,7 @@ Historique_mVc.prototype = {
 						vide = false;
 					}
 				}
+				k++;
 			}
 			if(vide == true){
 				html += "<p style='color:#1f252b;text-align:center'>No bookmark restored</p>";
@@ -94,7 +93,7 @@ Historique_mVc.prototype = {
 //			});
 			
 			//Add handlers for each bookmark  
-			for(var k=0 ; k<localStorage.length; k++){
+			for(let k=0 ; k<localStorage.length; k++){
 				var ItemFinal = getAladinLiteView(k);
 				if( ItemFinal){
 				ItemFinal.setHandlers();
