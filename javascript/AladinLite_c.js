@@ -76,14 +76,15 @@ AladinLite_mvC.prototype = {
 				return null;
 		},
 		
-		setInitialValue: function(points){
+		restore: function(region){
 			if(this.modules.regionEditorView != undefined)
-				return this.modules.regionEditorView.setInitialValue(points);
+				return this.modules.regionEditorView.restoreEditors(region);
 			else
 				return null;
 		},
 		
-		cleanPolygon: function(){
+		
+		cleanShape: function(){
 			if(this.modules.regionEditorView != undefined)
 				return this.modules.regionEditorView.clean();
 			else

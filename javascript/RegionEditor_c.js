@@ -205,11 +205,8 @@ class RegionEditor_mvC {
     @description Function to delete an overlay
      */
     DeleteOverlay() {
-        if (this.focusedModel === Models.Polygon) {
-	        this.polygonModel.DeleteOverlay();
-        } else if (this.focusedModel === Models.Cone) {
-			this.coneModel.DeleteOverlay();
-		}
+	    this.polygonModel.DeleteOverlay();
+		this.coneModel.DeleteOverlay();
     }
     /**
     @description Function to clean the canvas
@@ -256,27 +253,8 @@ class RegionEditor_mvC {
         this.invokeHandler(false);
         return true;
     }
-    /**
-        @description Call the client handler when the polygon is close or when the user click on accept
-     
-        @description
-        The data passed to the user handler look like that:
-        <pre><code>
-        {
-            isReady: true,             // true if the polygone is closed
-            userAction: userAction,     // handler called after the user have clicked on Accept
-            region : {
-                format: "array2dim",    // The only one suported yet [[x, y]....]
-                points: this.polygonModel.skyPositions  // array with structure matching the format
-                size: {x: , y:} // regions size in deg
-            }
-        }
-        </code></pre>
-        @param {Boolean} userAction - Tell the Handler if it is required that he made an action
-        @param {object} background - An object sharing the same aspect as `this.data`
-        @return {void}
-     */
-    invokeHandler(userAction,background) {
+    
+    storeData(userAction,background) {
 		if (this.focusedModel === Models.Polygon) {
 			if (this.isPolygonClosed()) {
 				//Compute the region size in degrees
@@ -298,10 +276,9 @@ class RegionEditor_mvC {
 					} else if (background in this.data) {
 						delete this.data.background;
 					}
-		            this.clientHandler(this.data);
 				}
 	        } else {
-	            alert("Polygon not closed");
+	            //alert("Polygon not closed");
 	        }
 		} else if (this.focusedModel === Models.Cone) {
 			if (this.coneModel.isConeComplete()) {
@@ -318,16 +295,42 @@ class RegionEditor_mvC {
 				    }
 				}
 				if (background) {
-					this.data.background = background;					
+					this.data.background = background;
 				} else if (background in this.data) {
 					delete this.data.background;
 				}
-				this.clientHandler(this.data);
 			} else {
 				this.data = null;
 				this.coneModel.killStoring();
-				alert("Cone is not finished!");
+				//alert("Cone is not finished!");
 			}
+		}
+		return this.data;
+	}
+    /**
+        @description Call the client handler when the polygon is close or when the user click on accept
+     
+        @description
+        The data passed to the user handler look like that:
+        <pre><code>
+        {
+            isReady: true,             // true if the polygone is closed
+            userAction: userAction,     // handler called after the user have clicked on Accept
+            region : {
+                format: "array2dim",    // The only one suported yet [[x, y]....]
+                points: this.polygonModel.skyPositions  // array with structure matching the format
+                size: {x: , y:} // regions size in deg
+            }
+        }
+        </code></pre>
+        @param {Boolean} userAction - Tell the Handler if it is required that he made an action
+        @param {object} background - An object sharing the same aspect as `this.data`
+        @return {void}
+     */
+    invokeHandler(userAction,background) {
+		this.storeData(userAction,background);
+		if (this.data) {		
+			this.clientHandler(this.data);
 		}
     }
     
@@ -338,5 +341,13 @@ class RegionEditor_mvC {
     isPolygonClosed() {
         return (this.closed || (this.polygonModel.node == undefined || this.polygonModel.node.length == 0));
     }
+    
+    restore(region) {
+		if (region.format === "array2dim") {
+			this.polygonModel.restore(region.points);
+		} else {
+			this.coneModel.restore(region.ra,region.dec,region.radius);
+		}
+	}
 }
 

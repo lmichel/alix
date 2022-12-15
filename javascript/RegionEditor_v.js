@@ -328,8 +328,8 @@ class RegionEditor_mVc {
         //can be called from another button before the editor has been init 
         if (this.controller) {
             this.controller.CleanCanvas();
-            this.setEditMode();
             this.controller.DeleteOverlay();
+            this.setEditMode();
             this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
             this.drawContext.clearRect(0, 0, this.drawCanvas[0].width, this.drawCanvas[0].height);
             this.controller.store();
@@ -466,14 +466,16 @@ class RegionEditor_mVc {
         this.emitCanvasShownMessage();
     }
     /**
-    @todo
+    @description Method to send a signal, saying that the editor is shown,
+    to the RegionPanel by using the context div
     */
 	emitCanvasShownMessage() {
 		this.contextDiv.trigger("canvas-shown");
 	}
 	/**
-	@todo
-	 */
+    @description Method to send a signal, saying that the editor is hidden,
+    to the RegionPanel by using the context div
+    */
 	emitCanvasHideMessage() {
 		this.contextDiv.trigger("canvas-hidden");
 	}
@@ -539,6 +541,26 @@ class RegionEditor_mVc {
         }
         return x;
     }
+    
+    /**
+    @description Method to restore a region
+     */
+    restore(region) {
+		if (region.format === "cone" && this.controller.focusedModel === Models.Polygon) {
+			this.controller.switchModel();
+			this.switchBtnText.html(`Cone&nbsp;`);
+			this.switchBtnTooltip.text(`Switch to Polygon`);
+			this.switchBtnIcon.removeClass("polygon");
+			this.switchBtnIcon.addClass("circle");
+		} else if (region.format === "array2dim" && this.controller.focusedModel === Models.Cone) {
+			this.controller.switchModel();
+			this.switchBtnText.html(`Polygon&nbsp;`);
+			this.switchBtnTooltip.text(`Switch to Cone`);
+			this.switchBtnIcon.removeClass("circle");
+			this.switchBtnIcon.addClass("polygon");
+		}
+		this.controller.restore(region);
+	}
 } 
 var browseSaved = null;
 

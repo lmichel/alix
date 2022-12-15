@@ -144,7 +144,9 @@ class RegionPanelV {
 	 */
 	clean() {
 		for (let regionEditor of this.regionEditors) {
-			regionEditor.clean();
+			console.log(regionEditor.regionEditorName,"cleaned");
+			regionEditor.controller.CleanCanvas();
+            regionEditor.controller.DeleteOverlay();
 		}
 	}
     
@@ -168,7 +170,6 @@ class RegionPanelV {
 					regionPanel.modeDisplayer.html(`Browse Mode`);
 					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
-							console.log(editor,"unmuted");
 							editor.unmuteRegionEditor();
 						}
 					}
@@ -188,9 +189,14 @@ class RegionPanelV {
 					data_array.push(regionEditor.controller.data);
 				}
 			}
+			
             sourceRegionEditor.controller.invokeHandler(true,data_array);
-			console.log(sourceRegionEditor.controller.data,data_array);
-            event.stopPropagation();
+			//console.log(sourceRegionEditor.controller.data,data_array);
+            event.stopPropagation();for (const key in localStorage) {
+				console.log(key);
+				console.log(localStorage.getItem(key));
+				console.log(typeof localStorage.getItem(key));
+			}
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
 			regionEditor.setBtn.on('click', (event) => {
@@ -199,6 +205,45 @@ class RegionPanelV {
 	        });
 		}
 	}
-} 
+	
+	storeData() {
+		if (this.sourceRegionEditor) {
+			
+			let data_array = [];
+			for (const regionEditor of this.backgroundRegionEditors) {
+				regionEditor.setBrowseMode();
+				if (regionEditor.controller.data) {
+					data_array.push(regionEditor.controller.data);
+				}
+			}
+			this.sourceRegionEditor.setBrowseMode();
+			return this.sourceRegionEditor.controller.storeData(true, data_array);
+		}
+		return null;
+	}
+	
+	/**
+	@description Method to restore all the regionEditors state
+	@param {{isReady: bool, userAction: bool, region: object, background: Array}} data - The data to restore the editor
+	 */
+	restoreEditors(data) {
+		if (this.editorContainer === null) {
+			this.init();
+		}
+		this.clean();
+		if ("region" in data) {
+			this.sourceRegionEditor.restore(data.region);
+		}
+		if ("background" in data) {
+			let i = 0;
+			for(let background of data.background) {
+				if("region" in background) {					
+					this.backgroundRegionEditors[i].restore(background.region);
+				}
+			}
+		}	
+	}
+}
+
 var browseSaved = null;
 
