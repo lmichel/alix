@@ -558,6 +558,15 @@ class PolygonModel {
         }
 
     }
+    
+    restore(points) {
+		if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+		this.skyPositions = points;
+		this.overlay.addFootprints([A.polygon(this.skyPositions)]);
+	}
     /**
     @brief Function to delete polygons from this.aladin lite when one enter the edition mode
     @return {void} nothing

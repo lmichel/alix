@@ -355,7 +355,7 @@ class ConeModel {
     @description Function to delete cones from this.aladinlite when one enter the edition mode
      */
     DeleteOverlay() {
-        if (this.overlay !== null) {
+        if (this.overlay != null) {
             this.overlay.addFootprints(
 				A.circle(
 					this.skyConeDescriptor.skyNode[0],
@@ -375,44 +375,68 @@ class ConeModel {
 		this.skyConeDescriptor = null;
 		this.overlay = null;
 	}
+	
+	convertSkyNodes(skyNode,skyRadiusNode) {
+		let convertedCenterNode = this.aladinView.world2pix(
+            skyNode[0],
+            skyNode[1]
+        );
+        let convertedRadiusNode = this.aladinView.world2pix(
+			skyRadiusNode[0],
+			skyRadiusNode[1]
+		);
+		//console.log("After world2pix: ",convertedCenterNode,convertedRadiusNode);
+		/** 
+		@tofix
+		/!\ Adding +1 to the coordinates is an awful solution but it is the simplest
+			one that we can implement for now.
+			AladinLite make a floor operation to convert the world coordinate into 
+			integer/pixel coordinates. It should at least use a round function
+			to avoid the continuous shift.
+			The best solution would be to have a world2float function in aladin instead.
+			In this case we could avoid these shifts and keep a constant value.
+		*/
+		this.centerNode = {cx: convertedCenterNode[0]+1, cy: convertedCenterNode[1]+1};
+		this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
+	}
     
     /**
     @description function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
      */
     store() {
         if (this.skyConeDescriptor !== null && this.skyConeDescriptor.skyNode !== null && !isNaN(this.skyConeDescriptor.skyRadiusNode[0])) {
-			let skyNode = this.skyConeDescriptor.skyNode;
-			let skyRadiusNode = this.skyConeDescriptor.skyRadiusNode;
+			this.convertSkyNodes(this.skyConeDescriptor.skyNode,this.skyConeDescriptor.skyRadiusNode);
 			
-			let convertedCenterNode = this.aladinView.world2pix(
-                skyNode[0],
-                skyNode[1]
-            );
-            let convertedRadiusNode = this.aladinView.world2pix(
-				skyRadiusNode[0],
-				skyRadiusNode[1]
-			);
-			console.log("After world2pix: ",convertedCenterNode,convertedRadiusNode);
-						
-			/** 
-			@tofix
-			/!\ Adding +1 to the coordinates is an awful solution but it is the simplest
-				one that we can implement for now.
-				AladinLite make a floor operation to convert the world coordinate into 
-				integer/pixel coordinates. It should at least use a round function
-				to avoid the continuous shift.
-				The best solution would be to have a world2float function in aladin instead.
-				In this case we could avoid these shifts and keep a constant value.
-			*/
-			this.centerNode = {cx: convertedCenterNode[0]+1, cy: convertedCenterNode[1]+1};
-			this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
-			console.log("Call redraw");
+			//console.log("Call redraw");
             this.Redraw();
         } else {
 			this.CleanCone();
 		}
 
     }
+    
+    restore(ra,dec,radius) {
+		this.skyConeDescriptor = {
+			skyNode: [ra,dec],
+			skyRadiusNode: [ra+radius,dec],
+			radius:radius
+		}
+		
+		this.convertSkyNodes(this.skyConeDescriptor.skyNode,this.skyConeDescriptor.skyRadiusNode);
+		
+		if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints(
+			[A.circle(
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1],
+				this.skyConeDescriptor.radius
+			)]
+		); //Create a circle
+	}
     
     /**
     @description Method to compute a circle radius in pixels given the 
