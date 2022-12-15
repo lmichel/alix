@@ -336,7 +336,7 @@
 .add-commit-text {
 	position: absolute;
 	top: 0;
-	right: 320px;
+	right: 360px;
 	display: inline-flex;
 	gap: 1rem;
 	align-items: center;
