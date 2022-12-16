@@ -254,7 +254,7 @@ class RegionEditor_mvC {
         return true;
     }
     
-    storeData(userAction,background) {
+    storeData(userAction,background = null) {
 		if (this.focusedModel === Models.Polygon) {
 			if (this.isPolygonClosed()) {
 				//Compute the region size in degrees
