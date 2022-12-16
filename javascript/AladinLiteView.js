@@ -29,6 +29,7 @@ function AladinLiteView  (){
 	this.fov = null;
 	this.survey = null;
 	this.region = null;
+	this.amoraSession = null;
 	this.id = null;
 	this.img = null;
 	this.XMM = false;
@@ -55,6 +56,7 @@ var setAladinLiteView = function(params,key) {
 		obj.fov = params.fov;
 		obj.survey = params.survey;
 		obj.region = params.region;
+		obj.amoraSession = params.amoraSession;
 		obj.id = params.id;
 		obj.img = params.img;
 		obj.XMM = params.XMM;
