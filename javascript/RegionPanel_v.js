@@ -46,6 +46,7 @@ class RegionPanelV {
         this.aladinLiteDiv = null;
         this.aladinLite_V = aladinLite_V;
         this.editionFrame = defaultRegion;
+        this.amoraSession = null;
         
         this.sourceRegionEditor = null;
         this.backgroundRegionEditors = [];
@@ -212,6 +213,8 @@ class RegionPanelV {
 			let data_array = [];
 			for (const regionEditor of this.backgroundRegionEditors) {
 				regionEditor.setBrowseMode();
+				regionEditor.controller.storeData(true);
+				console.log(regionEditor.controller.data);
 				if (regionEditor.controller.data) {
 					data_array.push(regionEditor.controller.data);
 				}
@@ -242,6 +245,33 @@ class RegionPanelV {
 				}
 			}
 		}	
+	}
+	
+	async generateAmoraSession() {
+		const responsePostRequest = await fetch(url, {
+            method: 'POST', 
+            cache: 'no-cache', 
+            headers: {
+	            'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        });
+        const responseContent = await responsePostRequest.text();
+        return responseContent;
+	}
+	
+	async getAmoraSession() {
+		if (this.sourceRegionEditor && this.sourceRegionEditor.controller.data) {
+			let currentData = this.sourceRegionEditor.controller.data;
+			let newData = this.storeData();
+			if (!newData) {
+				
+			}
+		} else if (this.sourceRegionEditor) {
+			this.amoraSession = await this.generateAmoraSession();
+		}
 	}
 }
 
