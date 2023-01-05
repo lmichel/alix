@@ -194,11 +194,6 @@ class RegionPanelV {
 			
             sourceRegionEditor.controller.invokeHandler(true,data_array);
 			//console.log(sourceRegionEditor.controller.data,data_array);
-            event.stopPropagation();for (const key in localStorage) {
-				console.log(key);
-				console.log(localStorage.getItem(key));
-				console.log(typeof localStorage.getItem(key));
-			}
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
 			regionEditor.setBtn.on('click', (event) => {
@@ -210,12 +205,10 @@ class RegionPanelV {
 	
 	storeData() {
 		if (this.sourceRegionEditor) {
-			
 			let data_array = [];
 			for (const regionEditor of this.backgroundRegionEditors) {
 				regionEditor.setBrowseMode();
 				regionEditor.controller.storeData(true);
-				console.log(regionEditor.controller.data);
 				if (regionEditor.controller.data) {
 					data_array.push(regionEditor.controller.data);
 				}
