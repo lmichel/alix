@@ -80,11 +80,11 @@ var masTest = {
 				divId: "source-region-editor",
 				color: "red",
 				isSource:true,
-				handler: function(data) {
+				handler: function(data,session) {
 					if( data.userAction ) {
 						console.log("hello I'm the new handler");
 						//AladinLiteX_mVc.storePolygon(data.region);
-						alert("hello I'm the new handler\n" + JSON.stringify(data));
+						alert(`hello I'm the new handler\n${JSON.stringify(data)}\n${session}`);
 					}
 				},
 			},
