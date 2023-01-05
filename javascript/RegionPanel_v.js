@@ -283,25 +283,34 @@ class RegionPanelV {
 	}
 
 	isEqualShapeObj(shape1,shape2) {
+		console.log(shape1,shape2);
 		if (shape1.region.format === "array2dim" && shape2.region.format === "array2dim") {
-			for(let i = 0; i < newData.region.points.length; ++i) {
-				if (!shape2.region.points[i] || shape1.region.points[i] !== shape2.region.points[i]) {
+			console.log(shape1.region.points,shape2.region.points);
+			for(let i = 0; i < shape1.region.points.length; ++i) {
+				if (!shape2.region.points[i]
+					|| shape1.region.points[i][0] !== shape2.region.points[i][0]
+					|| shape1.region.points[i][1] !== shape2.region.points[i][1]
+				) {
+					console.log("1.",shape1.region.points[i],shape2.region.points[i]);
 					return false;
 				}
 			}
 		} else if (shape1.region.format === "cone" && shape2.region.format === "cone") {
-			if (shape1.region.ra !== shape2.region.ra
-				|| shape1.region.dec !== shape2.region.dec
-				|| shape1.region.radius !== shape2.region.radius
+			if (Math.round(shape1.region.ra*Math.pow(10,14)) !== Math.round(shape2.region.ra*Math.pow(10,14))
+				|| Math.round(shape1.region.dec*Math.pow(10,14)) !== Math.round(shape2.region.dec*Math.pow(10,14))
+				|| Math.round(shape1.region.radius*Math.pow(10,14)) !== Math.round(shape2.region.radius*Math.pow(10,14))
 			) {
+				console.log("2.");
 				return false;
 			}
 		} else {
+			console.log("3.");
 			return false
 		}
 		if (shape1.background && shape2.background && shape1.background.background === shape2.background.length) {
 			for (let i = 0; i < shape1.background.length; ++i) {
 				if (!this.isEqualShapeObj(shape1.background[i],shape2.background[i])) {
+					console.log("4.");
 					return false;
 				}
 			}
