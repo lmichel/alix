@@ -47,6 +47,7 @@ class RegionPanelV {
         this.aladinLite_V = aladinLite_V;
         this.editionFrame = defaultRegion;
         this.amoraSession = null;
+		this.currentData = null;
         
         this.sourceRegionEditor = null;
         this.backgroundRegionEditors = [];
@@ -247,7 +248,7 @@ class RegionPanelV {
 		}	
 	}
 	
-	async generateAmoraSession() {
+	async generateAmoraSession(data,url="https://xcatdb.unistra.fr/onlinesas/job/") {
 		const responsePostRequest = await fetch(url, {
             method: 'POST', 
             cache: 'no-cache', 
@@ -264,10 +265,36 @@ class RegionPanelV {
 	
 	async getAmoraSession() {
 		if (this.sourceRegionEditor && this.sourceRegionEditor.controller.data) {
-			let currentData = this.sourceRegionEditor.controller.data;
+			if (this.amoraSession === null) {
+				this.currentData = this.storeData();
+				this.amoraSession = await this.generateAmoraSession(this.currentData);
+				return this.amoraSession;
+			}
 			let newData = this.storeData();
-			if (!newData) {
-				
+			if (newData !== null) {
+				if (newData.region.format === "array2dim" && this.currentData.region.format === "array2dim") {
+					for(let i = 0; i < newData.region.points.length; ++i) {
+						if (!this.currentData.region.points[i] || newData.region.points[i] !== this.currentData.region.points[i]) {
+							this.amoraSession = await this.generateAmoraSession(newData);
+							break;
+						}
+					}
+				} else if (newData.region.format === "cone" && this.currentData.region.format === "cone") {
+					if (newData.region.ra !== this.currentData.region.ra
+						|| newData.region.dec !== this.currentData.region.dec
+						|| newData.region.radius !== this.currentData.region.radius
+					) {
+						this.amoraSession = await this.generateAmoraSession(newData);
+					}
+				} else {
+					this.amoraSession = await this.generateAmoraSession(newData);
+				}
+			}
+		} else if (this.sourceRegionEditor) {
+			this.amoraSession = await this.generateAmoraSession(this.storeData());
+		}
+		return this.amoraSession;
+	}
 			}
 		} else if (this.sourceRegionEditor) {
 			this.amoraSession = await this.generateAmoraSession();
