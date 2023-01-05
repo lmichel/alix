@@ -44,7 +44,6 @@ class PolygonModel {
     }
     DrawNode(data) {
         for (var i in data) {
-			console.log(data);
             this.context.beginPath();
             this.context.arc(data[i].cx, data[i].cy, data[i].r, 0, Math.PI * 2, true);
             this.context.fillStyle = "blue";
@@ -111,7 +110,6 @@ class PolygonModel {
     @param {Array<Array<number>>} data An array of nodes represented by arrays
     */
     ArrayToObject(data) {
-	console.log("data",data);
         var NodeTemp = [];
         for (let [cx,cy] of data) {
             NodeTemp.push(
@@ -597,7 +595,6 @@ class PolygonModel {
         for (var k = 0; k < this.node.length; k++) {
             this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
         }
-        console.log(this.skyPositions)
         if (this.overlay == null) {
             this.overlay = A.graphicOverlay({ color: this.color });
 
