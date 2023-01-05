@@ -48,6 +48,7 @@ class RegionPanelV {
         this.editionFrame = defaultRegion;
         this.amoraSession = null;
 		this.currentData = null;
+		this.hasModifications = false;
         
         this.sourceRegionEditor = null;
         this.backgroundRegionEditors = [];
@@ -159,6 +160,7 @@ class RegionPanelV {
 		for (const regionEditor of this.regionEditors) {
 			regionEditor.contextDiv.on(
 				"canvas-shown",(event, regionPanel=this) => {
+					regionPanel.hasModifications = true;
 					regionPanel.modeDisplayer.html(`Edition Mode`);
 					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
@@ -275,6 +277,15 @@ class RegionPanelV {
 			}
 		}
 		return this.amoraSession;
+	}
+
+	isEqualShapeObjSimplified(shape1,shape2) {
+		if (this.hasModifications) {
+			this.hasModifications = false;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	isEqualShapeObj(shape1,shape2) {
