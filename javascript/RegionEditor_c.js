@@ -278,7 +278,7 @@ class RegionEditor_mvC {
 					}
 				}
 	        } else {
-	            //alert("Polygon not closed");
+	            console.error("Polygon not closed");
 	        }
 		} else if (this.focusedModel === Models.Cone) {
 			if (this.coneModel.isConeComplete()) {
@@ -302,10 +302,11 @@ class RegionEditor_mvC {
 			} else {
 				this.data = null;
 				this.coneModel.killStoring();
-				//alert("Cone is not finished!");
+				console.error("Cone is not finished!");
 			}
 		}
-		return this.data;
+		//console.log("data in RegionEditor_c",this.data);
+		return JSON.parse(JSON.stringify(this.data));
 	}
     /**
         @description Call the client handler when the polygon is close or when the user click on accept
@@ -327,10 +328,14 @@ class RegionEditor_mvC {
         @param {object} background - An object sharing the same aspect as `this.data`
         @return {void}
      */
-    invokeHandler(userAction,background) {
+    invokeHandler(userAction,background,session=null) {
 		this.storeData(userAction,background);
-		if (this.data) {		
-			this.clientHandler(this.data);
+		if (this.data) {
+			if (session !== null) {
+				this.clientHandler(this.data,session);
+			} else {
+				this.clientHandler(this.data);
+			}
 		}
     }
     
