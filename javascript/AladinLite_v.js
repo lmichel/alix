@@ -1275,9 +1275,10 @@ var AladinLiteX_mVc = function(){
 	/**
 	 * Store the current 'aladinLiteView' object
 	 */
-	var storeCurrentState = function(){
+	var storeCurrentState = async function(){
 		var radec = aladin.getRaDec();
 		aladinLiteView.region = parameters.controllers.regionEditor.view.storeData();
+		aladinLiteView.amoraSession = await parameters.controllers.regionEditor.view.getAmoraSession();
 		
 		
 		aladinLiteView.name = targetDiv.val();
