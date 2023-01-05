@@ -264,20 +264,20 @@ class RegionPanelV {
 	}
 	
 	async getAmoraSession() {
-		if (this.sourceRegionEditor && this.sourceRegionEditor.controller.data) {
+		if (this.sourceRegionEditor) {
 			if (this.amoraSession === null) {
-				this.currentData = this.storeData();
+				this.currentData = JSON.parse(JSON.stringify(this.storeData()));
 				this.amoraSession = await this.generateAmoraSession(this.currentData);
 				return this.amoraSession;
 			}
 			let newData = this.storeData();
 			if (newData !== null) {
+				console.log(newData,this.currentData);
 				if (!this.isEqualShapeObj(newData,this.currentData)) {
+					this.currentData = newData;
 					this.amoraSession = await this.generateAmoraSession(newData)
 				}
 			}
-		} else if (this.sourceRegionEditor) {
-			this.amoraSession = await this.generateAmoraSession(this.storeData());
 		}
 		return this.amoraSession;
 	}
