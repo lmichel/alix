@@ -185,14 +185,16 @@ class RegionPanelV {
         const backgroundRegionEditors = this.backgroundRegionEditors;
         
 		this.sourceRegionEditor.setBtn.on('click', (event) => {
+			event.stopPropagation();
 			let data_array = [];
 			for (const regionEditor of backgroundRegionEditors) {
 				if (regionEditor.controller.data) {
 					data_array.push(regionEditor.controller.data);
 				}
 			}
-			
-            sourceRegionEditor.controller.invokeHandler(true,data_array);
+			this.getAmoraSession().then((session) => {
+				sourceRegionEditor.controller.invokeHandler(true,data_array,session);
+			});
 			//console.log(sourceRegionEditor.controller.data,data_array);
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
