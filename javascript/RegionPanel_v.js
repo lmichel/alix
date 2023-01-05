@@ -272,22 +272,8 @@ class RegionPanelV {
 			}
 			let newData = this.storeData();
 			if (newData !== null) {
-				if (newData.region.format === "array2dim" && this.currentData.region.format === "array2dim") {
-					for(let i = 0; i < newData.region.points.length; ++i) {
-						if (!this.currentData.region.points[i] || newData.region.points[i] !== this.currentData.region.points[i]) {
-							this.amoraSession = await this.generateAmoraSession(newData);
-							break;
-						}
-					}
-				} else if (newData.region.format === "cone" && this.currentData.region.format === "cone") {
-					if (newData.region.ra !== this.currentData.region.ra
-						|| newData.region.dec !== this.currentData.region.dec
-						|| newData.region.radius !== this.currentData.region.radius
-					) {
-						this.amoraSession = await this.generateAmoraSession(newData);
-					}
-				} else {
-					this.amoraSession = await this.generateAmoraSession(newData);
+				if (!this.isEqualShapeObj(newData,this.currentData)) {
+					this.amoraSession = await this.generateAmoraSession(newData)
 				}
 			}
 		} else if (this.sourceRegionEditor) {
@@ -295,10 +281,32 @@ class RegionPanelV {
 		}
 		return this.amoraSession;
 	}
+
+	isEqualShapeObj(shape1,shape2) {
+		if (shape1.region.format === "array2dim" && shape2.region.format === "array2dim") {
+			for(let i = 0; i < newData.region.points.length; ++i) {
+				if (!shape2.region.points[i] || shape1.region.points[i] !== shape2.region.points[i]) {
+					return false;
+				}
 			}
-		} else if (this.sourceRegionEditor) {
-			this.amoraSession = await this.generateAmoraSession();
+		} else if (shape1.region.format === "cone" && shape2.region.format === "cone") {
+			if (shape1.region.ra !== shape2.region.ra
+				|| shape1.region.dec !== shape2.region.dec
+				|| shape1.region.radius !== shape2.region.radius
+			) {
+				return false;
+			}
+		} else {
+			return false
 		}
+		if (shape1.background && shape2.background && shape1.background.background === shape2.background.length) {
+			for (let i = 0; i < shape1.background.length; ++i) {
+				if (!this.isEqualShapeObj(shape1.background[i],shape2.background[i])) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
 
