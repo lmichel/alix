@@ -1098,7 +1098,7 @@ var AladinLiteX_mVc = function(){
 			
 		}
 		aladinLiteView.XMM = false;
-		for( var c=0 ; c<aladin.view.catalogs.length ; c++) {
+		for( let c=0 ; c<aladin.view.catalogs.length ; c++) {
 			if( aladin.view.catalogs[c].name.startsWith("Swarm")) {
 				aladinLiteView.XMM = true;
 			}
