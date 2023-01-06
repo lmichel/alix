@@ -194,7 +194,7 @@ class RegionPanelV {
 					data_array.push(regionEditor.controller.data);
 				}
 			}
-			this.getAmoraSession().then((session) => {
+			this.getAmoraSession(true).then((session) => {
 				sourceRegionEditor.controller.invokeHandler(true,data_array,session);
 			});
 			//console.log(sourceRegionEditor.controller.data,data_array);
@@ -260,7 +260,7 @@ class RegionPanelV {
         return responseContent;
 	}
 	
-	async getAmoraSession() {
+	async getAmoraSession(simplifiedMode=false) {
 		if (this.sourceRegionEditor) {
 			if (this.amoraSession === null) {
 				this.currentData = JSON.parse(JSON.stringify(this.storeData()));
@@ -270,9 +270,16 @@ class RegionPanelV {
 			let newData = this.storeData();
 			if (newData !== null) {
 				console.log(newData,this.currentData);
-				if (!this.isEqualShapeObj(newData,this.currentData)) {
-					this.currentData = newData;
-					this.amoraSession = await this.generateAmoraSession(newData)
+				if (simplifiedMode) {
+					if (!this.isEqualShapeObjSimplified(newData,this.currentData)) {
+						this.currentData = newData;
+						this.amoraSession = await this.generateAmoraSession(newData)
+					}
+				} else {
+					if (!this.isEqualShapeObj(newData,this.currentData)) {
+						this.currentData = newData;
+						this.amoraSession = await this.generateAmoraSession(newData)
+					}
 				}
 			}
 		}
