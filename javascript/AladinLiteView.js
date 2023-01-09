@@ -197,10 +197,22 @@ AladinLiteView.prototype = {
 		 */
 		var self = this;
 		var statue = false;
+		
+		/**
+		 * Operation with the AMORA session stored
+		 */
+		$(`#${this.id}-amora-button`).on('click', () => {
+			Modalinfo.iframePanel(
+				{
+					url: `https://xcatdb.unistra.fr/onlinesas/${self.amoraSession}/processing/init`,
+					title: "Processing"
+				}
+			);
+		});
+		
 		/*
 		 * operation on image
 		 */
-		 
 		$("#" + this.id+ "_snapShot_img").mouseover(function(event){
 			/*
 			$("#" + this.id).css("width", "100px");
