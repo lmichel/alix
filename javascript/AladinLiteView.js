@@ -106,7 +106,7 @@ AladinLiteView.prototype = {
 				<i id="${this.id}_link"  style="vertical-align: top;font-weight:800;">
 					${this.name} | ${this.survey.ID}
 				</i>
-				${this.regionIcon()}${this.targetIcon()}
+				${this.regionIcon()}${this.targetIcon()}${this.amoraButton()}
 				<div class="alix-bookmark-edit-menu">
 					<button id="${this.id}_menu" 
 						type="edit list"
@@ -160,6 +160,14 @@ AladinLiteView.prototype = {
 			return "";
 		} else {
 			return '<i  title="bookmark with region" class="glyphicon glyphicon-registration-mark" style="font-size:18;vertical-align: top;"></i>';
+		}
+	},
+	
+	amoraButton: function() {
+		if( this.amoraSession === null) {
+			return "";
+		} else {
+			return `<button id="${this.id}-amora-button" class="amora-btn"></button>`;
 		}
 	},
 	
