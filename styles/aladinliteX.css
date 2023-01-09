@@ -415,6 +415,26 @@
 	padding: 0.5rem;
 }
 
+.amora-btn {
+	border: none;
+	background: url("../images/amora_icon.png");
+	background-size: 60%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: rgb(235, 71, 71);
+	width: 2rem;
+	height: 2rem;
+	border-radius: 2rem;
+}
+
+.amora-btn:hover {
+	background-color: rgb(139, 45, 45);
+}
+
+.amora-btn:active {
+	background-color: rgb(235, 152, 152);
+}
+
 .alix_btn {
 	position: relative;
     display: inline-block;
