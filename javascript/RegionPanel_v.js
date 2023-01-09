@@ -320,12 +320,16 @@ class RegionPanelV {
 			console.log("3.");
 			return false
 		}
-		if (shape1.background && shape2.background && shape1.background.background === shape2.background.length) {
-			for (let i = 0; i < shape1.background.length; ++i) {
-				if (!this.isEqualShapeObj(shape1.background[i],shape2.background[i])) {
-					console.log("4.");
-					return false;
+		if (shape1.background || shape2.background) {
+			if (shape1.background && shape2.background && shape1.background.length === shape2.background.length) {
+				for (let i = 0; i < shape1.background.length; ++i) {
+					if (!this.isEqualShapeObj(shape1.background[i],shape2.background[i])) {
+						console.log("4.");
+						return false;
+					}
 				}
+			} else {
+				return false
 			}
 		}
 		return true;
