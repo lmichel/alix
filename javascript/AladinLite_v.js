@@ -1104,8 +1104,9 @@ var AladinLiteX_mVc = function(){
 			}
 		}
 		
-        storeCurrentState();
-		controller.bookMark(aladinLiteView);
+        storeCurrentState().then(() => {
+			controller.bookMark(aladinLiteView);	
+		});
 		
 	}
     var checkBrowseSaved = function(){
