@@ -318,7 +318,7 @@ class RegionPanelV {
 			}
 		} else {
 			console.log("3.");
-			return false
+			return false;
 		}
 		if (shape1.background || shape2.background) {
 			if (shape1.background && shape2.background && shape1.background.length === shape2.background.length) {
