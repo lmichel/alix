@@ -263,7 +263,7 @@ class RegionPanelV {
 	async getAmoraSession(simplifiedMode=false) {
 		if (this.sourceRegionEditor) {
 			if (this.amoraSession === null) {
-				this.currentData = JSON.parse(JSON.stringify(this.storeData()));
+				this.currentData = this.storeData();
 				this.amoraSession = await this.generateAmoraSession(this.currentData);
 				return this.amoraSession;
 			}
