@@ -260,7 +260,8 @@ class ConeModel {
     CleanCone() {
         this.CanvasUpdate();
         this.centerNode = {};
-        this.radiusNode = {};	
+        this.radiusNode = {};
+        this.skyConeDescriptor = null;
     }
     /*
     /**
@@ -356,13 +357,16 @@ class ConeModel {
      */
     DeleteOverlay() {
         if (this.overlay != null) {
-            this.overlay.addFootprints(
-				A.circle(
-					this.skyConeDescriptor.skyNode[0],
-					this.skyConeDescriptor.skyNode[1],
-					this.skyConeDescriptor.radius
-				)
-			);
+			if (this.skyConeDescriptor) {
+	            this.overlay.addFootprints(
+					A.circle(
+						this.skyConeDescriptor.skyNode[0],
+						this.skyConeDescriptor.skyNode[1],
+						this.skyConeDescriptor.radius
+					)
+				);
+			}
+			
             this.overlay.removeAll();
             this.overlay.overlays = [];		           
         }
