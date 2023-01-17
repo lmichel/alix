@@ -79,12 +79,38 @@ var masTest = {
 				name: "Source Region Editor",
 				divId: "source-region-editor",
 				color: "red",
-				isSource:true,
-				handler: function(data,session) {
-					if( data.userAction ) {
+				isSource: true,
+				amoraSession: null,
+				handler: async function(data) {
+					if( data.userAction && data.region ) {
+						switch(data.editorState) {
+							case "erased":
+							case "empty":
+							default:
+								this.amoraSession = null;
+								break;
+							case "modified":
+								const responsePostRequest = await fetch("https://xcatdb.unistra.fr/onlinesas/job/", {
+						            method: 'POST', 
+						            cache: 'no-cache', 
+						            headers: {
+							            'Content-Type': 'application/json'
+						            },
+						            redirect: 'follow',
+						            referrerPolicy: 'no-referrer',
+						            body: JSON.stringify(data)
+						        });
+						        this.amoraSession = await responsePostRequest.text();
+						        break;
+					        case "accepted":
+					        	this.amoraSession = this.amoraSession;
+					        	break;
+								
+						}
 						console.log("hello I'm the new handler");
+						console.log(this);
+						alert(`hello I'm the new handler\n${JSON.stringify(data)}\nSession: ${this.amoraSession}`);
 						//AladinLiteX_mVc.storePolygon(data.region);
-						alert(`hello I'm the new handler\n${JSON.stringify(data)}\n${session}`);
 					}
 				},
 			},
