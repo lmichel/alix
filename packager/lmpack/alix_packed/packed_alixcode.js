@@ -2786,6 +2786,7 @@ function AladinLiteView  (){
 	this.fov = null;
 	this.survey = null;
 	this.region = null;
+	this.amoraSession = null;
 	this.id = null;
 	this.img = null;
 	this.XMM = false;
@@ -2812,6 +2813,7 @@ var setAladinLiteView = function(params,key) {
 		obj.fov = params.fov;
 		obj.survey = params.survey;
 		obj.region = params.region;
+		obj.amoraSession = params.amoraSession;
 		obj.id = params.id;
 		obj.img = params.img;
 		obj.XMM = params.XMM;
@@ -2843,29 +2845,71 @@ AladinLiteView.prototype = {
 		 * création de la vue de liste, si region existe, la liste affiche le logo R
 		 */
 	getHTMLTitle: function() {
-		return '<div  title="replay the stored view" id="' + this.id + '" style="height:auto; overflow: auto; width: 600px; height: 55px;"><img id="' + this.id + '_snapShot_img" src="' 
-			+ this.img
-			//+ '" onclick="AladinLiteX_mVc.restoreViewByIdTest(&quot;' + this.id + '&quot;);" '
-			+ '" onclick="AladinLiteX_mVc.restoreViewById(&quot;' + this.id + '&quot;);" '
-			+ 'style= "height: 18px;width: 18px;">&nbsp;&nbsp;&nbsp;</img>'
-			+'<a title="download the snapshot" href="'+this.img+'" download ="ALIX snapshot ' + this.id + '"><i class="glyphicon glyphicon-download-alt" style="vertical-align: top;color:black" ></i>   </a>'
-			+'<i id="' + this.id + '_link"  style="vertical-align: top;font-weight:800;">'  //stoker le id dans la div
-			+ this.name 
-			+ ' | '
-			+ this.survey.ID
-			+ '</i>&nbsp;'
-			+ this.regionIcon()
-			+ '&nbsp;'
-			+ this.targetIcon()
-			+ '<button id="' + this.id + '_menu" type="edit list" title="menu" class="alix_btn alix_btn-color-his alix_btn-edit"><i class="glyphicon glyphicon-record" style="font-size:19px;position:relative;top:-4px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_close_img" title="delete" class="alix_btn alix_btn-color-his alix_btn-in-edit" ' 
-			+ 'onclick="AladinLiteX_mVc.deleteHistory(&quot;' + this.id + '&quot;);"><i class="glyphicon glyphicon-remove-sign" style="font-size:15px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_commit" title="remark" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:relative;left:-35px;" ><i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_show_description" title="description" class="alix_btn alix_btn-color-his alix_btn-in-edit" style="position:relative;left:-57px;"><i class="glyphicon glyphicon-info-sign" style="font-size:15px;"></i></button>'
-			+ '<textarea id="' + this.id +'_menu_commit_text" class="alix_text-commit" style="display:none;"></textarea>'
-			+ '<button id="' + this.id +'_menu_commit_text_confirm" class="alix_btn alix_btn-text-ok alix_btn-color-ok" style="display:none;"><i class="glyphicon glyphicon-ok" style="font-size:11px;"></i></button>'
-			+ '<button id="' + this.id +'_menu_commit_text_delete" class="alix_btn alix_btn-text-remove alix_btn-color-remove" style="display:none;"><i class="glyphicon glyphicon-remove" style="font-size:11px;"></i></button>'
-			+ '<div id="' + this.id +'_menu_commit_text_display" class="alix_menu_commit_text_display" style="">'+ this.displayComment() +'</div></div>';
+		return `
+			<div title="replay the stored view"
+				id="${this.id}"
+				class="bookmark-element"
+			>
+				<img id="${this.id}_snapShot_img" 
+					src="${this.img}"
+					onclick="AladinLiteX_mVc.restoreViewById(&quot;${this.id}&quot;);"
+					class="snapshot-picture"
+				>
+				</img>
+				<a title="download the snapshot" href="${this.img}"	download ="ALIX snapshot ${this.id}">
+					<i class="glyphicon glyphicon-download-alt" style="vertical-align: top;color:black" ></i>
+				</a>
+				<!-- store the id in the div -->
+				<i id="${this.id}_link"  style="vertical-align: top;font-weight:800;">
+					${this.name} | ${this.survey.ID}
+				</i>
+				${this.regionIcon()}${this.targetIcon()}${this.amoraButton()}
+				<div class="alix-bookmark-edit-menu">
+					<button id="${this.id}_menu" 
+						type="edit list"
+						title="menu"
+						class="alix_btn alix_btn-color-his alix_btn-edit"
+					>
+						<i class="glyphicon glyphicon-record" style="font-size:19px;position:relative;top:-4px;"></i>
+					</button>
+					<button id="${this.id}_menu_close_img"
+						title="delete"
+						class="alix_btn alix_btn-color-his alix_btn-in-edit"
+						onclick="AladinLiteX_mVc.deleteHistory(&quot;${this.id}&quot;);"
+					>
+						<i class="glyphicon glyphicon-remove-sign" style="font-size:15px;"></i>
+					</button>
+					<button id="${this.id}_menu_commit" 
+						title="remark"
+						class="alix_btn alix_btn-color-his alix_btn-in-edit"
+					>
+						<i class="glyphicon glyphicon-pencil" style="font-size:15px;"></i>
+					</button>
+					<button id="${this.id}_menu_show_description"
+						title="description"
+						class="alix_btn alix_btn-color-his alix_btn-in-edit"
+					>
+						<i class="glyphicon glyphicon-info-sign" style="font-size:15px;"></i>
+					</button>
+					<div class="add-commit-text" id="${this.id}-menu-commit-menu" style="display: none;">
+						<textarea id="${this.id}_menu_commit_text" class="alix_text-commit"></textarea>
+						<button id="${this.id}_menu_commit_text_confirm"
+							class="alix_btn alix_btn-text-ok alix_btn-color-ok"
+						>
+							<i class="glyphicon glyphicon-ok" style="font-size:11px;"></i>
+						</button>
+						<button id="${this.id}_menu_commit_text_delete"
+							class="alix_btn alix_btn-text-remove alix_btn-color-remove"
+						>
+							<i class="glyphicon glyphicon-remove" style="font-size:11px;"></i>
+						</button>
+					</div>
+				</div>
+				<div id="${this.id}_menu_commit_text_display" class="alix_menu_commit_text_display" style="">
+					${this.displayComment()}
+				</div>
+			</div>
+		`
 	},
 	
 	regionIcon: function(){
@@ -2873,6 +2917,14 @@ AladinLiteView.prototype = {
 			return "";
 		} else {
 			return '<i  title="bookmark with region" class="glyphicon glyphicon-registration-mark" style="font-size:18;vertical-align: top;"></i>';
+		}
+	},
+	
+	amoraButton: function() {
+		if( this.amoraSession === null) {
+			return "";
+		} else {
+			return `<button id="${this.id}-amora-button" class="amora-btn"></button>`;
 		}
 	},
 	
@@ -2902,17 +2954,34 @@ AladinLiteView.prototype = {
 		 */
 		var self = this;
 		var statue = false;
+		
+		/**
+		 * Operation with the AMORA session stored
+		 */
+		$(`#${this.id}-amora-button`).on('click', () => {
+			Modalinfo.iframePanel(
+				{
+					url: `https://xcatdb.unistra.fr/onlinesas/${self.amoraSession}/processing/init`,
+					title: "Processing"
+				}
+			);
+		});
+		
 		/*
 		 * operation on image
 		 */
 		$("#" + this.id+ "_snapShot_img").mouseover(function(event){
+			/*
 			$("#" + this.id).css("width", "100px");
 			$("#" + this.id).css("height", "100px");
+			*/
 			$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
 		});
 		$("#"+this.id+ "_snapShot_img").mouseout(function(event){
+			/*
 			$("#" + this.id).css("width", "18px");
 			$("#" + this.id).css("height", "18px");
+			*/
 			if(statue == true){
 				$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
 			}else{
@@ -2938,7 +3007,6 @@ AladinLiteView.prototype = {
 				$("#"+ this.id+ "_show_description").css("transform","translate3d(27px,0px,0px)");
 				$("#"+ this.id+ "_show_description").css("transition-duration","300ms");
 				
-				$("#" + $(this).attr('id').replace("_menu", "")).css("height", "55px");
 				statue = true;
 			}else{
 				$("#"+ this.id+ "_close_img").css("transition-timing-function","ease-out");
@@ -2952,7 +3020,6 @@ AladinLiteView.prototype = {
 				$("#"+ this.id+ "_show_description").css("transition-timing-function","ease-out");
 				$("#"+ this.id+ "_show_description").css("transform","translate3d(0px,0px,0px)");
 				$("#"+ this.id+ "_show_description").css("transition-duration","200ms");
-				$("#" + $(this).attr('id').replace("_menu", "")).css("height", "auto");
 				statue = false;
 			}
 		});
@@ -2968,34 +3035,26 @@ AladinLiteView.prototype = {
 			$("#"+hide+"_commit_delete").css("display", "none");
 		});*/
 		
-		$("#"+this.id+ "_menu_commit").click(function(event){
-			$("#"+this.id+"_text").val(self.comment);
-			$("#"+this.id+"_text").css("display", "inline");
-			$("#"+this.id+"_text_confirm").css("display", "inline");
-			
-			$("#"+this.id+"_text_delete").css("display", "inline");
-			//$("#"+this.id+"_text").html(self.comment);
-		});
 		
-		$("#"+this.id+ "_menu_commit_text").click(function(event){
-			$("#"+this.id+"_confirm").css("display", "inline");
-			$("#"+this.id+"_delete").css("display", "inline");
+		/****************************************************************
+		******************* Manage the edit commits button **************
+		****************************************************************/
+		$("#"+this.id+ "_menu_commit").click(function(event){
+			$(`#${self.id}_text`).val(self.comment);
+			$(`#${self.id}-menu-commit-menu`).toggle();
 		});
 		$("#"+this.id+ "_menu_commit_text_delete").click(function(event){
-			$(this).css("display", "none");
-			$("#"+$(this).attr('id').replace("_delete","_confirm")).css("display", "none");
-			$("#"+$(this).attr('id').replace("_delete","")).css("display", "none");
+			$(`#${self.id}-menu-commit-menu`).toggle();
 			
 		});
 		$("#"+this.id+ "_menu_commit_text_confirm").click(function(event){
-			$(this).css("display", "none");
-			$("#"+$(this).attr('id').replace("_confirm","_delete")).css("display", "none");
-			$("#"+$(this).attr('id').replace("_confirm","")).css("display", "none");
+			$(`#${self.id}-menu-commit-menu`).toggle();
 			self.comment = $("#"+$(this).attr('id').replace("_confirm","")).val();
 			$("#"+$(this).attr('id').replace("_confirm","_display")).html(self.comment);
 			//when the message is confirmed, restore the aladinview locally
 			restoreLocal(self);
 		});
+		
 	},
 	
 	clean: function() {
@@ -3006,7 +3065,7 @@ AladinLiteView.prototype = {
 		this.region = null;
 		this.id = null;
 		this.img = null;
-		this.catalogTab = null;	
+		this.catalogTab = null;
 		this.XMM = false;
 	}
 }
@@ -3163,6 +3222,7 @@ var AladinLiteX_mVc = function(){
 	var lastSelectedSourcePosition={name:null,ra:null,dec:null};//save the coordonnes of the last selected source
 	var isSourceSelected=false;//Juge whether there is a source being selected
 	var isMove=false;
+	var parameters = null;
 	/**
 	 * var params = {
 	    parentDivId: "aladin-lite-div",
@@ -3188,6 +3248,7 @@ var AladinLiteX_mVc = function(){
 		/*
 		 * Set ids for sub panels
 		 */
+		parameters = params;
 		parentDivId = params.parentDivId;
 		aladinDivId = `${params.parentDivId}-main`;
 		menuDivId   = `${params.parentDivId}-menu`;
@@ -3250,7 +3311,7 @@ var AladinLiteX_mVc = function(){
 	  // maximize control
 	var deleteSourceAuto = function(){
 		//When we click the part without source, we deselect the source selected automatically. 
-		if(aladinLiteView.masterResource != undefined&&aladinLiteView.masterResource.actions.showAssociated.handlerDeleteSource == true){
+		if(aladinLiteView.masterResource != undefined && aladinLiteView.masterResource.actions.showAssociated.handlerDeleteSource == true){
 		//The function can be configured chosen or not in the configuration.
 			cleanCatalog("oid");
 			for(var i=0;i<5;i++){
@@ -3258,7 +3319,7 @@ var AladinLiteX_mVc = function(){
 		    }
 		    closeContext();
 		}
-		if(aladinLiteView.masterResource != undefined&&aladinLiteView.masterResource.actions.externalProcessing.handlerDeselect){
+		if(aladinLiteView.masterResource != undefined && aladinLiteView.masterResource.actions.externalProcessing.handlerDeselect){
 			aladinLiteView.masterResource.actions.externalProcessing.handlerDeselect();
 			   // $(".CatalogMerged").css("display","none");
 		}
@@ -3329,8 +3390,9 @@ var AladinLiteX_mVc = function(){
 				id="button_history"
 				class="alix_btn alix_btn-circle alix_btn-yellow"
 				title ="history of bookmark"
+				onclick="AladinLiteX_mVc.getHistory()"
 			>
-				<i id="" class="glyphicon glyphicon-book " style="font-size:18px;"onclick="AladinLiteX_mVc.getHistory();"></i>
+				<i id="" class="glyphicon glyphicon-book " style="font-size:18px;"></i>
 			</button>`
 		var button_region = 
 			`<button
@@ -3647,7 +3709,7 @@ var AladinLiteX_mVc = function(){
 		targetDiv.bind("keypress", function(event) {
 		    if(event.which == 13) {
 		    	if(aladinLiteView.region != null){
-					controller.cleanPolygon();
+					controller.cleanShape();
 				}
 		    	aladinLiteView.clean();
 		    	deselectSource();
@@ -4015,9 +4077,7 @@ var AladinLiteX_mVc = function(){
 		ifpopup = true;
 		}
 	}
-
-
-
+	
 	var refresh = function(){
 		gotoObject(defaultPosition);
 		aladin.setFov(defaultFov);
@@ -4109,7 +4169,7 @@ var AladinLiteX_mVc = function(){
 		}
 		//gotoObject(defaultPosition);
 		//aladin.gotoPosition(aladinLiteView.ra,aladinLiteView.dec);
-		controller.cleanPolygon();
+		controller.cleanShape();
         //event.stopPropagation();
 	}
 	var historySelected = false;
@@ -4127,14 +4187,15 @@ var AladinLiteX_mVc = function(){
 			
 		}
 		aladinLiteView.XMM = false;
-		for( var c=0 ; c<aladin.view.catalogs.length ; c++) {
+		for( let c=0 ; c<aladin.view.catalogs.length ; c++) {
 			if( aladin.view.catalogs[c].name.startsWith("Swarm")) {
 				aladinLiteView.XMM = true;
 			}
 		}
 		
-        storeCurrentState();
-		controller.bookMark(aladinLiteView);
+        storeCurrentState().then(() => {
+			controller.bookMark(aladinLiteView);	
+		});
 		
 	}
     var checkBrowseSaved = function(){
@@ -4144,7 +4205,7 @@ var AladinLiteX_mVc = function(){
 				$("#regionEditor_a").trigger("click");
 			}else{
 				browseSaved = null;
-				controller.cleanPolygon();
+				controller.cleanShape();
 			}
 		}
     }
@@ -4156,18 +4217,18 @@ var AladinLiteX_mVc = function(){
 		if(contextDiv.height() < 10 /*&& $("#history").attr("class")=="alix_btn alix_btn-circle alix_btn-green  alix_button_history alix_unselected"*/){
 			contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
 			contextDiv.css("border-width", "0.2px");
-			 historySelected = true;
-			 regionSelected = false;
+			historySelected = true;
+			regionSelected = false;
 		}else if(contextDiv.height() > 10 ){
 			if(historySelected){
 				contextDiv.animate({height:0},"fast");
-				 historySelected = false;
-				 regionSelected = false;
+				historySelected = false;
+				regionSelected = false;
 			} else {
 				contextDiv.css("height","auto");//set height_ul to the height of context panel. _shan
 				contextDiv.css("border-width", "0.2px");
-				 historySelected = true;
-				 regionSelected = false;
+				historySelected = true;
+				regionSelected = false;
 			}
 		}
 		//event.stopPropagation();
@@ -4177,8 +4238,8 @@ var AladinLiteX_mVc = function(){
 	 * revenir dans la situation de l'historic
 	 */
 	var restoreView = function(storedView) {
-		if(aladinLiteView.region != null){
-			controller.cleanPolygon();
+		if(aladinLiteView != null){
+			controller.cleanShape();
 		}
 		aladinLiteView = jQuery.extend(true, {}, storedView);
 		targetDiv.val(aladinLiteView.name);
@@ -4186,15 +4247,17 @@ var AladinLiteX_mVc = function(){
         aladin.setFoV(aladinLiteView.fov);
         displaySelectedHips(aladinLiteView.survey.ID);
         selectHipsDiv.val(aladinLiteView.survey.ID);
+        console.log(aladinLiteView.region);
         if(aladinLiteView.region != null){
 	        if(!regionEditorInit){
 	        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
 	        	controller.editRegion();
 	    	}
-	        	var points = {type: null, value: []};
-	        	points.type = aladinLiteView.region.format;
-	        	points.value = aladinLiteView.region.points;
-	        	controller.setInitialValue(points);
+	        	//var points = {type: null, value: []};
+	        	//points.type = aladinLiteView.region.format;
+	        	//points.value = aladinLiteView.region.points;
+	        	controller.restore(aladinLiteView.region);
+	        	
         }
         
         //event.stopPropagation();
@@ -4300,10 +4363,22 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	/**
-	 * stoker le 'aladinLiteView' courant
+	 * Store the current 'aladinLiteView' object
 	 */
-	var storeCurrentState = function(){
+	var storeCurrentState = async function(){
 		var radec = aladin.getRaDec();
+		aladinLiteView.region = parameters.controllers.regionEditor.view.storeData();
+		if (parameters.controllers.regionEditor.view.sourceRegionEditor) {			
+			aladinLiteView.amoraSession = parameters
+				.controllers
+				.regionEditor
+				.view
+				.sourceRegionEditor
+				.controller
+				.amoraSession;
+		} else {
+			aladinLiteView.amoraSession = null;
+		}
 		
 		aladinLiteView.name = targetDiv.val();
 		aladinLiteView.ra = radec[0];
@@ -4876,7 +4951,7 @@ var AladinLiteX_mVc = function(){
 			position = targetDiv.val();
 		}
 		if(aladinLiteView.region != null){
-			controller.cleanPolygon();
+			controller.cleanShape();
 		}
 		aladinLiteView.clean();
 		gotoObject(position);
@@ -4934,6 +5009,10 @@ var AladinLiteX_mVc = function(){
 		if(NEDcata != null){
 			NEDcata.makeFlash();
 		}
+	}
+	
+	var getAladinImg = function(width, height) {
+		return aladin.getViewDataURL({width: width, height: height});
 	}
 		
 	var openContextPanel = function(html){
@@ -5496,10 +5575,10 @@ var AladinLiteX_mVc = function(){
 		}
 	}
 	
-	var cleanPolygon = function(){
+	var cleanShape = function(){
 		//console.log(controller);
 		//aladinLiteView.clean();
-		this.controller.cleanPolygon();
+		this.controller.cleanShape();
 	}
 	//in order to display de query from taphandle
 	var changeMasterResource = function(masterResource){
@@ -5556,6 +5635,7 @@ var AladinLiteX_mVc = function(){
 			XMMFlash : XMMFlash,
 			SimbadFlash :SimbadFlash,
 			NEDFlash : NEDFlash,
+			getAladinImg: getAladinImg,
 			showXMMDesciption : showXMMDesciption,
 			bindToFade :bindToFade,
 			displayCatalog : displayCatalog,
@@ -5582,7 +5662,7 @@ var AladinLiteX_mVc = function(){
 			gotoObject : gotoObject,
 			gotoPositionByName : gotoPositionByName,
 			setRegion : setRegion,
-			cleanPolygon : cleanPolygon,
+			cleanShape : cleanShape,
 			changeMasterResource : changeMasterResource
 	};
 	return retour
@@ -5673,14 +5753,15 @@ AladinLite_mvC.prototype = {
 				return null;
 		},
 		
-		setInitialValue: function(points){
+		restore: function(region){
 			if(this.modules.regionEditorView != undefined)
-				return this.modules.regionEditorView.setInitialValue(points);
+				return this.modules.regionEditorView.restoreEditors(region);
 			else
 				return null;
 		},
 		
-		cleanPolygon: function(){
+		
+		cleanShape: function(){
 			if(this.modules.regionEditorView != undefined)
 				return this.modules.regionEditorView.clean();
 			else
@@ -5853,7 +5934,7 @@ Historique_Mvc.prototype = {
 			}
 		//	var positionCopyClone = deepClone(positionCopy);//transform the function to string by deepClone, without this the functions can't be transported by stringify
 			var positionCopyStr = JSON.stringify(positionCopy);
-			var date = 'alix:'+new Date();//as the unique key for each bookmark in localstorage
+			var date = `alix:bookmark-${Date.now()}`//as the unique key for each bookmark in localstorage
 			try{
 				//save an bookmark locally
 			localStorage.setItem(date,positionCopyStr);}
@@ -6017,20 +6098,18 @@ Historique_mVc.prototype = {
 				this.contextDiv  = $('#' + this.contextDivId);
 			}
 			//take the data in localstorage and show the list of marked history  
-			var html = '<b class="alix_titlle_image" style=" margin-left: 15px;">Bookmarks:</b><div style="height:230px;overflow:auto;"><ul id = "history_ul" style="padding-left:18px;">';
-			for(var key in localStorage){
-					
-			}
+			var html = `
+				<b class="alix_titlle_image" style=" margin-left: 15px;">Bookmarks:</b>
+				<div style="height:230px;overflow:auto;"><ul id = "history_ul" style="padding-left:18px;">`;
 			deleteAllObjs();
-			for (var k=0 ; k<localStorage.length; k++) {
-				var key = localStorage.key(k);
+			let k=0;
+			for (let key in localStorage) {
 				//the unique key is the time and date when the bookmark is saved
-				if(key.startsWith('alix:')){		
-					var ItemStr = localStorage.getItem(key);
-					var Item = JSON.parse(ItemStr);
+				if(key.startsWith('alix:bookmark')){
+					let Item = JSON.parse(localStorage.getItem(key));
 					Item.id = k;
 					//Create the new aladinliteview according to the bookmark to have the functions in the prototype 
-					var ItemFinal = setAladinLiteView(Item,key);
+					let ItemFinal = setAladinLiteView(Item,key);
 					if(ItemFinal.survey!= undefined){
 						//localStorage.setItem(key,Item);
 						//var obs_title = Item.survey.obs_title;
@@ -6048,6 +6127,7 @@ Historique_mVc.prototype = {
 						vide = false;
 					}
 				}
+				k++;
 			}
 			if(vide == true){
 				html += "<p style='color:#1f252b;text-align:center'>No bookmark restored</p>";
@@ -6072,7 +6152,7 @@ Historique_mVc.prototype = {
 //			});
 			
 			//Add handlers for each bookmark  
-			for(var k=0 ; k<localStorage.length; k++){
+			for(let k=0 ; k<localStorage.length; k++){
 				var ItemFinal = getAladinLiteView(k);
 				if( ItemFinal){
 				ItemFinal.setHandlers();
@@ -6435,8 +6515,8 @@ class RegionEditor_mVc {
         //can be called from another button before the editor has been init 
         if (this.controller) {
             this.controller.CleanCanvas();
-            this.setEditMode();
             this.controller.DeleteOverlay();
+            this.setEditMode();
             this.lineContext.clearRect(0, 0, this.lineCanvas[0].width, this.lineCanvas[0].height);
             this.drawContext.clearRect(0, 0, this.drawCanvas[0].width, this.drawCanvas[0].height);
             this.controller.store();
@@ -6573,14 +6653,16 @@ class RegionEditor_mVc {
         this.emitCanvasShownMessage();
     }
     /**
-    @todo
+    @description Method to send a signal, saying that the editor is shown,
+    to the RegionPanel by using the context div
     */
 	emitCanvasShownMessage() {
 		this.contextDiv.trigger("canvas-shown");
 	}
 	/**
-	@todo
-	 */
+    @description Method to send a signal, saying that the editor is hidden,
+    to the RegionPanel by using the context div
+    */
 	emitCanvasHideMessage() {
 		this.contextDiv.trigger("canvas-hidden");
 	}
@@ -6646,6 +6728,26 @@ class RegionEditor_mVc {
         }
         return x;
     }
+    
+    /**
+    @description Method to restore a region
+     */
+    restore(region) {
+		if (region.format === "cone" && this.controller.focusedModel === Models.Polygon) {
+			this.controller.switchModel();
+			this.switchBtnText.html(`Cone&nbsp;`);
+			this.switchBtnTooltip.text(`Switch to Polygon`);
+			this.switchBtnIcon.removeClass("polygon");
+			this.switchBtnIcon.addClass("circle");
+		} else if (region.format === "array2dim" && this.controller.focusedModel === Models.Cone) {
+			this.controller.switchModel();
+			this.switchBtnText.html(`Polygon&nbsp;`);
+			this.switchBtnTooltip.text(`Switch to Cone`);
+			this.switchBtnIcon.removeClass("circle");
+			this.switchBtnIcon.addClass("polygon");
+		}
+		this.controller.restore(region);
+	}
 } 
 var browseSaved = null;
 
@@ -6696,7 +6798,6 @@ class PolygonModel {
     }
     DrawNode(data) {
         for (var i in data) {
-			console.log(data);
             this.context.beginPath();
             this.context.arc(data[i].cx, data[i].cy, data[i].r, 0, Math.PI * 2, true);
             this.context.fillStyle = "blue";
@@ -6763,7 +6864,6 @@ class PolygonModel {
     @param {Array<Array<number>>} data An array of nodes represented by arrays
     */
     ArrayToObject(data) {
-	console.log("data",data);
         var NodeTemp = [];
         for (let [cx,cy] of data) {
             NodeTemp.push(
@@ -7210,6 +7310,15 @@ class PolygonModel {
         }
 
     }
+    
+    restore(points) {
+		if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+		this.skyPositions = points;
+		this.overlay.addFootprints([A.polygon(this.skyPositions)]);
+	}
     /**
     @brief Function to delete polygons from this.aladin lite when one enter the edition mode
     @return {void} nothing
@@ -7240,7 +7349,6 @@ class PolygonModel {
         for (var k = 0; k < this.node.length; k++) {
             this.skyPositions.push(this.aladinView.pix2world(this.node[k].cx, this.node[k].cy));
         }
-        console.log(this.skyPositions)
         if (this.overlay == null) {
             this.overlay = A.graphicOverlay({ color: this.color });
 
@@ -7835,7 +7943,8 @@ class ConeModel {
     CleanCone() {
         this.CanvasUpdate();
         this.centerNode = {};
-        this.radiusNode = {};	
+        this.radiusNode = {};
+        this.skyConeDescriptor = null;
     }
     /*
     /**
@@ -7930,14 +8039,17 @@ class ConeModel {
     @description Function to delete cones from this.aladinlite when one enter the edition mode
      */
     DeleteOverlay() {
-        if (this.overlay !== null) {
-            this.overlay.addFootprints(
-				A.circle(
-					this.skyConeDescriptor.skyNode[0],
-					this.skyConeDescriptor.skyNode[1],
-					this.skyConeDescriptor.radius
-				)
-			);
+        if (this.overlay != null) {
+			if (this.skyConeDescriptor) {
+	            this.overlay.addFootprints(
+					A.circle(
+						this.skyConeDescriptor.skyNode[0],
+						this.skyConeDescriptor.skyNode[1],
+						this.skyConeDescriptor.radius
+					)
+				);
+			}
+			
             this.overlay.removeAll();
             this.overlay.overlays = [];		           
         }
@@ -7950,44 +8062,68 @@ class ConeModel {
 		this.skyConeDescriptor = null;
 		this.overlay = null;
 	}
+	
+	convertSkyNodes(skyNode,skyRadiusNode) {
+		let convertedCenterNode = this.aladinView.world2pix(
+            skyNode[0],
+            skyNode[1]
+        );
+        let convertedRadiusNode = this.aladinView.world2pix(
+			skyRadiusNode[0],
+			skyRadiusNode[1]
+		);
+		//console.log("After world2pix: ",convertedCenterNode,convertedRadiusNode);
+		/** 
+		@tofix
+		/!\ Adding +1 to the coordinates is an awful solution but it is the simplest
+			one that we can implement for now.
+			AladinLite make a floor operation to convert the world coordinate into 
+			integer/pixel coordinates. It should at least use a round function
+			to avoid the continuous shift.
+			The best solution would be to have a world2float function in aladin instead.
+			In this case we could avoid these shifts and keep a constant value.
+		*/
+		this.centerNode = {cx: convertedCenterNode[0]+1, cy: convertedCenterNode[1]+1};
+		this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
+	}
     
     /**
     @description function to keep values from aladin lite & then convert them into canvas values (this.canvas("pixel"))
      */
     store() {
         if (this.skyConeDescriptor !== null && this.skyConeDescriptor.skyNode !== null && !isNaN(this.skyConeDescriptor.skyRadiusNode[0])) {
-			let skyNode = this.skyConeDescriptor.skyNode;
-			let skyRadiusNode = this.skyConeDescriptor.skyRadiusNode;
+			this.convertSkyNodes(this.skyConeDescriptor.skyNode,this.skyConeDescriptor.skyRadiusNode);
 			
-			let convertedCenterNode = this.aladinView.world2pix(
-                skyNode[0],
-                skyNode[1]
-            );
-            let convertedRadiusNode = this.aladinView.world2pix(
-				skyRadiusNode[0],
-				skyRadiusNode[1]
-			);
-			console.log("After world2pix: ",convertedCenterNode,convertedRadiusNode);
-						
-			/** 
-			@tofix
-			/!\ Adding +1 to the coordinates is an awful solution but it is the simplest
-				one that we can implement for now.
-				AladinLite make a floor operation to convert the world coordinate into 
-				integer/pixel coordinates. It should at least use a round function
-				to avoid the continuous shift.
-				The best solution would be to have a world2float function in aladin instead.
-				In this case we could avoid these shifts and keep a constant value.
-			*/
-			this.centerNode = {cx: convertedCenterNode[0]+1, cy: convertedCenterNode[1]+1};
-			this.radiusNode = {cx: convertedRadiusNode[0]+1, cy:convertedRadiusNode[1]+1};
-			console.log("Call redraw");
+			//console.log("Call redraw");
             this.Redraw();
         } else {
 			this.CleanCone();
 		}
 
     }
+    
+    restore(ra,dec,radius) {
+		this.skyConeDescriptor = {
+			skyNode: [ra,dec],
+			skyRadiusNode: [ra+radius,dec],
+			radius:radius
+		}
+		
+		this.convertSkyNodes(this.skyConeDescriptor.skyNode,this.skyConeDescriptor.skyRadiusNode);
+		
+		if (this.overlay == null) {
+            this.overlay = A.graphicOverlay({ color: this.color });
+            this.aladinView.addOverlayer(this.overlay);
+        }
+        this.overlay.removeAll();
+        this.overlay.addFootprints(
+			[A.circle(
+				this.skyConeDescriptor.skyNode[0],
+				this.skyConeDescriptor.skyNode[1],
+				this.skyConeDescriptor.radius
+			)]
+		); //Create a circle
+	}
     
     /**
     @description Method to compute a circle radius in pixels given the 
@@ -8177,6 +8313,8 @@ const Models = {
 class RegionEditor_mvC {
     constructor(params) {
 	
+		this.editorState = "empty";
+	
 		this.tolerance = 8; //Tolerance in pixels
 		this.color = params.color;
 
@@ -8196,7 +8334,8 @@ class RegionEditor_mvC {
 			this.tolerance,
 			this.color
 		);
-
+		this.aladinLite_V = params.aladinView;
+		console.log(this.aladinLite_V);
         this.focusedModel = Models.Polygon;
         
         this.canvas = params.drawCanvas;
@@ -8313,6 +8452,7 @@ class RegionEditor_mvC {
 		} else if (this.focusedModel === Models.Cone) {
 			this.coneModel.handleMouseUp(event,this.canvas);
 		}
+		this.editorState = "modified";
     }
     
     /**
@@ -8340,21 +8480,23 @@ class RegionEditor_mvC {
     @description Function to delete an overlay
      */
     DeleteOverlay() {
-        if (this.focusedModel === Models.Polygon) {
-	        this.polygonModel.DeleteOverlay();
-        } else if (this.focusedModel === Models.Cone) {
-			this.coneModel.DeleteOverlay();
-		}
+	    this.polygonModel.DeleteOverlay();
+		this.coneModel.DeleteOverlay();
     }
     /**
     @description Function to clean the canvas
      */
     CleanCanvas() {
         if (this.focusedModel === Models.Polygon) {
+			console.log("before",this.polygonModel);
 	        this.polygonModel.CleanPolygon();
+	        console.log("after",this.polygonModel);
         } else if (this.focusedModel === Models.Cone) {
+			console.log("before",this.coneModel);
 			this.coneModel.CleanCone();
+			console.log("after",this.coneModel);
 		}
+		this.editorState = "erased";
         this.closed = false;
     }
     
@@ -8391,6 +8533,66 @@ class RegionEditor_mvC {
         this.invokeHandler(false);
         return true;
     }
+    
+    storeData(userAction,background = null) {
+		if (this.focusedModel === Models.Polygon) {
+			if (this.isPolygonClosed()) {
+				//Compute the region size in degrees
+				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
+				if (!this.polygonModel.skyPositions.length) {
+					this.data = null;
+				} else {
+					this.data = {
+					    isReady: true,
+					    userAction: userAction,
+					    editorState: this.editorState,
+					    img: this.aladinLite_V.getAladinImg(400,400),
+					    region: {
+					        format: "array2dim",
+					        color: this.color,
+					        points: this.polygonModel.skyPositions
+					    }
+					}
+					if (background) {
+						this.data.background = background;					
+					} else if (background in this.data) {
+						delete this.data.background;
+					}
+				}
+	        } else {
+	            console.error("Polygon not closed");
+	        }
+		} else if (this.focusedModel === Models.Cone) {
+			if (this.coneModel.isConeComplete()) {
+				//let view = this.coneModel.getView();
+				this.data = {
+				    isReady: true,
+				    userAction: userAction,
+				    editorState: this.editorState,
+				    img: this.aladinLite_V.getAladinImg(400,400),
+				    region: {
+				        format: "cone",
+				        color: this.color,
+				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
+				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
+				        radius: this.coneModel.skyConeDescriptor.radius
+				    }
+				}
+				if (background) {
+					this.data.background = background;
+				} else if (background in this.data) {
+					delete this.data.background;
+				}
+			} else {
+				this.data = null;
+				this.coneModel.killStoring();
+				console.error("Cone is not finished!");
+			}
+		}
+		this.editorState = "accepted";
+		//console.log("data in RegionEditor_c",this.data);
+		return JSON.parse(JSON.stringify(this.data));
+	}
     /**
         @description Call the client handler when the polygon is close or when the user click on accept
      
@@ -8412,57 +8614,9 @@ class RegionEditor_mvC {
         @return {void}
      */
     invokeHandler(userAction,background) {
-		if (this.focusedModel === Models.Polygon) {
-			if (this.isPolygonClosed()) {
-				//Compute the region size in degrees
-				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-				if (!this.polygonModel.skyPositions.length) {
-					this.data = null;
-				} else {
-					this.data = {
-					    isReady: true,
-					    userAction: userAction,
-					    region: {
-					        format: "array2dim",
-					        color: this.color,
-					        points: this.polygonModel.skyPositions
-					    }
-					}
-					if (background) {
-						this.data.background = background;					
-					} else if (background in this.data) {
-						delete this.data.background;
-					}
-		            this.clientHandler(this.data);
-				}
-	        } else {
-	            alert("Polygon not closed");
-	        }
-		} else if (this.focusedModel === Models.Cone) {
-			if (this.coneModel.isConeComplete()) {
-				//let view = this.coneModel.getView();
-				this.data = {
-				    isReady: true,
-				    userAction: userAction,
-				    region: {
-				        format: "cone",
-				        color: this.color,
-				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
-				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
-				        radius: this.coneModel.skyConeDescriptor.radius
-				    }
-				}
-				if (background) {
-					this.data.background = background;					
-				} else if (background in this.data) {
-					delete this.data.background;
-				}
-				this.clientHandler(this.data);
-			} else {
-				this.data = null;
-				this.coneModel.killStoring();
-				alert("Cone is not finished!");
-			}
+		this.storeData(userAction,background);
+		if (this.data) {
+			this.clientHandler(this.data);
 		}
     }
     
@@ -8473,6 +8627,14 @@ class RegionEditor_mvC {
     isPolygonClosed() {
         return (this.closed || (this.polygonModel.node == undefined || this.polygonModel.node.length == 0));
     }
+    
+    restore(region) {
+		if (region.format === "array2dim") {
+			this.polygonModel.restore(region.points);
+		} else {
+			this.coneModel.restore(region.ra,region.dec,region.radius);
+		}
+	}
 }
 
 ;console.log('=============== >  RegionEditor_c.js ');
@@ -8524,6 +8686,7 @@ class RegionPanelV {
         this.aladinLiteDiv = null;
         this.aladinLite_V = aladinLite_V;
         this.editionFrame = defaultRegion;
+		this.currentData = null;
         
         this.sourceRegionEditor = null;
         this.backgroundRegionEditors = [];
@@ -8622,7 +8785,9 @@ class RegionPanelV {
 	 */
 	clean() {
 		for (let regionEditor of this.regionEditors) {
-			regionEditor.clean();
+			console.log(regionEditor.regionEditorName,"cleaned");
+			regionEditor.controller.CleanCanvas();
+            regionEditor.controller.DeleteOverlay();
 		}
 	}
     
@@ -8646,7 +8811,6 @@ class RegionPanelV {
 					regionPanel.modeDisplayer.html(`Browse Mode`);
 					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
-							console.log(editor,"unmuted");
 							editor.unmuteRegionEditor();
 						}
 					}
@@ -8660,24 +8824,72 @@ class RegionPanelV {
         const backgroundRegionEditors = this.backgroundRegionEditors;
         
 		this.sourceRegionEditor.setBtn.on('click', (event) => {
+			event.stopPropagation();
 			let data_array = [];
 			for (const regionEditor of backgroundRegionEditors) {
 				if (regionEditor.controller.data) {
 					data_array.push(regionEditor.controller.data);
 				}
 			}
-            sourceRegionEditor.controller.invokeHandler(true,data_array);
-			console.log(sourceRegionEditor.controller.data,data_array);
-            event.stopPropagation();
+			sourceRegionEditor.controller.invokeHandler(true,data_array);
+			//console.log(sourceRegionEditor.controller.data,data_array);
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
 			regionEditor.setBtn.on('click', (event) => {
+				if (regionEditor.controller.editorState === "erased") {					
+		            sourceRegionEditor.controller.editorState = "modified";
+				} else if (regionEditor.controller.editorState !== "empty") {
+					sourceRegionEditor.controller.editorState = regionEditor.controller.editorState;
+				}
 	            regionEditor.controller.invokeHandler(true);
 	            event.stopPropagation();
 	        });
+	        regionEditor.deleteBtn.on('click', (event) => {
+				sourceRegionEditor.controller.editorState = "modified";
+			});
 		}
+		
 	}
-} 
+	
+	storeData() {
+		if (this.sourceRegionEditor) {
+			let data_array = [];
+			for (const regionEditor of this.backgroundRegionEditors) {
+				regionEditor.setBrowseMode();
+				regionEditor.controller.storeData(true);
+				if (regionEditor.controller.data) {
+					data_array.push(regionEditor.controller.data);
+				}
+			}
+			this.sourceRegionEditor.setBrowseMode();
+			return this.sourceRegionEditor.controller.storeData(true, data_array);
+		}
+		return null;
+	}
+	
+	/**
+	@description Method to restore all the regionEditors state
+	@param {{isReady: bool, userAction: bool, region: object, background: Array}} data - The data to restore the editor
+	 */
+	restoreEditors(data) {
+		if (this.editorContainer === null) {
+			this.init();
+		}
+		this.clean();
+		if ("region" in data) {
+			this.sourceRegionEditor.restore(data.region);
+		}
+		if ("background" in data) {
+			let i = 0;
+			for(let background of data.background) {
+				if("region" in background) {					
+					this.backgroundRegionEditors[i].restore(background.region);
+				}
+			}
+		}	
+	}
+}
+
 var browseSaved = null;
 
 ;console.log('=============== >  RegionPanel_v.js ');
