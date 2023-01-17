@@ -986,9 +986,7 @@ var AladinLiteX_mVc = function(){
 		ifpopup = true;
 		}
 	}
-
-
-
+	
 	var refresh = function(){
 		gotoObject(defaultPosition);
 		aladin.setFov(defaultFov);
