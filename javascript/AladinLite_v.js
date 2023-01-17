@@ -1912,6 +1912,10 @@ var AladinLiteX_mVc = function(){
 			NEDcata.makeFlash();
 		}
 	}
+	
+	var getAladinImg = function(width, height) {
+		return aladin.getViewDataURL({width: width, height: height});
+	}
 		
 	var openContextPanel = function(html){
 		checkBrowseSaved();
@@ -2533,6 +2537,7 @@ var AladinLiteX_mVc = function(){
 			XMMFlash : XMMFlash,
 			SimbadFlash :SimbadFlash,
 			NEDFlash : NEDFlash,
+			getAladinImg: getAladinImg,
 			showXMMDesciption : showXMMDesciption,
 			bindToFade :bindToFade,
 			displayCatalog : displayCatalog,
