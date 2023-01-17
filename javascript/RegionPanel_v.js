@@ -196,10 +196,19 @@ class RegionPanelV {
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
 			regionEditor.setBtn.on('click', (event) => {
+				if (regionEditor.controller.editorState === "erased") {					
+		            sourceRegionEditor.controller.editorState = "modified";
+				} else if (regionEditor.controller.editorState !== "empty") {
+					sourceRegionEditor.controller.editorState = regionEditor.controller.editorState;
+				}
 	            regionEditor.controller.invokeHandler(true);
 	            event.stopPropagation();
 	        });
+	        regionEditor.deleteBtn.on('click', (event) => {
+				sourceRegionEditor.controller.editorState = "modified";
+			});
 		}
+		
 	}
 	
 	storeData() {
