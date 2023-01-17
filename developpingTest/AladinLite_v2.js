@@ -370,7 +370,7 @@ var AladinLiteX_mVc = function(){
 		targetDiv.bind("keypress", function(event) {
 		    if(event.which == 13) {
 		    	if(aladinLiteView.region != null){
-					controller.cleanPolygon();
+					controller.cleanShape();
 				}
 		    	aladinLiteView.clean();
 		    	deselectSource();
@@ -737,7 +737,7 @@ var AladinLiteX_mVc = function(){
 		checkBrowseSaved();
 		gotoObject(defaultPosition);
 		//aladin.gotoPosition(aladinLiteView.ra,aladinLiteView.dec);
-		controller.cleanPolygon();
+		controller.cleanShape();
         //event.stopPropagation();
 	}
 	var historySelected = false;
@@ -770,7 +770,7 @@ var AladinLiteX_mVc = function(){
 				$("#regionEditor_a").trigger("click");
 			}else{
 				browseSaved = null;
-				controller.cleanPolygon();
+				controller.cleanShape();
 			}
 		}
     }
@@ -803,7 +803,7 @@ var AladinLiteX_mVc = function(){
 	 */
 	var restoreView = function(storedView) {
 		if(aladinLiteView.region != null){
-			controller.cleanPolygon();
+			controller.cleanShape();
 		}
 		aladinLiteView = jQuery.extend(true, {}, storedView);
 		targetDiv.val(aladinLiteView.name);
@@ -812,10 +812,10 @@ var AladinLiteX_mVc = function(){
         displaySelectedHips(aladinLiteView.survey.ID);
         selectHipsDiv.val(aladinLiteView.survey.ID);
         if(aladinLiteView.region != null){
-        if(!regionEditorInit){
-        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
-        	controller.editRegion();
-    			}
+	        if(!regionEditorInit){
+	        	//create the editregion environment (if it hasn't been created )for the polygon in the localstorage
+	        	controller.editRegion();
+	    	}
         	var points = {type: null, value: []};
         	points.type = aladinLiteView.region.format;
         	points.value = aladinLiteView.region.points;
@@ -1467,7 +1467,7 @@ var AladinLiteX_mVc = function(){
 			position = targetDiv.val();
 		}
 		if(aladinLiteView.region != null){
-			controller.cleanPolygon();
+			controller.cleanShape();
 		}
 		aladinLiteView.clean();
 		gotoObject(position);
