@@ -46,9 +46,7 @@ class RegionPanelV {
         this.aladinLiteDiv = null;
         this.aladinLite_V = aladinLite_V;
         this.editionFrame = defaultRegion;
-        this.amoraSession = null;
 		this.currentData = null;
-		this.hasModifications = false;
         
         this.sourceRegionEditor = null;
         this.backgroundRegionEditors = [];
@@ -160,7 +158,6 @@ class RegionPanelV {
 		for (const regionEditor of this.regionEditors) {
 			regionEditor.contextDiv.on(
 				"canvas-shown",(event, regionPanel=this) => {
-					regionPanel.hasModifications = true;
 					regionPanel.modeDisplayer.html(`Edition Mode`);
 					for (const editor of regionPanel.regionEditors) {
 						if (editor !== regionEditor) {
@@ -194,9 +191,7 @@ class RegionPanelV {
 					data_array.push(regionEditor.controller.data);
 				}
 			}
-			this.getAmoraSession(true).then((session) => {
-				sourceRegionEditor.controller.invokeHandler(true,data_array,session);
-			});
+			sourceRegionEditor.controller.invokeHandler(true,data_array);
 			//console.log(sourceRegionEditor.controller.data,data_array);
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
@@ -243,96 +238,6 @@ class RegionPanelV {
 				}
 			}
 		}	
-	}
-	
-	async generateAmoraSession(data,url="https://xcatdb.unistra.fr/onlinesas/job/") {
-		const responsePostRequest = await fetch(url, {
-            method: 'POST', 
-            cache: 'no-cache', 
-            headers: {
-	            'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify(data)
-        });
-        const responseContent = await responsePostRequest.text();
-        return responseContent;
-	}
-	
-	async getAmoraSession(simplifiedMode=false) {
-		if (this.sourceRegionEditor) {
-			if (this.amoraSession === null) {
-				this.currentData = this.storeData();
-				this.amoraSession = await this.generateAmoraSession(this.currentData);
-				return this.amoraSession;
-			}
-			let newData = this.storeData();
-			if (newData !== null) {
-				console.log(newData,this.currentData);
-				if (simplifiedMode) {
-					if (!this.isEqualShapeObjSimplified(newData,this.currentData)) {
-						this.currentData = newData;
-						this.amoraSession = await this.generateAmoraSession(newData)
-					}
-				} else {
-					if (!this.isEqualShapeObj(newData,this.currentData)) {
-						this.currentData = newData;
-						this.amoraSession = await this.generateAmoraSession(newData)
-					}
-				}
-			}
-		}
-		return this.amoraSession;
-	}
-
-	isEqualShapeObjSimplified(shape1,shape2) {
-		if (this.hasModifications) {
-			this.hasModifications = false;
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	isEqualShapeObj(shape1,shape2) {
-		console.log(shape1,shape2);
-		if (shape1.region.format === "array2dim" && shape2.region.format === "array2dim") {
-			console.log(shape1.region.points,shape2.region.points);
-			for(let i = 0; i < shape1.region.points.length; ++i) {
-				if (!shape2.region.points[i]
-					|| shape1.region.points[i][0] !== shape2.region.points[i][0]
-					|| shape1.region.points[i][1] !== shape2.region.points[i][1]
-				) {
-					console.log("1.",shape1.region.points[i],shape2.region.points[i]);
-					return false;
-				}
-			}
-		} else if (shape1.region.format === "cone" && shape2.region.format === "cone") {
-			if (Math.round(shape1.region.ra*Math.pow(10,14)) !== Math.round(shape2.region.ra*Math.pow(10,14))
-				|| Math.round(shape1.region.dec*Math.pow(10,14)) !== Math.round(shape2.region.dec*Math.pow(10,14))
-				|| Math.round(shape1.region.radius*Math.pow(10,14)) !== Math.round(shape2.region.radius*Math.pow(10,14))
-			) {
-				console.log("2.");
-				return false;
-			}
-		} else {
-			console.log("3.");
-			return false;
-		}
-		if (shape1.background || shape2.background) {
-			if (shape1.background && shape2.background && shape1.background.length === shape2.background.length) {
-				for (let i = 0; i < shape1.background.length; ++i) {
-					if (!this.isEqualShapeObj(shape1.background[i],shape2.background[i])) {
-						console.log("4.");
-						return false;
-					}
-				}
-			} else {
-				return false
-			}
-		}
-		return true;
 	}
 }
 

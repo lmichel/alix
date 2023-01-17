@@ -337,14 +337,10 @@ class RegionEditor_mvC {
         @param {object} background - An object sharing the same aspect as `this.data`
         @return {void}
      */
-    invokeHandler(userAction,background,session=null) {
+    invokeHandler(userAction,background) {
 		this.storeData(userAction,background);
 		if (this.data) {
-			if (session !== null) {
-				this.clientHandler(this.data,session);
-			} else {
-				this.clientHandler(this.data);
-			}
+			this.clientHandler(this.data);
 		}
     }
     
