@@ -42,6 +42,8 @@ const Models = {
 class RegionEditor_mvC {
     constructor(params) {
 	
+		this.editorState = "empty";
+	
 		this.tolerance = 8; //Tolerance in pixels
 		this.color = params.color;
 
@@ -61,7 +63,7 @@ class RegionEditor_mvC {
 			this.tolerance,
 			this.color
 		);
-
+		this.aladinLite_V = params.aladinView;
         this.focusedModel = Models.Polygon;
         
         this.canvas = params.drawCanvas;
@@ -178,6 +180,7 @@ class RegionEditor_mvC {
 		} else if (this.focusedModel === Models.Cone) {
 			this.coneModel.handleMouseUp(event,this.canvas);
 		}
+		this.editorState = "modified";
     }
     
     /**
@@ -217,6 +220,7 @@ class RegionEditor_mvC {
         } else if (this.focusedModel === Models.Cone) {
 			this.coneModel.CleanCone();
 		}
+		this.editorState = "erased";
         this.closed = false;
     }
     
@@ -265,6 +269,8 @@ class RegionEditor_mvC {
 					this.data = {
 					    isReady: true,
 					    userAction: userAction,
+					    editorState: this.editorState,
+					    img: this.aladinLite_V.getAladinImg(400,400),
 					    region: {
 					        format: "array2dim",
 					        color: this.color,
@@ -286,6 +292,8 @@ class RegionEditor_mvC {
 				this.data = {
 				    isReady: true,
 				    userAction: userAction,
+				    editorState: this.editorState,
+				    img: this.aladinLite_V.getAladinImg(400,400),
 				    region: {
 				        format: "cone",
 				        color: this.color,
@@ -305,6 +313,7 @@ class RegionEditor_mvC {
 				console.error("Cone is not finished!");
 			}
 		}
+		this.editorState = "accepted";
 		//console.log("data in RegionEditor_c",this.data);
 		return JSON.parse(JSON.stringify(this.data));
 	}
