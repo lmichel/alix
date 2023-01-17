@@ -1279,8 +1279,17 @@ var AladinLiteX_mVc = function(){
 	var storeCurrentState = async function(){
 		var radec = aladin.getRaDec();
 		aladinLiteView.region = parameters.controllers.regionEditor.view.storeData();
-		aladinLiteView.amoraSession = await parameters.controllers.regionEditor.view.getAmoraSession();
-		
+		if (parameters.controllers.regionEditor.view.sourceRegionEditor) {			
+			aladinLiteView.amoraSession = parameters
+				.controllers
+				.regionEditor
+				.view
+				.sourceRegionEditor
+				.controller
+				.amoraSession;
+		} else {
+			aladinLiteView.amoraSession = null;
+		}
 		
 		aladinLiteView.name = targetDiv.val();
 		aladinLiteView.ra = radec[0];
