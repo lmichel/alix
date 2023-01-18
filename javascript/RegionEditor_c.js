@@ -263,7 +263,7 @@ class RegionEditor_mvC {
 			if (this.isPolygonClosed()) {
 				//Compute the region size in degrees
 				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-				if (!this.polygonModel.skyPositions && !this.polygonModel.skyPositions.length) {
+				if (!this.polygonModel.skyPositions || !this.polygonModel.skyPositions.length) {
 					this.data = null;
 				} else {
 					this.data = {
