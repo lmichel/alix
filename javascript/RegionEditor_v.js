@@ -120,10 +120,14 @@ class RegionEditor_mVc {
 			regionEditorView.controller.mouseMove(event);
 		}, false);
         this.drawCanvas[0].addEventListener('mousedown', (event, regionEditorView=this) => {
-			regionEditorView.controller.mouseDown(event);
+			if (event.which === 1) {			
+				regionEditorView.controller.mouseDown(event);
+			}
 		}, false);
         this.drawCanvas[0].addEventListener('mouseup', (event,regionEditorView=this) => {
-			regionEditorView.controller.mouseUp(event);
+			if (event.which === 1) {			
+				regionEditorView.controller.mouseUp(event);
+			}
 		}, false);
 		
 		/***********************************************************
