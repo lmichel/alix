@@ -6307,10 +6307,14 @@ class RegionEditor_mVc {
 			regionEditorView.controller.mouseMove(event);
 		}, false);
         this.drawCanvas[0].addEventListener('mousedown', (event, regionEditorView=this) => {
-			regionEditorView.controller.mouseDown(event);
+			if (event.which === 1) {			
+				regionEditorView.controller.mouseDown(event);
+			}
 		}, false);
         this.drawCanvas[0].addEventListener('mouseup', (event,regionEditorView=this) => {
-			regionEditorView.controller.mouseUp(event);
+			if (event.which === 1) {			
+				regionEditorView.controller.mouseUp(event);
+			}
 		}, false);
 		
 		/***********************************************************
@@ -7501,27 +7505,26 @@ class PolygonModel {
         return this.skyPositions;
     }
     
-    handleMouseUpPolygon(event, buttondown, canvas, startingNode, closed, movestart, startdrag, storeNode) {
+    handleMouseUpPolygon(event, buttondown, canvas, startingNode, closed, movestart, startdrag, storedNode) {
     	let clickedNode = -1;
 		let finalnode;
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
 		//Ask if the element pressed is a node
-		if (buttondown == true && (clickedNode = this.getNode(x, y)) != -1) {
+		if (buttondown === true && (clickedNode = this.getNode(x, y)) !== -1) {
 		    //Ask is the node is a polygon's endpoint
 		    if (this.isExtremity(clickedNode) == false) {
 		        this.CleanLine();
 		        buttondown = false;
 		    }
 		
-		    if (this.closePolygone(clickedNode, startingNode) == true) {					
+		    if (this.closePolygone(clickedNode, startingNode) === true) {					
 		        buttondown = false;
-		        closed = true;
-		        //this.invokeHandler(false); if one add this then the length of skyPosition[] will be null						
+		        closed = true;						
 		    }
 		}
 		
-		if (closed == true && (finalnode = this.GetXYNode(x, y)) != null) {
+		if (closed === true && (finalnode = this.GetXYNode(x, y)) !== null) {
 		    if (finalnode.a != undefined && finalnode.b != undefined) {
 		        if (startingNode == finalnode.a)
 		            this.RemoveNode(finalnode.a, false);
@@ -7530,7 +7533,7 @@ class PolygonModel {
 		    }
 		}
 		
-		if (buttondown == true && movestart == true) {
+		if (buttondown === true && movestart === true) {
 		    if (clickedNode == startingNode && (clickedNode = this.getNode(x, y) != -1))
 		    {
 		        buttondown = false;
@@ -7548,11 +7551,10 @@ class PolygonModel {
 		
 		        let inter = segment.Itersection(this.startingNode, false);
 		
-		        if (inter != -1 && inter != undefined) {
+		        if (inter !== -1 && inter != undefined) {
 		            //poligono abierto = true
 		            if (startingNode != 0)
 		                this.RemoveNode(inter.nB, true);
-		
 		            else
 		                this.RemoveNode(inter.nA, true);
 		
@@ -7561,12 +7563,12 @@ class PolygonModel {
 		    }
 		
 		}
-		else if (buttondown == true && movestart == false) {
+		else if (buttondown === true && movestart === false) {
 		    buttondown = false;
 		    movestart = false;
 		}
 		
-		if (startdrag == true) {
+		if (startdrag === true) {
 		    //console.log('this.startdrag fin');
 		    startdrag = false;
 		    canvas.css('cursor', 'default');
@@ -7575,9 +7577,9 @@ class PolygonModel {
 		    let nodes = this.GetNodelength();
 		    let segment = new Segment(nodes);
 		    let inter = segment.Itersection(startingNode, true);
-		    if (inter != -1 && inter != undefined) {
-		        this.RemoveNode(this.startingNode, false);
-		        this.addNode(x, y, storeNode, true);
+		    if (inter !== -1 && inter != undefined) {
+		        this.RemoveNode(startingNode, false);
+		        this.addNode(x, y, storedNode, true);
 		    }
 		}
 		this.canvasUpdate();
@@ -7600,7 +7602,7 @@ class PolygonModel {
         const resultObject = {
 			closed: closed,
 			canvas: canvas
-		};        
+		};
 
         //ask if the polygon is empty
         if (this.isEmpty()) {
@@ -7610,7 +7612,7 @@ class PolygonModel {
         //start the this.drag of the node	
         else if (resultObject.closed == true && (clickedNode = this.getNode(x, y)) != -1) {
             resultObject.result = this.getSegment(clickedNode);
-            resultObject.storeNode = this.stokeNode(clickedNode);
+            resultObject.storedNode = this.stokeNode(clickedNode);
             resultObject.startdrag = true;
             resultObject.drag = clickedNode;
             resultObject.startingNode = clickedNode;
@@ -8346,7 +8348,7 @@ class RegionEditor_mvC {
         this.startdrag = false;
         this.drag = null;
         this.result = -1;
-        this.stokeNode;
+        this.storedNode;
         
         this.data = null;
     }
@@ -8374,7 +8376,7 @@ class RegionEditor_mvC {
         	 startdrag=${this.startdrag}
         	 drag=${this.drag}
         	 result=${this.result}
-        	 stokeNode=${this.stokeNode}`;
+        	 storedNode=${this.storedNode}`;
     }
     /**
      @description Method to handle the beginning of a mouse click on the drawing canvas
@@ -8392,7 +8394,7 @@ class RegionEditor_mvC {
 			
 	        this.buttondown = "buttondown" in modelReturn ? modelReturn.buttondown : this.buttondown;
 	        this.result = "result" in modelReturn ? modelReturn.result : this.result;
-			this.stokeNode = "storeNode" in modelReturn ? modelReturn.storeNode : this.stokeNode;
+			this.storedNode = "storedNode" in modelReturn ? modelReturn.storedNode : null;
 			this.startdrag = "startdrag" in modelReturn ? modelReturn.startdrag : this.startdrag;
 			this.drag = "drag" in modelReturn ? modelReturn.drag : this.drag;
 			this.startingNode = "startingNode" in modelReturn ? modelReturn.startingNode : this.startingNode;
@@ -8439,7 +8441,7 @@ class RegionEditor_mvC {
 					this.closed,
 					this.movestart,
 					this.startdrag,
-					this.stokeNode
+					this.storedNode
 				);
 			
 			this.buttondown = modelReturn.buttondown;
@@ -8534,7 +8536,7 @@ class RegionEditor_mvC {
 			if (this.isPolygonClosed()) {
 				//Compute the region size in degrees
 				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-				if (!this.polygonModel.skyPosition || !this.polygonModel.skyPositions.length) {
+				if (!this.polygonModel.skyPositions && !this.polygonModel.skyPositions.length) {
 					this.data = null;
 				} else {
 					this.data = {
