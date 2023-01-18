@@ -753,7 +753,7 @@ let Alix_Modalinfo = function(){
 				//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 				setModal(id_modal, false, "Simbad Summary for Position " 
 						+ pos 
-						+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+						+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 						+ encodeURIComponent(pos) + "\"></a>"
 						, table, 1000);
 				setShadow(id_modal);
@@ -818,7 +818,7 @@ let Alix_Modalinfo = function(){
 		//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 		setModal(id_modal, false, "Simbad Summary for Position " 
 				+ pos 
-				+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+				+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 				+ encodeURIComponent(pos) + "\"></a>"
 				, table, 1000);
 		setShadow(id_modal);
@@ -846,12 +846,12 @@ let Alix_Modalinfo = function(){
 		/**
 		 * Translate SimbadTooltip.java
 		 */
-		var url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
+		var url = "https://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
 		url += encodeURIComponent("format object \"%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)\"\n" + pos + " radius=1m", "ISO-8859-1");
 		//Alix_Processing.show("Waiting on Simbad Response");
 		/*$.ajax()...*/
 		$.ajax({
-			//url:'http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+%22%25IDLIST%5B%25-30*%5D%7C-%25COO%28A%29%7C%25COO%28D%29%7C%25OTYPELIST%28S%29%22%0A01+33+50.904+%2B30+39+35.79+radius%3D1m',
+			//url:'https://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+%22%25IDLIST%5B%25-30*%5D%7C-%25COO%28A%29%7C%25COO%28D%29%7C%25OTYPELIST%28S%29%22%0A01+33+50.904+%2B30+39+35.79+radius%3D1m',
 			url: url,
 			method: 'GET',
 	        async: true,
@@ -923,7 +923,7 @@ let Alix_Modalinfo = function(){
 					//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 					setModal(id_modal, false, "Simbad Summary for Position " 
 							+ pos 
-							+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+							+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 							+ encodeURIComponent(pos) + "\"></a>"
 							, table, 1000);
 					setShadow(id_modal);
@@ -3629,7 +3629,7 @@ var AladinLiteX_mVc = function(){
 			if(panel_last!=id){
 			$(panel_last).css("display","none");}
 			panel_last =id;
-		}			
+		}
 		
 		menuDiv  = $('#' + menuDivId);
 		parentDiv.append('<div id="' + contextDivId + '" class="alix_context_panel" >'
@@ -8335,7 +8335,6 @@ class RegionEditor_mvC {
 			this.color
 		);
 		this.aladinLite_V = params.aladinView;
-		console.log(this.aladinLite_V);
         this.focusedModel = Models.Polygon;
         
         this.canvas = params.drawCanvas;
@@ -8488,13 +8487,9 @@ class RegionEditor_mvC {
      */
     CleanCanvas() {
         if (this.focusedModel === Models.Polygon) {
-			console.log("before",this.polygonModel);
 	        this.polygonModel.CleanPolygon();
-	        console.log("after",this.polygonModel);
         } else if (this.focusedModel === Models.Cone) {
-			console.log("before",this.coneModel);
 			this.coneModel.CleanCone();
-			console.log("after",this.coneModel);
 		}
 		this.editorState = "erased";
         this.closed = false;
@@ -8539,7 +8534,7 @@ class RegionEditor_mvC {
 			if (this.isPolygonClosed()) {
 				//Compute the region size in degrees
 				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-				if (!this.polygonModel.skyPositions.length) {
+				if (!this.polygonModel.skyPosition || !this.polygonModel.skyPositions.length) {
 					this.data = null;
 				} else {
 					this.data = {
@@ -8687,6 +8682,7 @@ class RegionPanelV {
         this.aladinLite_V = aladinLite_V;
         this.editionFrame = defaultRegion;
 		this.currentData = null;
+		this.cutButton = null;
         
         this.sourceRegionEditor = null;
         this.backgroundRegionEditors = [];
@@ -8698,6 +8694,17 @@ class RegionPanelV {
         this.contextDiv = this.contextDiv == null ? $(`#${this.contextDivId}`) : this.contextDiv;
         
         if (!AladinLiteX_mVc.regionEditorInit && this.editorDescriptors.length !== 0) {
+            
+            /***********************************************************
+            ************ Button to cut the region editor ***************
+            ************************************************************/
+            
+            this.cutButton = $('<button class="alix_btn cut-region-editor"></button>');            
+            this.contextDiv.append(this.cutButton);
+            
+            this.cutButton.on('click', () => {
+				this.contextDiv.css("display","none");
+			});
             
             /***********************************************************
             ******** Header & container Region Editors creation ********
@@ -10290,7 +10297,7 @@ var SimbadCatalog = function(){
 		/**
 		 * Translate SimbadTooltip.java
 		 */
-		var url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
+		var url = "https://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
 		url += encodeURIComponent("format object \"%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)\"\n" + pos + " radius=1m", "ISO-8859-1");
 		//Alix_Processing.show("Waiting on Simbad Response");
 		/*$.ajax()...*/
@@ -10366,7 +10373,7 @@ var SimbadCatalog = function(){
 					//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 					Alix_Modalinfo.setModal(id_modal, false, "Simbad Summary for Position " 
 							+ pos 
-							+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+							+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 							+ encodeURIComponent(pos) + "\"></a>"
 							, table);
 					Alix_Modalinfo.setShadow(id_modal);
@@ -10800,10 +10807,10 @@ var SimbadCatalog = function(){
 
 
 	/*
-	 * These 2 functions are designed to get the data from http://simbad.u-strasbg.fr/simbad/sim-tap/sync
+	 * These 2 functions are designed to get the data from https://simbad.u-strasbg.fr/simbad/sim-tap/sync
 	 */
 	function Query(adql){
-		//var site= "http://simbad.u-strasbg.fr/simbad/sim-tap/sync";
+		//var site= "https://simbad.u-strasbg.fr/simbad/sim-tap/sync";
 		var reTable;
 		reTable = $.ajax({
 			url: '${site}',
