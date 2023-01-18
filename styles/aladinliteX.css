@@ -1073,6 +1073,30 @@ z-index: 10;
 
 }
 
+.alix_btn.cut-region-editor {
+	position: absolute;
+	padding: unset;
+	top: 1rem;
+	right: 1rem;
+	width: 18px;
+	height: 18px;
+	border-color: #574E4E;
+	
+	background: url(../images/glyphicons-208-remove.png);
+	background-size: 60%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #a6a6a6;
+}
+
+.alix_btn.cut-region-editor:hover {
+	background-color: #c79b9b;
+}
+
+.alix_btn.cut-region-editor:active {
+	background-color: #cc7575;
+}
+
 #region-editors.editor-container {
 	width: 100%;
 	display: flex;
