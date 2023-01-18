@@ -753,21 +753,20 @@ class PolygonModel {
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
 		//Ask if the element pressed is a node
-		if (buttondown == true && (clickedNode = this.getNode(x, y)) != -1) {
+		if (buttondown === true && (clickedNode = this.getNode(x, y)) !== -1) {
 		    //Ask is the node is a polygon's endpoint
 		    if (this.isExtremity(clickedNode) == false) {
 		        this.CleanLine();
 		        buttondown = false;
 		    }
 		
-		    if (this.closePolygone(clickedNode, startingNode) == true) {					
+		    if (this.closePolygone(clickedNode, startingNode) === true) {					
 		        buttondown = false;
-		        closed = true;
-		        //this.invokeHandler(false); if one add this then the length of skyPosition[] will be null						
+		        closed = true;						
 		    }
 		}
 		
-		if (closed == true && (finalnode = this.GetXYNode(x, y)) != null) {
+		if (closed === true && (finalnode = this.GetXYNode(x, y)) !== null) {
 		    if (finalnode.a != undefined && finalnode.b != undefined) {
 		        if (startingNode == finalnode.a)
 		            this.RemoveNode(finalnode.a, false);
@@ -776,7 +775,7 @@ class PolygonModel {
 		    }
 		}
 		
-		if (buttondown == true && movestart == true) {
+		if (buttondown === true && movestart === true) {
 		    if (clickedNode == startingNode && (clickedNode = this.getNode(x, y) != -1))
 		    {
 		        buttondown = false;
@@ -794,11 +793,10 @@ class PolygonModel {
 		
 		        let inter = segment.Itersection(this.startingNode, false);
 		
-		        if (inter != -1 && inter != undefined) {
+		        if (inter !== -1 && inter != undefined) {
 		            //poligono abierto = true
 		            if (startingNode != 0)
 		                this.RemoveNode(inter.nB, true);
-		
 		            else
 		                this.RemoveNode(inter.nA, true);
 		
@@ -807,12 +805,12 @@ class PolygonModel {
 		    }
 		
 		}
-		else if (buttondown == true && movestart == false) {
+		else if (buttondown === true && movestart === false) {
 		    buttondown = false;
 		    movestart = false;
 		}
 		
-		if (startdrag == true) {
+		if (startdrag === true) {
 		    //console.log('this.startdrag fin');
 		    startdrag = false;
 		    canvas.css('cursor', 'default');
@@ -846,7 +844,7 @@ class PolygonModel {
         const resultObject = {
 			closed: closed,
 			canvas: canvas
-		};        
+		};
 
         //ask if the polygon is empty
         if (this.isEmpty()) {
