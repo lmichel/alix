@@ -311,7 +311,6 @@ class RegionEditor_mVc {
 	}
 	
 	hideEditor() {
-        this.setBrowseMode();
 		this.headerButton.css({
 			"border-bottom": "#545244 solid 2px",
 			"background-color": "rgba(150,150,150,.5)"
@@ -322,6 +321,7 @@ class RegionEditor_mVc {
         } else {
             this.controller.get();
         }
+        this.setBrowseMode();
         this.emitCanvasHideMessage();
 	}
     
