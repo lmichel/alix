@@ -779,7 +779,7 @@
 }
 .alix_acds{
 	color:#888a85 ;
-	display: none;160px
+	display: none;
 	font-size:12px !important;
 	font-weight:100 !important;
 	line-height: 1 !important; 
@@ -1272,7 +1272,7 @@ position:absolute;
     /* height:100%;
      width:100%;*/
 }
-#RegionCanvas{
+#RegionCanvas {
 	/**top:0px;
      height:100%;
      width:100%;*/
@@ -1302,7 +1302,7 @@ position:absolute;
     border: azure;
     position: absolute;
     border-radius: 20px;
-    //overflow:auto;
+    /* overflow:auto; */
     z-index: 10000;
 }
 #SourceDiv_Child{
@@ -1312,7 +1312,7 @@ position:absolute;
     height: 150px;
     border: azure;
     position: absolute;
-    //border-radius: 20px;
+    /* border-radius: 20px; */
     padding:15px;
     overflow:auto;
     z-index: 10000;
