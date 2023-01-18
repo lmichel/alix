@@ -819,9 +819,9 @@ class PolygonModel {
 		    let nodes = this.GetNodelength();
 		    let segment = new Segment(nodes);
 		    let inter = segment.Itersection(startingNode, true);
-		    if (inter != -1 && inter != undefined) {
-		        this.RemoveNode(this.startingNode, false);
-		        this.addNode(x, y, storeNode, true);
+		    if (inter !== -1 && inter != undefined) {
+		        this.RemoveNode(startingNode, false);
+		        this.addNode(x, y, storedNode, true);
 		    }
 		}
 		this.canvasUpdate();
