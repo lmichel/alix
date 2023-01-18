@@ -538,7 +538,7 @@ var AladinLiteX_mVc = function(){
 			if(panel_last!=id){
 			$(panel_last).css("display","none");}
 			panel_last =id;
-		}			
+		}
 		
 		menuDiv  = $('#' + menuDivId);
 		parentDiv.append('<div id="' + contextDivId + '" class="alix_context_panel" >'
