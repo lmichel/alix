@@ -753,7 +753,7 @@ let Alix_Modalinfo = function(){
 				//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 				setModal(id_modal, false, "Simbad Summary for Position " 
 						+ pos 
-						+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+						+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 						+ encodeURIComponent(pos) + "\"></a>"
 						, table, 1000);
 				setShadow(id_modal);
@@ -818,7 +818,7 @@ let Alix_Modalinfo = function(){
 		//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 		setModal(id_modal, false, "Simbad Summary for Position " 
 				+ pos 
-				+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+				+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 				+ encodeURIComponent(pos) + "\"></a>"
 				, table, 1000);
 		setShadow(id_modal);
@@ -846,12 +846,12 @@ let Alix_Modalinfo = function(){
 		/**
 		 * Translate SimbadTooltip.java
 		 */
-		var url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
+		var url = "https://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
 		url += encodeURIComponent("format object \"%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)\"\n" + pos + " radius=1m", "ISO-8859-1");
 		//Alix_Processing.show("Waiting on Simbad Response");
 		/*$.ajax()...*/
 		$.ajax({
-			//url:'http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+%22%25IDLIST%5B%25-30*%5D%7C-%25COO%28A%29%7C%25COO%28D%29%7C%25OTYPELIST%28S%29%22%0A01+33+50.904+%2B30+39+35.79+radius%3D1m',
+			//url:'https://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=format+object+%22%25IDLIST%5B%25-30*%5D%7C-%25COO%28A%29%7C%25COO%28D%29%7C%25OTYPELIST%28S%29%22%0A01+33+50.904+%2B30+39+35.79+radius%3D1m',
 			url: url,
 			method: 'GET',
 	        async: true,
@@ -923,7 +923,7 @@ let Alix_Modalinfo = function(){
 					//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 					setModal(id_modal, false, "Simbad Summary for Position " 
 							+ pos 
-							+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+							+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 							+ encodeURIComponent(pos) + "\"></a>"
 							, table, 1000);
 					setShadow(id_modal);

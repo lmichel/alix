@@ -36,7 +36,7 @@ var SimbadCatalog = function(){
 		/**
 		 * Translate SimbadTooltip.java
 		 */
-		var url = "http://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
+		var url = "https://simbad.u-strasbg.fr/simbad/sim-script?submit=submit+script&script=";
 		url += encodeURIComponent("format object \"%IDLIST[%-30*]|-%COO(A)|%COO(D)|%OTYPELIST(S)\"\n" + pos + " radius=1m", "ISO-8859-1");
 		//Alix_Processing.show("Waiting on Simbad Response");
 		/*$.ajax()...*/
@@ -112,7 +112,7 @@ var SimbadCatalog = function(){
 					//setModal(id_modal, false, getTitle("Confirmation", title), formatMessage(content));
 					Alix_Modalinfo.setModal(id_modal, false, "Simbad Summary for Position " 
 							+ pos 
-							+ "<a class=simbad target=blank href=\"http://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
+							+ "<a class=simbad target=blank href=\"https://simbad.u-strasbg.fr/simbad/sim-coo?Radius=1&Coord=" 
 							+ encodeURIComponent(pos) + "\"></a>"
 							, table);
 					Alix_Modalinfo.setShadow(id_modal);
@@ -546,10 +546,10 @@ var SimbadCatalog = function(){
 
 
 	/*
-	 * These 2 functions are designed to get the data from http://simbad.u-strasbg.fr/simbad/sim-tap/sync
+	 * These 2 functions are designed to get the data from https://simbad.u-strasbg.fr/simbad/sim-tap/sync
 	 */
 	function Query(adql){
-		//var site= "http://simbad.u-strasbg.fr/simbad/sim-tap/sync";
+		//var site= "https://simbad.u-strasbg.fr/simbad/sim-tap/sync";
 		var reTable;
 		reTable = $.ajax({
 			url: '${site}',
