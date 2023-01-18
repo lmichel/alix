@@ -318,7 +318,7 @@ class RegionEditor_mVc {
 		this.contextDiv.css({"display": "none"});
 		if (!this.controller.isPolygonClosed()) {
             this.controller.CleanCanvas();
-        } else {
+        } else if (this.isEditMode) {
             this.controller.get();
         }
         this.setBrowseMode();
