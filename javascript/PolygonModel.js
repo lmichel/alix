@@ -747,7 +747,7 @@ class PolygonModel {
         return this.skyPositions;
     }
     
-    handleMouseUpPolygon(event, buttondown, canvas, startingNode, closed, movestart, startdrag, storeNode) {
+    handleMouseUpPolygon(event, buttondown, canvas, startingNode, closed, movestart, startdrag, storedNode) {
     	let clickedNode = -1;
 		let finalnode;
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
@@ -854,7 +854,7 @@ class PolygonModel {
         //start the this.drag of the node	
         else if (resultObject.closed == true && (clickedNode = this.getNode(x, y)) != -1) {
             resultObject.result = this.getSegment(clickedNode);
-            resultObject.storeNode = this.stokeNode(clickedNode);
+            resultObject.storedNode = this.stokeNode(clickedNode);
             resultObject.startdrag = true;
             resultObject.drag = clickedNode;
             resultObject.startingNode = clickedNode;

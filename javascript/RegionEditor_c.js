@@ -75,7 +75,7 @@ class RegionEditor_mvC {
         this.startdrag = false;
         this.drag = null;
         this.result = -1;
-        this.stokeNode;
+        this.storedNode;
         
         this.data = null;
     }
@@ -103,7 +103,7 @@ class RegionEditor_mvC {
         	 startdrag=${this.startdrag}
         	 drag=${this.drag}
         	 result=${this.result}
-        	 stokeNode=${this.stokeNode}`;
+        	 storedNode=${this.storedNode}`;
     }
     /**
      @description Method to handle the beginning of a mouse click on the drawing canvas
@@ -121,7 +121,7 @@ class RegionEditor_mvC {
 			
 	        this.buttondown = "buttondown" in modelReturn ? modelReturn.buttondown : this.buttondown;
 	        this.result = "result" in modelReturn ? modelReturn.result : this.result;
-			this.stokeNode = "storeNode" in modelReturn ? modelReturn.storeNode : this.stokeNode;
+			this.storedNode = "storedNode" in modelReturn ? modelReturn.storedNode : null;
 			this.startdrag = "startdrag" in modelReturn ? modelReturn.startdrag : this.startdrag;
 			this.drag = "drag" in modelReturn ? modelReturn.drag : this.drag;
 			this.startingNode = "startingNode" in modelReturn ? modelReturn.startingNode : this.startingNode;
@@ -168,7 +168,7 @@ class RegionEditor_mvC {
 					this.closed,
 					this.movestart,
 					this.startdrag,
-					this.stokeNode
+					this.storedNode
 				);
 			
 			this.buttondown = modelReturn.buttondown;
