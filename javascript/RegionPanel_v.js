@@ -47,6 +47,7 @@ class RegionPanelV {
         this.aladinLite_V = aladinLite_V;
         this.editionFrame = defaultRegion;
 		this.currentData = null;
+		this.cutButton = null;
         
         this.sourceRegionEditor = null;
         this.backgroundRegionEditors = [];
@@ -58,6 +59,17 @@ class RegionPanelV {
         this.contextDiv = this.contextDiv == null ? $(`#${this.contextDivId}`) : this.contextDiv;
         
         if (!AladinLiteX_mVc.regionEditorInit && this.editorDescriptors.length !== 0) {
+            
+            /***********************************************************
+            ************ Button to cut the region editor ***************
+            ************************************************************/
+            
+            this.cutButton = $('<button class="alix_btn cut-region-editor"></button>');            
+            this.contextDiv.append(this.cutButton);
+            
+            this.cutButton.on('click', () => {
+				this.contextDiv.css("display","none");
+			});
             
             /***********************************************************
             ******** Header & container Region Editors creation ********
