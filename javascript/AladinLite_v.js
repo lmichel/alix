@@ -398,7 +398,7 @@ var AladinLiteX_mVc = function(){
 			    	<div>
 			    		<b id="ACDS" class = "alix_acds" >
 			    			${ACDS}  
-			    		</b>'
+			    		</b>
 			    		<div style = "">
 			    			<b id="Simbad" 
 				    			title="Show/hide Simbad sources" 
