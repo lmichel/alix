@@ -397,14 +397,14 @@ HipsSelector_mVc.prototype = {
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
 			}
-			if(cmdNode.html()!=label){
+			if(!cmdNode.text().includes(label)){
 				WaitingPanel.show(name);
 				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
 				cmdNode.css("color", color);
 				$("#btn-XMM-description").css("color" , color);
 				$("#btn-XMM-flash").css("color" ,color);
 				$("#btn-XMM-configure").css("color" ,color);
-				if(cmdNode.html()=="3XMM Catalogue")
+				if(cmdNode.text().includes("3XMM Catalogue"))
 					$("#ACDS").css("display" , "inline");
 				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 			}
@@ -418,7 +418,7 @@ HipsSelector_mVc.prototype = {
 					$("#btn-XMM-description").css("color" , color);
 					$("#btn-XMM-flash").css("color" ,color);
 					$("#btn-XMM-configure").css("color" ,color);
-					if(cmdNode.html()=="3XMM Catalogue")
+					if(cmdNode.text().includes("3XMM Catalogue"))
 						$("#ACDS").css("display" , "inline");
 					self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 //				}
