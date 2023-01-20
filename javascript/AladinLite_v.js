@@ -383,7 +383,7 @@ var AladinLiteX_mVc = function(){
 			    	<div>
 			    		</br>
 			    		<b  id="XMM" title="Show/hide master sources"
-			    			class="alix_XMM_in_menu alix_datahelp" 
+			    			class="alix_XMM_in_menu  alix_datahelp" 
 			    			style="cursor: pointer;" 
 			    			onclick="AladinLiteX_mVc.displayDataXml();"
 			    		>
