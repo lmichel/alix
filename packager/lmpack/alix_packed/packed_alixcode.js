@@ -3474,7 +3474,7 @@ var AladinLiteX_mVc = function(){
 			    	<div>
 			    		</br>
 			    		<b  id="XMM" title="Show/hide master sources"
-			    			class="alix_XMM_in_menu alix_datahelp" 
+			    			class="alix_XMM_in_menu  alix_datahelp" 
 			    			style="cursor: pointer;" 
 			    			onclick="AladinLiteX_mVc.displayDataXml();"
 			    		>
@@ -3489,7 +3489,7 @@ var AladinLiteX_mVc = function(){
 			    	<div>
 			    		<b id="ACDS" class = "alix_acds" >
 			    			${ACDS}  
-			    		</b>'
+			    		</b>
 			    		<div style = "">
 			    			<b id="Simbad" 
 				    			title="Show/hide Simbad sources" 
@@ -6498,7 +6498,6 @@ class RegionEditor_mVc {
 	}
 	
 	hideEditor() {
-        this.setBrowseMode();
 		this.headerButton.css({
 			"border-bottom": "#545244 solid 2px",
 			"background-color": "rgba(150,150,150,.5)"
@@ -6506,9 +6505,10 @@ class RegionEditor_mVc {
 		this.contextDiv.css({"display": "none"});
 		if (!this.controller.isPolygonClosed()) {
             this.controller.CleanCanvas();
-        } else {
+        } else if (this.isEditMode) {
             this.controller.get();
         }
+        this.setBrowseMode();
         this.emitCanvasHideMessage();
 	}
     
@@ -8536,7 +8536,7 @@ class RegionEditor_mvC {
 			if (this.isPolygonClosed()) {
 				//Compute the region size in degrees
 				//let view = BasicGeometry.getEnclosingView(this.polygonModel.skyPositions);
-				if (!this.polygonModel.skyPositions && !this.polygonModel.skyPositions.length) {
+				if (!this.polygonModel.skyPositions || !this.polygonModel.skyPositions.length) {
 					this.data = null;
 				} else {
 					this.data = {
@@ -9653,14 +9653,14 @@ HipsSelector_mVc.prototype = {
 			if(LibraryCatalog.getCatalog(name)){
 				color = LibraryCatalog.getCatalog(name).color;
 			}
-			if(cmdNode.html()!=label){
+			if(!cmdNode.text().includes(label)){
 				WaitingPanel.show(name);
 				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
 				cmdNode.css("color", color);
 				$("#btn-XMM-description").css("color" , color);
 				$("#btn-XMM-flash").css("color" ,color);
 				$("#btn-XMM-configure").css("color" ,color);
-				if(cmdNode.html()=="3XMM Catalogue")
+				if(cmdNode.text().includes("3XMM Catalogue"))
 					$("#ACDS").css("display" , "inline");
 				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 			}
@@ -9674,7 +9674,7 @@ HipsSelector_mVc.prototype = {
 					$("#btn-XMM-description").css("color" , color);
 					$("#btn-XMM-flash").css("color" ,color);
 					$("#btn-XMM-configure").css("color" ,color);
-					if(cmdNode.html()=="3XMM Catalogue")
+					if(cmdNode.text().includes("3XMM Catalogue"))
 						$("#ACDS").css("display" , "inline");
 					self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 //				}
