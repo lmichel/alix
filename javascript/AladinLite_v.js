@@ -2487,7 +2487,7 @@ var AladinLiteX_mVc = function(){
 	var cleanShape = function(){
 		//console.log(controller);
 		//aladinLiteView.clean();
-		this.controller.cleanShape();
+		controller.cleanShape();
 	}
 	//in order to display de query from taphandle
 	var changeMasterResource = function(masterResource){
