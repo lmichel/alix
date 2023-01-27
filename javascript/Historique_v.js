@@ -118,6 +118,21 @@ Historique_mVc.prototype = {
 			}
 			return str;
 			
+		},
+		/**
+		@param {string} targetedAmoraSession
+		 */
+		amoraSessionBelongTo(targetedAmoraSession) {
+			for (let key in localStorage) {
+				//the unique key is the time and date when the bookmark is saved
+				if(key.startsWith('alix:bookmark')){
+					let item = JSON.parse(localStorage.getItem(key));
+					if ('amoraSession' in item && item.amoraSession === targetedAmoraSession) {
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 }
 

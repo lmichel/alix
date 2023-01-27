@@ -2496,7 +2496,15 @@ var AladinLiteX_mVc = function(){
 		AladinLiteX_mVc.displayDataXml();
 		
 	}
+	/**
+	@param {string} amoraSession
+	@return {boolean}
+	 */
+	var amoraSessionBelongTo = function(amoraSession) {
+		return parameters.controllers.historic.model.view.amoraSessionBelongTo(amoraSession);
+	}
 	var retour = {
+			amoraSessionBelongTo: amoraSessionBelongTo,
 			popup : popup,
 			refresh : refresh,
 			init: init,
