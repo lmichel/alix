@@ -2924,7 +2924,7 @@ AladinLiteView.prototype = {
 		if( this.amoraSession === null) {
 			return "";
 		} else {
-			return `<button id="${this.id}-amora-button" class="amora-btn"></button>`;
+			return `<button id="${this.id}-amora-button" class="amora-btn" title="restore AMORA session (${this.amoraSession})"></button>`;
 		}
 	},
 	
@@ -3022,6 +3022,19 @@ AladinLiteView.prototype = {
 				$("#"+ this.id+ "_show_description").css("transition-duration","200ms");
 				statue = false;
 			}
+		});
+		
+		/****************************************************************
+		**************** Manage the remove bookmark button **************
+		****************************************************************/
+		
+		$("#"+this.id+ "_menu_close_img").click(() => {
+			fetch(`https://xcatdb.unistra.fr/onlinesas/job/${this.amoraSession}/delete`, {
+	            method: 'DELETE', 
+	            cache: 'no-cache',
+	            redirect: 'follow',
+	            referrerPolicy: 'no-referrer'
+	        });
 		});
 		
 		/*
@@ -5578,7 +5591,7 @@ var AladinLiteX_mVc = function(){
 	var cleanShape = function(){
 		//console.log(controller);
 		//aladinLiteView.clean();
-		this.controller.cleanShape();
+		controller.cleanShape();
 	}
 	//in order to display de query from taphandle
 	var changeMasterResource = function(masterResource){
@@ -5587,7 +5600,15 @@ var AladinLiteX_mVc = function(){
 		AladinLiteX_mVc.displayDataXml();
 		
 	}
+	/**
+	@param {string} amoraSession
+	@return {boolean}
+	 */
+	var amoraSessionBelongTo = function(amoraSession) {
+		return parameters.controllers.historic.model.view.amoraSessionBelongTo(amoraSession);
+	}
 	var retour = {
+			amoraSessionBelongTo: amoraSessionBelongTo,
 			popup : popup,
 			refresh : refresh,
 			init: init,
@@ -6177,6 +6198,21 @@ Historique_mVc.prototype = {
 			}
 			return str;
 			
+		},
+		/**
+		@param {string} targetedAmoraSession
+		 */
+		amoraSessionBelongTo(targetedAmoraSession) {
+			for (let key in localStorage) {
+				//the unique key is the time and date when the bookmark is saved
+				if(key.startsWith('alix:bookmark')){
+					let item = JSON.parse(localStorage.getItem(key));
+					if ('amoraSession' in item && item.amoraSession === targetedAmoraSession) {
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 }
 
@@ -8104,10 +8140,18 @@ class ConeModel {
 
     }
     
-    restore(ra,dec,radius) {
+    restore(ra,dec,radius,skyRadiusNode) {
+		let localSkyRadiusNode = null;
+		
+		// Compatibility feature
+		if (!skyRadiusNode) {
+			localSkyRadiusNode = [ra+radius,dec];
+		} else {
+			localSkyRadiusNode = skyRadiusNode;
+		}
 		this.skyConeDescriptor = {
 			skyNode: [ra,dec],
-			skyRadiusNode: [ra+radius,dec],
+			skyRadiusNode: localSkyRadiusNode,
 			radius:radius
 		}
 		
@@ -8572,7 +8616,8 @@ class RegionEditor_mvC {
 				        color: this.color,
 				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
 				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
-				        radius: this.coneModel.skyConeDescriptor.radius
+				        radius: this.coneModel.skyConeDescriptor.radius,
+				        skyRadiusNode: this.coneModel.skyRadiusNode
 				    }
 				}
 				if (background) {
@@ -8629,7 +8674,7 @@ class RegionEditor_mvC {
 		if (region.format === "array2dim") {
 			this.polygonModel.restore(region.points);
 		} else {
-			this.coneModel.restore(region.ra,region.dec,region.radius);
+			this.coneModel.restore(region.ra,region.dec,region.radius,region.skyRadiusNode);
 		}
 	}
 }
