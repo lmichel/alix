@@ -267,6 +267,19 @@ AladinLiteView.prototype = {
 			}
 		});
 		
+		/****************************************************************
+		**************** Manage the remove bookmark button **************
+		****************************************************************/
+		
+		$("#"+this.id+ "_menu_close_img").click(() => {
+			fetch(`https://xcatdb.unistra.fr/onlinesas/job/${this.amoraSession}/delete`, {
+	            method: 'DELETE', 
+	            cache: 'no-cache',
+	            redirect: 'follow',
+	            referrerPolicy: 'no-referrer'
+	        });
+		});
+		
 		/*
 		 * fonction of son buttons
 		 */
