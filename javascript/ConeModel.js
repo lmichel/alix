@@ -419,10 +419,18 @@ class ConeModel {
 
     }
     
-    restore(ra,dec,radius) {
+    restore(ra,dec,radius,skyRadiusNode) {
+		let localSkyRadiusNode = null;
+		
+		// Compatibility feature
+		if (!skyRadiusNode) {
+			localSkyRadiusNode = [ra+radius,dec];
+		} else {
+			localSkyRadiusNode = skyRadiusNode;
+		}
 		this.skyConeDescriptor = {
 			skyNode: [ra,dec],
-			skyRadiusNode: [ra+radius,dec],
+			skyRadiusNode: localSkyRadiusNode,
 			radius:radius
 		}
 		

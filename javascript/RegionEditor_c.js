@@ -299,7 +299,8 @@ class RegionEditor_mvC {
 				        color: this.color,
 				        ra: this.coneModel.skyConeDescriptor.skyNode[0],
 				        dec: this.coneModel.skyConeDescriptor.skyNode[1],
-				        radius: this.coneModel.skyConeDescriptor.radius
+				        radius: this.coneModel.skyConeDescriptor.radius,
+				        skyRadiusNode: this.coneModel.skyRadiusNode
 				    }
 				}
 				if (background) {
@@ -356,7 +357,7 @@ class RegionEditor_mvC {
 		if (region.format === "array2dim") {
 			this.polygonModel.restore(region.points);
 		} else {
-			this.coneModel.restore(region.ra,region.dec,region.radius);
+			this.coneModel.restore(region.ra,region.dec,region.radius,region.skyRadiusNode);
 		}
 	}
 }
