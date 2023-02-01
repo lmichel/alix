@@ -417,22 +417,22 @@
 
 .amora-btn {
 	border: none;
-	background: url("../images/amora_icon.png");
-	background-size: 60%;
+	background: url("../images/amora_icon.svg");
+	background-size: 80%;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-color: rgb(235, 71, 71);
+	background-color:#0077b6;
 	width: 2rem;
 	height: 2rem;
 	border-radius: 2rem;
 }
 
 .amora-btn:hover {
-	background-color: rgb(139, 45, 45);
+	background-color: #023e8a;
 }
 
 .amora-btn:active {
-	background-color: rgb(235, 152, 152);
+	background-color: #00b4d8;
 }
 
 .alix_btn {
