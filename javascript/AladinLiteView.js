@@ -167,7 +167,7 @@ AladinLiteView.prototype = {
 		if( this.amoraSession === null) {
 			return "";
 		} else {
-			return `<button id="${this.id}-amora-button" class="amora-btn"></button>`;
+			return `<button id="${this.id}-amora-button" class="amora-btn" title="restore AMORA session (${this.amoraSession})"></button>`;
 		}
 	},
 	
