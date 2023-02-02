@@ -101,7 +101,7 @@ class RegionPanelV {
 			/*************************************************************
 			**************** Region Editor Registration ******************
 			**************************************************************/
-			console.log(this.editorDescriptors);
+			//console.log(this.editorDescriptors);
 			for (let regionEditor of this.editorDescriptors) {
 	            const editorDiv = $(`<div id="${regionEditor.divId}" class="region-editor"></div>`);
 	            this.panelBody.append(editorDiv);
