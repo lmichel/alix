@@ -7782,10 +7782,10 @@ class ConeModel {
     @param {number} centerX
     @param {number} centerY
      */
-    DrawCentralNode(centerX, centerY) {
+    DrawCentralNode(centerX, centerY, color) {
         this.context.beginPath();
         this.context.arc(centerX, centerY, 5, 0, Math.PI * 2, true);
-        this.context.fillStyle = "blue";
+        this.context.fillStyle = color;
         this.context.fill();
         this.context.strokeStyle="black";
         this.context.stroke();
@@ -7807,7 +7807,7 @@ class ConeModel {
     @param {number} radius
 	 */
     DrawGuidelineCircle(centerX,centerY,radius) {
-		this.drawCircle(centerX, centerY, radius, "black");
+		this.drawCircle(centerX, centerY, radius, "lime");
 	}
 	/**
 	@description Function to draw a circle with a focused color
@@ -7838,7 +7838,7 @@ class ConeModel {
 			cx: centerX,
 			cy: centerY
 		}
-		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy, "blue");
 	}
 	
 	/**
@@ -7850,7 +7850,7 @@ class ConeModel {
 		let radiusSquared = Math.pow(cursorX-this.centerNode.cx,2) + Math.pow(cursorY-this.centerNode.cy,2);
 		
 		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
-		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy,"blue");
 		this.DrawGuidelineCircle(this.centerNode.cx,this.centerNode.cy,Math.sqrt(radiusSquared));
 	}
 	
@@ -7866,7 +7866,7 @@ class ConeModel {
 		}
 		
 		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
-		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy,this.color);
 		this.DrawCompletedCircle(
 			this.centerNode.cx,
 			this.centerNode.cy,
@@ -7883,7 +7883,7 @@ class ConeModel {
 	updateCirclePosition(cursorX,cursorY,radius) {
 		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
 		this.DrawGuidelineCircle(cursorX,cursorY,radius);
-		this.DrawCentralNode(cursorX,cursorY);
+		this.DrawCentralNode(cursorX,cursorY,"blue");
 	}
 	
 	/**
@@ -7909,7 +7909,7 @@ class ConeModel {
 		}
 		
 		this.context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
-		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+		this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy,this.color);
 		this.DrawCompletedCircle(
 			this.centerNode.cx,
 			this.centerNode.cy,
@@ -8190,7 +8190,7 @@ class ConeModel {
      */
     Redraw() {
         this.CanvasUpdate();
-        this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy);
+        this.DrawCentralNode(this.centerNode.cx,this.centerNode.cy,this.color);
         this.DrawCompletedCircle(
 			this.centerNode.cx,
 			this.centerNode.cy,
