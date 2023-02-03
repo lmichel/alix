@@ -204,6 +204,15 @@ class ConeModel {
 			&& Object.keys(this.centerNode).length === 2
 			&& this.radiusNode !== null
 			&& Object.keys(this.radiusNode).length === 2
+			&& this.skyConeDescriptor !== null;
+	}
+	
+	/**
+	@description Method to check if user has, at least, started to draw a cone.
+	@return {boolean} True if a cone was drawn, false in other cases.
+	 */
+	isConeDrawn() {
+		return this.centerNode !== null && Object.keys(this.centerNode).length === 2;
 	}
 	
 	/**
