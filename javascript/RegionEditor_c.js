@@ -313,7 +313,6 @@ class RegionEditor_mvC {
 				this.coneModel.killStoring();
 				if (this.coneModel.isConeDrawn()) {
 					console.error("Cone is not finished!");
-					console.log(this.coneModel.centerNode);
 				}
 				this.CleanCanvas();
 			}
