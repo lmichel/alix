@@ -64,7 +64,7 @@ class RegionPanelV {
             ************ Button to cut the region editor ***************
             ************************************************************/
             
-            this.cutButton = $('<button class="alix_btn cut-region-editor"></button>');            
+            this.cutButton = $('<button class="alix_btn cut-region-editor" onclick="AladinLiteX_mVc.regionEditor();"></button>');            
             this.contextDiv.append(this.cutButton);
             
             this.cutButton.on('click', () => {
