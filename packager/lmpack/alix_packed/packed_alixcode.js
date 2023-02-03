@@ -4212,9 +4212,9 @@ var AladinLiteX_mVc = function(){
 		
 	}
     var checkBrowseSaved = function(){
-    	if(browseSaved == false){
-			var a = confirm("Do you want to save your shape?") ;
-			if(a == true){
+    	if(browseSaved === false){
+			var answer = confirm("Do you want to save your shape?") ;
+			if(answer){
 				$("#regionEditor_a").trigger("click");
 			}else{
 				browseSaved = null;
@@ -4417,20 +4417,20 @@ var AladinLiteX_mVc = function(){
 	/**
 	 * click function 'region'
 	 */
-	var regionEditorInit = false;//To judge if regioneditor is already initialled
+	var regionEditorInit = false;//To judge if regioneditor is already initialized
 	var regionEditor = function(){
 		//if(aladinLiteView.region != null){
 			//controller.cleanPolygon();
 		//}
 		checkBrowseSaved();
+		storeCurrentState();
 		$("#SourceDiv").css("display","none");
 		contextDiv.css("max-height", "200px");
-		storeCurrentState();
 		//contextDiv.html("");
 		//if(contextDiv.height() < 10){
 			// open the region  editor
 			if(!regionEditorInit){
-			controller.editRegion();
+				controller.editRegion();
 			}
 			//controller.cleanPolygon();
 			//contextDiv.animate({height:'101px'},"fast");//change the context height from 200px to 101px. _shan
@@ -4467,7 +4467,7 @@ var AladinLiteX_mVc = function(){
 	var gotoObject = function(posName, posthandler){
 		
 		selectDiv.val($('#'+posName).val());
-		var cleanedPosName = posName.replace("_SpAcE_", " ")
+		var cleanedPosName = posName.replaceAll("_SpAcE_", " ")
 		targetDiv.val(cleanedPosName);
         aladin.gotoObject(cleanedPosName,{
         	success: function(pos){
@@ -4480,10 +4480,15 @@ var AladinLiteX_mVc = function(){
         		aladinLiteView.fov = l[0];
     			controller.updateCatalogs(aladinLiteView,'position');
     			var re = /^[0-9a-zA-Z_\s]*$/;        //determine if it is a name
-    			if(re.test(posName))
+    			if(re.test(posName)) {
     				addPositionInSelector(posName);
-    			else
-    				addPositionInSelector(strlon+" +"+strlat);
+				} else {
+    				if (/^(\+|\-)/.test(strlat)) {
+	    				addPositionInSelector(strlon+" "+strlat);
+					} else {
+						addPositionInSelector(strlon+" +"+strlat);
+					}
+				}
         		if(posthandler){
         			posthandler();
         		}
@@ -4683,7 +4688,7 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		if(pos != ""){
-			var pos_select = '<option id="'+pos.replace(' ', "_SpAcE_")+'">'+pos+'</option>';
+			var pos_select = '<option id="'+pos.replaceAll(' ', "_SpAcE_")+'">'+pos+'</option>';
 			selectDiv.append(pos_select);
 			selectDiv.val(pos);
 		}
@@ -7925,6 +7930,15 @@ class ConeModel {
 			&& Object.keys(this.centerNode).length === 2
 			&& this.radiusNode !== null
 			&& Object.keys(this.radiusNode).length === 2
+			&& this.skyConeDescriptor !== null;
+	}
+	
+	/**
+	@description Method to check if user has, at least, started to draw a cone.
+	@return {boolean} True if a cone was drawn, false in other cases.
+	 */
+	isConeDrawn() {
+		return this.centerNode !== null && Object.keys(this.centerNode).length === 2;
 	}
 	
 	/**
@@ -8025,7 +8039,7 @@ class ConeModel {
     @returns {{skyNode: Array<number>, radius: number}} A sky cone descriptor object describing the cone
      */
     buildSkyConeDescriptor(centerNode, radiusNode) {
-		console.log("Before pix2world: ", centerNode, radiusNode);
+		//console.log("Before pix2world: ", centerNode, radiusNode);
 		let skyPositionsCenterNode = this.aladinView.pix2world(centerNode.cx, centerNode.cy);
 		let skyPositionsRadiusNode = this.aladinView.pix2world(radiusNode.cx, radiusNode.cy);
 		//let pointBelongCircle;
@@ -8604,7 +8618,7 @@ class RegionEditor_mvC {
 	            console.error("Polygon not closed");
 	        }
 		} else if (this.focusedModel === Models.Cone) {
-			if (this.coneModel.isConeComplete()) {
+			if (this.coneModel.isConeComplete() && this.coneModel.isConeDrawn()) {
 				//let view = this.coneModel.getView();
 				this.data = {
 				    isReady: true,
@@ -8628,7 +8642,10 @@ class RegionEditor_mvC {
 			} else {
 				this.data = null;
 				this.coneModel.killStoring();
-				console.error("Cone is not finished!");
+				if (this.coneModel.isConeDrawn()) {
+					console.error("Cone is not finished!");
+				}
+				this.CleanCanvas();
 			}
 		}
 		this.editorState = "accepted";
@@ -8746,7 +8763,7 @@ class RegionPanelV {
             ************ Button to cut the region editor ***************
             ************************************************************/
             
-            this.cutButton = $('<button class="alix_btn cut-region-editor"></button>');            
+            this.cutButton = $('<button class="alix_btn cut-region-editor" onclick="AladinLiteX_mVc.regionEditor();"></button>');            
             this.contextDiv.append(this.cutButton);
             
             this.cutButton.on('click', () => {
@@ -8783,7 +8800,7 @@ class RegionPanelV {
 			/*************************************************************
 			**************** Region Editor Registration ******************
 			**************************************************************/
-			console.log(this.editorDescriptors);
+			//console.log(this.editorDescriptors);
 			for (let regionEditor of this.editorDescriptors) {
 	            const editorDiv = $(`<div id="${regionEditor.divId}" class="region-editor"></div>`);
 	            this.panelBody.append(editorDiv);
