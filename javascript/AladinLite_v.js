@@ -1108,9 +1108,9 @@ var AladinLiteX_mVc = function(){
 		
 	}
     var checkBrowseSaved = function(){
-    	if(browseSaved == false){
-			var a = confirm("Do you want to save your shape?") ;
-			if(a == true){
+    	if(browseSaved === false){
+			var answer = confirm("Do you want to save your shape?") ;
+			if(answer){
 				$("#regionEditor_a").trigger("click");
 			}else{
 				browseSaved = null;
