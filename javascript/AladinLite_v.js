@@ -1363,7 +1363,7 @@ var AladinLiteX_mVc = function(){
 	var gotoObject = function(posName, posthandler){
 		
 		selectDiv.val($('#'+posName).val());
-		var cleanedPosName = posName.replace("_SpAcE_", " ")
+		var cleanedPosName = posName.replaceAll("_SpAcE_", " ")
 		targetDiv.val(cleanedPosName);
         aladin.gotoObject(cleanedPosName,{
         	success: function(pos){
@@ -1376,10 +1376,15 @@ var AladinLiteX_mVc = function(){
         		aladinLiteView.fov = l[0];
     			controller.updateCatalogs(aladinLiteView,'position');
     			var re = /^[0-9a-zA-Z_\s]*$/;        //determine if it is a name
-    			if(re.test(posName))
+    			if(re.test(posName)) {
     				addPositionInSelector(posName);
-    			else
-    				addPositionInSelector(strlon+" +"+strlat);
+				} else {
+    				if (/^(\+|\-)/.test(strlat)) {
+	    				addPositionInSelector(strlon+" "+strlat);
+					} else {
+						addPositionInSelector(strlon+" +"+strlat);
+					}
+				}
         		if(posthandler){
         			posthandler();
         		}
@@ -1579,7 +1584,7 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		if(pos != ""){
-			var pos_select = '<option id="'+pos.replace(' ', "_SpAcE_")+'">'+pos+'</option>';
+			var pos_select = '<option id="'+pos.replaceAll(' ', "_SpAcE_")+'">'+pos+'</option>';
 			selectDiv.append(pos_select);
 			selectDiv.val(pos);
 		}
