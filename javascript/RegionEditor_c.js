@@ -287,7 +287,7 @@ class RegionEditor_mvC {
 	            console.error("Polygon not closed");
 	        }
 		} else if (this.focusedModel === Models.Cone) {
-			if (this.coneModel.isConeComplete()) {
+			if (this.coneModel.isConeComplete() && this.coneModel.isConeDrawn()) {
 				//let view = this.coneModel.getView();
 				this.data = {
 				    isReady: true,
@@ -311,7 +311,11 @@ class RegionEditor_mvC {
 			} else {
 				this.data = null;
 				this.coneModel.killStoring();
-				console.error("Cone is not finished!");
+				if (this.coneModel.isConeDrawn()) {
+					console.error("Cone is not finished!");
+					console.log(this.coneModel.centerNode);
+				}
+				this.CleanCanvas();
 			}
 		}
 		this.editorState = "accepted";
