@@ -1313,20 +1313,20 @@ var AladinLiteX_mVc = function(){
 	/**
 	 * click function 'region'
 	 */
-	var regionEditorInit = false;//To judge if regioneditor is already initialled
+	var regionEditorInit = false;//To judge if regioneditor is already initialized
 	var regionEditor = function(){
 		//if(aladinLiteView.region != null){
 			//controller.cleanPolygon();
 		//}
 		checkBrowseSaved();
+		storeCurrentState();
 		$("#SourceDiv").css("display","none");
 		contextDiv.css("max-height", "200px");
-		storeCurrentState();
 		//contextDiv.html("");
 		//if(contextDiv.height() < 10){
 			// open the region  editor
 			if(!regionEditorInit){
-			controller.editRegion();
+				controller.editRegion();
 			}
 			//controller.cleanPolygon();
 			//contextDiv.animate({height:'101px'},"fast");//change the context height from 200px to 101px. _shan
