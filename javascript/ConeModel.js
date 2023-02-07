@@ -196,7 +196,7 @@ class ConeModel {
 		);
 	}
 	/**
-	@description Method to verify that the cone has a center node set & a radius set
+	@description Method to verify that the cone has been validated
 	@returns {boolean} True if the cone is complete, false in other cases
 	 */
 	isConeComplete() {
@@ -205,6 +205,17 @@ class ConeModel {
 			&& this.radiusNode !== null
 			&& Object.keys(this.radiusNode).length === 2
 			&& this.skyConeDescriptor !== null;
+	}
+	
+	/**
+	@description Method to verify that the cone has a center node set & a radius set
+	@returns {boolean} True if the cone is modifiable, false in other cases
+	 */
+	isConeModifiable() {
+		return this.centerNode !== null
+			&& Object.keys(this.centerNode).length === 2
+			&& this.radiusNode !== null
+			&& Object.keys(this.radiusNode).length === 2
 	}
 	
 	/**
@@ -587,7 +598,7 @@ class ConeModel {
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
 		
-		if (this.isConeComplete()) {
+		if (this.isConeModifiable()) {
 			let radius = this.computeRadius(this.centerNode,this.radiusNode);
 			let distToCenter = this.computeCenterDistanceTo(x,y);
 			
