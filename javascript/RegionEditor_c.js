@@ -270,7 +270,6 @@ class RegionEditor_mvC {
 					    isReady: true,
 					    userAction: userAction,
 					    editorState: this.editorState,
-					    img: this.aladinLite_V.getAladinImg(400,400),
 					    region: {
 					        format: "array2dim",
 					        color: this.color,
@@ -293,7 +292,6 @@ class RegionEditor_mvC {
 				    isReady: true,
 				    userAction: userAction,
 				    editorState: this.editorState,
-				    img: this.aladinLite_V.getAladinImg(400,400),
 				    region: {
 				        format: "cone",
 				        color: this.color,
