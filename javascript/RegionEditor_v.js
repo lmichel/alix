@@ -233,11 +233,12 @@ class RegionEditor_mVc {
         this.setBtn.css(styleToApply);
 
         this.setBtn.on('click', function(event) {
-			if(!that.isEditMode) {			
+			let isEditMode = that.isEditMode;
+			if(!isEditMode) {		
 				that.controller.store();
 			}
+			that.setBrowseMode();
             that.controller.get();
-            that.setBrowseMode();
             that.aladinLite_V.reabledButton();
             if ($("#region")[0])
                 $("#region")[0].disabled = false;
