@@ -203,7 +203,13 @@ class RegionPanelV {
 					data_array.push(regionEditor.controller.data);
 				}
 			}
-			sourceRegionEditor.controller.invokeHandler(true,data_array);
+			/* Set timeout because drawing the shape on the canvas is computed asynchronously in
+			 * aladin lite. One has not access to this interface, so we are forced to use
+			 * a timeout.
+			 */
+			setTimeout(() => {				
+				sourceRegionEditor.controller.invokeHandler(true,data_array);
+			}, 300);
 			//console.log(sourceRegionEditor.controller.data,data_array);
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
