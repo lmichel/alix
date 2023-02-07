@@ -1926,7 +1926,15 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	var getAladinImg = function(width, height) {
-		return aladin.getViewDataURL({width: width, height: height});
+		if (width === null && height === null) {
+			return aladin.getViewDataURL({});
+		} else if (width === null) { 
+			return aladin.getViewDataURL({height: height});
+		} else if (height === null) {
+			return aladin.getViewDataURL({width: width});
+		} else {
+			return aladin.getViewDataURL({width: width, height: height});
+		}
 	}
 		
 	var openContextPanel = function(html){
