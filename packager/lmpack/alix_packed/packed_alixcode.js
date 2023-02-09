@@ -5030,7 +5030,15 @@ var AladinLiteX_mVc = function(){
 	}
 	
 	var getAladinImg = function(width, height) {
-		return aladin.getViewDataURL({width: width, height: height});
+		if (width === null && height === null) {
+			return aladin.getViewDataURL({});
+		} else if (width === null) { 
+			return aladin.getViewDataURL({height: height});
+		} else if (height === null) {
+			return aladin.getViewDataURL({width: width});
+		} else {
+			return aladin.getViewDataURL({width: width, height: height});
+		}
 	}
 		
 	var openContextPanel = function(html){
@@ -6461,11 +6469,12 @@ class RegionEditor_mVc {
         this.setBtn.css(styleToApply);
 
         this.setBtn.on('click', function(event) {
-			if(!that.isEditMode) {			
+			let isEditMode = that.isEditMode;
+			if(!isEditMode) {		
 				that.controller.store();
 			}
+			that.setBrowseMode();
             that.controller.get();
-            that.setBrowseMode();
             that.aladinLite_V.reabledButton();
             if ($("#region")[0])
                 $("#region")[0].disabled = false;
@@ -7922,7 +7931,7 @@ class ConeModel {
 		);
 	}
 	/**
-	@description Method to verify that the cone has a center node set & a radius set
+	@description Method to verify that the cone has been validated
 	@returns {boolean} True if the cone is complete, false in other cases
 	 */
 	isConeComplete() {
@@ -7931,6 +7940,17 @@ class ConeModel {
 			&& this.radiusNode !== null
 			&& Object.keys(this.radiusNode).length === 2
 			&& this.skyConeDescriptor !== null;
+	}
+	
+	/**
+	@description Method to verify that the cone has a center node set & a radius set
+	@returns {boolean} True if the cone is modifiable, false in other cases
+	 */
+	isConeModifiable() {
+		return this.centerNode !== null
+			&& Object.keys(this.centerNode).length === 2
+			&& this.radiusNode !== null
+			&& Object.keys(this.radiusNode).length === 2
 	}
 	
 	/**
@@ -8313,7 +8333,7 @@ class ConeModel {
 		let x = parseInt(event.pageX) - parseInt(canvas.offset().left).toFixed(1);
 		let y = parseInt(event.pageY) - parseInt(canvas.offset().top).toFixed(1);
 		
-		if (this.isConeComplete()) {
+		if (this.isConeModifiable()) {
 			let radius = this.computeRadius(this.centerNode,this.radiusNode);
 			let distToCenter = this.computeCenterDistanceTo(x,y);
 			
@@ -8601,7 +8621,6 @@ class RegionEditor_mvC {
 					    isReady: true,
 					    userAction: userAction,
 					    editorState: this.editorState,
-					    img: this.aladinLite_V.getAladinImg(400,400),
 					    region: {
 					        format: "array2dim",
 					        color: this.color,
@@ -8624,7 +8643,6 @@ class RegionEditor_mvC {
 				    isReady: true,
 				    userAction: userAction,
 				    editorState: this.editorState,
-				    img: this.aladinLite_V.getAladinImg(400,400),
 				    region: {
 				        format: "cone",
 				        color: this.color,
@@ -8902,7 +8920,13 @@ class RegionPanelV {
 					data_array.push(regionEditor.controller.data);
 				}
 			}
-			sourceRegionEditor.controller.invokeHandler(true,data_array);
+			/* Set timeout because drawing the shape on the canvas is computed asynchronously in
+			 * aladin lite. One has not access to this interface, so we are forced to use
+			 * a timeout.
+			 */
+			setTimeout(() => {				
+				sourceRegionEditor.controller.invokeHandler(true,data_array);
+			}, 300);
 			//console.log(sourceRegionEditor.controller.data,data_array);
         });
         for (const regionEditor of this.backgroundRegionEditors) {	
