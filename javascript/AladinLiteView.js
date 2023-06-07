@@ -225,11 +225,7 @@ AladinLiteView.prototype = {
 			$("#" + this.id).css("width", "18px");
 			$("#" + this.id).css("height", "18px");
 			*/
-			if(statue == true){
-				$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
-			}else{
-				$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
-			}
+			$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
 		});
 		
 		/*

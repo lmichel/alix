@@ -117,8 +117,6 @@ var AladinLiteX_mVc = function(){
 	var maskDiv	;
 	var selectHipsDiv;
 	var catalogeDiv;
-	var selectCataBtn ;
-	var vizierDiv;
 	var maskId = "AladinHipsImagesExplorer_mask";
 	var selectHipsDivId = "status-select";
 	var catalogeId = "Aladin-Cataloge";
@@ -130,7 +128,6 @@ var AladinLiteX_mVc = function(){
 	var panel_last = null;
 	var lastSelectedSourcePosition={name:null,ra:null,dec:null};//save the coordonnes of the last selected source
 	var isSourceSelected=false;//Juge whether there is a source being selected
-	var isMove=false;
 	var parameters = null;
 	/**
 	 * var params = {
@@ -164,8 +161,6 @@ var AladinLiteX_mVc = function(){
 		contextDivId = `${params.parentDivId}-context`;
 		targetDivId  = `${params.parentDivId}-target`;
 		selectDivId  = `${params.parentDivId}-select`;
-		var showAssociated = params.showAssociated;
-		var showPanel = params.showPanel;
 		
 		if(params.masterResource != undefined){
 			aladinLiteView.masterResource = new MasterResource(params.masterResource);
@@ -181,15 +176,6 @@ var AladinLiteX_mVc = function(){
 			params.controllers.historic.model = new Historique_Mvc('panel_history', this);
 		}
 		if(params.controllers.regionEditor != undefined || (params.defaultView != undefined && params.defaultView.region != undefined)){
-			/****************** @WARNING temporary comment 
-			params.controllers.regionEditor.view = new RegionEditor_mVc(
-					this
-					, parentDivId
-					,'panel_region'//, contextDivId
-					, params.regionEditorHandler
-					//, aladinLiteView.points
-					, params.defaultView.defaultRegion);
-			*/
 			params.controllers.regionEditor.view = new RegionPanelV(
 				this,
 				parentDivId,
@@ -272,10 +258,6 @@ var AladinLiteX_mVc = function(){
 		VizierCatalogue.SourceDataMove();
 		
 		var newMenu = $('#newMenu')	;
-		var button_locate = 
-			`<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" >
-				<i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i>
-			</button>`
 		var button_center = 
 			`<button 
 				id="button_center"

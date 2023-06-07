@@ -144,6 +144,8 @@ MasterResource.prototype = {
 		
 		cleanTab: function(){
 			this.tab=[];
+		},
+		mustShowAssociated: function(){
+			return (this.actions.showAssociated && this.actions.showAssociated.active)
 		}
-
 }
