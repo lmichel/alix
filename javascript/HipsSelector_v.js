@@ -404,27 +404,24 @@ HipsSelector_mVc.prototype = {
 				$("#btn-XMM-description").css("color" , color);
 				$("#btn-XMM-flash").css("color" ,color);
 				$("#btn-XMM-configure").css("color" ,color);
-				if(cmdNode.text().includes("3XMM Catalogue"))
-					$("#ACDS").css("display" , "inline");
+				console.log("1");
+				if( aladinLiteView.masterResource.mustShowAssociated() ) {
+					("#ACDS").css("display" , "inline");
+				}
 				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 			}
 			else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp"){
-//				if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false){
-//					WaitingPanel.warnFov();
-//				}else{
-					WaitingPanel.show(name);
-					cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
-					cmdNode.css("color", color);
-					$("#btn-XMM-description").css("color" , color);
-					$("#btn-XMM-flash").css("color" ,color);
-					$("#btn-XMM-configure").css("color" ,color);
-					if(cmdNode.text().includes("3XMM Catalogue"))
-						$("#ACDS").css("display" , "inline");
-					self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
-//				}
-				/*}else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp_nochange"){
-				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");*/
-				//to avoid" when we display a view in the bookmark who contains XMM, it will recall displaydataxml(), and if xmm has been already showed ,function displaydataxml will lead to delete the XMM."	
+				console.log("2");
+				WaitingPanel.show(name);
+				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
+				cmdNode.css("color", color);
+				$("#btn-XMM-description").css("color" , color);
+				$("#btn-XMM-flash").css("color" ,color);
+				$("#btn-XMM-configure").css("color" ,color);
+				if( aladinLiteView.masterResource.mustShowAssociated() ) {
+					$("#ACDS").css("display" , "inline");
+				}
+				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 			}else{
 				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
