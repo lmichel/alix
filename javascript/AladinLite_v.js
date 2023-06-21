@@ -1647,7 +1647,7 @@ var AladinLiteX_mVc = function(){
 			var html ='<div style="background-color:'+color+';border-radius: 5px;box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);"><a href="#" onclick="$(&quot;#itemList&quot;).css(&quot;display&quot;, &quot;none&quot;);" '
 			+ 'style="top: 18px;float: right; margin-right: 8px; margin-top: 2px;" class="ui-dialog-titlebar-close ui-corner-all" role="button">'
 			+ '<span class="glyphicon glyphicon-remove" style="color: white;"></span></a><br></div>'
-				+'<iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=100% src="http://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+index+'/?format=html&tex=true" frameborder="0"'
+				+'<iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=100% src="https://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+index+'/?format=html&tex=true" frameborder="0"'
 				+'style = "" ></iframe>'
 			/*	var html = '<p style="color:#4D36DC;margin:10px;" >';
 				html +=  cata.obs_title + "</p><p style='font-size:small;margin:10px;'>" + cata.obs_description + "<br>";
@@ -2164,7 +2164,7 @@ var AladinLiteX_mVc = function(){
 				var catalog = null;
 				
 			 $.ajax({
-			        url: 'http://alasky.u-strasbg.fr/footprints/estimate-nbrows/estimate-radius',
+			        url: 'https://alasky.u-strasbg.fr/footprints/estimate-nbrows/estimate-radius',
 			        data: {viz_table_id: obs_id,
 			        	   ra : aladin.getRaDec()[0],
 			        	   dec : aladin.getRaDec()[1] ,
