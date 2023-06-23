@@ -2058,7 +2058,6 @@ var AladinLiteX_mVc = function(){
 						aladinLiteView.sourceSelected.y = params.y;
 						var data = params.data;
 						var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
-						//console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
 						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 						}
@@ -2146,10 +2145,9 @@ var AladinLiteX_mVc = function(){
 	
 	var displayVizierCatalog = function(obs_id, color, clickType, hips_service_url){
 		var catalog;
-		var fov;
-		var self=this;
 		var sourceSize =8;
 		var shape ="square";
+		var https_hips_service_url;
 		AlixLogger.trackAction("Display Vizier " + obs_id);
 		if(LibraryCatalog.getCatalog('VizieR:'+obs_id)){
 			color = LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs.color;
@@ -2157,11 +2155,11 @@ var AladinLiteX_mVc = function(){
 			shape = LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs.shape;
 		 }
 		if(hips_service_url != undefined){
-			//catalog = A.catalogHiPS(hips_service_url, {onClick: clickType,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
-			//catalog = A.catalogHiPS(hips_service_url, {onClick: function(data){alert(data.catalog.name);},name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
-			catalog = A.catalogHiPS(hips_service_url, {onClick: VizierCatalogue.showSourceData,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
+	        https_hips_service_url = hips_service_url.replace("http://", "https://")
+			catalog = A.catalogHiPS(https_hips_service_url, {onClick: VizierCatalogue.showSourceData,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
+			refreshVizierCatalog(https_hips_service_url, catalog, obs_id, color, shape, fade)
 		}else{
-				var catalog = null;
+			var catalog = null;
 				
 			 $.ajax({
 			        url: 'https://alasky.u-strasbg.fr/footprints/estimate-nbrows/estimate-radius',
@@ -2195,14 +2193,11 @@ var AladinLiteX_mVc = function(){
 						catalog = A.catalogFromVizieR(obs_id
 								, aladin.getRaDec()[0] + " " + aladin.getRaDec()[1]
 								, radius
-								//, {onClick: function(x){alert(JSON.stringify(x.data));}, color:color,sourceSize: sourceSize,shape: shape }
 						        , {onClick: VizierCatalogue.showSourceData, color:color,sourceSize: sourceSize,shape: shape }
 								, function(sources) {
 									WaitingPanel.hide(obs_id);
-//									if( sources.length >= 999) {
-//										WaitingPanel.warnNbSources();
-//									}
 								});
+						refreshVizierCatalog(https_hips_service_url, catalog, obs_id, color, shape, fade)
 						
 			        },
 			        error: function(xhr, status, error) {
@@ -2210,18 +2205,20 @@ var AladinLiteX_mVc = function(){
 			        }
 			    }); 		
 		}
-		aladin.addCatalog(catalog);
-		if(!LibraryCatalog.getCatalog('VizieR:'+obs_id)){
-			
-		    LibraryCatalog.addCatalog({url:hips_service_url, name:'VizieR:'+obs_id,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id,color: color, shape :shape,fade : "", al_refs: catalog}) 
-		    }else{
-		    	 LibraryCatalog.updCatalog({url:hips_service_url, name:  'VizieR:'+obs_id ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id, color: color, shape :shape,fade : "", al_refs: catalog})
-		    };
-				bindToFade();
-		return catalog;
 		
 	}
 	
+	var refreshVizierCatalog = function(hips_service_url, catalog, obs_id, color, shape){
+		aladin.addCatalog(catalog);
+		if(!LibraryCatalog.getCatalog('VizieR:'+obs_id)){
+		    LibraryCatalog.addCatalog({url:hips_service_url, name:'VizieR:'+obs_id,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id,color: color, shape :shape,fade : "", al_refs: catalog}) 
+		} else {
+		    LibraryCatalog.updCatalog({url:hips_service_url, name:  'VizieR:'+obs_id ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id, color: color, shape :shape,fade : "", al_refs: catalog})
+		}
+		bindToFade();
+		return catalog;
+	
+	}
 	
 	var cleanCatalog = function(name){
 		//clean all the catalogs in the current view

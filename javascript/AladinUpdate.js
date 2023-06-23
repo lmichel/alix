@@ -123,7 +123,7 @@ URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
             target = coo.format('s');
         }
     }
-    return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
+    return 'https://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
 };
 
 /*Aladin.prototype.increaseZoom = function(step) {
