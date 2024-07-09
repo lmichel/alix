@@ -78,9 +78,9 @@
 /******/ ({
 
 /***/ "../../styleimport/bootstrap-3.3.7/bootstrap.min.css":
-/*!***************************************************************************!*\
-  !*** /home/aviala/git/alix/styleimport/bootstrap-3.3.7/bootstrap.min.css ***!
-  \***************************************************************************/
+/*!***************************************************************************************!*\
+  !*** /home/michel/gitRepositories/alix/styleimport/bootstrap-3.3.7/bootstrap.min.css ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -89,9 +89,9 @@
 /***/ }),
 
 /***/ "../../styleimport/jquery-ui.min.css":
-/*!***********************************************************!*\
-  !*** /home/aviala/git/alix/styleimport/jquery-ui.min.css ***!
-  \***********************************************************/
+/*!***********************************************************************!*\
+  !*** /home/michel/gitRepositories/alix/styleimport/jquery-ui.min.css ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -100,9 +100,9 @@
 /***/ }),
 
 /***/ "../../styleimport/jquery.ui.dialog.css":
-/*!**************************************************************!*\
-  !*** /home/aviala/git/alix/styleimport/jquery.ui.dialog.css ***!
-  \**************************************************************/
+/*!**************************************************************************!*\
+  !*** /home/michel/gitRepositories/alix/styleimport/jquery.ui.dialog.css ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -111,9 +111,9 @@
 /***/ }),
 
 /***/ "../../styleimport/jquery.ui.theme.css":
-/*!*************************************************************!*\
-  !*** /home/aviala/git/alix/styleimport/jquery.ui.theme.css ***!
-  \*************************************************************/
+/*!*************************************************************************!*\
+  !*** /home/michel/gitRepositories/alix/styleimport/jquery.ui.theme.css ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -122,9 +122,9 @@
 /***/ }),
 
 /***/ "../../styleimport/menuDemo/livedemo.css":
-/*!***************************************************************!*\
-  !*** /home/aviala/git/alix/styleimport/menuDemo/livedemo.css ***!
-  \***************************************************************/
+/*!***************************************************************************!*\
+  !*** /home/michel/gitRepositories/alix/styleimport/menuDemo/livedemo.css ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -133,9 +133,9 @@
 /***/ }),
 
 /***/ "../../styleimport/spectrum.css":
-/*!******************************************************!*\
-  !*** /home/aviala/git/alix/styleimport/spectrum.css ***!
-  \******************************************************/
+/*!******************************************************************!*\
+  !*** /home/michel/gitRepositories/alix/styleimport/spectrum.css ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

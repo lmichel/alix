@@ -1345,7 +1345,7 @@ var AladinLiteX_mVc = function(){
 	var gotoObject = function(posName, posthandler){
 		
 		selectDiv.val($('#'+posName).val());
-		var cleanedPosName = posName.replaceAll("_SpAcE_", " ")
+		var cleanedPosName = posName.replace(/_SpAcE_/g, " ");
 		targetDiv.val(cleanedPosName);
         aladin.gotoObject(cleanedPosName,{
         	success: function(pos){
@@ -1566,7 +1566,7 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		if(pos != ""){
-			var pos_select = '<option id="'+pos.replaceAll(' ', "_SpAcE_")+'">'+pos+'</option>';
+			var pos_select = '<option id="'+pos.replace(/ /g, "_SpAcE_")+'">'+pos+'</option>';
 			selectDiv.append(pos_select);
 			selectDiv.val(pos);
 		}
@@ -2045,6 +2045,7 @@ var AladinLiteX_mVc = function(){
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			}
 			if(url!=undefined){
+				console.log(url)
 			  catalog = XMMcata = A.catalogFromURL(url
 				,{     name: name, sourceSize:sourceSize
 				    , shape: shape 

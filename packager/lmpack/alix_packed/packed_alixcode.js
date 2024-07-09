@@ -2752,8 +2752,10 @@ MasterResource.prototype = {
 		
 		cleanTab: function(){
 			this.tab=[];
+		},
+		mustShowAssociated: function(){
+			return (this.actions.showAssociated && this.actions.showAssociated.active)
 		}
-
 };console.log('=============== >  MasterResource.js ');
 /**
  * @preserve LICENSE
@@ -2982,11 +2984,7 @@ AladinLiteView.prototype = {
 			$("#" + this.id).css("width", "18px");
 			$("#" + this.id).css("height", "18px");
 			*/
-			if(statue == true){
-				$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
-			}else{
-				$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
-			}
+			$("#"+$(this).attr('id').replace("_snapShot_img","")).css("height", "auto");
 		});
 		
 		/*
@@ -3221,8 +3219,6 @@ var AladinLiteX_mVc = function(){
 	var maskDiv	;
 	var selectHipsDiv;
 	var catalogeDiv;
-	var selectCataBtn ;
-	var vizierDiv;
 	var maskId = "AladinHipsImagesExplorer_mask";
 	var selectHipsDivId = "status-select";
 	var catalogeId = "Aladin-Cataloge";
@@ -3234,7 +3230,6 @@ var AladinLiteX_mVc = function(){
 	var panel_last = null;
 	var lastSelectedSourcePosition={name:null,ra:null,dec:null};//save the coordonnes of the last selected source
 	var isSourceSelected=false;//Juge whether there is a source being selected
-	var isMove=false;
 	var parameters = null;
 	/**
 	 * var params = {
@@ -3268,8 +3263,6 @@ var AladinLiteX_mVc = function(){
 		contextDivId = `${params.parentDivId}-context`;
 		targetDivId  = `${params.parentDivId}-target`;
 		selectDivId  = `${params.parentDivId}-select`;
-		var showAssociated = params.showAssociated;
-		var showPanel = params.showPanel;
 		
 		if(params.masterResource != undefined){
 			aladinLiteView.masterResource = new MasterResource(params.masterResource);
@@ -3285,15 +3278,6 @@ var AladinLiteX_mVc = function(){
 			params.controllers.historic.model = new Historique_Mvc('panel_history', this);
 		}
 		if(params.controllers.regionEditor != undefined || (params.defaultView != undefined && params.defaultView.region != undefined)){
-			/****************** @WARNING temporary comment 
-			params.controllers.regionEditor.view = new RegionEditor_mVc(
-					this
-					, parentDivId
-					,'panel_region'//, contextDivId
-					, params.regionEditorHandler
-					//, aladinLiteView.points
-					, params.defaultView.defaultRegion);
-			*/
 			params.controllers.regionEditor.view = new RegionPanelV(
 				this,
 				parentDivId,
@@ -3376,10 +3360,6 @@ var AladinLiteX_mVc = function(){
 		VizierCatalogue.SourceDataMove();
 		
 		var newMenu = $('#newMenu')	;
-		var button_locate = 
-			`<button id="button_locate" class="alix_btn alix_btn-circle alix_btn-grey" title ="search a position" >
-				<i id="" class="glyphicon glyphicon-map-marker " style="font-size:18px;"></i>
-			</button>`
 		var button_center = 
 			`<button 
 				id="button_center"
@@ -4467,7 +4447,7 @@ var AladinLiteX_mVc = function(){
 	var gotoObject = function(posName, posthandler){
 		
 		selectDiv.val($('#'+posName).val());
-		var cleanedPosName = posName.replaceAll("_SpAcE_", " ")
+		var cleanedPosName = posName.replace(/_SpAcE_/g, " ");
 		targetDiv.val(cleanedPosName);
         aladin.gotoObject(cleanedPosName,{
         	success: function(pos){
@@ -4688,7 +4668,7 @@ var AladinLiteX_mVc = function(){
 				return false;
 		}
 		if(pos != ""){
-			var pos_select = '<option id="'+pos.replaceAll(' ', "_SpAcE_")+'">'+pos+'</option>';
+			var pos_select = '<option id="'+pos.replace(/ /g, "_SpAcE_")+'">'+pos+'</option>';
 			selectDiv.append(pos_select);
 			selectDiv.val(pos);
 		}
@@ -4769,7 +4749,7 @@ var AladinLiteX_mVc = function(){
 			var html ='<div style="background-color:'+color+';border-radius: 5px;box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);"><a href="#" onclick="$(&quot;#itemList&quot;).css(&quot;display&quot;, &quot;none&quot;);" '
 			+ 'style="top: 18px;float: right; margin-right: 8px; margin-top: 2px;" class="ui-dialog-titlebar-close ui-corner-all" role="button">'
 			+ '<span class="glyphicon glyphicon-remove" style="color: white;"></span></a><br></div>'
-				+'<iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=100% src="http://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+index+'/?format=html&tex=true" frameborder="0"'
+				+'<iframe id = "cds_iframe"  name="content_frame" marginwidth=0 marginheight=0 width=100% height=100% src="https://cdsarc.u-strasbg.fr/viz-bin/ReadMe/'+index+'/?format=html&tex=true" frameborder="0"'
 				+'style = "" ></iframe>'
 			/*	var html = '<p style="color:#4D36DC;margin:10px;" >';
 				html +=  cata.obs_title + "</p><p style='font-size:small;margin:10px;'>" + cata.obs_description + "<br>";
@@ -5167,6 +5147,7 @@ var AladinLiteX_mVc = function(){
 				shape = LibraryCatalog.getCatalog(name).al_refs.shape;
 			}
 			if(url!=undefined){
+				console.log(url)
 			  catalog = XMMcata = A.catalogFromURL(url
 				,{     name: name, sourceSize:sourceSize
 				    , shape: shape 
@@ -5180,7 +5161,6 @@ var AladinLiteX_mVc = function(){
 						aladinLiteView.sourceSelected.y = params.y;
 						var data = params.data;
 						var showPanel = aladinLiteView.masterResource.actions.showPanel.active;
-						//console.log("&&&&&&"+aladinLiteView.masterResource+"and"+typeof( aladinLiteView.masterResource.actions.externalProcessing))
 						if( aladinLiteView.masterResource&&typeof( aladinLiteView.masterResource.actions.externalProcessing.handlerSelect)=="function") {
 							aladinLiteView.masterResource.actions.externalProcessing.handlerSelect(data,showPanel);
 						}
@@ -5268,10 +5248,9 @@ var AladinLiteX_mVc = function(){
 	
 	var displayVizierCatalog = function(obs_id, color, clickType, hips_service_url){
 		var catalog;
-		var fov;
-		var self=this;
 		var sourceSize =8;
 		var shape ="square";
+		var https_hips_service_url;
 		AlixLogger.trackAction("Display Vizier " + obs_id);
 		if(LibraryCatalog.getCatalog('VizieR:'+obs_id)){
 			color = LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs.color;
@@ -5279,14 +5258,14 @@ var AladinLiteX_mVc = function(){
 			shape = LibraryCatalog.getCatalog('VizieR:'+obs_id).al_refs.shape;
 		 }
 		if(hips_service_url != undefined){
-			//catalog = A.catalogHiPS(hips_service_url, {onClick: clickType,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
-			//catalog = A.catalogHiPS(hips_service_url, {onClick: function(data){alert(data.catalog.name);},name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
-			catalog = A.catalogHiPS(hips_service_url, {onClick: VizierCatalogue.showSourceData,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
+	        https_hips_service_url = hips_service_url.replace("http://", "https://")
+			catalog = A.catalogHiPS(https_hips_service_url, {onClick: VizierCatalogue.showSourceData,name: 'VizieR:'+obs_id,color:color, sourceSize: sourceSize,shape: shape },WaitingPanel.hide(obs_id));
+			refreshVizierCatalog(https_hips_service_url, catalog, obs_id, color, shape, fade)
 		}else{
-				var catalog = null;
+			var catalog = null;
 				
 			 $.ajax({
-			        url: 'http://alasky.u-strasbg.fr/footprints/estimate-nbrows/estimate-radius',
+			        url: 'https://alasky.u-strasbg.fr/footprints/estimate-nbrows/estimate-radius',
 			        data: {viz_table_id: obs_id,
 			        	   ra : aladin.getRaDec()[0],
 			        	   dec : aladin.getRaDec()[1] ,
@@ -5317,14 +5296,11 @@ var AladinLiteX_mVc = function(){
 						catalog = A.catalogFromVizieR(obs_id
 								, aladin.getRaDec()[0] + " " + aladin.getRaDec()[1]
 								, radius
-								//, {onClick: function(x){alert(JSON.stringify(x.data));}, color:color,sourceSize: sourceSize,shape: shape }
 						        , {onClick: VizierCatalogue.showSourceData, color:color,sourceSize: sourceSize,shape: shape }
 								, function(sources) {
 									WaitingPanel.hide(obs_id);
-//									if( sources.length >= 999) {
-//										WaitingPanel.warnNbSources();
-//									}
 								});
+						refreshVizierCatalog(https_hips_service_url, catalog, obs_id, color, shape, fade)
 						
 			        },
 			        error: function(xhr, status, error) {
@@ -5332,18 +5308,20 @@ var AladinLiteX_mVc = function(){
 			        }
 			    }); 		
 		}
-		aladin.addCatalog(catalog);
-		if(!LibraryCatalog.getCatalog('VizieR:'+obs_id)){
-			
-		    LibraryCatalog.addCatalog({url:hips_service_url, name:'VizieR:'+obs_id,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id,color: color, shape :shape,fade : "", al_refs: catalog}) 
-		    }else{
-		    	 LibraryCatalog.updCatalog({url:hips_service_url, name:  'VizieR:'+obs_id ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id, color: color, shape :shape,fade : "", al_refs: catalog})
-		    };
-				bindToFade();
-		return catalog;
 		
 	}
 	
+	var refreshVizierCatalog = function(hips_service_url, catalog, obs_id, color, shape){
+		aladin.addCatalog(catalog);
+		if(!LibraryCatalog.getCatalog('VizieR:'+obs_id)){
+		    LibraryCatalog.addCatalog({url:hips_service_url, name:'VizieR:'+obs_id,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id,color: color, shape :shape,fade : "", al_refs: catalog}) 
+		} else {
+		    LibraryCatalog.updCatalog({url:hips_service_url, name:  'VizieR:'+obs_id ,nameTemp:aladin.view.catalogs[aladin.view.catalogs.length-1].name,obs_id :obs_id, color: color, shape :shape,fade : "", al_refs: catalog})
+		}
+		bindToFade();
+		return catalog;
+	
+	}
 	
 	var cleanCatalog = function(name){
 		//clean all the catalogs in the current view
@@ -9746,27 +9724,24 @@ HipsSelector_mVc.prototype = {
 				$("#btn-XMM-description").css("color" , color);
 				$("#btn-XMM-flash").css("color" ,color);
 				$("#btn-XMM-configure").css("color" ,color);
-				if(cmdNode.text().includes("3XMM Catalogue"))
-					$("#ACDS").css("display" , "inline");
+				console.log("1");
+				if( aladinLiteView.masterResource.mustShowAssociated() ) {
+					("#ACDS").css("display" , "inline");
+				}
 				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 			}
 			else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp"){
-//				if(aladinLiteView.fov>=1 && aladinLiteView.masterResource.filtered == false){
-//					WaitingPanel.warnFov();
-//				}else{
-					WaitingPanel.show(name);
-					cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
-					cmdNode.css("color", color);
-					$("#btn-XMM-description").css("color" , color);
-					$("#btn-XMM-flash").css("color" ,color);
-					$("#btn-XMM-configure").css("color" ,color);
-					if(cmdNode.text().includes("3XMM Catalogue"))
-						$("#ACDS").css("display" , "inline");
-					self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
-//				}
-				/*}else if(cmdNode.attr("class") == "alix_XMM_in_menu  alix_datahelp_nochange"){
-				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");*/
-				//to avoid" when we display a view in the bookmark who contains XMM, it will recall displaydataxml(), and if xmm has been already showed ,function displaydataxml will lead to delete the XMM."	
+				console.log("2");
+				WaitingPanel.show(name);
+				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp_selected");
+				cmdNode.css("color", color);
+				$("#btn-XMM-description").css("color" , color);
+				$("#btn-XMM-flash").css("color" ,color);
+				$("#btn-XMM-configure").css("color" ,color);
+				if( aladinLiteView.masterResource.mustShowAssociated() ) {
+					$("#ACDS").css("display" , "inline");
+				}
+				self.model.aladinLite_V.displayCatalog(name, "#ff0000", clickType, url);
 			}else{
 				cmdNode.attr("class", "alix_XMM_in_menu  alix_datahelp");
 				cmdNode.css("color", "#888a85");
@@ -11812,7 +11787,7 @@ URLBuilder.buildVizieRCSURL = function(vizCatId, target, radiusDegrees) {
             target = coo.format('s');
         }
     }
-    return 'http://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
+    return 'https://vizier.unistra.fr/viz-bin/votable?-source=' + vizCatId + '&-c=' + encodeURIComponent(target) + '&-out.max=20000&-c.rd=' + radiusDegrees;
 };
 
 /*Aladin.prototype.increaseZoom = function(step) {
